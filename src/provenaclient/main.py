@@ -1,4 +1,4 @@
-from provena_client import Auth, Client, Settings 
+from provenaclient.provena_client import Auth, Client, Settings 
 
 settings = Settings(
     domain = "mds.gbrrestoration.org"
