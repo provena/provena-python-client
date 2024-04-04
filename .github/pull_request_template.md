@@ -1,6 +1,6 @@
-# RRAPIS-XXXX (Major/Minor/Bug Fix): Short Description
+# Jira-XXXX (Major/Minor/Bug Fix): Short Description
 
-## JIRA [Ticket RRAPIS-XXXX](https://jira.csiro.au/browse/RRAPIS-XXXX)
+## JIRA [Ticket XXXX](https://jira.csiro.au/browse/RRAPIS-XXXX)
 
 ## Checklist
 
