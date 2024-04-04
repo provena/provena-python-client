@@ -1,6 +1,9 @@
 name: ci-cd
 
-on: [push, pull_request]
+on: 
+ push: 
+  branches: 
+   - main
 
 jobs:
   ci:

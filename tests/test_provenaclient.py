@@ -1,1 +1,1 @@
-from provenaclient import provenaclient
+from provenaclient import provena_client
