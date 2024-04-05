@@ -25,7 +25,7 @@ version_variable = [
 ]                                                   # version location
 branch = "main"                                      # branch to make releases of
 changelog_file = "CHANGELOG.md"                      # changelog file
-build_command = "poetry build"
+build_command = "pip install poetry && poetry install && poetry build"
 dist_path = "dist/"
 upload_to_release = true
 upload_to_pypi = false 
