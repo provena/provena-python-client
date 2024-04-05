@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "provenaclient"
+version = "0.1.0"
+description = "A client library for interfacing with a Provena instance."
+authors = ["RRAP <rrapisdev@gmail.com>"]
+license = "None"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+mypy = "^1.9.0"
+pytest = "^8.1.1"
+python-semantic-release = "^9.4.0"
+pytest-cov = "^5.0.0"
+myst-nb = "^1.0.0"
+sphinx-autoapi = "^3.0.0"
+sphinx-rtd-theme = "^2.0.0"
+
+[tool.semantic_release]
+version_variable = [
+    "src/provenaclient/__init__.py:__version__",
+    "pyproject.toml:version"
+]                                                   # version location
+branch = "main"                                      # branch to make releases of
+changelog_file = "CHANGELOG.md"                      # changelog file
+build_command = "poetry build"
+dist_path = "dist/"
+upload_to_release = true
+upload_to_pypi = false 
+remove_dist = false
+patch_without_tag = true
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
