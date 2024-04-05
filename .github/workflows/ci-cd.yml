@@ -1,6 +1,6 @@
 name: ci-cd
 
-on: [push,pull-request]
+on: [push]
 
 jobs:
   ci:
