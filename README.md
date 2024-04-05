@@ -12,26 +12,27 @@ $ pip install provenaclient
 
 ### How to get started with Poetry
 
-1) Run the Command: `curl -sSL https://install.python-poetry.org | python3 -`
-2) Check if poetry was succesfully installed by running `poetry --version`
+1) Run the Command: `curl -sSL https://install.python-poetry.org | python3 -`.
+2) Check if poetry was successfully installed by running `poetry --version`.
 3) You should now have be able to see your poetry version successfully. 
+4) Now run the command `poetry shell`. This  will activate the poetry virtual environment for you.
+5) Now finally run the command `poetry install`. This will install all dependencies defined within pyproject.toml.
 
 ### My Poetry Installation is not being detected?
 1) This means that your PATH variable does not include the Poetry directory. 
-2) Open your .bashrc file, using the command `nano ~/.bashrc`
-3) Add the following line at the end of the file, `export PATH= "$HOME/.local/bin:$PATH"`
-4) Reload your .bashrc file, using the command `source ~/.bashrc`
-5) Verify that your poetry is now running, using the command `poetry --version`
+2) Open your .bashrc file, using the command `nano ~/.bashrc`.
+3) Add the following line at the end of the file, `export PATH= "$HOME/.local/bin:$PATH"`.
+4) Reload your .bashrc file, using the command `source ~/.bashrc`.
+5) Verify that your poetry is now running, using the command `poetry --version`.
 
 
 
 ## Contributing
-
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+TODO
 
 ## License
 
-`provenaclient` was created by Parth Kulkarni. Parth Kulkarni retains all rights to the source and it may not be reproduced, distributed, or used to create derivative works.
+`provenaclient` was created by Provena Development Team (CSIRO). Provena Development Team (CSIRO) retains all rights to the source and it may not be reproduced, distributed, or used to create derivative works.
 
 ## Credits
 

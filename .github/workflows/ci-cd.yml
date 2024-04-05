@@ -28,11 +28,11 @@ jobs:
       - name: Install package
         run: poetry install
 
+      - name: Mypy type check
+        run: poetry run mypy .  
+
       - name: Test with pytest
         run: poetry run pytest tests/ --cov=provenaclient --cov-report=xml
-
-      - name: Mypy type check
-        run: poetry run mypy .
 
       - name: Use Codecov to track coverage
         uses: codecov/codecov-action@v3
