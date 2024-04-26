@@ -1,15 +1,5 @@
-from dataclasses import dataclass
+from .utils.Auth import Auth
+from .utils.Config import Config
 
-@dataclass
-class Settings:
-    domain: str
-    
-class Auth:
-    def __init__(self, settings: Settings):
-        self.settings = settings
 
-class Client:
-    def __init__(self, auth: Auth, settings: Settings):
-        self.auth = auth
-        self.settings = settings
-
+config = Config(registry_api_endpoint=)
