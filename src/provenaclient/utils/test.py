@@ -1,4 +1,6 @@
 from .Auth import DeviceFlow
+import requests
+import traceback
 
 def main():
     # Define the Keycloak endpoint and client ID
@@ -12,10 +14,17 @@ def main():
         # Initialize the device flow which will open a web browser for user code input
         device_auth.init()
 
-
         print("Initialization complete. Check your browser to authenticate.")
 
+        auth = device_auth.get_auth
+
+        response = requests.get(url = "https://registry-api.dev.rrap-is.com/admin/export"
+                                ,auth= auth())
+        
+        print(response.json())
+                
     except Exception as e:
+        traceback.print_exc()
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":

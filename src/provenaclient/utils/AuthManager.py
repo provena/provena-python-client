@@ -7,7 +7,12 @@ class AuthManager(ABC):
         pass
 
     @abstractmethod
-    def refresh(self):
+    def perform_refresh(self):
+        """ Refresh the current token"""
+        pass
+
+    @abstractmethod
+    def perform_refresh_token(self):
         """ Refresh the current token"""
         pass
 
@@ -24,11 +29,6 @@ class AuthManager(ABC):
     @abstractmethod
     def get_auth(self):
         """Get the auth object."""
-        pass
-
-    @abstractmethod
-    def handle_auth_flow(self):
-        """Handle any user interactions required for auth flow."""
         pass
 
     @abstractmethod
