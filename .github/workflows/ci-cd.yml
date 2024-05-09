@@ -1,6 +1,12 @@
 name: ci-cd
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      -main
+  pull_request:
+    branches:
+      -main
 
 jobs:
   ci:
@@ -39,7 +45,7 @@ jobs:
       id-token: write
       contents: write
     needs: ci
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/inital-branch')
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python

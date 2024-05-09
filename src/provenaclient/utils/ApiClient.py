@@ -1,20 +1,23 @@
 import requests
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 class APIClient:
-    def __init__(self):
-        self.session = requests.Session()
+    session: requests.Session
 
+    def __init__(self) -> None:
+        """This is an API Client Class that wraps around the requests library used by auth interface for synchronous requests.
+        """
+        self.session = requests.Session()
     
-    def get(self, endpoint: str, params: Dict[str, Any] = None, timeout: int = None) -> requests.Response:
+    def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None, timeout: int = 0) -> requests.Response:
         """Sends a GET request to the specified endpoint with the given params
 
         Parameters
         ----------
         endpoint : str
-            _description_
+            A keycloak endpoint that includes the realm name.
         params : Dict[str, Any], optional
-            _description_, by default None
+            Params passed to the GET request, by default None
 
         Returns
         -------
@@ -37,9 +40,9 @@ class APIClient:
         Parameters
         ----------
         endpoint : str
-            _description_
+            A keycloak endpoint that includes the realm name.
         data : Dict[str, Any]
-            _description_
+            Body field of POST request.
 
         Returns
         -------

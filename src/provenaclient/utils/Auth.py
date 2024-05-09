@@ -9,39 +9,43 @@ import json
 from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
 from .ApiClient import APIClient
-
-
-class BearerAuth(requests.auth.AuthBase):
-    def __init__(self, token: str):
-        self.token = token
-
-    def __call__(self, r: requests.PreparedRequest) -> requests.PreparedRequest:
-        r.headers["authorization"] = "Bearer " + self.token
-        return r
-
-class Tokens(BaseModel):
-    access_token: str
-    # refresh tokens are marked as optional because offline tokens should not be cached
-    refresh_token: Optional[str]
+from datetime import datetime, timezone
+from .auth_helpers import BearerAuth, Tokens
 
 class DeviceFlow(AuthManager):
 
-    # add all the constructor parameters here. 
     keycloak_endpoint: str
+    client_id: str
+    silent: bool
 
-
-    def __init__(self, keycloak_endpoint: str, client_id: str,  silent: bool = False):
+    def __init__(self, keycloak_endpoint: str, client_id: str,  silent: bool = False) -> None:
         self.keycloak_endpoint = keycloak_endpoint
         self.client_id = client_id
-        self.scopes = []
+        self.scopes: list = []
+        self.file_name = "tokens.json"
         self.device_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/auth/device'
         self.token_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/token'
         self.silent = silent
         self.api_client = APIClient()
+        
+        """ Create and generate a DeviceFlow object. The tokens are automatically refreshed when
+        accessed through the get_auth() function. 
 
+        Tokens are cached in local storage with a configurable file name and are
+        only reproduced if the refresh token expires.
 
+        Parameters
+        ----------
+        keycloak_endpoint : str
+            The keycloak endpoint to use.
+        client_id : str
+            The client id for the keycloak authorisation.
+        silent : bool
+            Force silence in the stdout outputs for use in context where
+            printing would be irritating. By default False (helpful messages are
+            printed).
 
-    def init(self):
+        """
 
         try: 
             # First thing to do here is obtain the keycloak public key. 
@@ -54,7 +58,7 @@ class DeviceFlow(AuthManager):
 
         # If it's present validate it, if fails then refresh else not present then fetch new tokens.
 
-        if os.path.exists("tokens.json"):
+        if os.path.exists(self.file_name):
             self.tokens = self.load_tokens()
 
             if not self.tokens:
@@ -65,8 +69,7 @@ class DeviceFlow(AuthManager):
                 # Attempt to validate tokens
                 if self.validate_token(self.tokens):
                     self.optional_print("Tokens are valid...")
-                    print(self.tokens.access_token, "acess", self.tokens.refresh_token, "refresh")
-                
+                                    
                 else: 
                     try:
                         self.perform_refresh_token()
@@ -124,7 +127,7 @@ class DeviceFlow(AuthManager):
             raise err
     
 
-    def load_tokens(self) -> Tokens:
+    def load_tokens(self) -> Optional[Tokens]:
         """Loads authentication tokens from a local JSON file and returns them as a Tokens object.
 
         Returns
@@ -143,7 +146,7 @@ class DeviceFlow(AuthManager):
         self.optional_print("Looking for existing tokens in local storage.")
 
         try:
-            with open('tokens.json', 'r') as file:
+            with open(self.file_name, 'r') as file:
                 token_data = json.load(file)
                 return Tokens(**token_data)
         except Exception as e:
@@ -169,7 +172,7 @@ class DeviceFlow(AuthManager):
 
         try:
 
-            with open('tokens.json', 'w') as file:
+            with open(self.file_name, 'w') as file:
                 json.dump(tokens.dict(), file)
                 self.optional_print("Tokens saved to file successfully.")
 
@@ -190,13 +193,11 @@ class DeviceFlow(AuthManager):
             The tokens object to validate, by default None
         """
 
-        # TODO: look into addering some buffer/timeout to this method. 
-
         self.optional_print("Attempting to validate provided tokens.")
 
         try:
         
-            jwt.decode(
+            jwt_response = jwt.decode(
                 tokens.access_token, 
                 self.public_key, 
                 algorithms=[ALGORITHMS.RS256],
@@ -207,14 +208,30 @@ class DeviceFlow(AuthManager):
                 }
             )
 
-            # TODO: call a method to check if the token has enough of a defined time window before it expires.
 
-            self.optional_print("Token validation successful.")
+            expiration_timestamp = jwt_response.get("exp") # Contains an unix timestamp
 
-            return True
+            if expiration_timestamp: 
+
+                # We will need to convert to a datetime/utc object here. 
+                expiration_time = datetime.fromtimestamp(expiration_timestamp, timezone.utc)
+                current_time = datetime.now(timezone.utc)
+                remaining_time = (expiration_time - current_time).total_seconds()
+
+                if remaining_time < 30: 
+                    self.optional_print("Token will expire soon. Refresh tokens")
+                    return False
+                
+                else: 
+                    self.optional_print("Token validation successful.")
+                    return True
+
+            else: 
+                return False
     
         except JWTError as e: 
            self.optional_print(f"Token Validation Error {e}")
+           return False
 
     def start_device_flow(self) -> None:
         """Initiates the device authorisation flow by requesting a device code from server and prompts
@@ -237,7 +254,6 @@ class DeviceFlow(AuthManager):
         response = self.api_client.post(self.device_endpoint, data = data)
 
         if response.status_code == 200: 
-            print("success")
             response_data= response.json()
             self.device_code = response_data.get('device_code')
             self.interval = response_data.get('interval')
@@ -298,7 +314,11 @@ class DeviceFlow(AuthManager):
             response =  self.api_client.post(self.token_endpoint, data=data)
             response_data = response.json()
 
-            if response_data.get('error'):
+            if response_data is None: 
+                misc_fail = True
+                self.optional_print("No data received in the response.")
+
+            elif response_data.get('error'):
                 error = response_data['error']
                 if error != 'authorization_pending':
                     misc_fail = True
@@ -309,18 +329,30 @@ class DeviceFlow(AuthManager):
                 # Successful as there was no error at the endpoint
                 # We will produce a token object here. 
 
+                access_token = response_data.get("access_token")
+                refresh_token = response_data.get("refresh_token")
+
+                if not access_token: 
+                    misc_fail = True
+                    self.optional_print("Missing or invalid access token.")                    
+                    continue # Skip this iteration, as we were not able to obtain a successful token
+
+                if not refresh_token:
+                    misc_fail = True
+                    self.optional_print("Missing or invalid refresh token.")
+                    continue # Skip this iteration, as we were not able to obtain a successful token
+
                 self.tokens = Tokens(
-                access_token=response_data.get('access_token'),
-                refresh_token=response_data.get('refresh_token')
+                access_token=access_token,
+                refresh_token=refresh_token
                 )
 
                 # Save the tokens into 'token.json'
-
                 self.save_tokens(self.tokens)
                 succeeded = True
 
         if not succeeded:
-            if response_data.get("error"):
+            if response_data and "error" in response_data:
                 self.optional_print(f"Failed due to {response_data['error']}")
 
             else: 
@@ -345,10 +377,10 @@ class DeviceFlow(AuthManager):
         self.optional_print("Refreshing using refresh token")
         self.optional_print()
 
-        refreshed = self.perform_refresh()
+        refreshed: Dict[str, Any] = self.perform_refresh()
 
-        access_token: str = refreshed.get('access_token')
-        refresh_token: str = refreshed.get('refresh_token')
+        access_token = refreshed.get('access_token')
+        refresh_token = refreshed.get('refresh_token')
 
         if not access_token or not refresh_token:
             error_message = "Failed to refresh tokens: Missing access or refresh tokens"
@@ -444,14 +476,12 @@ class DeviceFlow(AuthManager):
         if self.tokens is None or self.public_key is None: 
             raise Exception("Cannot generate token without access token or public key.")
         
-        # Attempt to validate the current token. 
-
         try:
+            # Attempt to validate the current token. 
             if self.validate_token(self.tokens):
                 return self.tokens.access_token
         except JWTError as e:
-            # This means tha the tokens are invalid. 
-
+            # This flow means that the tokens are invalid. 
             # Now we will check if the refresh token is valid as well, and attempt to re-generate. 
 
             try: 
@@ -547,19 +577,14 @@ class DeviceFlow(AuthManager):
 
 
 class OfflineFlow(AuthManager):
-    def __init__(self):
-        pass
 
-    def init(self):
-        pass
-
-    def refresh(self):
+    def refresh(self) -> None:
         pass
         
-    def get_token(self):
-        pass
+    def get_token(self) -> str:
+        return ""
 
-    def force_refresh(self):
+    def force_refresh(self) -> None:
         pass
         
 

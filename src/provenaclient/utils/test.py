@@ -11,8 +11,6 @@ try:
     device_auth = DeviceFlow(keycloak_endpoint=keycloak_url, client_id=client_id)
 
     # Initialize the device flow which will open a web browser for user code input
-    device_auth.init()
-
     print("Initialization complete. Check your browser to authenticate.")
 
     auth = device_auth.get_auth
@@ -21,7 +19,7 @@ try:
                             ,auth= auth())
     
     print(response.json())
-            
+                    
 except Exception as e:
     traceback.print_exc()
     print(f"An error occurred: {e}")
