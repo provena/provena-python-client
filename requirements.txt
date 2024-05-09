@@ -1,4 +1,5 @@
+fastapi==0.88.0
 httpx
-pydantic-settings
-python-jose
+mypy
+pydantic[email]==1.10.12
 provena-interfaces
