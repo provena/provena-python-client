@@ -3,10 +3,6 @@ from abc import ABC, abstractmethod
 class AuthManager(ABC):
 
     @abstractmethod
-    def __init__(self):
-        pass
-
-    @abstractmethod
     def perform_refresh(self):
         """ Refresh the current token"""
         pass

@@ -1,6 +1,8 @@
 from ..utils.Auth import Auth
 from ..utils.Config import Config
 from ..utils.httpClient import HttpClient
+from ProvenaInterfaces.RegistryAPI import *
+from ProvenaInterfaces.RegistryModel import *
 
 class RegistryClient: 
 

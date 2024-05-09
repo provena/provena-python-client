@@ -25,6 +25,11 @@ class Tokens(BaseModel):
     refresh_token: Optional[str]
 
 class DeviceFlow(AuthManager):
+
+    # add all the constructor parameters here. 
+    keycloak_endpoint: str
+
+
     def __init__(self, keycloak_endpoint: str, client_id: str,  silent: bool = False):
         self.keycloak_endpoint = keycloak_endpoint
         self.client_id = client_id
@@ -33,6 +38,8 @@ class DeviceFlow(AuthManager):
         self.token_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/token'
         self.silent = silent
         self.api_client = APIClient()
+
+
 
     def init(self):
 
@@ -163,7 +170,7 @@ class DeviceFlow(AuthManager):
         try:
 
             with open('tokens.json', 'w') as file:
-                json.dump(tokens.model_dump(), file)
+                json.dump(tokens.dict(), file)
                 self.optional_print("Tokens saved to file successfully.")
 
         except Exception as e:
@@ -183,6 +190,8 @@ class DeviceFlow(AuthManager):
             The tokens object to validate, by default None
         """
 
+        # TODO: look into addering some buffer/timeout to this method. 
+
         self.optional_print("Attempting to validate provided tokens.")
 
         try:
@@ -197,6 +206,8 @@ class DeviceFlow(AuthManager):
                 "exp": True
                 }
             )
+
+            # TODO: call a method to check if the token has enough of a defined time window before it expires.
 
             self.optional_print("Token validation successful.")
 

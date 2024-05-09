@@ -7,7 +7,7 @@ config = Config(
     api_overrides = APIOverrides(auth_api_endpoint_override="vcbdfb.com")
 )
 
-env = config.get_environment()
+env = config.get_environment().prov_api_endpoint
 print(env.prov_api_endpoint)
 
 auth_api_endpoint = config.auth_api_endpoint
