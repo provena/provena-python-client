@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from .auth_helpers import BearerAuth, Tokens
+from .auth_helpers import BearerAuth, Tokens, HttpxBearerAuth
 
 class AuthManager(ABC):
 
@@ -27,6 +27,11 @@ class AuthManager(ABC):
     @abstractmethod
     def get_auth(self) -> BearerAuth:
         """Get the auth object."""
+        pass
+
+    @abstractmethod
+    def get_async_auth(self) -> HttpxBearerAuth:
+        """Get the httpx compatible auth object"""
         pass
 
     @abstractmethod

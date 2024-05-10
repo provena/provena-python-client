@@ -10,7 +10,7 @@ from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
 from .ApiClient import APIClient
 from datetime import datetime, timezone
-from .auth_helpers import BearerAuth, Tokens
+from .auth_helpers import BearerAuth, Tokens, HttpxBearerAuth
 
 class DeviceFlow(AuthManager):
 
@@ -553,8 +553,61 @@ class DeviceFlow(AuthManager):
             return BearerAuth(token = self.tokens.access_token)
         else: 
             raise Exception("Failed to obtain a valid token after initiating a new device flow.")
-        
 
+    
+    def get_async_auth(self) -> HttpxBearerAuth:
+        """A helper function which produces a BearerAuth object for use
+        in the requests.xxx objects. For example: 
+
+        manager = DeviceAuthFlowManager(...)
+        auth = manager.get_auth 
+        requests.post(..., auth=auth)
+
+        Returns
+        -------
+        BearerAuth
+            The requests auth object.
+
+        Raises
+        ------
+        Exception
+            Raises exception if tokens/public_key are not setup - make sure 
+            that the object is instantiated properly before calling this function.
+        Exception
+            If the token is invalid and cannot be refreshed.
+        Exception
+            If the token validation still fails after re-conducting the device flow.
+        """
+
+        if self.tokens is None or self.public_key is None: 
+            raise Exception("Cannot generate token without access token or public key.")
+        
+        # Attempt to validate the current token. 
+
+        try:
+            if self.validate_token(self.tokens):
+                return HttpxBearerAuth(token = self.tokens.access_token)
+        except JWTError as e:
+            # This means tha the tokens are invalid. 
+
+            # Now we will check if the refresh token is valid as well, and attempt to re-generate. 
+
+            try: 
+                self.perform_refresh_token()
+                if self.validate_token(self.tokens):
+                    return HttpxBearerAuth(token = self.tokens.access_token)             
+                else:
+                    raise Exception("Something has gone wrong..")
+            
+            except Exception as e: 
+                # This mean something that the refresh token is invalid as well, and new set of tokens need to be re-generated. 
+                self.start_device_flow()   
+
+        if self.validate_token(self.tokens):
+            return HttpxBearerAuth(token = self.tokens.access_token)
+        else: 
+            raise Exception("Failed to obtain a valid token after initiating a new device flow.")
+        
 
     def clear_token_storage(self) -> None:
         """Checks if the tokens.json file exists and accordingly removes it and resets
