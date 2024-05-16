@@ -1,9 +1,10 @@
-from ..utils.AuthManager import AuthManager
-from ..utils.Config import Config
-from ..utils.httpClient import HttpClient
+from provenaclient.utils.AuthManager import AuthManager
+from provenaclient.utils.Config import Config
+from provenaclient.utils.httpClient import HttpClient
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse
 from pydantic import ValidationError
+from provenaclient.utils.exceptions.AuthException import AuthException, ValidationException, ServerException
 
 class DatastoreEndpoints(Enum):
     FETCH_DATASET: str = "/registry/items/fetch-dataset"
@@ -27,16 +28,21 @@ class DatastoreClient:
         try: 
             response = await HttpClient.make_get_request(url = url, params=params, auth = get_auth())
 
-            print(response.json(), "response")
 
             if response.status_code != 200:
+
+                error_message = response.json().get('detail')
+
                 if response.status_code == 401:
-                    # Here have to define exceptions for common scenarios. 
-                    pass
+                    raise AuthException(message = "Auth exception", error_code = 401, payload = error_message)
+
+                if response.status_code == 422:
+                    # This is a specific status code of this URL.
+                    raise ValidationException(message ="Validation Exception", error_code = 422, payload = error_message)
                 
                 if response.status_code >=500:
                     # Raise another exception here 
-                    pass
+                    raise ServerException(message = "Server Exception", error_code = response.status_code, payload = error_message )
         
         except Exception as e:
             raise ValueError(f"Failed to fetch dataset with id {id}")

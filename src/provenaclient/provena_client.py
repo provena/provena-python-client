@@ -16,6 +16,4 @@ async def main() -> None:
 
     dataset = await client.datastore.fetch_item(id = "10378.1/1888975")
 
-    print(dataset.item)
-
 asyncio.run(main())
