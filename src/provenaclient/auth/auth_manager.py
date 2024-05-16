@@ -5,12 +5,12 @@ from .auth_helpers import BearerAuth, Tokens
 class AuthManager(ABC):
 
     @abstractmethod
-    def perform_refresh(self) -> Dict[str, Any]:
+    def make_token_refresh_request(self) -> Dict[str, Any]:
         """ Refresh the current token"""
         pass
 
     @abstractmethod
-    def perform_refresh_token(self) -> None:
+    def refresh_tokens(self) -> None:
         """ Refresh the current token"""
         pass
 
@@ -26,12 +26,12 @@ class AuthManager(ABC):
 
     @abstractmethod
     def get_auth(self) -> BearerAuth:
-        """Get the auth object."""
+        """Prepares and returns an auth object of Bearer type."""
         pass
 
     @abstractmethod
     def validate_token(self, tokens: Tokens) -> bool:
-        """Validate the token checking expiry and credentials."""
+        """Validate the token by checking its expiry and signatures."""
         pass
 
 

@@ -1,4 +1,4 @@
-from .Auth import DeviceFlow
+from provenaclient.auth.auth import DeviceFlow
 import requests
 import traceback
 

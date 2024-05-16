@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional
-from .AuthManager import AuthManager
+from provenaclient.auth.auth_manager import AuthManager
 import requests
 import webbrowser
 import time
@@ -8,25 +8,27 @@ import os
 import json
 from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
-from .ApiClient import APIClient
-from datetime import datetime, timezone
-from .auth_helpers import BearerAuth, Tokens
+from provenaclient.auth.auth_helpers import BearerAuth, Tokens, check_token_expiry_window
+
 
 class DeviceFlow(AuthManager):
 
     keycloak_endpoint: str
     client_id: str
     silent: bool
+    scopes: list
+    file_name: str
+    device_endpoint: str
+    token_endpoint: str
 
     def __init__(self, keycloak_endpoint: str, client_id: str,  silent: bool = False) -> None:
         self.keycloak_endpoint = keycloak_endpoint
         self.client_id = client_id
         self.scopes: list = []
-        self.file_name = "tokens.json"
+        self.file_name = ".tokens.json"
         self.device_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/auth/device'
         self.token_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/token'
         self.silent = silent
-        self.api_client = APIClient()
         
         """ Create and generate a DeviceFlow object. The tokens are automatically refreshed when
         accessed through the get_auth() function. 
@@ -52,7 +54,7 @@ class DeviceFlow(AuthManager):
             self.retrieve_keycloak_public_key()
         
         except Exception as e:
-            self.optional_print(f"Failed to retrieve public keycloak key {e}")
+            raise Exception("Failed to retrieve the Keycloak public key, authentication cannot proceed.") from e
 
         # Second thing will be to check if the tokens.json file is already present or not. 
 
@@ -72,7 +74,7 @@ class DeviceFlow(AuthManager):
                                     
                 else: 
                     try:
-                        self.perform_refresh_token()
+                        self.refresh_tokens()
                     
                     except Exception as e:
                         self.optional_print(f"Refresh token has expired or is invalid {e}")
@@ -104,7 +106,7 @@ class DeviceFlow(AuthManager):
         """
         error_message = f"Error finding public key from keycloak endpoint {self.keycloak_endpoint}."
         try:
-            r = self.api_client.get(endpoint= self.keycloak_endpoint,
+            r = requests.get(url= self.keycloak_endpoint,
                              timeout=3)
             r.raise_for_status()
             response_json = r.json()
@@ -208,30 +210,20 @@ class DeviceFlow(AuthManager):
                 }
             )
 
+            is_token_expiring = check_token_expiry_window(jwt_data=jwt_response, jwt_token_expiry_window=None)
 
-            expiration_timestamp = jwt_response.get("exp") # Contains an unix timestamp
+            if not is_token_expiring:
+                self.optional_print("Token is expiring soon and need to be refreshed.")
+            
+            else:
+                self.optional_print("Token validation successful.")
 
-            if expiration_timestamp: 
-
-                # We will need to convert to a datetime/utc object here. 
-                expiration_time = datetime.fromtimestamp(expiration_timestamp, timezone.utc)
-                current_time = datetime.now(timezone.utc)
-                remaining_time = (expiration_time - current_time).total_seconds()
-
-                if remaining_time < 30: 
-                    self.optional_print("Token will expire soon. Refresh tokens")
-                    return False
-                
-                else: 
-                    self.optional_print("Token validation successful.")
-                    return True
-
-            else: 
-                return False
+            return is_token_expiring
     
         except JWTError as e: 
            self.optional_print(f"Token Validation Error {e}")
-           return False
+           return False  
+
 
     def start_device_flow(self) -> None:
         """Initiates the device authorisation flow by requesting a device code from server and prompts
@@ -251,7 +243,7 @@ class DeviceFlow(AuthManager):
             "scopes": ' '.join(self.scopes)
         }
     
-        response = self.api_client.post(self.device_endpoint, data = data)
+        response = requests.post(self.device_endpoint, data = data)
 
         if response.status_code == 200: 
             response_data= response.json()
@@ -311,7 +303,7 @@ class DeviceFlow(AuthManager):
 
         # Poll for success
         while not succeeded and not timed_out and not misc_fail:
-            response =  self.api_client.post(self.token_endpoint, data=data)
+            response =  requests.post(self.token_endpoint, data=data)
             response_data = response.json()
 
             if response_data is None: 
@@ -347,7 +339,7 @@ class DeviceFlow(AuthManager):
                 refresh_token=refresh_token
                 )
 
-                # Save the tokens into 'token.json'
+                # Save the tokens into '.token.json'
                 self.save_tokens(self.tokens)
                 succeeded = True
 
@@ -358,7 +350,7 @@ class DeviceFlow(AuthManager):
             else: 
                 self.optional_print(f"Failed with unknown error, failed to find error message.")
 
-    def perform_refresh_token(self) -> None:
+    def refresh_tokens(self) -> None:
         """Attempts to refresh the authentication tokens using a stored refresh token. This method
         updates the current tokens if the refresh is successful.
 
@@ -377,7 +369,7 @@ class DeviceFlow(AuthManager):
         self.optional_print("Refreshing using refresh token")
         self.optional_print()
 
-        refreshed: Dict[str, Any] = self.perform_refresh()
+        refreshed: Dict[str, Any] = self.make_token_refresh_request()
 
         access_token = refreshed.get('access_token')
         refresh_token = refreshed.get('refresh_token')
@@ -395,7 +387,7 @@ class DeviceFlow(AuthManager):
 
             self.save_tokens(self.tokens)
     
-    def perform_refresh(self, tokens: Optional[Tokens] = None) -> Dict[str, Any]:
+    def make_token_refresh_request(self, tokens: Optional[Tokens] = None) -> Dict[str, Any]:
         """Performs the token refresh by making an HTTP post request to the token endpoint
         to obtain new access and refresh tokens.
 
@@ -442,7 +434,7 @@ class DeviceFlow(AuthManager):
         }
 
         # Send API request
-        response =  self.api_client.post(self.token_endpoint, data=data)
+        response =  requests.post(self.token_endpoint, data=data)
 
         if (not response.status_code == 200):
             raise Exception(
@@ -485,7 +477,7 @@ class DeviceFlow(AuthManager):
             # Now we will check if the refresh token is valid as well, and attempt to re-generate. 
 
             try: 
-                self.perform_refresh_token()
+                self.refresh_tokens()
                 if self.validate_token(self.tokens):
                     return self.tokens.access_token                
                 else:
@@ -525,36 +517,8 @@ class DeviceFlow(AuthManager):
             If the token validation still fails after re-conducting the device flow.
         """
 
-        if self.tokens is None or self.public_key is None: 
-            raise Exception("Cannot generate token without access token or public key.")
-        
-        # Attempt to validate the current token. 
-
-        try:
-            if self.validate_token(self.tokens):
-                return BearerAuth(token = self.tokens.access_token)
-        except JWTError as e:
-            # This means tha the tokens are invalid. 
-
-            # Now we will check if the refresh token is valid as well, and attempt to re-generate. 
-
-            try: 
-                self.perform_refresh_token()
-                if self.validate_token(self.tokens):
-                    return BearerAuth(token = self.tokens.access_token)             
-                else:
-                    raise Exception("Something has gone wrong..")
-            
-            except Exception as e: 
-                # This mean something that the refresh token is invalid as well, and new set of tokens need to be re-generated. 
-                self.start_device_flow()   
-
-        if self.validate_token(self.tokens):
-            return BearerAuth(token = self.tokens.access_token)
-        else: 
-            raise Exception("Failed to obtain a valid token after initiating a new device flow.")
-        
-
+        token = self.get_token()
+        return BearerAuth(token = token)
 
     def clear_token_storage(self) -> None:
         """Checks if the tokens.json file exists and accordingly removes it and resets

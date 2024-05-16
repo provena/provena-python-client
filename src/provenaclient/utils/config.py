@@ -38,19 +38,16 @@ class APIOverrides(BaseModel):
     jobs_service_api_endpoint_override: Optional[str] = None
     keycloak_endpoint_override: Optional[str] = None
 
-class ToolingEnvironment(BaseModel):
+class EndpointConfig(BaseModel):
     domain: str
     # What is the auth realm name?
     realm_name: str
     api_overrides: APIOverrides
 
-    # Defaults - overridable
-    aws_region: str = "ap-southeast-2"
-
 class Config():
 
     def __init__(self, domain: str, realm_name: str, api_overrides: APIOverrides = APIOverrides()) -> None:
-        """Creates a ToolingEnvironment object that holds relevant Provena instance information
+        """Creates a EndpointConfig object that holds relevant Provena instance information
         and possible overrides if provided.
 
         Parameters
@@ -60,11 +57,11 @@ class Config():
         realm_name : str
             Your keycloak realm name.
         api_overrides : APIOverrides, optional
-            Provide any overrides to certain API endpoints if you wish, by default APIOverrides().
+            Provide any overrides to certain API endpoints if you wish, by default APIOverrides() with all overrides set to None.
         """
 
         # the unpopulated environment
-        self._environment: ToolingEnvironment = ToolingEnvironment(domain=domain, realm_name=realm_name, api_overrides=api_overrides)
+        self._api_config: EndpointConfig = EndpointConfig(domain=domain, realm_name=realm_name, api_overrides=api_overrides)
     
     # Property methods to retrieve different API endpoints. 
 
@@ -80,9 +77,9 @@ class Config():
         """
         
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="search",
-            override= self._environment.api_overrides.search_api_endpoint_override if self._environment.api_overrides else None
+            override= self._api_config.api_overrides.search_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -97,9 +94,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="job-api",
-            override=self._environment.api_overrides.jobs_service_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.jobs_service_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -114,9 +111,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="handle",
-            override=self._environment.api_overrides.handle_service_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.handle_service_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -131,9 +128,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="search-service",
-            override=self._environment.api_overrides.search_service_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.search_service_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -148,9 +145,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="auth-api",
-            override=self._environment.api_overrides.auth_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.auth_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -165,9 +162,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="prov-api",
-            override=self._environment.api_overrides.prov_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.prov_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -182,9 +179,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="data-api",
-            override=self._environment.api_overrides.datastore_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.datastore_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -199,9 +196,9 @@ class Config():
         """
 
         return optional_override_prefixor(
-            domain=self._environment.domain,
+            domain=self._api_config.domain,
             prefix="registry-api",
-            override=self._environment.api_overrides.registry_api_endpoint_override if self._environment.api_overrides else None
+            override=self._api_config.api_overrides.registry_api_endpoint_override if self._api_config.api_overrides else None
         )
 
     @property
@@ -216,10 +213,10 @@ class Config():
         """
 
         endpoint = ""
-        if self._environment.api_overrides.keycloak_endpoint_override is not None:
-            endpoint = self._environment.api_overrides.keycloak_endpoint_override
+        if self._api_config.api_overrides.keycloak_endpoint_override is not None:
+            endpoint = self._api_config.api_overrides.keycloak_endpoint_override
         else:
-            endpoint = f"https://auth.{self._environment.domain}/auth/realms/{self._environment.realm_name}"
+            endpoint = f"https://auth.{self._api_config.domain}/auth/realms/{self._api_config.realm_name}"
         return endpoint
     
 
