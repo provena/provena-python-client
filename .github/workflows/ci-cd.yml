@@ -1,6 +1,12 @@
 name: ci-cd
-
-on: [push, pull_request]
+# The current CD (Continuous Delivery) job script is currently not setup to run on PR's (Pull requests). 
+on:
+  push:
+    branches:
+      -main
+  pull_request:
+    branches:
+      -main
 
 jobs:
   ci:
@@ -39,7 +45,7 @@ jobs:
       id-token: write
       contents: write
     needs: ci
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/inital-branch')
+    if: github.ref == 'refs/heads/main' # This will result in the CD job not executing for PR's (Pull Requests)
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
