@@ -1,5 +1,0 @@
--r requirements.txt
-
-pytest
-cookiecutter
-mypy
