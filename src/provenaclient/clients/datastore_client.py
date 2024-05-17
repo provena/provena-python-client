@@ -1,12 +1,12 @@
-from provenaclient.utils.AuthManager import AuthManager
-from provenaclient.utils.Config import Config
-from provenaclient.utils.httpClient import HttpClient
+from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.utils.config import Config
+from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
 from pydantic import ValidationError
 from provenaclient.utils.exceptions.AuthException import AuthException, ValidationException, ServerException
-from http import HTTPStatus
+import json
 
 class DatastoreEndpoints(Enum):
     FETCH_DATASET: str = "/registry/items/fetch-dataset"
@@ -22,9 +22,34 @@ class DatastoreClient:
 
     
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        id : str
+            _description_
+
+        Returns
+        -------
+        RegistryFetchResponse
+            _description_
+
+        Raises
+        ------
+        AuthException
+            _description_
+        ValidationException
+            _description_
+        ServerException
+            _description_
+        ValueError
+            _description_
+        ValueError
+            _description_
+        """
         
         # Prepare and setup the API request.
-        get_auth = self.auth.get_async_auth # Get bearer auth
+        get_auth = self.auth.get_auth # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET.value
         params = {"handle_id": id}
 
@@ -66,21 +91,41 @@ class DatastoreClient:
 
         return parsed_model
     
-    
     async def mint_dataset(self, dataset_info: CollectionFormat) ->  MintResponse:
+        """_summary_
 
-        get_auth = self.auth.get_async_auth # Get bearer auth
+        Parameters
+        ----------
+        dataset_info : CollectionFormat
+            _description_
+
+        Returns
+        -------
+        MintResponse
+            _description_
+
+        Raises
+        ------
+        AuthException
+            _description_
+        ValidationException
+            _description_
+        ServerException
+            _description_
+        ValueError
+            _description_
+        ValueError
+            _description_
+        """
+
+        get_auth = self.auth.get_auth # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET.value
 
-        # Convert the payload 
-        json_data = dataset_info.json()
-
-        print(json_data, "JSONN")
+        # Create a payload object.
+        payload_object = json.loads(dataset_info.json())
 
         try: 
-            response = await HttpClient.make_post_request(url = url, data=json_data, auth = get_auth())
-
-            print(response, "repsonsee")
+            response = await HttpClient.make_post_request(url = url, data=payload_object, auth = get_auth())
 
             if response.status_code != 200:
 
@@ -116,9 +161,3 @@ class DatastoreClient:
             raise ValueError(f"Parsing failed for dataset with id {id}")
 
         return parsed_model
-
-
-
-    
-
-    #async def version_dataset(self, payload: some_obj) -> 

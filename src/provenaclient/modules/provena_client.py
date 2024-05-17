@@ -1,15 +1,22 @@
-#TODO
-
-'''
-from ..utils.Auth import Auth
-from ..utils.Config import Config
-from ..clients.RegistryClient import RegistryClient
+from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.utils.config import Config
+from provenaclient.clients.datastore_client import DatastoreClient
+from provenaclient.modules.datastore import Datastore
 
 class ProvenaClient():
-    auth: Auth, 
+    auth: AuthManager 
     config: Config
 
-    _registry_client: RegistryClient
+    # private clients L2
+    _datastore_client: DatastoreClient
 
+    # Modules
+    datastore: Datastore
 
-'''
+    def __init__(self, auth: AuthManager, config: Config) -> None:
+        self.auth = auth
+        self.config = config
+
+        self._datastore_client = DatastoreClient(auth, config)
+
+        self.datastore = Datastore(auth=auth, config=config, datastore_client=self._datastore_client)

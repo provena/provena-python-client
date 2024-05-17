@@ -1,6 +1,6 @@
-from ..utils.AuthManager  import AuthManager
-from ..utils.Config import Config
-from ..clients.datastore_client import DatastoreClient
+from provenaclient.auth.auth_manager  import AuthManager
+from provenaclient.utils.config import Config
+from provenaclient.clients.datastore_client import DatastoreClient
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat, CollectionFormatApprovals, CollectionFormatDatasetInfo,CollectionFormatAssociations
 
@@ -8,7 +8,6 @@ from ProvenaInterfaces.RegistryModels import CollectionFormat, CollectionFormatA
 class Datastore: 
     auth: AuthManager
     config: Config
-
     datastore_client: DatastoreClient
 
     def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient) -> None:
@@ -18,6 +17,23 @@ class Datastore:
         self._datastore_client = datastore_client  
     
     async def fetch_item(self, id:str) -> RegistryFetchResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        id : str
+            _description_
+
+        Returns
+        -------
+        RegistryFetchResponse
+            _description_
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
 
         try: 
             response = await self._datastore_client.fetch_dataset(id)
@@ -28,6 +44,27 @@ class Datastore:
         return response
     
     async def mint_dataset(self, associations: CollectionFormatAssociations , approvals: CollectionFormatApprovals, dataset_info: CollectionFormatDatasetInfo) -> MintResponse: 
+        """_summary_
+
+        Parameters
+        ----------
+        associations : CollectionFormatAssociations
+            _description_
+        approvals : CollectionFormatApprovals
+            _description_
+        dataset_info : CollectionFormatDatasetInfo
+            _description_
+
+        Returns
+        -------
+        MintResponse
+            _description_
+
+        Raises
+        ------
+        Exception
+            _description_
+        """
 
         if associations is None or approvals is None or dataset_info is None: 
             print("Cannot procced further, please provide the correct parameters.")

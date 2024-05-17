@@ -8,7 +8,7 @@ import os
 import json
 from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
-from provenaclient.auth.auth_helpers import BearerAuth, Tokens, check_token_expiry_window
+from provenaclient.auth.auth_helpers import HttpxBearerAuth, Tokens, check_token_expiry_window
 
 
 class DeviceFlow(AuthManager):
@@ -493,7 +493,7 @@ class DeviceFlow(AuthManager):
         else: 
             raise Exception("Failed to obtain a valid token after initiating a new device flow.")
       
-    def get_auth(self) -> BearerAuth:
+    def get_auth(self) -> HttpxBearerAuth:
         """A helper function which produces a BearerAuth object for use
         in the requests.xxx objects. For example: 
 
@@ -518,7 +518,7 @@ class DeviceFlow(AuthManager):
         """
 
         token = self.get_token()
-        return BearerAuth(token = token)
+        return HttpxBearerAuth(token = token)
 
     def clear_token_storage(self) -> None:
         """Checks if the tokens.json file exists and accordingly removes it and resets

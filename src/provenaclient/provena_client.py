@@ -1,7 +1,8 @@
 import asyncio
-from provenaclient.utils.Auth import DeviceFlow
-from provenaclient.utils.Config import Config
-from provenaclient.modules.ProvenaClient import ProvenaClient
+from provenaclient.auth.auth import DeviceFlow
+from provenaclient.utils.config import Config
+from provenaclient.modules.provena_client import ProvenaClient
+from ProvenaInterfaces.RegistryModels import *
 
 async def main() -> None:
 
@@ -14,6 +15,44 @@ async def main() -> None:
 
     client = ProvenaClient(config=config, auth=auth)
 
-    dataset = await client.datastore.fetch_item(id = "10378.1/1888975")
+    create_dataset = await client.datastore.mint_dataset(
+        associations=CollectionFormatAssociations(
+            organisation_id="10378.1/1893860",
+            data_custodian_id="10378.1/1893843",
+            point_of_contact= None
+        ),
+        approvals=CollectionFormatApprovals(
+            ethics_registration = DatasetEthicsRegistrationCheck(relevant=False, obtained=False),
+            ethics_access=DatasetEthicsAccessCheck(relevant= False, obtained= False),  
+            indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained= False),
+            export_controls=ExportControls(relevant=False, obtained=False)
+        ),
+        dataset_info=CollectionFormatDatasetInfo(
+            name="Parth testing",
+            description="testing dataset",
+            access_info=AccessInfo(reposited=True, uri=None, description=None),
+            publisher_id="10378.1/1893860",
+            published_date=date.today(),
+            license = "https://www.google.com", #type:ignore
+            created_date=date.today(), 
+            purpose= None, 
+            rights_holder=None, 
+            usage_limitations=None, 
+            preferred_citation=None,
+            formats = None, 
+            keywords= None, 
+            user_metadata= None, 
+            version = None
+        )
+    )
+
+    print(create_dataset, "create dataset")
+
+    dataset = await client.datastore.fetch_item(id = str(create_dataset.handle))
+
+    print(dataset)
+
+
+   
 
 asyncio.run(main())
