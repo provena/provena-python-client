@@ -5,6 +5,8 @@ on:
     branches:
       - main
   pull_request:
+    types:
+      - closed
     branches:
       - main
 
@@ -44,7 +46,7 @@ jobs:
       id-token: write
       contents: write
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main' && github.event_pull_requested.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
