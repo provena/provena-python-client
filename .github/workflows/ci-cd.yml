@@ -1,14 +1,44 @@
-name: cd
+name: ci-cd
 
 on:
   push:
     branches:
-      -main
+      - main
   pull_request:
     branches:
-      -main
+      - main
 
 jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Check-out repository
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install package
+        run: poetry install
+
+      - name: Mypy type check
+        run: poetry run mypy .  
+
+      - name: Test with pytest
+        run: poetry run pytest tests/ --cov=provenaclient --cov-report=xml
+
+      - name: Use Codecov to track coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+
+      - name: Build documentation
+        run: poetry run make html --directory docs/
   cd:
     permissions:
       id-token: write
