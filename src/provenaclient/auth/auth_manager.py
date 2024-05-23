@@ -1,13 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any
 from provenaclient.auth.auth_helpers import HttpxBearerAuth, Tokens
 
 class AuthManager(ABC):
-
-    @abstractmethod
-    def make_token_refresh_request(self) -> Dict[str, Any]:
-        """ Refresh the current token"""
-        pass
 
     @abstractmethod
     def refresh_tokens(self) -> None:

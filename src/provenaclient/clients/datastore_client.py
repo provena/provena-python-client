@@ -4,48 +4,60 @@ from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
-from pydantic import ValidationError
-from provenaclient.utils.exceptions.AuthException import AuthException, ValidationException, ServerException
-import json
+from provenaclient.utils.exceptions import AuthException, ValidationException, ServerException, BadRequestException, CustomTimeoutException
+from provenaclient.utils.helpers import py_to_dict, handle_model_parsing, handle_response
+from httpx import TimeoutException
 
 class DatastoreEndpoints(Enum):
+    """An ENUM containing the datastore-api
+    endpoints.
+    """
     FETCH_DATASET: str = "/registry/items/fetch-dataset"
     MINT_DATASET: str  = "/register/mint-dataset"
 
 class DatastoreClient: 
+    
     auth: AuthManager
     config: Config
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
+        """Initialises the DatastoreClient with authentication and configuration.
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow method.
+        config : Config
+            A config object which contains information related to the Provena instance.
+        """
         self.auth = auth
         self.config = config
 
     
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
-        """_summary_
+        """Fetches a dataset from the datastore based on the provided
+        ID.
 
         Parameters
         ----------
         id : str
-            _description_
+            The unique identifier of the dataset to be retrieved.
+            For example: "10378.1/1451860"
 
         Returns
         -------
         RegistryFetchResponse
-            _description_
+            A interactive python datatype of type RegistryFetchResponse
+            containing the dataset details.
 
         Raises
         ------
-        AuthException
-            _description_
-        ValidationException
-            _description_
-        ServerException
-            _description_
+        CustomTimeoutException
+            Raised if the request times out.
+        Exception
+            General exception for handling unexpected errors.
         ValueError
-            _description_
-        ValueError
-            _description_
+            Raised if there is an issue in parsing the response into the expected model.
         """
         
         # Prepare and setup the API request.
@@ -57,105 +69,79 @@ class DatastoreClient:
             response = await HttpClient.make_get_request(url = url, params=params, auth = get_auth())
 
             if response.status_code != 200:
-
-                error_message = response.json().get('detail')
-
-                if response.status_code == 401:
-                    raise AuthException(message = "Authentication failed", error_code = 401, payload = error_message)
-
-                if response.status_code == 422:
-                    # This is a specific status code of this URL.
-                    raise ValidationException(message ="Validation error", error_code = 422, payload = error_message)
-                
-                if response.status_code >=500:
-                    # Raise another exception here 
-                    raise ServerException(message = "Server error occurred", error_code = response.status_code, payload = error_message )
+                handle_response(response=response)
         
         except (AuthException, ValidationException, ServerException):
             raise
 
+        except TimeoutException:
+            raise CustomTimeoutException("Your request has timed out.", url = url)
+
         except Exception as e:
-            raise ValueError(f"Failed to fetch dataset with id {id}")
-        
-        parsed_model = None
+            raise Exception(f"Failed to fetch dataset with id {id}. Exception: {e}") from e  # Signifies that this exception is being raised from a parent.
 
-        try: 
-            json_response = response.json()
-            parsed_model = RegistryFetchResponse.parse_obj(json_response)
-
-        except ValidationError as e:
-            print("Failed to fetch this item.")
-
+        parsed_model = handle_model_parsing(response=response, model= RegistryFetchResponse) 
+       
         if parsed_model is None: 
             raise ValueError(f"Parsing failed for dataset with id {id}")
 
         return parsed_model
     
     async def mint_dataset(self, dataset_info: CollectionFormat) ->  MintResponse:
-        """_summary_
+        """Creates a new dataset in the datastore with the provided dataset information.
 
         Parameters
         ----------
         dataset_info : CollectionFormat
-            _description_
+            A structured format containing all necessary information to register a new dataset, including associations, 
+            approvals, and dataset-specific information.
 
         Returns
         -------
         MintResponse
-            _description_
+            A interactive python datatype of type MintResponse
+            containing the newly created dataset details.
 
         Raises
         ------
-        AuthException
-            _description_
-        ValidationException
-            _description_
-        ServerException
-            _description_
+        BadRequestException
+            Raised if the server returns a 400 status code, indicating a bad request.
+        CustomTimeoutException
+            Raised if the request times out.
+        Exception
+            General exception for handling unexpected errors.
         ValueError
-            _description_
-        ValueError
-            _description_
+            Raised if there is an issue in parsing the response into the expected model.
+
         """
 
         get_auth = self.auth.get_auth # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET.value
 
         # Create a payload object.
-        payload_object = json.loads(dataset_info.json())
+        payload_object = py_to_dict(dataset_info)
 
         try: 
             response = await HttpClient.make_post_request(url = url, data=payload_object, auth = get_auth())
 
             if response.status_code != 200:
+                handle_response(response=response)
+            
+            if response.status_code == 200 and response.json().get('status').get('success') == False:
 
-                error_message = response.json().get('detail')
+                error_message = response.json().get('status').get('details')
+                raise BadRequestException(message="Bad Request", error_code= 400, payload= error_message)
 
-                if response.status_code == 401:
-                    raise AuthException(message = "Authentication failed", error_code = 401, payload = error_message)
-
-                if response.status_code == 422:
-                    # This is a specific status code of this URL.
-                    raise ValidationException(message ="Validation error", error_code = 422, payload = error_message)
-                
-                if response.status_code >=500:
-                    # Raise another exception here 
-                    raise ServerException(message = "Server error occurred", error_code = response.status_code, payload = error_message )
-        
-        except (AuthException, ValidationException, ServerException):
+        except (AuthException, ValidationException, ServerException, BadRequestException):
             raise
 
+        except TimeoutException:
+            raise CustomTimeoutException(message = "Your request has timed out.", url = url)
+
         except Exception as e:
-            raise ValueError(f"Failed to fetch dataset with id {id}")
+            raise Exception(f"Failed to create dataset. Exception {e}") from e
 
-        parsed_model = None
-
-        try: 
-            json_response = response.json()
-            parsed_model = MintResponse.parse_obj(json_response)
-
-        except ValidationError as e:
-            print("Failed to fetch this item.")
+        parsed_model = handle_model_parsing(response=response, model= MintResponse)
 
         if parsed_model is None: 
             raise ValueError(f"Parsing failed for dataset with id {id}")

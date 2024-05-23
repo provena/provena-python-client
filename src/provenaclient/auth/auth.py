@@ -3,7 +3,6 @@ from provenaclient.auth.auth_manager import AuthManager
 import requests
 import webbrowser
 import time
-from pydantic import BaseModel
 import os
 import json
 from jose import jwt, JWTError  # type: ignore
@@ -210,7 +209,7 @@ class DeviceFlow(AuthManager):
                 }
             )
 
-            is_token_expiring = check_token_expiry_window(jwt_data=jwt_response, jwt_token_expiry_window=None)
+            is_token_expiring = check_token_expiry_window(jwt_data=jwt_response)
 
             if not is_token_expiring:
                 self.optional_print("Token is expiring soon and need to be refreshed.")
@@ -495,16 +494,16 @@ class DeviceFlow(AuthManager):
       
     def get_auth(self) -> HttpxBearerAuth:
         """A helper function which produces a BearerAuth object for use
-        in the requests.xxx objects. For example: 
+        in the httpx library. For example: 
 
-        manager = DeviceAuthFlowManager(...)
+        manager = DeviceFlow(...)
         auth = manager.get_auth 
-        requests.post(..., auth=auth)
+        httpx.post(..., auth=auth)
 
         Returns
         -------
         BearerAuth
-            The requests auth object.
+            The httpx auth object.
 
         Raises
         ------

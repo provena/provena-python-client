@@ -20,7 +20,7 @@ class HttpxBearerAuth(Auth):
         request.headers['Authorization'] = "Bearer " + self.token
         yield request
 
-def check_token_expiry_window(jwt_data: dict[str,Any], jwt_token_expiry_window: Optional[int] = None) -> bool:
+def check_token_expiry_window(jwt_data: dict[str,Any], jwt_token_expiry_window: int = JWT_DEFAULT_WINDOW) -> bool:
     """This helper function checks if the current JWT token will 
     expire or not expire either within the provided or default (30sec)  window.
     If the token is going to be expired in less than or within the provided or default (30sec).
@@ -40,8 +40,6 @@ def check_token_expiry_window(jwt_data: dict[str,Any], jwt_token_expiry_window: 
         True: The current token will not expire within 30 seconds
         False: The current token will expire within 30 seconds.
     """
-
-    jwt_token_expiry_window = jwt_token_expiry_window if jwt_token_expiry_window else JWT_DEFAULT_WINDOW
     
     # Contains an unix timestamp
     expiration_timestamp = jwt_data.get("exp") 
