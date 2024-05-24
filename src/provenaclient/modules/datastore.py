@@ -4,11 +4,12 @@ from provenaclient.clients.datastore_client import DatastoreClient
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat, CollectionFormatApprovals, CollectionFormatDatasetInfo,CollectionFormatAssociations
 
+#L3 interface.
 
 class Datastore: 
     auth: AuthManager
     config: Config
-    datastore_client: DatastoreClient
+    _datastore_client: DatastoreClient
 
     def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient) -> None:
         """Initialises a new datastore object, which sits between the user and the datastore api operations.
@@ -66,10 +67,6 @@ class Datastore:
 
         """
     
-        if dataset_mint_info is None:
-            print("Please provide full information about the dataset being created")
-            return
-
         response = await self._datastore_client.mint_dataset(dataset_mint_info)
         return response
     

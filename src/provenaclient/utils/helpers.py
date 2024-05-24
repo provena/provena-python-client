@@ -1,9 +1,12 @@
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, Optional, TypeVar
+from typing import Dict, Any, Optional, Tuple, TypeVar, Type
 import json
 from httpx import Response
-from provenaclient.utils.exceptions import AuthException, ValidationException, ServerException, BadRequestException
+from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException
+from ProvenaInterfaces.SharedTypes import StatusResponse
 
+
+api_exceptions = (AuthException, HTTPValidationException, ValidationException, ServerException, BadRequestException)
 
 def py_to_dict(model: BaseModel) -> Dict[str, Any]:
     """ This helper function converts a Pydantic model to a Python dictionary.
@@ -25,7 +28,7 @@ def py_to_dict(model: BaseModel) -> Dict[str, Any]:
 
 
 T = TypeVar("T", bound=BaseModel)    
-def handle_model_parsing(response: Response, model: type[T]) -> Optional[T]:
+def handle_model_parsing(response: Dict[str, Any], model: Type[T]) -> T:
     """This generic helper function parses a HTTP Response into a
     python datatype based on a pydantic defined model.
 
@@ -40,21 +43,54 @@ def handle_model_parsing(response: Response, model: type[T]) -> Optional[T]:
 
     Returns
     -------
-    Optional[T]
-        Returns either a python datatype or None.
+    T
+        Returns a python datatype that conforms to the structure
+        of the provided model.
     """
     
     try: 
-        json_response = response.json()
-        parsed_model = model.parse_obj(json_response)
+        parsed_model = model.parse_obj(response)
         return parsed_model
 
     except ValidationError as e:
-        print("Failed to fetch this item.") 
-        return None
+        raise e
     
 
-def handle_response(response: Response) -> None:
+def parse_response_to_json(response: Response) -> Tuple[Dict[str, Any], StatusResponse]: 
+
+    """Parses the httpx.response into a dictionary with proper error handling and
+    also returns the parsed status object. 
+
+    Returns
+    -------
+    Tuple[Dict[str, Any], StatusResponse]
+        A tuple containing the parsed JSON response and a interactive python
+        datatype parsed status through pydantic.
+
+    Raises
+    ------
+    ValidationException
+        An exception with a message that JSON parsing parsing failed of httpx.response
+        object.
+    ValidationException
+        An exception with a message that pydantic parsing failed.
+    """
+
+    try: 
+        parsed_response = response.json()
+
+    except json.JSONDecodeError as e: 
+        raise ValidationException("JSON parsing failed") from e
+
+    try:
+        parsed_status = StatusResponse.parse_obj(parsed_response)
+    
+    except ValidationError as e:
+        raise ValidationException ("Pydantic parsing failed") from e
+
+    return parsed_response, parsed_status    
+
+def handle_response(response: Response, error_message: Optional[str]) -> None:
     """This helper function checks the status code of 
     the HTTP response and raises a custom exception accordingly.
 
@@ -75,8 +111,6 @@ def handle_response(response: Response) -> None:
         Raised when the server returns a status code of 500 or above.
     """
 
-    error_message = response.json().get('details')
-
     if response.status_code == 400:
         raise BadRequestException(message = "Bad Request", error_code = 400, payload = error_message)
 
@@ -85,7 +119,7 @@ def handle_response(response: Response) -> None:
 
     if response.status_code == 422:
         # This is a specific status code of this URL.
-        raise ValidationException(message =" Validation error", error_code = 422, payload = error_message)
+        raise HTTPValidationException(message =" Validation error", error_code = 422, payload = error_message)
     
     if response.status_code >=500:
         # Raise another exception here 

@@ -5,6 +5,8 @@ from provenaclient.auth.auth_helpers import HttpxBearerAuth
 #60s timeout for connecting, and a 10s timeout elsewhere.
 timeout = httpx.Timeout(timeout = 10.0, connect = 60.0) 
 
+#L1 interface.
+
 class HttpClient: 
 
     """This class only contains static methods as it acts as an HTTP client and provides a layer over these static methods 

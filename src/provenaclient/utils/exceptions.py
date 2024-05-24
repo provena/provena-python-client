@@ -118,7 +118,9 @@ class AuthException(BaseException):
     """
     pass
 
-class ValidationException(BaseException):
+
+
+class HTTPValidationException(BaseException):
     """An exception raised for HTTP 422 Unprocessable Entity errors.
 
 
@@ -143,6 +145,16 @@ class ServerException(BaseException):
     pass
 
 
+class ValidationException(BaseException):
+    """An exception that is raised for validation/parsing
+    errors that occurs through the client library.
+
+    Parameters
+    ----------
+    BaseException
+        A custom exception class that inherits from python's base exception
+        and takes more parameters.
+    """
   
 
 
