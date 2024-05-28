@@ -1,12 +1,13 @@
-from provenaclient.auth.auth_manager  import AuthManager
+from provenaclient.auth.auth_manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients.datastore_client import DatastoreClient
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
-from ProvenaInterfaces.RegistryModels import CollectionFormat, CollectionFormatApprovals, CollectionFormatDatasetInfo,CollectionFormatAssociations
+from ProvenaInterfaces.RegistryModels import CollectionFormat, CollectionFormatApprovals, CollectionFormatDatasetInfo, CollectionFormatAssociations
 
-#L3 interface.
+# L3 interface.
 
-class Datastore: 
+
+class Datastore:
     auth: AuthManager
     config: Config
     _datastore_client: DatastoreClient
@@ -25,10 +26,11 @@ class Datastore:
         """
         self.auth = auth
         self.config = config
+
         # Clients related to the datastore scoped as private.
-        self._datastore_client = datastore_client  
-    
-    async def fetch_dataset(self, id:str) -> RegistryFetchResponse:
+        self._datastore_client = datastore_client
+
+    async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
         ID.
 
@@ -44,13 +46,13 @@ class Datastore:
         RegistryFetchResponse
             A interactive python datatype of type RegistryFetchResponse
             containing the dataset details.
-        
+
         """
 
         response = await self._datastore_client.fetch_dataset(id)
         return response
-        
-    async def mint_dataset(self, dataset_mint_info: CollectionFormat) -> MintResponse: 
+
+    async def mint_dataset(self, dataset_mint_info: CollectionFormat) -> MintResponse:
         """Creates a new dataset in the datastore with the provided dataset information.
 
         Parameters
@@ -66,20 +68,6 @@ class Datastore:
             containing the newly created dataset details.
 
         """
-    
+
         response = await self._datastore_client.mint_dataset(dataset_mint_info)
         return response
-    
-
-
-
-
-
-
-
-
-        
-
-
-
-

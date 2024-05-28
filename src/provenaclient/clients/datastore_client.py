@@ -4,21 +4,21 @@ from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
-from provenaclient.utils.exceptions import ValidationException, BadRequestException, CustomTimeoutException
-from provenaclient.utils.helpers import py_to_dict, api_exceptions, handle_model_parsing, handle_response, ValidationError, parse_response_to_json
-from httpx import TimeoutException
+from provenaclient.utils.helpers import *
 
-class DatastoreEndpoints(str,Enum):
+
+class DatastoreEndpoints(str, Enum):
     """An ENUM containing the datastore-api
     endpoints.
     """
     FETCH_DATASET: str = "/registry/items/fetch-dataset"
-    MINT_DATASET: str  = "/register/mint-dataset"
+    MINT_DATASET: str = "/register/mint-dataset"
 
-#L2 interface.
+# L2 interface.
 
-class DatastoreClient: 
-    
+
+class DatastoreClient:
+
     auth: AuthManager
     config: Config
 
@@ -35,7 +35,6 @@ class DatastoreClient:
         self.auth = auth
         self.config = config
 
-    
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
         ID.
@@ -61,38 +60,31 @@ class DatastoreClient:
         ValueError
             Raised if there is an issue in parsing the response into the expected model.
         """
-        
+
         # Prepare and setup the API request.
-        get_auth = self.auth.get_auth # Get bearer auth
+        get_auth = self.auth.get_auth  # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET
         params = {"handle_id": id}
+        message = f"Failed to parse the fetched dataset with id {id}..."
 
-        try: 
-            response = await HttpClient.make_get_request(url = url, params=params, auth = get_auth())
-            response_parsed, parsed_status = parse_response_to_json(response = response)
+        try:
+            response = await HttpClient.make_get_request(url=url, params=params, auth=get_auth())
+            data = handle_response_with_status(
+                response=response,
+                model=RegistryFetchResponse,
+                error_message=message
+            )
 
-            if response.status_code != 200:
-                error_message = parsed_status.status.details
-                handle_response(response=response, error_message=error_message)
-        
         except api_exceptions as e:
             raise e
 
-        except TimeoutException:
-            raise CustomTimeoutException("Your request has timed out.", url = url)
-
         except Exception as e:
-            raise Exception(f"Failed to fetch dataset with id {id}. Exception: {e}") from e  # Signifies that this exception is being raised from a parent.
-        
-        try:
-            parsed_model = handle_model_parsing(response=response_parsed, model= RegistryFetchResponse) 
+            raise Exception(
+                f"{message} Exception: {e}") from e
 
-        except ValidationError as e:
-            raise Exception(f"Failed to parse the fetched dataset with id {id}. Exception: {e} ") from e
+        return data
 
-        return parsed_model
-    
-    async def mint_dataset(self, dataset_info: CollectionFormat) ->  MintResponse:
+    async def mint_dataset(self, dataset_info: CollectionFormat) -> MintResponse:
         """Creates a new dataset in the datastore with the provided dataset information.
 
         Parameters
@@ -120,39 +112,24 @@ class DatastoreClient:
 
         """
 
-        get_auth = self.auth.get_auth # Get bearer auth
+        get_auth = self.auth.get_auth  # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET
 
         # Create a payload object.
         payload_object = py_to_dict(dataset_info)
-
-        try: 
-            response = await HttpClient.make_post_request(url = url, data=payload_object, auth = get_auth())
-            response_parsed, parsed_status = parse_response_to_json(response = response)
-
-            if response.status_code != 200:
-                
-                error_message = parsed_status.status.details
-                handle_response(response=response, error_message=error_message)
-            
-            if response.status_code == 200 and parsed_status.status.success == False:
-
-                error_message = parsed_status.status.details
-                raise BadRequestException(message="Bad Request", error_code= 400, payload= error_message)
-
-        except api_exceptions as e:
-            raise e
-
-        except TimeoutException:
-            raise CustomTimeoutException(message = "Your request has timed out.", url = url)
-
-        except Exception as e:
-            raise Exception(f"Failed to create dataset. Exception {e}") from e
+        message = f"Failed to mint the desired dataset..."
 
         try:
-            parsed_model = handle_model_parsing(response=response_parsed, model= MintResponse)
+            response = await HttpClient.make_post_request(url=url, data=payload_object, auth=get_auth())
+            data = handle_response_with_status(
+                response=response,
+                model=MintResponse,
+                error_message=message
+            )
+        except api_exceptions as e:
+            raise e
+        except Exception as e:
+            raise Exception(
+                f"{message} Exception: {e}") from e
 
-        except ValidationError as e:
-            raise ValidationException(f"Failed to parse the created dataset. Exception: {e} ") from e
-
-        return parsed_model
+        return data
