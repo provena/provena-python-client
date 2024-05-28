@@ -1,11 +1,9 @@
-import asyncio
-from provenaclient.auth.auth import DeviceFlow
-from provenaclient.utils.config import Config
-from provenaclient.modules.provena_client import ProvenaClient
+from provenaclient import ProvenaClient, Config
+from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
+import asyncio
 
 async def main() -> None:
-
     config = Config(
         domain="dev.rrap-is.com",
         realm_name="rrap"
@@ -14,7 +12,20 @@ async def main() -> None:
     auth = DeviceFlow(keycloak_endpoint=config.keycloak_endpoint, client_id="client-tools")
 
     client = ProvenaClient(config=config, auth=auth)
+    
+    # fetch dummy dataset (see failure)
+    print("fetching bad")
+    try:
+        await client.datastore.fetch_dataset(id="bad")
+    except Exception as e:
+        print(f"Exception {e}")
+    
+    # fetch successful dataset (no failure)
+    print("fetching good")
+    res = await client.datastore.fetch_dataset(id="10378.1/1898010")
+    print(res.json(indent=2))
 
+    print("minting")
     create_dataset = await client.datastore.mint_dataset(
         CollectionFormat(
             associations=CollectionFormatAssociations(
@@ -47,13 +58,7 @@ async def main() -> None:
             )
         )
     )
-
-
     dataset = await client.datastore.fetch_dataset(id = str(create_dataset.handle))
-
-    print(dataset)
-
-
-   
-
+    print(dataset.json(indent=2))
+    
 asyncio.run(main())

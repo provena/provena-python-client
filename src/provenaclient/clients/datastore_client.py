@@ -1,4 +1,4 @@
-from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.http_client import HttpClient
 from enum import Enum
@@ -65,7 +65,7 @@ class DatastoreClient:
         get_auth = self.auth.get_auth  # Get bearer auth
         url = self.config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET
         params = {"handle_id": id}
-        message = f"Failed to parse the fetched dataset with id {id}..."
+        message = f"Failed to fetch the dataset with id {id}..."
 
         try:
             response = await HttpClient.make_get_request(url=url, params=params, auth=get_auth())

@@ -1,6 +1,6 @@
 from typing import Any, Optional
 import httpx
-from provenaclient.auth.auth_helpers import HttpxBearerAuth
+from provenaclient.auth.helpers import HttpxBearerAuth
 
 #60s timeout for connecting, and a 10s timeout elsewhere.
 timeout = httpx.Timeout(timeout = 10.0, connect = 60.0) 

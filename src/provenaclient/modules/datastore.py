@@ -1,4 +1,4 @@
-from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients.datastore_client import DatastoreClient
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
