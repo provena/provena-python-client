@@ -5,6 +5,7 @@ from enum import Enum
 from ProvenaInterfaces.RegistryModels import ItemSubType
 from ProvenaInterfaces.SearchAPI import QueryResults
 from provenaclient.utils.helpers import *
+from provenaclient.clients.client_helpers import *
 
 
 class SearchEndpoints(str, Enum):
@@ -16,11 +17,7 @@ class SearchEndpoints(str, Enum):
 # L2 interface.
 
 
-class SearchClient:
-
-    auth: AuthManager
-    config: Config
-
+class SearchClient(ClientService):
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the SearchClient with authentication and configuration.
 
@@ -31,12 +28,15 @@ class SearchClient:
         config : Config
             A config object which contains information related to the Provena instance.
         """
-        self.auth = auth
-        self.config = config
+        self._auth = auth
+        self._config = config
+
+    def _build_endpoint(self, endpoint: SearchEndpoints) -> str:
+        return self._config.search_api_endpoint + "/" + endpoint.value
 
     async def search_registry(self, query: str, limit: Optional[int], subtype_filter: Optional[ItemSubType]) -> QueryResults:
         """
-        
+
         Searches registry using search API for given query, limit and subtype.
 
         Args:
@@ -51,8 +51,8 @@ class SearchClient:
             QueryResults: The results, not loaded.
         """
         # Prepare and setup the API request.
-        get_auth = self.auth.get_auth  # Get bearer auth
-        url = self.config.search_api_endpoint + SearchEndpoints.SEARCH_REGISTRY
+        get_auth = self._auth.get_auth  # Get bearer auth
+        url = self._config.search_api_endpoint + SearchEndpoints.SEARCH_REGISTRY
         params = build_params_exclude_none(
             {"query": query, "record_limit": limit, "subtype_filter": subtype_filter.value if subtype_filter else None})
         message = f"Search with query '{query}' failed!..."
@@ -71,5 +71,5 @@ class SearchClient:
         except Exception as e:
             raise Exception(
                 f"{message} Exception: {e}") from e
-            
+
         return data

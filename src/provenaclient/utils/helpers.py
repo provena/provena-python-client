@@ -10,15 +10,17 @@ api_exceptions = (AuthException, HTTPValidationException,
                   ValidationException, ServerException, BadRequestException)
 
 # Type var to refer to base models
-T = TypeVar("T", bound=BaseModel)
+BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
 
 # Type alias for json data
 JsonData = Dict[str, Any]
 
 ParamTypes = Union[str, int, bool]
+
+
 def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """
-    
+
     Takes a raw params dict with optional args and returns filtered.
 
     Args:
@@ -27,11 +29,12 @@ def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[s
     Returns:
         Dict[str, ParamTypes]: The filtered param list with no None values
     """
-    return {id : val for id, val in params.items() if val is not None}
+    return {id: val for id, val in params.items() if val is not None}
+
 
 def py_to_dict(model: BaseModel) -> JsonData:
     """ This helper function converts a Pydantic model to a Python dictionary.
-    
+
     Requires a pydantic dump into serialised JSON to be safe against all object
     types
 
@@ -50,7 +53,7 @@ def py_to_dict(model: BaseModel) -> JsonData:
     return json.loads(model.json(exclude_none=True))
 
 
-def handle_model_parsing(json_data: JsonData, model: Type[T]) -> T:
+def handle_model_parsing(json_data: JsonData, model: Type[BaseModelType]) -> BaseModelType:
     """This generic helper function parses a HTTP Response into a
     python datatype based on a pydantic defined model.
 
@@ -102,10 +105,10 @@ def parse_json_payload(response: Response) -> JsonData:
 
 def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
     """
-    
+
     This helper function checks the status code of the HTTP response and raises
     a custom exception accordingly.
-    
+
     Also embeds error info from JSON or text result.
 
     Parameters
@@ -124,13 +127,13 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
     ServerException
         Raised when the server returns a status code of 500 or above.
     """
-    
-    text : Union[str, None] = None
+
+    text: Union[str, None] = None
     try:
         data = response.json()
         text = json.dumps(data, indent=2)
     except Exception:
-        text= response.text
+        text = response.text
 
     if response.status_code == 400:
         raise BadRequestException(
@@ -150,7 +153,8 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
         raise ServerException(message=f"Server error occurred. Details: {text}.",
                               error_code=response.status_code, payload=error_message)
 
-def check_status_response(json_data : Dict) -> None:
+
+def check_status_response(json_data: Dict) -> None:
     """
     Parses JSON data as StatusResponse model, then asserts success is true,
     throwing exception with embedded details if not.
@@ -162,15 +166,18 @@ def check_status_response(json_data : Dict) -> None:
         Exception: Exception if status if False
     """
     # Check model parses
-    status_obj = handle_model_parsing(json_data=json_data, model=StatusResponse)
-    
+    status_obj = handle_model_parsing(
+        json_data=json_data, model=StatusResponse)
+
     # Check status is success
     if not status_obj.status.success:
-        raise Exception(f"Status object from API indicated failure. Details: {status_obj.status.details}.")
+        raise Exception(
+            f"Status object from API indicated failure. Details: {status_obj.status.details}.")
+
 
 def check_codes_and_parse_json(response: Response, error_message: Optional[str]) -> JsonData:
     """
-    
+
     Given raw response, validates codes and parses as JSON.
 
     Args:
@@ -185,17 +192,18 @@ def check_codes_and_parse_json(response: Response, error_message: Optional[str])
 
     # Handle JSON parsing
     json_data = parse_json_payload(response=response)
-    
+
     return json_data
 
-def handle_response_non_status(response: Response, model: Type[T], error_message: Optional[str]) -> T:
+
+def handle_response_non_status(response: Response, model: Type[BaseModelType], error_message: Optional[str]) -> BaseModelType:
     """
     Given the raw response from http client, and the model, will validate
-    
+
     - 200 OK code (with common errors handled)
     - Parsed as JSON
     - Parsed as desired final model
-    
+
     Returns the parsed pydantic object.
 
     Args:
@@ -208,7 +216,8 @@ def handle_response_non_status(response: Response, model: Type[T], error_message
     """
 
     # Handle JSON parsing and codes
-    json_data = check_codes_and_parse_json(response=response, error_message=error_message)
+    json_data = check_codes_and_parse_json(
+        response=response, error_message=error_message)
 
     # Check model parses
     parsed_obj = handle_model_parsing(json_data=json_data, model=model)
@@ -216,15 +225,15 @@ def handle_response_non_status(response: Response, model: Type[T], error_message
     return parsed_obj
 
 
-def handle_response_with_status(response: Response, model: Type[T], error_message: Optional[str]) -> T:
+def handle_response_with_status(response: Response, model: Type[BaseModelType], error_message: Optional[str]) -> BaseModelType:
     """
     Given the raw response from http client, and the model, will validate
-    
+
     - 200 OK code (with common errors handled)
     - Parsed as JSON
     - Parsed as StatusResponse and asserted for success=true, throwing with details if not
     - Parsed as desired final model
-    
+
     Returns the parsed pydantic object.
 
     Args:
@@ -236,9 +245,10 @@ def handle_response_with_status(response: Response, model: Type[T], error_messag
         T: The parsed model
     """
     # Handle JSON parsing and codes
-    json_data = check_codes_and_parse_json(response=response, error_message=error_message)
+    json_data = check_codes_and_parse_json(
+        response=response, error_message=error_message)
 
-    # Check status result 
+    # Check status result
     check_status_response(json_data=json_data)
 
     # Check model parses

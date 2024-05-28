@@ -1,2 +1,3 @@
 from provenaclient.clients.datastore_client import DatastoreClient
 from provenaclient.clients.search_client import SearchClient
+from provenaclient.clients.auth_client import AuthClient

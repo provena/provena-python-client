@@ -77,5 +77,8 @@ async def main() -> None:
     found {len(res.auth_errors)} auth error items
     found {len(res.misc_errors)} misc error items
     """)
+    
+    # testing admin auth module 
+    print(client.auth_api)
 
 asyncio.run(main())

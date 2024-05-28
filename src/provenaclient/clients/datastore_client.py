@@ -1,6 +1,7 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.http_client import HttpClient
+from provenaclient.clients.client_helpers import *
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
@@ -17,11 +18,7 @@ class DatastoreEndpoints(str, Enum):
 # L2 interface.
 
 
-class DatastoreClient:
-
-    auth: AuthManager
-    config: Config
-
+class DatastoreClient(ClientService):
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the DatastoreClient with authentication and configuration.
 
@@ -32,8 +29,11 @@ class DatastoreClient:
         config : Config
             A config object which contains information related to the Provena instance.
         """
-        self.auth = auth
-        self.config = config
+        self._auth = auth
+        self._config = config
+
+    def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
+        return self._config.datastore_api_endpoint + "/" + endpoint.value
 
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
@@ -62,8 +62,8 @@ class DatastoreClient:
         """
 
         # Prepare and setup the API request.
-        get_auth = self.auth.get_auth  # Get bearer auth
-        url = self.config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET
+        get_auth = self._auth.get_auth  # Get bearer auth
+        url = self._config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET
         params = {"handle_id": id}
         message = f"Failed to fetch the dataset with id {id}..."
 
@@ -112,8 +112,8 @@ class DatastoreClient:
 
         """
 
-        get_auth = self.auth.get_auth  # Get bearer auth
-        url = self.config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET
+        get_auth = self._auth.get_auth  # Get bearer auth
+        url = self._config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET
 
         # Create a payload object.
         payload_object = py_to_dict(dataset_info)

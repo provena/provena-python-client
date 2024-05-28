@@ -1,4 +1,4 @@
-#TODO
+# TODO
 
 
 '''
@@ -18,8 +18,8 @@ class RegistryClient:
     config: Config
 
     def __init__(self, auth: Auth, config: Config):
-        self.auth = auth, 
-        self.config = config
+        self._auth = auth, 
+        self._config = config
 
     async def fetch_item(request_model: RequestModel, entity_subtype: ItemSubType) -> ItemPerson: 
 

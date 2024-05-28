@@ -5,6 +5,7 @@ from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat, ItemSubType
 from provenaclient.models import LoadedSearchResponse, LoadedSearchItem, UnauthorisedSearchItem, FailedSearchItem
 from provenaclient.utils.exceptions import *
+from provenaclient.modules.module_helpers import *
 from typing import List
 
 # L3 interface.
@@ -12,9 +13,7 @@ from typing import List
 DEFAULT_SEARCH_LIMIT = 25
 
 
-class Datastore:
-    auth: AuthManager
-    config: Config
+class Datastore(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
 
@@ -30,8 +29,8 @@ class Datastore:
         datastore_client : DatastoreClient
             This client interacts with the Datastore API's.
         """
-        self.auth = auth
-        self.config = config
+        self._auth = auth
+        self._config = config
 
         # Clients related to the datastore scoped as private.
         self._datastore_client = datastore_client
@@ -81,13 +80,13 @@ class Datastore:
 
     async def search_datasets(self, query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> LoadedSearchResponse:
         """
-        
+
         Utilises the L2 search client to search for datasets with the specified
         query.
-        
+
         Loads all datasets in the result payload from the data store and sorts
         based on auth, or other exceptions if not successful.
-        
+
         Args:
             query (str): The query to make limit (int, optional): The result
             count limit. Defaults to DEFAULT_SEARCH_LIMIT.

@@ -1,6 +1,7 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import SearchClient
+from provenaclient.clients.client_helpers import *
 from ProvenaInterfaces.RegistryModels import ItemSubType
 from ProvenaInterfaces.SearchAPI import QueryResults
 from typing import Optional
@@ -10,9 +11,7 @@ from typing import Optional
 DEFAULT_SEARCH_LIMIT = 25
 
 
-class Search:
-    auth: AuthManager
-    config: Config
+class Search(ClientService):
     _search_client: SearchClient
 
     def __init__(self, auth: AuthManager, config: Config, search_client: SearchClient) -> None:
@@ -32,8 +31,8 @@ class Search:
         search_client : SearchClient
             This client interacts with the Search Client's API's.
         """
-        self.auth = auth
-        self.config = config
+        self._auth = auth
+        self._config = config
 
         # Clients related to the datastore scoped as private.
         self._search_client = search_client
