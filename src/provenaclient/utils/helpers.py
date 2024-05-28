@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, Optional, TypeVar, Type
+from typing import Dict, Any, Optional, TypeVar, Type, Union
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException
@@ -14,6 +14,20 @@ T = TypeVar("T", bound=BaseModel)
 
 # Type alias for json data
 JsonData = Dict[str, Any]
+
+ParamTypes = Union[str, int, bool]
+def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
+    """
+    
+    Takes a raw params dict with optional args and returns filtered.
+
+    Args:
+        params (Dict[str, Optional[ParamTypes]]): The input raw dict
+
+    Returns:
+        Dict[str, ParamTypes]: The filtered param list with no None values
+    """
+    return {id : val for id, val in params.items() if val is not None}
 
 def py_to_dict(model: BaseModel) -> JsonData:
     """ This helper function converts a Pydantic model to a Python dictionary.
@@ -87,8 +101,12 @@ def parse_json_payload(response: Response) -> JsonData:
 
 
 def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
-    """This helper function checks the status code of 
-    the HTTP response and raises a custom exception accordingly.
+    """
+    
+    This helper function checks the status code of the HTTP response and raises
+    a custom exception accordingly.
+    
+    Also embeds error info from JSON or text result.
 
     Parameters
     ----------
@@ -106,23 +124,30 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
     ServerException
         Raised when the server returns a status code of 500 or above.
     """
+    
+    text : Union[str, None] = None
+    try:
+        data = response.json()
+        text = json.dumps(data, indent=2)
+    except Exception:
+        text= response.text
 
     if response.status_code == 400:
         raise BadRequestException(
-            message="Bad Request", error_code=400, payload=error_message)
+            message=f"Bad Request. Details: {text}.", error_code=400, payload=error_message)
 
     if response.status_code == 401:
-        raise AuthException(message="Authentication failed",
+        raise AuthException(message=f"Authentication failed. Details: {text}.",
                             error_code=401, payload=error_message)
 
     if response.status_code == 422:
         # This is a specific status code of this URL.
         raise HTTPValidationException(
-            message=" Validation error", error_code=422, payload=error_message)
+            message=f"Validation error. Details: {text}.", error_code=422, payload=error_message)
 
     if response.status_code >= 500:
         # Raise another exception here
-        raise ServerException(message="Server error occurred",
+        raise ServerException(message=f"Server error occurred. Details: {text}.",
                               error_code=response.status_code, payload=error_message)
 
 def check_status_response(json_data : Dict) -> None:
