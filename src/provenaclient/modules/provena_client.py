@@ -41,7 +41,7 @@ class ProvenaClient(ModuleService):
             search_client=self._search_client
         )
 
-        self._auth_api = Auth(
+        self.auth_api = Auth(
             auth=auth,
             config=config,
             auth_client=self._auth_client

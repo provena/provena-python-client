@@ -29,7 +29,7 @@
 #        self._config = config
 
 #    def _build_endpoint(self, endpoint: REPLACEEndpoints) -> str:
-#        return self._config.replace_api_endpoint + "/" + endpoint.value
+#        return self._config.replace_api_endpoint + endpoint.value
 #
 #    async def example_method(self) -> BaseModel:
 #        return await parsed_get_request(

@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 class BaseException(Exception):
     """A custom exception class that inherits from python's base exception.
 
@@ -43,13 +44,14 @@ class BaseException(Exception):
 
         base_message = f"Exception: {self.message}"
 
-        if self.error_code is not None: 
+        if self.error_code is not None:
             base_message += f"\nStatus code error: {self.error_code}"
 
-        if self.payload is not None: 
+        if self.payload is not None:
             base_message += f"\nServer Details: {self.payload}"
-        
+
         return base_message
+
 
 class CustomTimeoutException(BaseException):
     """ An exception raised when a timeout occurs during an HTTP request.
@@ -60,7 +62,7 @@ class CustomTimeoutException(BaseException):
         A custom exception class that inherits from python's base exception
         and takes more parameters.
     """
-    
+
     def __init__(self, message: str, url: Optional[str]) -> None:
         """Initialise the BaseException with a message and an optional URL.
 
@@ -75,7 +77,7 @@ class CustomTimeoutException(BaseException):
         super().__init__(message)
         self.message = message
         self.url = url
-    
+
     def __str__(self) -> str:
         """An exception raised when a timeout occurs during an HTTP request.
 
@@ -107,6 +109,20 @@ class BadRequestException(BaseException):
     """
     pass
 
+
+class NotFoundException(BaseException):
+    """An exception raised for HTTP 404 Not found exceptions.
+
+
+    Parameters
+    ----------
+    BaseException
+        A custom exception class that inherits from python's base exception
+        and takes more parameters.
+    """
+    pass
+
+
 class AuthException(BaseException):
     """An exception raised for HTTP 401 Unauthorized errors.
 
@@ -117,7 +133,6 @@ class AuthException(BaseException):
         and takes more parameters.
     """
     pass
-
 
 
 class HTTPValidationException(BaseException):
@@ -131,6 +146,7 @@ class HTTPValidationException(BaseException):
         and takes more parameters.
     """
     pass
+
 
 class ServerException(BaseException):
     """An exception raised for HTTP 500+ Server Error responses.
@@ -155,7 +171,3 @@ class ValidationException(BaseException):
         A custom exception class that inherits from python's base exception
         and takes more parameters.
     """
-  
-
-
-

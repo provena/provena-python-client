@@ -79,6 +79,12 @@ async def main() -> None:
     """)
     
     # testing admin auth module 
-    print(client.auth_api)
+    print("Listing all history")
+    result = await client.auth_api.admin.get_all_request_history()
+    print(result.json(indent=2))
+    
+    print("Listing all pending")
+    result = await client.auth_api.admin.get_all_pending_request_history()
+    print(result.json(indent=2))
 
 asyncio.run(main())

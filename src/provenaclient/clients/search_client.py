@@ -1,6 +1,5 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from ProvenaInterfaces.RegistryModels import ItemSubType
 from ProvenaInterfaces.SearchAPI import QueryResults
@@ -15,8 +14,6 @@ class SearchEndpoints(str, Enum):
     SEARCH_REGISTRY: str = "/search/entity-registry"
 
 # L2 interface.
-
-
 class SearchClient(ClientService):
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the SearchClient with authentication and configuration.
@@ -32,7 +29,7 @@ class SearchClient(ClientService):
         self._config = config
 
     def _build_endpoint(self, endpoint: SearchEndpoints) -> str:
-        return self._config.search_api_endpoint + "/" + endpoint.value
+        return self._config.search_api_endpoint + endpoint.value
 
     async def search_registry(self, query: str, limit: Optional[int], subtype_filter: Optional[ItemSubType]) -> QueryResults:
         """
@@ -50,26 +47,11 @@ class SearchClient(ClientService):
         Returns:
             QueryResults: The results, not loaded.
         """
-        # Prepare and setup the API request.
-        get_auth = self._auth.get_auth  # Get bearer auth
-        url = self._config.search_api_endpoint + SearchEndpoints.SEARCH_REGISTRY
-        params = build_params_exclude_none(
-            {"query": query, "record_limit": limit, "subtype_filter": subtype_filter.value if subtype_filter else None})
-        message = f"Search with query '{query}' failed!..."
-
-        try:
-            response = await HttpClient.make_get_request(url=url, params=params, auth=get_auth())
-            data = handle_response_with_status(
-                response=response,
-                model=QueryResults,
-                error_message=message
-            )
-
-        except api_exceptions as e:
-            raise e
-
-        except Exception as e:
-            raise Exception(
-                f"{message} Exception: {e}") from e
-
-        return data
+        return await parsed_get_request_with_status(
+            client=self,
+            url=self._build_endpoint(
+                SearchEndpoints.SEARCH_REGISTRY),
+            error_message=f"Search with query '{query}' failed!...",
+            params={"query": query, "record_limit": limit, "subtype_filter": subtype_filter.value if subtype_filter else None},
+            model=QueryResults
+        )

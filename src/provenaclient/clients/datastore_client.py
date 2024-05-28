@@ -1,6 +1,5 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.utils.http_client import HttpClient
 from provenaclient.clients.client_helpers import *
 from enum import Enum
 from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
@@ -33,7 +32,7 @@ class DatastoreClient(ClientService):
         self._config = config
 
     def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
-        return self._config.datastore_api_endpoint + "/" + endpoint.value
+        return self._config.datastore_api_endpoint + endpoint.value
 
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
@@ -60,29 +59,14 @@ class DatastoreClient(ClientService):
         ValueError
             Raised if there is an issue in parsing the response into the expected model.
         """
-
-        # Prepare and setup the API request.
-        get_auth = self._auth.get_auth  # Get bearer auth
-        url = self._config.datastore_api_endpoint + DatastoreEndpoints.FETCH_DATASET
-        params = {"handle_id": id}
-        message = f"Failed to fetch the dataset with id {id}..."
-
-        try:
-            response = await HttpClient.make_get_request(url=url, params=params, auth=get_auth())
-            data = handle_response_with_status(
-                response=response,
-                model=RegistryFetchResponse,
-                error_message=message
-            )
-
-        except api_exceptions as e:
-            raise e
-
-        except Exception as e:
-            raise Exception(
-                f"{message} Exception: {e}") from e
-
-        return data
+        return await parsed_get_request_with_status(
+            client=self,
+            url=self._build_endpoint(
+                DatastoreEndpoints.FETCH_DATASET),
+            error_message=f"Failed to fetch dataset with id {id}...",
+            params={"handle_id": id},
+            model=RegistryFetchResponse
+        )
 
     async def mint_dataset(self, dataset_info: CollectionFormat) -> MintResponse:
         """Creates a new dataset in the datastore with the provided dataset information.
@@ -111,25 +95,11 @@ class DatastoreClient(ClientService):
             Raised if there is an issue in parsing the response into the expected model.
 
         """
-
-        get_auth = self._auth.get_auth  # Get bearer auth
-        url = self._config.datastore_api_endpoint + DatastoreEndpoints.MINT_DATASET
-
-        # Create a payload object.
-        payload_object = py_to_dict(dataset_info)
-        message = f"Failed to mint the desired dataset..."
-
-        try:
-            response = await HttpClient.make_post_request(url=url, data=payload_object, auth=get_auth())
-            data = handle_response_with_status(
-                response=response,
-                model=MintResponse,
-                error_message=message
-            )
-        except api_exceptions as e:
-            raise e
-        except Exception as e:
-            raise Exception(
-                f"{message} Exception: {e}") from e
-
-        return data
+        return await parsed_post_request_with_status(
+            client=self,
+            url=self._build_endpoint(DatastoreEndpoints.MINT_DATASET),
+            error_message="Failed to mint the desired dataset...",
+            params={},
+            json_body=py_to_dict(dataset_info),
+            model=MintResponse
+        )

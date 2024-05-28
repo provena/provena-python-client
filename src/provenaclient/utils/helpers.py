@@ -2,12 +2,12 @@ from pydantic import BaseModel, ValidationError
 from typing import Dict, Any, Optional, TypeVar, Type, Union
 import json
 from httpx import Response
-from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException
+from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from ProvenaInterfaces.SharedTypes import StatusResponse
 
 
 api_exceptions = (AuthException, HTTPValidationException,
-                  ValidationException, ServerException, BadRequestException)
+                  ValidationException, ServerException, NotFoundException, BadRequestException)
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
@@ -143,12 +143,16 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
         raise AuthException(message=f"Authentication failed. Details: {text}.",
                             error_code=401, payload=error_message)
 
+    if response.status_code == 404:
+        raise NotFoundException(message=f"Url was not found at provided service endpoint. Details: {text}.",
+                                error_code=404, payload=error_message)
+
     if response.status_code == 422:
         # This is a specific status code of this URL.
         raise HTTPValidationException(
             message=f"Validation error. Details: {text}.", error_code=422, payload=error_message)
 
-    if response.status_code >= 500:
+    if response.status_code != 200:
         # Raise another exception here
         raise ServerException(message=f"Server error occurred. Details: {text}.",
                               error_code=response.status_code, payload=error_message)

@@ -43,9 +43,16 @@ class AuthAdminSubClient(ClientService):
         self._config = config
 
     def _build_endpoint(self, endpoint: AdminAuthEndpoints) -> str:
-        return self._config.auth_api_endpoint + "/" + endpoint.value
+        return self._config.auth_api_endpoint + endpoint.value
 
     async def get_all_pending_request_history(self) -> AccessRequestList:
+        """
+        
+        Gets all requests with pending status
+
+        Returns:
+            AccessRequestList: The response object
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -56,6 +63,13 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_all_request_history(self) -> AccessRequestList:
+        """
+        
+        Gets all requests
+
+        Returns:
+            AccessRequestList: The response object
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -66,6 +80,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_user_pending_request_history(self, username: str) -> AccessRequestList:
+        """
+        
+        Gets pending requests for specified user
+
+        Args:
+            username (str): Username to query
+
+        Returns:
+            AccessRequestList: The response list
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -76,6 +100,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_user_request_history(self, username: str) -> AccessRequestList:
+        """
+        
+        Gets all requests for specified user
+
+        Args:
+            username (str): Username to query
+
+        Returns:
+            AccessRequestList: The response list
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -86,6 +120,12 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_add_note(self, note: RequestAddNote) -> None:
+        """
+        Adds a note to an existing request
+
+        Args:
+            note (RequestAddNote): Payload incl note info
+        """
         await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(AdminAuthEndpoints.POST_ADD_NOTE),
@@ -96,6 +136,17 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_change_request_state(self, send_email_alert: bool, change: AccessRequestStatusChange) -> ChangeStateStatus:
+        """
+        
+        Change state of a request. 
+
+        Args:
+            send_email_alert (bool): Should trigger email alert?
+            change (AccessRequestStatusChange): The details of change
+
+        Returns:
+            ChangeStateStatus: The response object
+        """
         return await parsed_post_request(
             client=self,
             url=self._build_endpoint(
@@ -131,4 +182,4 @@ class AuthClient(ClientService):
         self.admin = AuthAdminSubClient(auth=auth, config=config)
 
     def _build_endpoint(self, endpoint: AuthEndpoints) -> str:
-        return self._config.auth_api_endpoint + "/" + endpoint.value
+        return self._config.auth_api_endpoint + endpoint.value

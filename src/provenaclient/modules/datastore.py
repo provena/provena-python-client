@@ -55,8 +55,7 @@ class Datastore(ModuleService):
 
         """
 
-        response = await self._datastore_client.fetch_dataset(id)
-        return response
+        return await self._datastore_client.fetch_dataset(id)
 
     async def mint_dataset(self, dataset_mint_info: CollectionFormat) -> MintResponse:
         """Creates a new dataset in the datastore with the provided dataset information.
@@ -75,8 +74,7 @@ class Datastore(ModuleService):
 
         """
 
-        response = await self._datastore_client.mint_dataset(dataset_mint_info)
-        return response
+        return await self._datastore_client.mint_dataset(dataset_mint_info)
 
     async def search_datasets(self, query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> LoadedSearchResponse:
         """
