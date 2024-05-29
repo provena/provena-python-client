@@ -1,5 +1,13 @@
 import json
 
+"""
+Generates an enumeration of endpoints for a given openapi.json file. Can be used
+to accelerate client development. Use as `python
+generate_open_api_endpoint_dump.py`. Ensure the desired file is called
+openapi.json in the working directory. The enum will be printed to the terminal
+ready to be copy pasted into the application code.
+"""
+
 # Read the openapi.json spec file
 with open("openapi.json", "r") as f:
     data = json.load(f)
