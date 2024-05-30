@@ -32,3 +32,5 @@ for path, path_content in data.get('paths', {}).items():
 print(enum_class)
 
 print()
+
+print()
