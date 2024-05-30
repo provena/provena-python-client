@@ -30,3 +30,5 @@ for path, path_content in data.get('paths', {}).items():
         enum_class += f"    {endpoint} = \"{path}\"\n"
 
 print(enum_class)
+
+print()
