@@ -1,17 +1,17 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.clients import HandleServiceClient
+from provenaclient.clients import IdServiceClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from typing import List
 
 # L3 interface.
 
-class HandleService(ModuleService):
-    _handle_service_client: HandleServiceClient
+class IDService(ModuleService):
+    _id_service_client: IdServiceClient
 
-    def __init__(self, auth: AuthManager, config: Config, handle_service_client: HandleServiceClient) -> None:
-        """Initialises a new datastore object, which sits between the user and the datastore api operations.
+    def __init__(self, auth: AuthManager, config: Config, id_service_client: IdServiceClient) -> None:
+        """Initialises a new id-service object, which sits between the user and the id-service api operations.
 
         Parameters
         ----------
@@ -26,4 +26,4 @@ class HandleService(ModuleService):
         self._config = config
 
         # Clients related to the handle-api scoped as private.
-        self.handle_service_client = handle_service_client
+        self.id_service_client = id_service_client

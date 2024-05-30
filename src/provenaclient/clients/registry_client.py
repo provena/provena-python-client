@@ -5,39 +5,6 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.registry import * 
-from ProvenaInterfaces.RegistryAPI import ItemSubType
-from typing import Tuple, Dict
-
-
-URL_MAP: Dict[Tuple[ItemSubType, RouteActions,], str] = {
-    # Dataset
-    (ItemSubType.DATASET, RouteActions.FETCH): "/registry/entity/dataset/fetch",
-    (ItemSubType.DATASET, RouteActions.LIST): "/registry/entity/dataset/list",
-    (ItemSubType.DATASET, RouteActions.SEED): "/registry/entity/dataset/seed",
-    (ItemSubType.DATASET, RouteActions.UPDATE): "/registry/entity/dataset/update",
-    (ItemSubType.DATASET, RouteActions.DELETE): "/registry/entity/dataset/delete",
-    # Add other dataset-related actions...
-
-    # Person
-    (ItemSubType.PERSON, RouteActions.FETCH): "/registry/entity/person/fetch",
-    (ItemSubType.PERSON, RouteActions.LIST): "/registry/entity/person/list",
-    (ItemSubType.PERSON, RouteActions.UPDATE): "/registry/entity/person/update",
-    (ItemSubType.PERSON, RouteActions.DELETE): "/registry/entity/person/delete",
-    # Add other person-related actions...
-
-    # Organisation
-    (ItemSubType.ORGANISATION, RouteActions.FETCH): "/registry/entity/organisation/fetch",
-    (ItemSubType.ORGANISATION, RouteActions.LIST): "/registry/entity/organisation/list",
-    (ItemSubType.ORGANISATION, RouteActions.UPDATE): "/registry/entity/organisation/update",
-    (ItemSubType.ORGANISATION, RouteActions.DELETE): "/registry/entity/organisation/delete",
-    # Add other organisation-related actions...
-
-    # Additional subtypes and actions can follow the same pattern
-    # Example for a new subtype:
-    # (ItemSubType.NEW_SUBTYPE, RouteActions.FETCH): "/registry/entity/new_subtype/fetch",
-    # (ItemSubType.NEW_SUBTYPE, RouteActions.LIST): "/registry/entity/new_subtype/list",
-    # ...
-}
 
 
 """
@@ -244,11 +211,9 @@ class RegistryClient(ClientService):
         self._auth = auth       
         self._config = config
 
-    def _build_endpoint(self, item_subtype: ItemSubType, action: RouteActions) -> str:
 
-        url_endpoint = URL_MAP.get((item_subtype, action), None)
-
-        if url_endpoint is None: 
-            raise ValueError("Incorrect subtype or action provided.")
-
-        return self._config.registry_api_endpoint + url_endpoint
+    # Function to get the endpoint URL
+    def _build_endpoint(self, action: Action, item_subtype: ItemSubType) -> str:
+        subtype_prefix = subtype_route_prefixes[item_subtype]
+        action_postfix = action_postfixes[action]
+        return f"{self._config.registry_api_endpoint}{subtype_prefix}{action_postfix}"

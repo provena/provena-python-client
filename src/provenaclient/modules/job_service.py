@@ -11,7 +11,7 @@ class JobService(ModuleService):
     _job_api_client: JobAPIClient
 
     def __init__(self, auth: AuthManager, config: Config, job_api_client: JobAPIClient) -> None:
-        """Initialises a new datastore object, which sits between the user and the datastore api operations.
+        """Initialises a new job-service object, which sits between the user and the job-service api operations.
 
         Parameters
         ----------

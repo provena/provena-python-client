@@ -24,9 +24,9 @@ class HandleAPIEndpoints(str, Enum):
     GET_HEALTH_CHECK = "/"
 
 # L2 interface.
-class HandleServiceClient(ClientService):
+class IdServiceClient(ClientService):
     def __init__(self, auth: AuthManager, config: Config) -> None:
-        """Initialises the HandleServiceClient with authentication and configuration.
+        """Initialises the IdServiceClient with authentication and configuration.
 
         Parameters
         ----------

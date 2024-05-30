@@ -4,4 +4,4 @@ from provenaclient.clients.auth_client import AuthClient
 from provenaclient.clients.prov_client import ProvClient
 from provenaclient.clients.registry_client import RegistryClient
 from provenaclient.clients.job_client import JobAPIClient
-from provenaclient.clients.handle_service import HandleServiceClient
+from provenaclient.clients.id_service import IdServiceClient
