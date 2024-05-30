@@ -17,15 +17,15 @@ class ClientService(ABC):
 
 async def parsed_get_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
-    
+
     High level helper function which 
-    
+
     - gets the auth
     - builds the filtered param list
     - makes get request
     - checks status/http codes
     - parses model etc
-    
+
     Returns the parsed validated, safe to use 200OK model result
 
     Args:
@@ -64,15 +64,15 @@ async def parsed_get_request_with_status(client: ClientService, params: Optional
 
 async def parsed_get_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
-    
+
     High level helper function which 
-    
+
     - gets the auth
     - builds the filtered param list
     - makes get request
     - checks http codes
     - parses model etc
-    
+
     Returns the parsed validated, safe to use 200OK model result
 
     Args:
@@ -99,7 +99,6 @@ async def parsed_get_request(client: ClientService, params: Optional[Dict[str, O
             model=model,
             error_message=error_message
         )
-        
 
     except api_exceptions as e:
         raise e
@@ -109,17 +108,18 @@ async def parsed_get_request(client: ClientService, params: Optional[Dict[str, O
 
     return data
 
+
 async def parsed_post_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
-    
+
     High level helper function which 
-    
+
     - gets the auth
     - builds the filtered param list
     - makes POST request
     - checks http codes
     - parses model etc
-    
+
     Returns the parsed validated, safe to use 200OK model result
 
     Args:
@@ -141,7 +141,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
     filtered_params = build_params_exclude_none(params if params else {})
 
     try:
-        response = await HttpClient.make_post_request(url=url,data=json_body, params=filtered_params, auth=get_auth())
+        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
         data = handle_response_non_status(
             response=response,
             model=model,
@@ -156,17 +156,18 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     return data
 
+
 async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
-    
+
     High level helper function which 
-    
+
     - gets the auth
     - builds the filtered param list
     - makes POST request
     - checks http/status codes
     - parses model etc
-    
+
     Returns the parsed validated, safe to use 200OK model result
 
     Args:
@@ -188,7 +189,197 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
     filtered_params = build_params_exclude_none(params if params else {})
 
     try:
-        response = await HttpClient.make_post_request(url=url,data=json_body, params=filtered_params, auth=get_auth())
+        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
+        data = handle_response_with_status(
+            response=response,
+            model=model,
+            error_message=error_message
+        )
+
+    except api_exceptions as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+
+    return data
+
+
+async def parsed_delete_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes DELETE request
+    - checks http/status codes
+    - parses model etc
+
+    Returns the parsed validated, safe to use 200OK model result
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make POST request to
+        error_message (str): The error message to embed in other exceptions
+        model (Type[BaseModelType]): Model to parse for response JSON
+        json_body: Optional[JsonData]: JSON data to post if any
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        BaseModelType: The specified parsed model
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_delete_request(url=url, params=filtered_params, auth=get_auth())
+        data = handle_response_with_status(
+            response=response,
+            model=model,
+            error_message=error_message
+        )
+
+    except api_exceptions as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+
+    return data
+
+async def parsed_delete_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes DELETE request
+    - checks http/status codes
+    - parses model etc
+
+    Returns the parsed validated, safe to use 200OK model result
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make POST request to
+        error_message (str): The error message to embed in other exceptions
+        model (Type[BaseModelType]): Model to parse for response JSON
+        json_body: Optional[JsonData]: JSON data to post if any
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        BaseModelType: The specified parsed model
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_delete_request(url=url, params=filtered_params, auth=get_auth())
+        data = handle_response_non_status(
+            response=response,
+            model=model,
+            error_message=error_message
+        )
+
+    except api_exceptions as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+
+    return data
+
+async def parsed_put_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes put request
+    - checks http codes
+    - parses model etc
+
+    Returns the parsed validated, safe to use 200OK model result
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make put request to
+        error_message (str): The error message to embed in other exceptions
+        model (Type[BaseModelType]): Model to parse for response JSON
+        json_body: Optional[JsonData]: JSON data to put if any
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        BaseModelType: The specified parsed model
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_put_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
+        data = handle_response_non_status(
+            response=response,
+            model=model,
+            error_message=error_message
+        )
+
+    except api_exceptions as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+
+    return data
+
+
+async def parsed_put_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes put request
+    - checks http/status codes
+    - parses model etc
+
+    Returns the parsed validated, safe to use 200OK model result
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make put request to
+        error_message (str): The error message to embed in other exceptions
+        model (Type[BaseModelType]): Model to parse for response JSON
+        json_body: Optional[JsonData]: JSON data to put if any
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        BaseModelType: The specified parsed model
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_put_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
         data = handle_response_with_status(
             response=response,
             model=model,
