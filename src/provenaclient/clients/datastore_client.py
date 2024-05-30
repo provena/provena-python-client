@@ -2,17 +2,44 @@ from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients.client_helpers import *
 from enum import Enum
-from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
+from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse, UpdateMetadataResponse
+from provenaclient.models import HealthCheckResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
 from provenaclient.utils.helpers import *
 
 
+
+
 class DatastoreEndpoints(str, Enum):
-    """An ENUM containing the datastore-api
-    endpoints.
-    """
-    FETCH_DATASET: str = "/registry/items/fetch-dataset"
-    MINT_DATASET: str = "/register/mint-dataset"
+    """An ENUM containing the datastore-api endpoints."""
+
+    # Completed.
+    GET_REGISTRY_ITEMS_FETCH_DATASET = "/registry/items/fetch-dataset"
+    POST_REGISTER_MINT_DATASET = "/register/mint-dataset"
+    GET_HEALTH_CHECK = "/"
+    POST_METADATA_VALIDATE_METADATA = "/metadata/validate-metadata"
+
+
+    GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS = "/check-access/check-general-access"
+    GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS = "/check-access/check-admin-access"
+    GET_CHECK_ACCESS_CHECK_READ_ACCESS = "/check-access/check-read-access"
+    GET_CHECK_ACCESS_CHECK_WRITE_ACCESS = "/check-access/check-write-access"
+    GET_METADATA_DATASET_SCHEMA = "/metadata/dataset-schema"
+    POST_REGISTER_UPDATE_METADATA = "/register/update-metadata"
+    PUT_REGISTER_REVERT_METADATA = "/register/revert-metadata"
+    POST_REGISTER_VERSION = "/register/version"
+    POST_REGISTRY_ITEMS_LIST = "/registry/items/list"
+    POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL = "/registry/items/generate-presigned-url"
+    POST_REGISTRY_CREDENTIALS_GENERATE_READ_ACCESS_CREDENTIALS = "/registry/credentials/generate-read-access-credentials"
+    POST_REGISTRY_CREDENTIALS_GENERATE_WRITE_ACCESS_CREDENTIALS = "/registry/credentials/generate-write-access-credentials"
+    GET_ADMIN_CONFIG = "/admin/config"
+    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
+    DELETE_RELEASE_SYS_REVIEWERS_DELETE = "/release/sys-reviewers/delete"
+    POST_RELEASE_SYS_REVIEWERS_ADD = "/release/sys-reviewers/add"
+    GET_RELEASE_SYS_REVIEWERS_LIST = "/release/sys-reviewers/list"
+    POST_RELEASE_APPROVAL_REQUEST = "/release/approval-request"
+    PUT_RELEASE_ACTION_APPROVAL_REQUEST = "/release/action-approval-request"
+
 
 # L2 interface.
 
@@ -33,6 +60,46 @@ class DatastoreClient(ClientService):
 
     def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
         return self._config.datastore_api_endpoint + endpoint.value
+        
+    async def get_health_check(self) -> HealthCheckResponse:
+        """
+        Health check the API
+
+        Returns:
+            HealthCheckResponse: Response
+        """
+        return await parsed_get_request(
+            client=self,
+            url=self._build_endpoint(DatastoreEndpoints.GET_HEALTH_CHECK),
+            error_message="Health check failed!",
+            params={},
+            model=HealthCheckResponse
+        )
+    
+    # Focusing on Metadata
+    
+    async def validate_metadata(self, metadata_payload: CollectionFormat) -> StatusResponse:
+
+        return await parsed_post_request_with_status(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_METADATA_VALIDATE_METADATA), 
+            error_message="Dataset metadata validation failed!", 
+            params = {},
+            json_body=py_to_dict(metadata_payload),
+            model = StatusResponse
+        ) 
+    
+    async def update_metadata(self, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
+
+        return await parsed_post_request_with_status(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTER_UPDATE_METADATA),
+            error_message="Dataset metadata update failed!", 
+            params = {}, 
+            json_body=py_to_dict(metadata_payload), 
+            model = UpdateMetadataResponse
+        )
+    
 
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
@@ -62,7 +129,7 @@ class DatastoreClient(ClientService):
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
-                DatastoreEndpoints.FETCH_DATASET),
+                DatastoreEndpoints.GET_REGISTRY_ITEMS_FETCH_DATASET),
             error_message=f"Failed to fetch dataset with id {id}...",
             params={"handle_id": id},
             model=RegistryFetchResponse
@@ -97,7 +164,7 @@ class DatastoreClient(ClientService):
         """
         return await parsed_post_request_with_status(
             client=self,
-            url=self._build_endpoint(DatastoreEndpoints.MINT_DATASET),
+            url=self._build_endpoint(DatastoreEndpoints.POST_REGISTER_MINT_DATASET),
             error_message="Failed to mint the desired dataset...",
             params={},
             json_body=py_to_dict(dataset_info),
