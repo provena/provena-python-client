@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional
-from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.auth.manager import AuthManager
 import requests
 import webbrowser
 import time
@@ -7,7 +7,7 @@ import os
 import json
 from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
-from provenaclient.auth.auth_helpers import HttpxBearerAuth, Tokens, check_token_expiry_window
+from provenaclient.auth.helpers import HttpxBearerAuth, Tokens, check_token_expiry_window
 
 
 class DeviceFlow(AuthManager):

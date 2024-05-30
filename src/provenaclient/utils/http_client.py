@@ -1,6 +1,6 @@
 from typing import Any, Optional
 import httpx
-from provenaclient.auth.auth_helpers import HttpxBearerAuth
+from provenaclient.auth.helpers import HttpxBearerAuth
 
 #60s timeout for connecting, and a 10s timeout elsewhere.
 timeout = httpx.Timeout(timeout = 10.0, connect = 60.0) 
@@ -38,13 +38,15 @@ class HttpClient:
             return response
 
     @staticmethod    
-    async def make_post_request(url: str, auth: HttpxBearerAuth, data: Optional[dict[str,Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_post_request(url: str, auth: HttpxBearerAuth, params:Optional[dict[str, Any]] = None, data: Optional[dict[str,Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP POST request to the specified URL with the provided data, authentication, and headers.
 
         Parameters
         ----------
         url : str
             The URL to which the GET request will be sent.
+        params : Optional[dict[str, Any]], optional
+            A dictionary of the query parameters to be included in the GET request, by default None.
         auth : HttpxBearerAuth
             Authentication object (e.g., bearer token), which is required for the POST request.
         data : Optional[dict[str,Any]], optional
@@ -58,5 +60,5 @@ class HttpClient:
             The response from the server as an httpx.Response object.
         """
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, json=data, headers=headers, auth=auth)
+            response = await client.post(url,params=params, json=data, headers=headers, auth=auth)
             return response

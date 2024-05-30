@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from provenaclient.auth.auth_helpers import HttpxBearerAuth, Tokens
+from provenaclient.auth.helpers import HttpxBearerAuth, Tokens
 
 class AuthManager(ABC):
 

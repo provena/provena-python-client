@@ -1,5 +1,5 @@
-from provenaclient import provena_client
 import pytest
+import provenaclient
 
 def test_dummy() -> None:
     # Setting up a dummy test that always passes
