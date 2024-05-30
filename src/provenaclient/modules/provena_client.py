@@ -17,6 +17,7 @@ class ProvenaClient(ModuleService):
     datastore: Datastore
     search: Search
     auth_api: Auth
+    link: Link
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
         # Module service
@@ -42,6 +43,12 @@ class ProvenaClient(ModuleService):
         )
 
         self.auth_api = Auth(
+            auth=auth,
+            config=config,
+            auth_client=self._auth_client
+        )
+        
+        self.link = Link(
             auth=auth,
             config=config,
             auth_client=self._auth_client

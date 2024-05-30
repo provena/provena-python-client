@@ -181,7 +181,7 @@ class Auth(ModuleService):
     async def get_check_membership(self, group_id: str) -> CheckMembershipResponse:
         return await self._auth_client.get_check_membership(group_id=group_id)
 
-    async def get_link_lookup_username(self, username: str) -> UserLinkUserLookupResponse:
+    async def get_link_lookup_username(self, username: Optional[str] = None) -> UserLinkUserLookupResponse:
         return await self._auth_client.get_link_lookup_username(username=username)
 
     async def post_link_assign(self, body: UserLinkUserAssignRequest) -> UserLinkUserAssignResponse:

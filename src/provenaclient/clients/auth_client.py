@@ -197,6 +197,13 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_list_groups(self) -> ListGroupsResponse:
+        """
+        
+        Gets a list of groups
+
+        Returns:
+            ListGroupsResponse: List of groups
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -207,6 +214,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_describe_group(self, group_id: str) -> DescribeGroupResponse:
+        """
+        
+        Describes a group by ID
+
+        Args:
+            group_id (str): The group
+
+        Returns:
+            DescribeGroupResponse: Description
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -217,6 +234,15 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_list_members(self, group_id: str) -> ListMembersResponse:
+        """
+        Lists members of group
+
+        Args:
+            group_id (str): The gruop
+
+        Returns:
+            ListMembersResponse: The list of members
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -227,6 +253,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_list_group_membership(self, username: str) -> ListUserMembershipResponse:
+        """
+        
+        Gets list of groups a user is in
+
+        Args:
+            username (str): The username
+
+        Returns:
+            ListUserMembershipResponse: The list of groups
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -237,6 +273,17 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_check_user_membership(self, username: str, group_id: str) -> CheckMembershipResponse:
+        """
+        
+        Checks user membership within a group
+
+        Args:
+            username (str): The username to target
+            group_id (str): The group to check
+
+        Returns:
+            CheckMembershipResponse: Response
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -247,6 +294,17 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_groups_add_member(self, group_id: str, user: GroupUser) -> AddMemberResponse:
+        """
+        
+        Adds a member to a group
+
+        Args:
+            group_id (str): Id of group
+            user (GroupUser): The user to add
+
+        Returns:
+            AddMemberResponse: The response
+        """
         return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -258,6 +316,17 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def delete_remove_member(self, group_id: str, username: str) -> RemoveMemberResponse:
+        """
+        
+        Removes member from group
+
+        Args:
+            group_id (str): The id of group
+            username (str): The user to remove
+
+        Returns:
+            RemoveMemberResponse: The response
+        """
         return await parsed_delete_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -268,6 +337,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_add_group(self, group: UserGroupMetadata) -> AddGroupResponse:
+        """
+        
+        Adds a group/creates group
+
+        Args:
+            group (UserGroupMetadata): The group details
+
+        Returns:
+            AddGroupResponse: The response
+        """
         return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -279,6 +358,15 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def put_update_group(self, group: UserGroupMetadata) -> UpdateGroupResponse:
+        """
+        Updates group details
+
+        Args:
+            group (UserGroupMetadata): The group metadata
+
+        Returns:
+            UpdateGroupResponse: The response
+        """
         return await parsed_put_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -290,6 +378,12 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_export_groups(self) -> GroupsExportResponse:
+        """
+        Exports all group details in specified format.
+
+        Returns:
+            GroupsExportResponse: The data dump
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_GROUPS_ADMIN_EXPORT),
@@ -299,6 +393,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_import_groups(self, body: GroupsImportRequest) -> GroupsImportResponse:
+        """
+        
+        Imports groups from data dump back in
+
+        Args:
+            body (GroupsImportRequest): The import request incl. dump
+
+        Returns:
+            GroupsImportResponse: The response
+        """
         return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.POST_GROUPS_ADMIN_IMPORT),
@@ -309,6 +413,18 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_restore_groups_from_table(self, table_name: str, body: GroupsRestoreRequest) -> GroupsImportResponse:
+        """
+        
+        Restores groups by first dumping from valid group table. 
+        Needs permissions to table.
+
+        Args:
+            table_name (str): The table name
+            body (GroupsRestoreRequest): The request
+
+        Returns:
+            GroupsImportResponse: The response details
+        """
         return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -320,6 +436,15 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_link_lookup_username(self, username: str) -> AdminLinkUserLookupResponse:
+        """
+        Gets the linked person for user
+
+        Args:
+            username (str): User to lookup
+
+        Returns:
+            AdminLinkUserLookupResponse: Response
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_LINK_ADMIN_LOOKUP),
@@ -329,6 +454,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def get_link_reverse_lookup_username(self, person_id: str) -> UserLinkReverseLookupResponse:
+        """
+        
+        Looks up reverse by person ID
+
+        Args:
+            person_id (str): The person to lookup
+
+        Returns:
+            UserLinkReverseLookupResponse: The response
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -339,6 +474,16 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def post_link_assign(self, body: AdminLinkUserAssignRequest) -> AdminLinkUserAssignResponse:
+        """
+        
+        Assigns a person to a given user
+
+        Args:
+            body (AdminLinkUserAssignRequest): The request
+
+        Returns:
+            AdminLinkUserAssignResponse: The response
+        """
         return await parsed_post_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.POST_LINK_ADMIN_ASSIGN),
@@ -349,6 +494,15 @@ class AuthAdminSubClient(ClientService):
         )
 
     async def delete_clear_link(self, username: str) -> AdminLinkUserClearResponse:
+        """
+        Deletes an existing link
+
+        Args:
+            username (str): The user to unlink
+
+        Returns:
+            AdminLinkUserClearResponse: The response
+        """
         return await parsed_delete_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.DELETE_LINK_ADMIN_CLEAR),
@@ -393,6 +547,12 @@ class AuthClient(ClientService):
         return self._config.auth_api_endpoint + endpoint.value
 
     async def get_health_check(self) -> HealthCheckResponse:
+        """
+        Health check the API
+
+        Returns:
+            HealthCheckResponse: Response
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_HEALTH_CHECK),
@@ -402,6 +562,13 @@ class AuthClient(ClientService):
         )
 
     async def get_user_request_history(self) -> AccessRequestList:
+        """
+        
+        Gets the users access request history
+
+        Returns:
+            AccessRequestList: The list of requests
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -412,6 +579,17 @@ class AuthClient(ClientService):
         )
 
     async def post_user_request_change(self, body: AccessReport, send_email: bool) -> StatusResponse:
+        """
+        
+        Requests a change by diffing access models
+
+        Args:
+            body (AccessReport): The new access desired
+            send_email (bool): Email alert
+
+        Returns:
+            StatusResponse: Ok?
+        """
         return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -423,6 +601,12 @@ class AuthClient(ClientService):
         )
 
     async def get_user_pending_request_history(self) -> AccessRequestList:
+        """
+        Gets only pending requests from history
+
+        Returns:
+            AccessRequestList: The list
+        """
         return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
@@ -433,6 +617,13 @@ class AuthClient(ClientService):
         )
 
     async def get_user_generate_access_report(self) -> AccessReportResponse:
+        """
+        
+        Generates an access report detailing system access.
+
+        Returns:
+            AccessReportResponse: The response
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -443,6 +634,12 @@ class AuthClient(ClientService):
         )
 
     async def get_list_groups(self) -> ListGroupsResponse:
+        """
+        Lists all groups
+
+        Returns:
+            ListGroupsResponse: List of groups
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -453,6 +650,16 @@ class AuthClient(ClientService):
         )
 
     async def get_describe_group(self, group_id: str) -> DescribeGroupResponse:
+        """
+        
+        Describes a specific gruop
+
+        Args:
+            group_id (str): The id of group
+
+        Returns:
+            DescribeGroupResponse: Response with details
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -463,6 +670,13 @@ class AuthClient(ClientService):
         )
 
     async def get_list_membership(self) -> ListUserMembershipResponse:
+        """
+        
+        Gets the list of groups user is member of
+
+        Returns:
+            ListUserMembershipResponse: List and details
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -473,6 +687,16 @@ class AuthClient(ClientService):
         )
 
     async def get_list_group_members(self, group_id: str) -> ListMembersResponse:
+        """
+        
+        Lists the members of a given group
+
+        Args:
+            group_id (str): The group to lookup
+
+        Returns:
+            ListMembersResponse: Members
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -483,6 +707,15 @@ class AuthClient(ClientService):
         )
 
     async def get_check_membership(self, group_id: str) -> CheckMembershipResponse:
+        """
+        Checks if user is in specific group
+
+        Args:
+            group_id (str): The group to check
+
+        Returns:
+            CheckMembershipResponse: In group?
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(
@@ -492,7 +725,17 @@ class AuthClient(ClientService):
             model=CheckMembershipResponse
         )
 
-    async def get_link_lookup_username(self, username: str) -> UserLinkUserLookupResponse:
+    async def get_link_lookup_username(self, username: Optional[str]=None) -> UserLinkUserLookupResponse:
+        """
+        
+        Looks up either current user or specified user
+
+        Args:
+            username (Optional[str], optional): The username if not current user. Defaults to None.
+
+        Returns:
+            UserLinkUserLookupResponse: The response indicating link
+        """
         return await parsed_get_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_LINK_USER_LOOKUP),
@@ -502,6 +745,16 @@ class AuthClient(ClientService):
         )
 
     async def post_link_assign(self, body: UserLinkUserAssignRequest) -> UserLinkUserAssignResponse:
+        """
+        
+        Assigns link to current user.
+
+        Args:
+            body (UserLinkUserAssignRequest): The link to assign
+
+        Returns:
+            UserLinkUserAssignResponse: The response indicating success
+        """
         return await parsed_post_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.POST_LINK_USER_ASSIGN),
@@ -512,6 +765,15 @@ class AuthClient(ClientService):
         )
 
     async def post_link_validate(self, body: UserLinkUserAssignRequest) -> UserLinkUserValidateResponse:
+        """
+        Validates link before making it.
+
+        Args:
+            body (UserLinkUserAssignRequest): The link to assign
+
+        Returns:
+            UserLinkUserValidateResponse: Valid?
+        """
         # Doesn't assert status as we want the status response to fall through
         # to user
         return await parsed_post_request(
