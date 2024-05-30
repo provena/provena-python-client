@@ -156,7 +156,6 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     return data
 
-
 async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
@@ -252,6 +251,7 @@ async def parsed_delete_request_with_status(client: ClientService, params: Optio
 
     return data
 
+
 async def parsed_delete_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
@@ -298,6 +298,7 @@ async def parsed_delete_request(client: ClientService, params: Optional[Dict[str
             f"{error_message} Exception: {e}") from e
 
     return data
+
 
 async def parsed_put_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
