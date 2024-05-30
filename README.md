@@ -18,6 +18,14 @@ $ pip install provenaclient
 4) Now run the command `poetry shell`. This  will activate the poetry virtual environment for you.
 5) Now finally run the command `poetry install`. This will install all dependencies defined within pyproject.toml.
 
+### Using local .venv
+
+1) Set poetry to use local `.venv` with `poetry config virtualenvs.in-project true`
+2) List and remove any existing venvs with `poetry env list` and `poetry env remove <name>`
+3) Install `poetry install`
+
+You can then make vs code use this environment easily with `ctrl + shift + p` select python interpreter choosing `.venv/bin/python`. 
+
 ### My Poetry Installation is not being detected?
 1) This means that your PATH variable does not include the Poetry directory. 
 2) Open your .bashrc file, using the command `nano ~/.bashrc`.

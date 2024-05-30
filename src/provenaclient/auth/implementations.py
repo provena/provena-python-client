@@ -1,14 +1,13 @@
 from typing import Any, Dict, Optional
-from provenaclient.auth.auth_manager import AuthManager
+from provenaclient.auth.manager import AuthManager
 import requests
 import webbrowser
 import time
-from pydantic import BaseModel
 import os
 import json
 from jose import jwt, JWTError  # type: ignore
 from jose.constants import ALGORITHMS  # type: ignore
-from provenaclient.auth.auth_helpers import BearerAuth, Tokens, check_token_expiry_window
+from provenaclient.auth.helpers import HttpxBearerAuth, Tokens, check_token_expiry_window
 
 
 class DeviceFlow(AuthManager):
@@ -210,7 +209,7 @@ class DeviceFlow(AuthManager):
                 }
             )
 
-            is_token_expiring = check_token_expiry_window(jwt_data=jwt_response, jwt_token_expiry_window=None)
+            is_token_expiring = check_token_expiry_window(jwt_data=jwt_response)
 
             if not is_token_expiring:
                 self.optional_print("Token is expiring soon and need to be refreshed.")
@@ -493,18 +492,18 @@ class DeviceFlow(AuthManager):
         else: 
             raise Exception("Failed to obtain a valid token after initiating a new device flow.")
       
-    def get_auth(self) -> BearerAuth:
+    def get_auth(self) -> HttpxBearerAuth:
         """A helper function which produces a BearerAuth object for use
-        in the requests.xxx objects. For example: 
+        in the httpx library. For example: 
 
-        manager = DeviceAuthFlowManager(...)
+        manager = DeviceFlow(...)
         auth = manager.get_auth 
-        requests.post(..., auth=auth)
+        httpx.post(..., auth=auth)
 
         Returns
         -------
         BearerAuth
-            The requests auth object.
+            The httpx auth object.
 
         Raises
         ------
@@ -518,7 +517,7 @@ class DeviceFlow(AuthManager):
         """
 
         token = self.get_token()
-        return BearerAuth(token = token)
+        return HttpxBearerAuth(token = token)
 
     def clear_token_storage(self) -> None:
         """Checks if the tokens.json file exists and accordingly removes it and resets
