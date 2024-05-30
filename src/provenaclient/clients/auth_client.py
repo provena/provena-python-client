@@ -55,8 +55,6 @@ class AuthEndpoints(str, Enum):
     POST_LINK_ADMIN_ASSIGN = "/link/admin/assign"
     DELETE_LINK_ADMIN_CLEAR = "/link/admin/clear"
     GET_LINK_ADMIN_REVERSE_LOOKUP = "/link/admin/reverse_lookup"
-
-    # TODO
     GET_HEALTH_CHECK = "/"
 
     # TODO ISSUE

@@ -40,7 +40,7 @@ class HttpClient:
 
     @staticmethod
     async def make_delete_request(url: str,  auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
-        """ Makes an asynchronous HTTP GET request to the specified URL using the provided parameters, authentication, and headers.
+        """ Makes an asynchronous HTTP DELETE request to the specified URL using the provided parameters, authentication, and headers.
 
         Parameters
         ----------
