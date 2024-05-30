@@ -2,6 +2,19 @@
 
 
 
+## v0.2.0 (2024-05-30)
+
+### Feature
+
+* feat: Updated the project version to not clash with pypi. ([`e67d002`](https://github.com/provena/provena-python-client/commit/e67d002b00003f9a4be402ec7a5fd461fb0c2a48))
+
+* feat: Updated project version to not clash with pypi. ([`a02a0b1`](https://github.com/provena/provena-python-client/commit/a02a0b181e744ff877e113e3fa9954b5e31cc2fe))
+
+### Unknown
+
+* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`293cf17`](https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882))
+
+
 ## v0.1.0 (2024-05-30)
 
 ### Feature
