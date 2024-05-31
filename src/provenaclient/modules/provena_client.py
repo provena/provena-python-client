@@ -1,3 +1,4 @@
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import *
@@ -12,12 +13,14 @@ class ProvenaClient(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
     _auth_client: AuthClient
+    _prov_client: ProvClient
 
     # Modules
     datastore: Datastore
     search: Search
     auth_api: Auth
-    link: Link
+    registry: Registry
+    prov_api: Prov
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
         # Module service
@@ -28,6 +31,8 @@ class ProvenaClient(ModuleService):
         self._datastore_client = DatastoreClient(auth, config)
         self._search_client = SearchClient(auth, config)
         self._auth_client = AuthClient(auth, config)
+        self._registry_client = RegistryClient(auth, config)
+        self._prov_client = ProvClient(auth, config)
 
         self.datastore = Datastore(
             auth=auth,
@@ -47,9 +52,15 @@ class ProvenaClient(ModuleService):
             config=config,
             auth_client=self._auth_client
         )
-        
-        self.link = Link(
-            auth=auth,
+
+        self.registry = Registry(
+            auth=auth, 
             config=config,
-            auth_client=self._auth_client
+            registry_client=self._registry_client
+        )
+
+        self.prov_api = Prov(
+            auth=auth, 
+            config=config, 
+            prov_client=self._prov_client
         )
