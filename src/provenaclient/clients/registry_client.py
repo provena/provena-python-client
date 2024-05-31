@@ -78,6 +78,18 @@ class RegistryClient(ClientService):
         return f"{self._config.registry_api_endpoint}{endpoint.value}"
 
     async def fetch_item(self, id: str, item_subtype: ItemSubType, fetch_response_model: Type[BaseModelType], seed_allowed: Optional[bool] = None) -> BaseModelType:
+        """
+        Ascertains the correct endpoint based on the subtype provided, then runs the fetch operation, parsing the data as the specified model.
+
+        Args:
+            id (str): The id of the item to fetch.
+            item_subtype (ItemSubType): The subtype of the item to fetch.
+            fetch_response_model (Type[BaseModelType]): The response pydantic model to parse as e.g. OrganisationFetchResponse
+            seed_allowed (Optional[bool], optional): Should the endpoint throw an error if the item is a seed item?  Defaults to None.
+
+        Returns:
+            BaseModelType: _description_
+        """
         # determine endpoint
         endpoint = self._build_subtype_endpoint(
             action=RegistryAction.FETCH, item_subtype=item_subtype)
@@ -92,6 +104,19 @@ class RegistryClient(ClientService):
         )
 
     async def update_item(self, id: str, reason: Optional[str], item_subtype: ItemSubType, domain_info: DomainInfoBase, update_response_model: Type[BaseModelType]) -> BaseModelType:
+        """
+        Ascertains the correct endpoint then runs the update operation on an existing item by providing new domain info.
+
+        Args:
+            id (str): The id of item to update.
+            reason (Optional[str]): The reason for updating, if any
+            item_subtype (ItemSubType): The subtype to update
+            domain_info (DomainInfoBase): The domain info to replace existing item with
+            update_response_model (Type[BaseModelType]): The response model to parse e.g. StatusResponse
+
+        Returns:
+            BaseModelType: The response model parsed
+        """
         # determine endpoint
         endpoint = self._build_subtype_endpoint(
             action=RegistryAction.UPDATE, item_subtype=item_subtype)
