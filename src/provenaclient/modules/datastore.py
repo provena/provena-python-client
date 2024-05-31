@@ -1,9 +1,9 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import DatastoreClient, SearchClient
-from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse
+from ProvenaInterfaces.DataStoreAPI import *
 from ProvenaInterfaces.RegistryModels import CollectionFormat, ItemSubType
-from provenaclient.models import LoadedSearchResponse, LoadedSearchItem, UnauthorisedSearchItem, FailedSearchItem
+from provenaclient.models import HealthCheckResponse, LoadedSearchResponse, LoadedSearchItem, UnauthorisedSearchItem, FailedSearchItem, VersionDatasetRequest, VersionDatasetResponse, RevertMetadata
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from typing import List
@@ -11,6 +11,97 @@ from typing import List
 # L3 interface.
 
 DEFAULT_SEARCH_LIMIT = 25
+
+
+
+class DatastoreSubModule(ModuleService):
+    _datastore_client: DatastoreClient
+
+    def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient) -> None:
+        """
+        System reviewer/admin sub module of the Datastore API functionality
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow
+            method.
+        config : Config
+            A config object which contains information related to the Provena
+            instance. 
+        auth_client: AuthClient
+            The instantiated auth client
+        """
+        self._auth = auth
+        self._config = config
+
+        # Clients related to the datastore scoped as private.
+        self._datastore_client = datastore_client
+
+
+    async def delete_dataset_reviewer(self, reviewer_id: str) -> None: 
+        """_summary_
+
+        Parameters
+        ----------
+        reviewer_id : str
+            _description_
+        """
+        await self._datastore_client.admin.delete_dataset_reviewer(reviewer_id=reviewer_id)
+
+    async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
+        """_summary_
+
+        Parameters
+        ----------
+        reviewer_id : str
+            _description_
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
+
+        await self._datastore_client.admin.add_dataset_reviewer(reviewer_id=reviewer_id)
+
+    """
+    async def list_reviewers(self) -> TODO: 
+        TODO
+    """
+
+    async def dataset_approval_request(self, approval_request: ReleaseApprovalRequest) -> ReleaseApprovalRequestResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        approval_request : ReleaseApprovalRequest
+            _description_
+
+        Returns
+        -------
+        ReleaseApprovalRequestResponse
+            _description_
+        """
+
+        return await self._datastore_client.admin.approval_request(approval_request_payload= approval_request)
+    
+    async def action_approval_request(self, action_approval_request: ActionApprovalRequest)-> ActionApprovalRequestResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        action_approval_request : ActionApprovalRequest
+            _description_
+
+        Returns
+        -------
+        ActionApprovalRequestResponse
+            _description_
+        """
+
+        return await self._datastore_client.admin.action_approval_request(action_approval_request_payload= action_approval_request) 
+
 
 
 class Datastore(ModuleService):
@@ -35,6 +126,17 @@ class Datastore(ModuleService):
         # Clients related to the datastore scoped as private.
         self._datastore_client = datastore_client
         self._search_client = search_client
+
+    async def get_health_check(self) -> HealthCheckResponse:
+        """_summary_
+
+        Returns
+        -------
+        HealthCheckResponse
+            _description_
+        """
+
+        return await self._datastore_client.get_health_check()
 
     async def fetch_dataset(self, id: str) -> RegistryFetchResponse:
         """Fetches a dataset from the datastore based on the provided
@@ -75,6 +177,124 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.mint_dataset(dataset_mint_info)
+    
+    async def validate_dataset_metadata(self, metadata_payload: CollectionFormat) -> StatusResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        metadata_payload : CollectionFormat
+            _description_
+
+        Returns
+        -------
+        StatusResponse
+            _description_
+        """
+
+        return await self._datastore_client.validate_metadata(metadata_payload=metadata_payload)
+    
+    async def update_dataset_metadata(self, handle_id: str, reason: str, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        handle_id : str
+            _description_
+        reason : str
+            _description_
+        metadata_payload : CollectionFormat
+            _description_
+
+        Returns
+        -------
+        UpdateMetadataResponse
+            _description_
+        """
+
+        return await self._datastore_client.update_metadata(handle_id=handle_id, reason=reason, metadata_payload=metadata_payload)
+    
+    async def revert_dataset_metadata(self, metadata_payload: RevertMetadata) -> StatusResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        metadata_payload : RevertMetadata
+            _description_
+
+        Returns
+        -------
+        StatusResponse
+            _description_
+        """
+
+        return await self._datastore_client.revert_metadata(metadata_payload=metadata_payload)
+    
+    async def version_dataset(self, version_request: VersionDatasetRequest) -> VersionDatasetResponse: 
+        """_summary_
+
+        Parameters
+        ----------
+        version_request : VersionDatasetRequest
+            _description_
+
+        Returns
+        -------
+        VersionDatasetResponse
+            _description_
+        """
+
+        return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
+    
+    async def generate_dataset_presigned_url(self, dataset_presigned_request: PresignedURLRequest) -> PresignedURLResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        dataset_presigned_request : PresignedURLRequest
+            _description_
+
+        Returns
+        -------
+        PresignedURLResponse
+            _description_
+        """
+
+        return await self._datastore_client.generate_presigned_url(presigned_url= dataset_presigned_request)
+    
+    async def generate_read_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        credentials : CredentialsRequest
+            _description_
+
+        Returns
+        -------
+        CredentialResponse
+            _description_
+        """
+
+        return await self._datastore_client.generate_read_access_credentials(read_access_credientals= credentials)
+    
+    async def generate_write_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
+        """_summary_
+
+        Parameters
+        ----------
+        credentials : CredentialsRequest
+            _description_
+
+        Returns
+        -------
+        CredentialResponse
+            _description_
+        """
+        return await self._datastore_client.generate_write_access_credentials(write_access_credientals= credentials)
+    
+
+
 
     async def search_datasets(self, query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> LoadedSearchResponse:
         """
@@ -115,17 +335,17 @@ class Datastore(ModuleService):
                 success.append(LoadedSearchItem(
                     id=item.id,
                     item=loaded_dataset.item,
-                    strength=item.score
+                    score=item.score
                 ))
             except AuthException as e:
                 auth_err.append(UnauthorisedSearchItem(
                     id=item.id,
-                    strength=item.score
+                    score=item.score
                 ))
             except Exception as e:
                 misc_err.append(FailedSearchItem(
                     id=item.id,
-                    strength=item.score,
+                    score=item.score,
                     error_info=f"Failed to fetch item, error: {e}."
                 ))
 

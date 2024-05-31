@@ -2,8 +2,20 @@ from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients.client_helpers import *
 from enum import Enum
-from ProvenaInterfaces.DataStoreAPI import RegistryFetchResponse, MintResponse, UpdateMetadataResponse
-from provenaclient.models import HealthCheckResponse
+from ProvenaInterfaces.DataStoreAPI import (
+    RegistryFetchResponse,
+    MintResponse,
+    UpdateMetadataResponse,
+    CredentialsRequest,
+    CredentialResponse,
+    PresignedURLRequest,
+    PresignedURLResponse,
+    ActionApprovalRequest,
+    ActionApprovalRequestResponse,
+    ReleaseApprovalRequest,
+    ReleaseApprovalRequestResponse
+)
+from provenaclient.models import HealthCheckResponse, EmptyResponse, RevertMetadata, VersionDatasetRequest, VersionDatasetResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
 from provenaclient.utils.helpers import *
 
@@ -43,8 +55,90 @@ class DatastoreEndpoints(str, Enum):
 
 # L2 interface.
 
+class DatastoreSubClient(ClientService):
+
+    def __init__(self, auth: AuthManager, config: Config) -> None:
+        """Initialises the Datastore system reviewer/admin sub client with authentication and configuration.
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow method.
+        config : Config
+            A config object which contains information related to the Provena instance.
+        """
+        self._auth = auth
+        self._config = config
+
+    def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
+        return self._config.auth_api_endpoint + endpoint.value
+    
+    
+    async def delete_dataset_reviewer(self, reviewer_id: str) -> None: 
+
+        await parsed_delete_request_non_return(
+            client=self, 
+            url=self._build_endpoint(DatastoreEndpoints.DELETE_RELEASE_SYS_REVIEWERS_DELETE),
+            error_message="Failed to delete reviewer!", 
+            params={"reviewer_id": reviewer_id},
+        )
+    
+    async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
+
+        await parsed_post_request_none_return(
+            client=self, 
+            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
+            error_message="Failed to add reviewer!", 
+            params={},
+            json_body={"reviewer_id": reviewer_id},
+        )
+    
+    """
+
+    async def list_reviewers(self) -> EmptyResponse: 
+
+        return await parsed_post_request(
+            client=self, 
+            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
+            error_message="Failed to add reviewer!", 
+            params={},
+            json_body={"reviewer_id": reviewer_id},
+            model=EmptyResponse
+        )
+    """
+
+    async def approval_request(self, approval_request_payload: ReleaseApprovalRequest) -> ReleaseApprovalRequestResponse:
+
+        return await parsed_post_request(
+            client=self, 
+            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
+            error_message="Failed to add reviewer!", 
+            params={},
+            json_body=py_to_dict(approval_request_payload),
+            model=ReleaseApprovalRequestResponse
+        )
+        
+    async def action_approval_request(self, action_approval_request_payload: ActionApprovalRequest) -> ActionApprovalRequestResponse:
+
+        return await parsed_put_request(
+            client=self, 
+            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
+            error_message="Failed to add reviewer!", 
+            params={},
+            json_body=py_to_dict(action_approval_request_payload),
+            model=ActionApprovalRequestResponse
+        )
+    
+    # Admin endpoint
+    async def generate_config_file(self) -> None: 
+        pass
+
 
 class DatastoreClient(ClientService):
+
+    admin: DatastoreSubClient
+
+
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the DatastoreClient with authentication and configuration.
 
@@ -57,6 +151,8 @@ class DatastoreClient(ClientService):
         """
         self._auth = auth
         self._config = config
+
+        self.admin = DatastoreSubClient(auth = auth, config = config)
 
     def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
         return self._config.datastore_api_endpoint + endpoint.value
@@ -89,15 +185,71 @@ class DatastoreClient(ClientService):
             model = StatusResponse
         ) 
     
-    async def update_metadata(self, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
+    async def update_metadata(self, handle_id: str, reason: str, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
 
         return await parsed_post_request_with_status(
             client = self, 
             url = self._build_endpoint(DatastoreEndpoints.POST_REGISTER_UPDATE_METADATA),
             error_message="Dataset metadata update failed!", 
-            params = {}, 
+            params = {"handle_id": handle_id, "reason": reason}, 
             json_body=py_to_dict(metadata_payload), 
             model = UpdateMetadataResponse
+        )
+    
+    async def revert_metadata(self, metadata_payload:RevertMetadata) -> StatusResponse:
+
+        return await parsed_put_request_with_status(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.PUT_REGISTER_REVERT_METADATA),
+            error_message= "Dataset revert metadata failed!",
+            params={},
+            json_body= py_to_dict(metadata_payload),
+            model=StatusResponse
+        )
+    
+    async def version_dataset(self, version_dataset_payload: VersionDatasetRequest) -> VersionDatasetResponse:
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.PUT_REGISTER_REVERT_METADATA),
+            error_message= "Dataset revert metadata failed!",
+            params={},
+            json_body= py_to_dict(version_dataset_payload),
+            model=VersionDatasetResponse
+        )
+    
+
+    async def generate_presigned_url(self, presigned_url: PresignedURLRequest) -> PresignedURLResponse: 
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL), 
+            error_message= "Dataset presigned url generation failed!",
+            params={},
+            json_body=py_to_dict(presigned_url),
+            model=PresignedURLResponse
+        )
+
+    async def generate_read_access_credentials(self, read_access_credientals: CredentialsRequest) -> CredentialResponse:
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_CREDENTIALS_GENERATE_READ_ACCESS_CREDENTIALS), 
+            error_message= "Dataset presigned url generation failed!",
+            params={},
+            json_body=py_to_dict(read_access_credientals),
+            model=CredentialResponse
+        )
+    
+    async def generate_write_access_credentials(self, write_access_credientals: CredentialsRequest) -> CredentialResponse:
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL), 
+            error_message= "Dataset presigned url generation failed!",
+            params={},
+            json_body=py_to_dict(write_access_credientals),
+            model=CredentialResponse
         )
     
 
@@ -170,3 +322,12 @@ class DatastoreClient(ClientService):
             json_body=py_to_dict(dataset_info),
             model=MintResponse
         )
+    
+    
+
+    
+
+    
+
+
+
