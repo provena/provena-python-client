@@ -1,6 +1,7 @@
 from provenaclient import ProvenaClient, Config
 from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
+from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, SortOptions, SortType
 import asyncio
 
 
@@ -17,16 +18,16 @@ async def main() -> None:
     client = ProvenaClient(config=config, auth=auth)
 
     # fetch dummy dataset (see failure)
-    print("fetching bad")
-    try:
-        await client.datastore.fetch_dataset(id="bad")
-    except Exception as e:
-        print(f"Exception {e}")
+    #print("fetching bad")
+    #try:
+     #   await client.datastore.fetch_dataset(id="bad")
+    #except Exception as e:
+     #   print(f"Exception {e}")
 
     # fetch successful dataset (no failure)
-    print("fetching good")
-    res = await client.datastore.fetch_dataset(id="10378.1/1898010")
-    print(res.json(indent=2))
+    #print("fetching good")
+    ###res = await client.datastore.fetch_dataset(id="10378.1/1898010")
+   # print(res.json(indent=2))
 
     # print("minting")
     # create_dataset = await client.datastore.mint_dataset(
@@ -65,6 +66,7 @@ async def main() -> None:
     # print(dataset.json(indent=2))
 
     # search for datasets
+    """
     print("searching")
     res = await client.datastore.search_datasets(
         query="coral",
@@ -72,10 +74,10 @@ async def main() -> None:
     )
     print(res.json(indent=2))
     print(f"""
-    found {len(res.items) + len(res.auth_errors) + len(res.misc_errors)} total items.
-    found {len(res.items)} successful items
-    found {len(res.auth_errors)} auth error items
-    found {len(res.misc_errors)} misc error items
+   # found {len(res.items) + len(res.auth_errors) + len(res.misc_errors)} total items.
+   # found {len(res.items)} successful items
+    #found {len(res.auth_errors)} auth error items
+    #found {len(res.misc_errors)} misc error items
     """)
     
     # testing admin auth module 
@@ -86,5 +88,37 @@ async def main() -> None:
     print("Listing all pending")
     result = await client.auth_api.admin.get_all_pending_request_history()
     print(result.json(indent=2))
+
+    """
+
+    async for dataset in client.datastore.list_all_datasets(list_dataset_request=
+                                                            NoFilterSubtypeListRequest
+                                                            (sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None), 
+                                                            pagination_key=None, 
+                                                            page_size=2)):
+        for j in dataset.items:
+            print(j.display_name)
+
+    print("layer---")
+
+
+    response = await client.datastore.next_dataset()
+
+    if response:
+        for i in response.items:
+            print(i.display_name)
+
+    print("execuuting prev")
+
+    response = await client.datastore.prev_dataset()
+
+    if response:
+        for i in response.items:
+            print(i.display_name)
+
+
+
+
+
 
 asyncio.run(main())

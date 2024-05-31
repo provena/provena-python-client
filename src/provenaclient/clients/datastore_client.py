@@ -13,10 +13,12 @@ from ProvenaInterfaces.DataStoreAPI import (
     ActionApprovalRequest,
     ActionApprovalRequestResponse,
     ReleaseApprovalRequest,
-    ReleaseApprovalRequestResponse
+    ReleaseApprovalRequestResponse, 
+    ListRegistryResponse
 )
 from provenaclient.models import HealthCheckResponse, EmptyResponse, RevertMetadata, VersionDatasetRequest, VersionDatasetResponse
 from ProvenaInterfaces.RegistryModels import CollectionFormat
+from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest
 from provenaclient.utils.helpers import *
 
 
@@ -30,12 +32,6 @@ class DatastoreEndpoints(str, Enum):
     POST_REGISTER_MINT_DATASET = "/register/mint-dataset"
     GET_HEALTH_CHECK = "/"
     POST_METADATA_VALIDATE_METADATA = "/metadata/validate-metadata"
-
-
-    GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS = "/check-access/check-general-access"
-    GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS = "/check-access/check-admin-access"
-    GET_CHECK_ACCESS_CHECK_READ_ACCESS = "/check-access/check-read-access"
-    GET_CHECK_ACCESS_CHECK_WRITE_ACCESS = "/check-access/check-write-access"
     GET_METADATA_DATASET_SCHEMA = "/metadata/dataset-schema"
     POST_REGISTER_UPDATE_METADATA = "/register/update-metadata"
     PUT_REGISTER_REVERT_METADATA = "/register/revert-metadata"
@@ -44,13 +40,20 @@ class DatastoreEndpoints(str, Enum):
     POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL = "/registry/items/generate-presigned-url"
     POST_REGISTRY_CREDENTIALS_GENERATE_READ_ACCESS_CREDENTIALS = "/registry/credentials/generate-read-access-credentials"
     POST_REGISTRY_CREDENTIALS_GENERATE_WRITE_ACCESS_CREDENTIALS = "/registry/credentials/generate-write-access-credentials"
-    GET_ADMIN_CONFIG = "/admin/config"
-    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
     DELETE_RELEASE_SYS_REVIEWERS_DELETE = "/release/sys-reviewers/delete"
     POST_RELEASE_SYS_REVIEWERS_ADD = "/release/sys-reviewers/add"
     GET_RELEASE_SYS_REVIEWERS_LIST = "/release/sys-reviewers/list"
     POST_RELEASE_APPROVAL_REQUEST = "/release/approval-request"
     PUT_RELEASE_ACTION_APPROVAL_REQUEST = "/release/action-approval-request"
+
+
+    # Not completed.
+    GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS = "/check-access/check-general-access"
+    GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS = "/check-access/check-admin-access"
+    GET_CHECK_ACCESS_CHECK_READ_ACCESS = "/check-access/check-read-access"
+    GET_CHECK_ACCESS_CHECK_WRITE_ACCESS = "/check-access/check-write-access"
+    GET_ADMIN_CONFIG = "/admin/config"
+    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
 
 
 # L2 interface.
@@ -74,7 +77,14 @@ class DatastoreSubClient(ClientService):
         return self._config.auth_api_endpoint + endpoint.value
     
     
-    async def delete_dataset_reviewer(self, reviewer_id: str) -> None: 
+    async def delete_dataset_reviewer(self, reviewer_id: str) -> None:
+        """Delete a reviewer existing within the datastore.
+
+        Parameters
+        ----------
+        reviewer_id : str
+            Id of an existing reviewer within the system.
+        """
 
         await parsed_delete_request_non_return(
             client=self, 
@@ -84,6 +94,13 @@ class DatastoreSubClient(ClientService):
         )
     
     async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
+        """Add a reviewer existing within the datastore.
+
+        Parameters
+        ----------
+        reviewer_id : str
+            Valid Id of a reviewer.
+        """
 
         await parsed_post_request_none_return(
             client=self, 
@@ -94,7 +111,6 @@ class DatastoreSubClient(ClientService):
         )
     
     """
-
     async def list_reviewers(self) -> EmptyResponse: 
 
         return await parsed_post_request(
@@ -108,6 +124,18 @@ class DatastoreSubClient(ClientService):
     """
 
     async def approval_request(self, approval_request_payload: ReleaseApprovalRequest) -> ReleaseApprovalRequestResponse:
+        """Submit a request for approval of dataset through the datastore.
+
+        Parameters
+        ----------
+        approval_request_payload : ReleaseApprovalRequest
+            An object that requires the dataset id, approver id and notes
+
+        Returns
+        -------
+        ReleaseApprovalRequestResponse
+            Contains details of the approval request.
+        """
 
         return await parsed_post_request(
             client=self, 
@@ -119,7 +147,20 @@ class DatastoreSubClient(ClientService):
         )
         
     async def action_approval_request(self, action_approval_request_payload: ActionApprovalRequest) -> ActionApprovalRequestResponse:
+        """Action an approval request from a dataset approval request via the datastore.
 
+        Parameters
+        ----------
+        action_approval_request : ActionApprovalRequest
+            The dataset id, your decision of approval and any extra information 
+            you want to add (notes).
+
+        Returns
+        -------
+        ActionApprovalRequestResponse
+            The details of the approval action and the relevant dataset details.
+        """
+        
         return await parsed_put_request(
             client=self, 
             url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
@@ -129,7 +170,8 @@ class DatastoreSubClient(ClientService):
             model=ActionApprovalRequestResponse
         )
     
-    # Admin endpoint
+    # Admin endpoint. 
+    # TODO - This has to be done.
     async def generate_config_file(self) -> None: 
         pass
 
@@ -171,10 +213,22 @@ class DatastoreClient(ClientService):
             params={},
             model=HealthCheckResponse
         )
-    
-    # Focusing on Metadata
-    
+        
     async def validate_metadata(self, metadata_payload: CollectionFormat) -> StatusResponse:
+        """Validates provided dataset info with the datastore API.
+
+        Parameters
+        ----------
+        metadata_payload : CollectionFormat
+            A structured format containing all necessary information to register a new dataset, including associations, 
+            approvals, and dataset-specific information.
+
+
+        Returns
+        -------
+        StatusResponse
+            Response indicating whether your dataset metadata setup is valid and correct.
+        """
 
         return await parsed_post_request_with_status(
             client = self, 
@@ -187,6 +241,14 @@ class DatastoreClient(ClientService):
     
     async def update_metadata(self, handle_id: str, reason: str, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
 
+        """Updates existing dataset metadata through datastore API.
+
+        Returns
+        -------
+        UpdateMetadataResponse
+            The updated metadata response from datastore.
+        """
+
         return await parsed_post_request_with_status(
             client = self, 
             url = self._build_endpoint(DatastoreEndpoints.POST_REGISTER_UPDATE_METADATA),
@@ -197,6 +259,19 @@ class DatastoreClient(ClientService):
         )
     
     async def revert_metadata(self, metadata_payload:RevertMetadata) -> StatusResponse:
+        """Reverts the metadata for a dataset to a previous identified historical version.
+
+        Parameters
+        ----------
+        metadata_payload : RevertMetadata
+            The revert request, passed through to the registry API and requires
+            dataset id, history id and reason for reverting.
+
+        Returns
+        -------
+        StatusResponse
+            Response indicating whether your dataset metadata setup is valid and correct.
+        """
 
         return await parsed_put_request_with_status(
             client = self, 
@@ -208,6 +283,20 @@ class DatastoreClient(ClientService):
         )
     
     async def version_dataset(self, version_dataset_payload: VersionDatasetRequest) -> VersionDatasetResponse:
+        """Creates a new versioning of an existing dataset with Provena 
+           through the Datastore.
+
+        Parameters
+        ----------
+        version_dataset_payload : VersionDatasetRequest
+            The request which includes the item ID and reason for versioning.
+
+        Returns
+        -------
+        VersionDatasetResponse
+            Response of the versioning of the dataset, containing new version ID and 
+            job session ID.
+        """
 
         return await parsed_post_request(
             client = self, 
@@ -218,8 +307,45 @@ class DatastoreClient(ClientService):
             model=VersionDatasetResponse
         )
     
+    async def get_all_dataset(self, list_request: NoFilterSubtypeListRequest) -> ListRegistryResponse:
+        """Gets all datasets within the datastore in a paginated fashion.
+
+        Parameters
+        ----------
+        list_request : NoFilterSubtypeListRequest
+            Contains parameters for the specified sorting criteria, 
+            optional pagination key and amount of records
+            to fetch.
+
+        Returns
+        -------
+        ListRegistryResponse
+            Response of fetching all datasets from datastore API.
+        """
+
+        return await parsed_post_request_with_status(
+            client = self, 
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_ITEMS_LIST),
+            error_message="List fetching failed",
+            params = {},
+            json_body=py_to_dict(list_request),
+            model = ListRegistryResponse
+        )
+    
 
     async def generate_presigned_url(self, presigned_url: PresignedURLRequest) -> PresignedURLResponse: 
+        """Generates a presigned url for an existing dataset within the datastore.
+
+        Parameters
+        ----------
+        presigned_url : PresignedURLRequest
+            Contains the dataset id + file path + length of expiry of URL.
+
+        Returns
+        -------
+        PresignedURLResponse
+            A response containing the presigned url.
+        """
 
         return await parsed_post_request(
             client = self, 
@@ -231,6 +357,18 @@ class DatastoreClient(ClientService):
         )
 
     async def generate_read_access_credentials(self, read_access_credientals: CredentialsRequest) -> CredentialResponse:
+        """Creates a read-access for a certain subdirectory of the S3 bucket.
+
+        Parameters
+        ----------
+        read_access_credientals : CredentialsRequest
+            Contains the dataset id + console session URL required flag (boolean)
+
+        Returns
+        -------
+        CredentialResponse
+            The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+        """
 
         return await parsed_post_request(
             client = self, 
@@ -242,6 +380,18 @@ class DatastoreClient(ClientService):
         )
     
     async def generate_write_access_credentials(self, write_access_credientals: CredentialsRequest) -> CredentialResponse:
+        """Creates a write-access for a certain subdirectory of the S3 bucket. 
+
+        Parameters
+        ----------
+        write_access_credientals : CredentialsRequest
+            Contains the dataset id + console session URL required flag (boolean)
+
+        Returns
+        -------
+        CredentialResponse
+            The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+        """
 
         return await parsed_post_request(
             client = self, 

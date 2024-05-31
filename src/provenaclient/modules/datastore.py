@@ -6,7 +6,8 @@ from ProvenaInterfaces.RegistryModels import CollectionFormat, ItemSubType
 from provenaclient.models import HealthCheckResponse, LoadedSearchResponse, LoadedSearchItem, UnauthorisedSearchItem, FailedSearchItem, VersionDatasetRequest, VersionDatasetResponse, RevertMetadata
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
-from typing import List
+from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest
+from typing import AsyncGenerator, List
 
 # L3 interface.
 
@@ -40,27 +41,23 @@ class DatastoreSubModule(ModuleService):
 
 
     async def delete_dataset_reviewer(self, reviewer_id: str) -> None: 
-        """_summary_
+        """Delete a reviewer.  
 
         Parameters
         ----------
         reviewer_id : str
-            _description_
+            Id of an existing reviewer within the system.
         """
         await self._datastore_client.admin.delete_dataset_reviewer(reviewer_id=reviewer_id)
 
     async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
-        """_summary_
+        """Add a reviewer.
 
         Parameters
         ----------
         reviewer_id : str
-            _description_
+            Id of a reviewer.
 
-        Returns
-        -------
-        _type_
-            _description_
         """
 
         await self._datastore_client.admin.add_dataset_reviewer(reviewer_id=reviewer_id)
@@ -68,36 +65,40 @@ class DatastoreSubModule(ModuleService):
     """
     async def list_reviewers(self) -> TODO: 
         TODO
+
+    I cannot find the exact type annotations of this method, and investigating the back-end code was not helpful either. 
     """
 
     async def dataset_approval_request(self, approval_request: ReleaseApprovalRequest) -> ReleaseApprovalRequestResponse:
-        """_summary_
+        """Submit a request for approval of dataset.
 
         Parameters
         ----------
         approval_request : ReleaseApprovalRequest
-            _description_
+            An object that requires the dataset id, approver id and notes
 
         Returns
         -------
-        ReleaseApprovalRequestResponse
-            _description_
+        ReleaseApprovalRequestResponse:
+            Contains details of the approval request.
+            
         """
 
         return await self._datastore_client.admin.approval_request(approval_request_payload= approval_request)
     
     async def action_approval_request(self, action_approval_request: ActionApprovalRequest)-> ActionApprovalRequestResponse:
-        """_summary_
+        """Action an approval request from a dataset approval request via the datastore.
 
         Parameters
         ----------
         action_approval_request : ActionApprovalRequest
-            _description_
+            The dataset id, your decision of approval and any extra information 
+            you want to add (notes).
 
         Returns
         -------
         ActionApprovalRequestResponse
-            _description_
+            The details of the approval action and the relevant dataset details.
         """
 
         return await self._datastore_client.admin.action_approval_request(action_approval_request_payload= action_approval_request) 
@@ -107,6 +108,9 @@ class DatastoreSubModule(ModuleService):
 class Datastore(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
+
+    current_pagination_request: Optional[NoFilterSubtypeListRequest]
+    previous_keys: List[Dict[str, Any]]
 
     def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient, search_client: SearchClient) -> None:
         """Initialises a new datastore object, which sits between the user and the datastore api operations.
@@ -127,13 +131,17 @@ class Datastore(ModuleService):
         self._datastore_client = datastore_client
         self._search_client = search_client
 
+        # Variables to hold information about current progress of pagination. 
+        self.current_pagination_request: Optional[NoFilterSubtypeListRequest] = None
+        self.previous_keys: List[Dict[str, Any]] = []
+
     async def get_health_check(self) -> HealthCheckResponse:
-        """_summary_
+        """Health check the API
 
         Returns
         -------
         HealthCheckResponse
-            _description_
+            Response
         """
 
         return await self._datastore_client.get_health_check()
@@ -179,118 +187,186 @@ class Datastore(ModuleService):
         return await self._datastore_client.mint_dataset(dataset_mint_info)
     
     async def validate_dataset_metadata(self, metadata_payload: CollectionFormat) -> StatusResponse:
-        """_summary_
+        """Validates the dataset metadata creation for testing and does not publish.
 
         Parameters
         ----------
         metadata_payload : CollectionFormat
-            _description_
+            A structured format containing all necessary information to register a new dataset, including associations, 
+            approvals, and dataset-specific information.
 
         Returns
         -------
         StatusResponse
-            _description_
+            Response indicating whether your dataset metadata setup is valid and correct.
         """
 
         return await self._datastore_client.validate_metadata(metadata_payload=metadata_payload)
     
     async def update_dataset_metadata(self, handle_id: str, reason: str, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
-        """_summary_
+        """Updates an existing dataset's metadata.
 
         Parameters
         ----------
         handle_id : str
-            _description_
+            The id of the dataset.
         reason : str
-            _description_
+            The reason for changing metadata of the dataset.
         metadata_payload : CollectionFormat
-            _description_
+            A structured format containing all necessary information to register a new dataset, including associations, 
+            approvals, and dataset-specific information.
 
         Returns
         -------
         UpdateMetadataResponse
-            _description_
+            The updated metadata response
         """
 
         return await self._datastore_client.update_metadata(handle_id=handle_id, reason=reason, metadata_payload=metadata_payload)
     
     async def revert_dataset_metadata(self, metadata_payload: RevertMetadata) -> StatusResponse:
-        """_summary_
+        """Reverts the metadata for a dataset to a previous identified historical version.
 
         Parameters
         ----------
         metadata_payload : RevertMetadata
-            _description_
+            The revert request, passed through to the registry API and requires
+            dataset id, history id and reason for reverting.
 
         Returns
         -------
         StatusResponse
-            _description_
+            Response indicating whether your dataset revert metadata request was correct.
         """
 
         return await self._datastore_client.revert_metadata(metadata_payload=metadata_payload)
     
     async def version_dataset(self, version_request: VersionDatasetRequest) -> VersionDatasetResponse: 
-        """_summary_
+        """Versioning operation which creates a new version from the specified ID.
 
         Parameters
         ----------
         version_request : VersionDatasetRequest
-            _description_
+            The request which includes the item ID and reason for versioning.
 
         Returns
         -------
         VersionDatasetResponse
-            _description_
+            Response of the versioning of the dataset, containing new version ID and 
+            job session ID.
         """
 
         return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
     
+    async def list_all_datasets(self, list_dataset_request: NoFilterSubtypeListRequest) -> AsyncGenerator[ListRegistryResponse, None]:
+
+        """I will treat limit and page size as the same thing here"""
+
+        count = 0 
+        self.current_pagination_request = list_dataset_request
+
+        while count < list_dataset_request.page_size:
+            dataset = await self._datastore_client.get_all_dataset(list_request= list_dataset_request)
+            yield dataset
+
+            if count >= list_dataset_request.page_size:
+                break
+
+            if not dataset.pagination_key:
+                return
+            
+            count = count + 1
+
+            self.previous_keys.append(dataset.pagination_key)
+            self.current_pagination_request.pagination_key = dataset.pagination_key
+
+    async def next_dataset(self, list_dataset_request: Optional[NoFilterSubtypeListRequest] = None) -> ListRegistryResponse :
+
+        """
+          1. We will store this current pagination key to be used as prev. 
+          2. We will create the new request object. 
+          3. We will save the old pagination keys. (Apparently dyanmo db does not have backwards pagination)
+          4. We will make the pagination call to the datastore-client and retrieve the new results.
+        """
+
+        if not self.current_pagination_request:
+            raise Exception("No pagination object found. Please retrieve datasets first.")
+
+        if list_dataset_request:
+            self.current_pagination_request = list_dataset_request 
+
+        if self.current_pagination_request.pagination_key:
+            self.previous_keys.append(self.current_pagination_request.pagination_key)
+
+        pagination_response = await self._datastore_client.get_all_dataset(list_request= self.current_pagination_request)
+
+        # Update the new pagination key
+        self.current_pagination_request.pagination_key = pagination_response.pagination_key
+        
+        return pagination_response
+
+    async def prev_dataset(self) -> ListRegistryResponse:
+
+        if not self.current_pagination_request:
+            raise Exception("No pagination object found. Please retrieve datasets first.")
+       
+        if not self.previous_keys:
+            raise Exception("No previous keys found. Please retrieve datasets first. ")
+
+        self.current_pagination_request.pagination_key = self.previous_keys.pop()
+        
+        pagination_response = await self._datastore_client.get_all_dataset(list_request=self.current_pagination_request)
+
+        return pagination_response
+
     async def generate_dataset_presigned_url(self, dataset_presigned_request: PresignedURLRequest) -> PresignedURLResponse:
-        """_summary_
+        """Generates a presigned url for an existing dataset.
 
         Parameters
         ----------
         dataset_presigned_request : PresignedURLRequest
-            _description_
+            Contains the dataset id + file path + length of expiry of URL.
 
         Returns
         -------
         PresignedURLResponse
-            _description_
+            A response with the presigned url.
         """
 
         return await self._datastore_client.generate_presigned_url(presigned_url= dataset_presigned_request)
     
     async def generate_read_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
-        """_summary_
+        """Given an S3 location, will attempt to generate programmatic access keys for 
+           the storage bucket at this particular subdirectory.
 
         Parameters
         ----------
         credentials : CredentialsRequest
-            _description_
+            Contains the dataset id + console session URL required flag (boolean)
 
         Returns
         -------
         CredentialResponse
-            _description_
+            The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
         """
 
         return await self._datastore_client.generate_read_access_credentials(read_access_credientals= credentials)
     
     async def generate_write_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
-        """_summary_
+        """Given an S3 location, will attempt to generate programmatic access keys for 
+           the storage bucket at this particular subdirectory.
 
         Parameters
         ----------
         credentials : CredentialsRequest
-            _description_
+            Contains the dataset id + console session URL required flag (boolean)
 
         Returns
         -------
         CredentialResponse
-            _description_
+            The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
         """
+
         return await self._datastore_client.generate_write_access_credentials(write_access_credientals= credentials)
     
 
