@@ -4,6 +4,7 @@ import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from ProvenaInterfaces.SharedTypes import StatusResponse
+from ProvenaInterfaces.RegistryModels import ItemBase
 
 
 api_exceptions = (AuthException, HTTPValidationException,
@@ -11,6 +12,7 @@ api_exceptions = (AuthException, HTTPValidationException,
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
+ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 
 # Type alias for json data
 JsonData = Dict[str, Any]
