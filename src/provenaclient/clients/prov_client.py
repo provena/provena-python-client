@@ -4,10 +4,8 @@ from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
 
-
-DEFAULT_SEARCH_DEPTH = 100
 
 class ProvAPIEndpoints(str, Enum):
     """An ENUM containing the prov api endpoints."""
@@ -55,7 +53,7 @@ class ProvClient(ClientService):
     
 
     # Explore Lineage endpoints
-    async def explore_upstream(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def explore_upstream(self, starting_id: str, depth: int) -> LineageResponse:
 
         return await parsed_get_request_with_status(
             client=self, 
@@ -66,7 +64,7 @@ class ProvClient(ClientService):
         )
 
  
-    async def explore_downstream(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def explore_downstream(self, starting_id: str, depth: int) -> LineageResponse:
         
         return await parsed_get_request_with_status(
             client=self, 
@@ -76,7 +74,7 @@ class ProvClient(ClientService):
             model = LineageResponse
         )
     
-    async def get_contributing_datasets(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_contributing_datasets(self, starting_id: str, depth: int) -> LineageResponse:
 
         return await parsed_get_request_with_status(
             client=self, 
@@ -86,7 +84,7 @@ class ProvClient(ClientService):
             model = LineageResponse
         )
     
-    async def get_effected_datasets(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_effected_datasets(self, starting_id: str, depth: int) -> LineageResponse:
 
         return await parsed_get_request_with_status(
             client=self, 
@@ -96,7 +94,7 @@ class ProvClient(ClientService):
             model = LineageResponse
         )
     
-    async def get_contributing_agents(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_contributing_agents(self, starting_id: str, depth: int) -> LineageResponse:
 
         return await parsed_get_request_with_status(
             client=self, 
@@ -106,7 +104,7 @@ class ProvClient(ClientService):
             model = LineageResponse
         )
     
-    async def get_effected_agents(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_effected_agents(self, starting_id: str, depth: int) -> LineageResponse:
 
         return await parsed_get_request_with_status(
             client=self, 
@@ -114,6 +112,31 @@ class ProvClient(ClientService):
             error_message=f"Effected agents query with starting id {starting_id} and depth {depth} failed!",
             params = {"starting_id": starting_id, "depth": depth},
             model = LineageResponse
+        )
+    
+
+    # Model run endpoints.
+
+    async def register_batch_model_runs(self, model_run_batch_payload:RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(ProvAPIEndpoints.POST_MODEL_RUN_REGISTER_BATCH),
+            error_message=f"Model run batch registration failed!",
+            params = {},
+            json_body=py_to_dict(model_run_batch_payload),
+            model = RegisterBatchModelRunResponse
+        )    
+
+    async def register_model_run(self, model_run_payload: ModelRunRecord) -> RegisterModelRunResponse:
+
+        return await parsed_post_request(
+            client = self, 
+            url = self._build_endpoint(ProvAPIEndpoints.POST_MODEL_RUN_REGISTER), 
+            error_message=f"Model run registration failed!", 
+            params = {},
+            json_body=py_to_dict(model_run_payload),
+            model = RegisterModelRunResponse
         )
     
 

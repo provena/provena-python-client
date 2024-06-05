@@ -4,8 +4,12 @@ from provenaclient.clients import ProvClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from typing import List
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
+
 
 # L3 interface.
+
+PROV_API_DEFAULT_SEARCH_DEPTH = 100
 
 class Prov(ModuleService):
     _prov_client: ProvClient
@@ -27,3 +31,36 @@ class Prov(ModuleService):
 
         # Clients related to the prov-api scoped as private.
         self._prov_api_client = prov_client
+
+
+    async def explore_upstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth) 
+    
+    async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
+    
+    async def get_contributing_datasets(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
+    
+    async def get_effected_datasets(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
+
+    async def get_contributing_agents(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
+
+    async def get_effected_agents(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await self._prov_api_client.get_effected_agents(starting_id=starting_id, depth=depth)
+
+    async def register_batch_model_runs(self, batch_model_run_payload: RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
+
+        return await self._prov_api_client.register_batch_model_runs(model_run_batch_payload = batch_model_run_payload)
+
+    async def register_model_run(self, model_run_payload: ModelRunRecord) -> RegisterModelRunResponse:
+
+        return await self._prov_api_client.register_model_run(model_run_payload=model_run_payload)
