@@ -4,7 +4,10 @@ from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse
 
+
+DEFAULT_SEARCH_DEPTH = 100
 
 class ProvAPIEndpoints(str, Enum):
     """An ENUM containing the prov api endpoints."""
@@ -49,3 +52,74 @@ class ProvClient(ClientService):
 
     def _build_endpoint(self, endpoint: ProvAPIEndpoints) -> str:
        return self._config.prov_api_endpoint + endpoint.value
+    
+
+    # Explore Lineage endpoints
+    async def explore_upstream(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_UPSTREAM),
+            error_message=f"Upstream query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+
+ 
+    async def explore_downstream(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+        
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_DOWNSTREAM),
+            error_message=f"Downstream query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+    
+    async def get_contributing_datasets(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_SPECIAL_CONTRIBUTING_DATASETS),
+            error_message=f"Contributing datasets query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+    
+    async def get_effected_datasets(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_SPECIAL_EFFECTED_DATASETS),
+            error_message=f"Effected datasets query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+    
+    async def get_contributing_agents(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_SPECIAL_CONTRIBUTING_AGENTS),
+            error_message=f"Contributing agents query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+    
+    async def get_effected_agents(self, starting_id: str, depth: Optional[int] = DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+        return await parsed_get_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_EXPLORE_SPECIAL_EFFECTED_AGENTS),
+            error_message=f"Effected agents query with starting id {starting_id} and depth {depth} failed!",
+            params = {"starting_id": starting_id, "depth": depth},
+            model = LineageResponse
+        )
+    
+
+    # CSV template tools endpoints
+    #async def generate_csv_template(self, workflow_template_id: str) -> None: 
+    #async def convert_model_runs_to_csv(self) -> None:
+
+
+        
