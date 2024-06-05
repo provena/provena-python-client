@@ -3,12 +3,9 @@ from typing import Dict, Any, Optional, TypeVar, Type, Union
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
+from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
 from ProvenaInterfaces.RegistryModels import ItemBase
-
-
-api_exceptions = (AuthException, HTTPValidationException,
-                  ValidationException, ServerException, NotFoundException, BadRequestException)
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
@@ -229,6 +226,7 @@ def handle_response_non_status(response: Response, model: Type[BaseModelType], e
     parsed_obj = handle_model_parsing(json_data=json_data, model=model)
 
     return parsed_obj
+
 
 
 def handle_response_with_status(response: Response, model: Type[BaseModelType], error_message: Optional[str]) -> BaseModelType:
