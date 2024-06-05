@@ -14,7 +14,6 @@ from typing import AsyncGenerator, List
 
 DEFAULT_SEARCH_LIMIT = 25
 DATASTORE_DEFAULT_SEARCH_LIMIT = 20
-DATASTORE_DEFAULT_SORT = SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None)
 
 
 class DatastoreSubModule(ModuleService):
@@ -254,7 +253,7 @@ class Datastore(ModuleService):
         return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
     
 
-    async def for_all_datasets(self, list_dataset_request: NoFilterSubtypeListRequest, total_limit: Optional[int] = None) -> AsyncGenerator[DatasetListResponse, None]:
+    async def for_all_datasets(self, list_dataset_request: NoFilterSubtypeListRequest, total_limit: Optional[int] = None) -> AsyncGenerator[ItemDataset, None]:
         """Fetches all datasets based on the provided datasets in datastore based on 
             the provided sorting criteria, pagination key and page size. 
 
@@ -270,39 +269,38 @@ class Datastore(ModuleService):
 
         Returns
         -------
-        AsyncGenerator[ListRegistryResponse, None]
-            An asynchronous generator yielding "ListRegistryResponse"
-            objects containing datasets from the datastore.
+        AsyncGenerator[ItemDataset, None]
+            An asynchronous generator yielding "ItemDataset"
+            object which is an individual dataset from the datastore.
         
         Yields
         ------
-        Iterator[AsyncGenerator[ListRegistryResponse, None]]
-            Each yield provides a "ListRegistryResponse" containing a list of datasets. 
-            Each response also includes other attributes like total item count and pagination details.
+        Iterator[AsyncGenerator[ItemDataset, None]]
+            Each yield provides a "ItemDataset" containing an individual dataset.
         
         """
     
         total_fetched = 0
     
         while True:
-            dataset = await self._datastore_client.list_datasets(list_request= list_dataset_request)
-            yield dataset
-
+            response = await self._datastore_client.list_datasets(list_request= list_dataset_request)
+            
             # We will keep track of the total numbers of items fetched in the request from the API itself. 
-            if dataset.items:
-                total_fetched = total_fetched + len(dataset.items)
-
+            if response.items:
+                for dataset in response.items: 
+                    if total_limit is not None and total_fetched >= total_limit:
+                        return
+                    yield dataset
+                    total_fetched = total_fetched + 1
             else:
                 # If there are issues with gathering responses, we will increment based on the page size.
                 total_fetched = total_fetched + list_dataset_request.page_size
 
-            if total_limit is not None and total_fetched >= total_limit:
+            if response.pagination_key is None:
                 break
 
-            if dataset.pagination_key is None:
-                break
-
-            list_dataset_request.pagination_key = dataset.pagination_key
+            # Update the pagination key for the next set of requests.
+            list_dataset_request.pagination_key = response.pagination_key
             
     async def list_datasets(self, list_dataset_request: NoFilterSubtypeListRequest) -> DatasetListResponse:
         """Takes a specific dataset list request and returns the response.
@@ -315,16 +313,16 @@ class Datastore(ModuleService):
 
         Returns
         -------
-        ListRegistryResponse
+        DatasetListResponse
             Response containing the requested datasets in the datastore 
             based on sort criteria and page size, and contains other attributes
             such as total_item_counts and optional pagination key.
         """
 
-        dataset = await self._datastore_client.list_datasets(list_request= list_dataset_request)
-        return dataset
+        datasets = await self._datastore_client.list_datasets(list_request= list_dataset_request)
+        return datasets
 
-    async def list_all_datasets(self, sort_criteria: Optional[SortOptions] = DATASTORE_DEFAULT_SORT) -> List[DatasetListResponse]:
+    async def list_all_datasets(self, sort_criteria: Optional[SortOptions] = None) -> List[ItemDataset]:
 
         """Fetches all datasets from the datastore and you may provide your own sort criteria.
         By default uses display name sort criteria. 
@@ -337,10 +335,8 @@ class Datastore(ModuleService):
 
         Returns
         -------
-        List[ListRegistryResponse]
-            A list of all ListRegistryResponse, which is the response containing 
-            the requested datasets in the datastore based on sort criteria and page size, 
-            and contains other attributes such as total_item_counts and optional pagination key.
+        List[ItemDataset]
+            A list of all datasets in the datastore, sorted as requested.
         """
 
         list_dataset_request: NoFilterSubtypeListRequest = NoFilterSubtypeListRequest(
@@ -349,19 +345,21 @@ class Datastore(ModuleService):
             page_size=DATASTORE_DEFAULT_SEARCH_LIMIT
         )
 
-        response_to_return: List[DatasetListResponse] = []
+        combined_dataset_list: List[ItemDataset] = []
 
         while True: 
-            dataset = await self._datastore_client.list_datasets(list_request= list_dataset_request)
-            response_to_return.append(dataset)
+            response = await self._datastore_client.list_datasets(list_request= list_dataset_request)
 
-            if dataset.pagination_key is None:
+            if response.items: 
+                combined_dataset_list.extend(response.items)
+        
+            if response.pagination_key is None:
                 break
 
             # Update the pagination key for the next request
-            list_dataset_request.pagination_key = dataset.pagination_key
+            list_dataset_request.pagination_key = response.pagination_key
 
-        return response_to_return
+        return combined_dataset_list
 
 
     async def generate_dataset_presigned_url(self, dataset_presigned_request: PresignedURLRequest) -> PresignedURLResponse:

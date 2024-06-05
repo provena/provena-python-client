@@ -99,10 +99,18 @@ async def main() -> None:
     
     count = 0
 
-    async for dataset in client.datastore.for_all_datasets(list_dataset_request, total_limit=20): 
-        print(dataset.items)
+    all_datasets = await client.datastore.list_all_datasets()
+
+    for dataset in all_datasets:
+        print(dataset.display_name)
+
+
+    async for dataset in client.datastore.for_all_datasets(list_dataset_request, total_limit=19):
+        count = count + 1 
+        print(dataset.id)
 
     print(count)
+
 
 
 
