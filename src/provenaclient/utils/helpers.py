@@ -3,11 +3,8 @@ from typing import Dict, Any, Optional, TypeVar, Type, Union
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
+from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
-
-
-api_exceptions = (AuthException, HTTPValidationException,
-                  ValidationException, ServerException, NotFoundException, BadRequestException)
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
@@ -227,31 +224,6 @@ def handle_response_non_status(response: Response, model: Type[BaseModelType], e
     parsed_obj = handle_model_parsing(json_data=json_data, model=model)
 
     return parsed_obj
-
-
-
-def handle_response_non_model(response: Response, error_message: Optional[str]) -> None:
-    """
-    Given the raw response from http client, and the model, will validate
-
-    - 200 OK code (with common errors handled)
-    - Parsed as JSON
-    - Parsed as desired final model
-
-    Returns the parsed pydantic object.
-
-    Args:
-        response (Response): The raw response from http client
-        model (Type[T]): The model type (not instance) to parse against
-        error_message (Optional[str]): The error message to embed into exceptions.
-
-    Returns:
-        T: The parsed model
-    """
-
-    # Handle JSON parsing and codes
-    check_codes_and_parse_json(
-        response=response, error_message=error_message)
 
 
 

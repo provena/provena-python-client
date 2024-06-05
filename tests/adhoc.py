@@ -91,32 +91,18 @@ async def main() -> None:
 
     """
 
-    async for dataset in client.datastore.list_all_datasets(list_dataset_request=
-                                                            NoFilterSubtypeListRequest
-                                                            (sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None), 
-                                                            pagination_key=None, 
-                                                            page_size=2)):
-        for j in dataset.items:
-            print(j.display_name)
+    list_dataset_request =  NoFilterSubtypeListRequest(
+            sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None), 
+            pagination_key=None, 
+            page_size=10
+        )
+    
+    count = 0
 
-    print("layer---")
+    async for dataset in client.datastore.for_all_datasets(list_dataset_request, total_limit=20): 
+        print(dataset.items)
 
-
-    response = await client.datastore.next_dataset()
-
-    if response:
-        for i in response.items:
-            print(i.display_name)
-
-    print("execuuting prev")
-
-    response = await client.datastore.prev_dataset()
-
-    if response:
-        for i in response.items:
-            print(i.display_name)
-
-
+    print(count)
 
 
 

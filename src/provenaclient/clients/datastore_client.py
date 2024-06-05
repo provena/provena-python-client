@@ -2,26 +2,11 @@ from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients.client_helpers import *
 from enum import Enum
-from ProvenaInterfaces.DataStoreAPI import (
-    RegistryFetchResponse,
-    MintResponse,
-    UpdateMetadataResponse,
-    CredentialsRequest,
-    CredentialResponse,
-    PresignedURLRequest,
-    PresignedURLResponse,
-    ActionApprovalRequest,
-    ActionApprovalRequestResponse,
-    ReleaseApprovalRequest,
-    ReleaseApprovalRequestResponse, 
-    ListRegistryResponse
-)
-from provenaclient.models import HealthCheckResponse, EmptyResponse, RevertMetadata, VersionDatasetRequest, VersionDatasetResponse
+from ProvenaInterfaces.DataStoreAPI import *
+from provenaclient.models import HealthCheckResponse, RevertMetadata
 from ProvenaInterfaces.RegistryModels import CollectionFormat
-from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest
+from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, VersionRequest, VersionResponse, DatasetListResponse
 from provenaclient.utils.helpers import *
-
-
 
 
 class DatastoreEndpoints(str, Enum):
@@ -58,10 +43,10 @@ class DatastoreEndpoints(str, Enum):
 
 # L2 interface.
 
-class DatastoreSubClient(ClientService):
+class DatasetReviewSubClient(ClientService):
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
-        """Initialises the Datastore system reviewer/admin sub client with authentication and configuration.
+        """Initialise the Datastore system reviewer sub client with authentication and configuration.
 
         Parameters
         ----------
@@ -94,7 +79,7 @@ class DatastoreSubClient(ClientService):
         )
     
     async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
-        """Add a reviewer existing within the datastore.
+        """Add a reviewer to the datastore.
 
         Parameters
         ----------
@@ -111,6 +96,10 @@ class DatastoreSubClient(ClientService):
         )
     
     """
+
+    #TODO: This has to be completed, once a new pydantic defined response model is setup
+    for this endpoint.
+
     async def list_reviewers(self) -> EmptyResponse: 
 
         return await parsed_post_request(
@@ -121,6 +110,7 @@ class DatastoreSubClient(ClientService):
             json_body={"reviewer_id": reviewer_id},
             model=EmptyResponse
         )
+
     """
 
     async def approval_request(self, approval_request_payload: ReleaseApprovalRequest) -> ReleaseApprovalRequestResponse:
@@ -139,8 +129,8 @@ class DatastoreSubClient(ClientService):
 
         return await parsed_post_request(
             client=self, 
-            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
-            error_message="Failed to add reviewer!", 
+            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_APPROVAL_REQUEST),
+            error_message="Failed to create an approval request!", 
             params={},
             json_body=py_to_dict(approval_request_payload),
             model=ReleaseApprovalRequestResponse
@@ -163,8 +153,8 @@ class DatastoreSubClient(ClientService):
         
         return await parsed_put_request(
             client=self, 
-            url=self._build_endpoint(DatastoreEndpoints.POST_RELEASE_SYS_REVIEWERS_ADD),
-            error_message="Failed to add reviewer!", 
+            url=self._build_endpoint(DatastoreEndpoints.PUT_RELEASE_ACTION_APPROVAL_REQUEST),
+            error_message="Failed to action approval request!", 
             params={},
             json_body=py_to_dict(action_approval_request_payload),
             model=ActionApprovalRequestResponse
@@ -172,17 +162,16 @@ class DatastoreSubClient(ClientService):
     
     # Admin endpoint. 
     # TODO - This has to be done.
-    async def generate_config_file(self) -> None: 
-        pass
+    #  async def generate_config_file(self) -> None: 
+    #    pass
 
 
 class DatastoreClient(ClientService):
 
-    admin: DatastoreSubClient
-
+    review: DatasetReviewSubClient
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
-        """Initialises the DatastoreClient with authentication and configuration.
+        """Initialise the DatastoreClient with authentication and configuration.
 
         Parameters
         ----------
@@ -194,7 +183,7 @@ class DatastoreClient(ClientService):
         self._auth = auth
         self._config = config
 
-        self.admin = DatastoreSubClient(auth = auth, config = config)
+        self.review = DatasetReviewSubClient(auth = auth, config = config)
 
     def _build_endpoint(self, endpoint: DatastoreEndpoints) -> str:
         return self._config.datastore_api_endpoint + endpoint.value
@@ -282,33 +271,33 @@ class DatastoreClient(ClientService):
             model=StatusResponse
         )
     
-    async def version_dataset(self, version_dataset_payload: VersionDatasetRequest) -> VersionDatasetResponse:
-        """Creates a new versioning of an existing dataset with Provena 
+    async def version_dataset(self, version_dataset_payload: VersionRequest) -> VersionResponse:
+        """Creates a new versioning of an existing dataset within Provena 
            through the Datastore.
 
         Parameters
         ----------
-        version_dataset_payload : VersionDatasetRequest
+        version_dataset_payload : VersionRequest
             The request which includes the item ID and reason for versioning.
 
         Returns
         -------
-        VersionDatasetResponse
+        VersionResponse
             Response of the versioning of the dataset, containing new version ID and 
             job session ID.
         """
 
         return await parsed_post_request(
             client = self, 
-            url = self._build_endpoint(DatastoreEndpoints.PUT_REGISTER_REVERT_METADATA),
-            error_message= "Dataset revert metadata failed!",
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTER_VERSION),
+            error_message= "Dataset versioning failed!",
             params={},
             json_body= py_to_dict(version_dataset_payload),
-            model=VersionDatasetResponse
+            model=VersionResponse
         )
     
-    async def get_all_dataset(self, list_request: NoFilterSubtypeListRequest) -> ListRegistryResponse:
-        """Gets all datasets within the datastore in a paginated fashion.
+    async def list_datasets(self, list_request: NoFilterSubtypeListRequest) -> DatasetListResponse:
+        """Gets datasets within the datastore in a paginated fashion.
 
         Parameters
         ----------
@@ -320,7 +309,7 @@ class DatastoreClient(ClientService):
         Returns
         -------
         ListRegistryResponse
-            Response of fetching all datasets from datastore API.
+            Response of fetching datasets from datastore API.
         """
 
         return await parsed_post_request_with_status(
@@ -329,7 +318,7 @@ class DatastoreClient(ClientService):
             error_message="List fetching failed",
             params = {},
             json_body=py_to_dict(list_request),
-            model = ListRegistryResponse
+            model = DatasetListResponse
         )
     
 
@@ -356,12 +345,12 @@ class DatastoreClient(ClientService):
             model=PresignedURLResponse
         )
 
-    async def generate_read_access_credentials(self, read_access_credientals: CredentialsRequest) -> CredentialResponse:
+    async def generate_read_access_credentials(self, read_access_credentials: CredentialsRequest) -> CredentialResponse:
         """Creates a read-access for a certain subdirectory of the S3 bucket.
 
         Parameters
         ----------
-        read_access_credientals : CredentialsRequest
+        read_access_credentials : CredentialsRequest
             Contains the dataset id + console session URL required flag (boolean)
 
         Returns
@@ -373,18 +362,18 @@ class DatastoreClient(ClientService):
         return await parsed_post_request(
             client = self, 
             url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_CREDENTIALS_GENERATE_READ_ACCESS_CREDENTIALS), 
-            error_message= "Dataset presigned url generation failed!",
+            error_message= "Read access credential creation failed!",
             params={},
-            json_body=py_to_dict(read_access_credientals),
+            json_body=py_to_dict(read_access_credentials),
             model=CredentialResponse
         )
     
-    async def generate_write_access_credentials(self, write_access_credientals: CredentialsRequest) -> CredentialResponse:
+    async def generate_write_access_credentials(self, write_access_credentials: CredentialsRequest) -> CredentialResponse:
         """Creates a write-access for a certain subdirectory of the S3 bucket. 
 
         Parameters
         ----------
-        write_access_credientals : CredentialsRequest
+        write_access_credentials : CredentialsRequest
             Contains the dataset id + console session URL required flag (boolean)
 
         Returns
@@ -395,10 +384,10 @@ class DatastoreClient(ClientService):
 
         return await parsed_post_request(
             client = self, 
-            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL), 
-            error_message= "Dataset presigned url generation failed!",
+            url = self._build_endpoint(DatastoreEndpoints.POST_REGISTRY_CREDENTIALS_GENERATE_WRITE_ACCESS_CREDENTIALS), 
+            error_message= "Write access credential creation failed!",
             params={},
-            json_body=py_to_dict(write_access_credientals),
+            json_body=py_to_dict(write_access_credentials),
             model=CredentialResponse
         )
     

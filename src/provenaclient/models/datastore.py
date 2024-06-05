@@ -15,14 +15,6 @@ class UnauthorisedSearchItem(SearchItem):
 class FailedSearchItem(SearchItem):
     error_info : str
 
-class VersionDatasetRequest(BaseModel):
-    id: str
-    reason: str
-
-class VersionDatasetResponse(BaseModel):
-    new_version_id: str
-    version_job_session_id: str
-
 class RevertMetadata(BaseModel):
     id: str 
     history_id: int
