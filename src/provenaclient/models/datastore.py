@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 from ProvenaInterfaces.RegistryModels import ItemDataset
-from typing import List
+from typing import List, Union
 
 class SearchItem(BaseModel):
     id: str
-    strength: float
+    score: float
     
 class LoadedSearchItem(SearchItem):
     item: ItemDataset
@@ -14,7 +14,12 @@ class UnauthorisedSearchItem(SearchItem):
 
 class FailedSearchItem(SearchItem):
     error_info : str
-    
+
+class RevertMetadata(BaseModel):
+    id: str 
+    history_id: int
+    reason: str
+
 class LoadedSearchResponse(BaseModel):
     # The successfully loaded search results
     items: List[LoadedSearchItem]

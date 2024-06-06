@@ -53,7 +53,7 @@ async def parsed_get_request_with_status(client: ClientService, params: Optional
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -100,7 +100,7 @@ async def parsed_get_request(client: ClientService, params: Optional[Dict[str, O
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -148,7 +148,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -195,7 +195,7 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -243,7 +243,7 @@ async def parsed_delete_request_with_status(client: ClientService, params: Optio
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -291,7 +291,7 @@ async def parsed_delete_request(client: ClientService, params: Optional[Dict[str
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -339,7 +339,7 @@ async def parsed_put_request(client: ClientService, params: Optional[Dict[str, O
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
@@ -387,10 +387,97 @@ async def parsed_put_request_with_status(client: ClientService, params: Optional
             error_message=error_message
         )
 
-    except api_exceptions as e:
+    except BaseException as e:
         raise e
     except Exception as e:
         raise Exception(
             f"{error_message} Exception: {e}") from e
 
     return data
+
+
+async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes POST request
+    - checks http codes
+
+    This method does not do any method parsing and only checks HTTP status codes.
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make POST request to
+        error_message (str): The error message to embed in other exceptions
+        json_body: Optional[JsonData]: JSON data to post if any
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        None
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
+        
+        handle_err_codes(
+            response=response,
+            error_message=error_message
+        )
+
+    except BaseException as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+    
+
+async def parsed_delete_request_non_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> None:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes DELETE request
+    - checks http/status codes
+
+    This method does not do any method parsing and only checks HTTP status codes.
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make POST request to
+        error_message (str): The error message to embed in other exceptions
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        None
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_delete_request(url=url, params=filtered_params, auth=get_auth())
+        
+        handle_err_codes(
+            response=response,
+            error_message=error_message
+        )
+
+    except BaseException as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
