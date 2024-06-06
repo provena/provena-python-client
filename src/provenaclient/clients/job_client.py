@@ -31,6 +31,7 @@ class JobAPIEndpoints(str, Enum):
 
 # L2 interface.
 
+
 class JobAPIAdminSubClient(ClientService):
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the JobAPIAdminClient sub client with authentication and configuration.
@@ -104,7 +105,7 @@ class JobAPIAdminSubClient(ClientService):
             model=AdminListJobsResponse
         )
 
-    async def list_job_batch(self, list_request: AdminListByBatchRequest) -> AdminListByBatchResponse:
+    async def list_jobs_in_batch(self, list_request: AdminListByBatchRequest) -> AdminListByBatchResponse:
         """
         List jobs by batch ID, returning a list of jobs in the batch.
 
@@ -118,14 +119,16 @@ class JobAPIAdminSubClient(ClientService):
             client=self,
             json_body=py_to_dict(list_request),
             params={},
-            url=self._build_endpoint(JobAPIEndpoints.POST_JOBS_ADMIN_LIST_BATCH),
+            url=self._build_endpoint(
+                JobAPIEndpoints.POST_JOBS_ADMIN_LIST_BATCH),
             error_message=f"Failed to list jobs for specified batch (admin).",
             model=AdminListByBatchResponse
         )
 
+
 class JobAPIClient(ClientService):
     admin: JobAPIAdminSubClient
-    
+
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the JobAPIClient with authentication and configuration.
 
@@ -138,7 +141,7 @@ class JobAPIClient(ClientService):
         """
         self._auth = auth
         self._config = config
-        
+
         self.admin = JobAPIAdminSubClient(auth=auth, config=config)
 
     def _build_endpoint(self, endpoint: JobAPIEndpoints) -> str:
@@ -160,6 +163,15 @@ class JobAPIClient(ClientService):
         )
 
     async def fetch_job(self, session_id: str) -> GetJobResponse:
+        """
+        Fetches a job by session id
+
+        Args:
+            session_id (str): The session ID
+
+        Returns:
+            GetJobResponse: The job fetched
+        """
         return await parsed_get_request(
             client=self,
             params={'session_id': session_id},
@@ -169,6 +181,15 @@ class JobAPIClient(ClientService):
         )
 
     async def list_jobs(self, list_jobs_request: ListJobsRequest) -> ListJobsResponse:
+        """
+        Lists all jobs for the given user
+
+        Args:
+            list_jobs_request (ListJobsRequest): The request including details
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
         return await parsed_post_request(
             client=self,
             json_body=py_to_dict(list_jobs_request),
@@ -178,12 +199,22 @@ class JobAPIClient(ClientService):
             model=ListJobsResponse
         )
 
-    async def list_job_batch(self, list_request: ListByBatchRequest) -> ListByBatchResponse:
+    async def list_jobs_in_batch(self, list_request: ListByBatchRequest) -> ListByBatchResponse:
+        """
+        Gets all jobs within a batch.
+
+        Args:
+            list_request (ListByBatchRequest): The request including batch ID
+
+        Returns:
+            ListByBatchResponse: The response including list of jobs
+        """
         return await parsed_post_request(
             client=self,
             json_body=py_to_dict(list_request),
             params={},
-            url=self._build_endpoint(JobAPIEndpoints.POST_JOBS_USER_LIST_BATCH),
+            url=self._build_endpoint(
+                JobAPIEndpoints.POST_JOBS_USER_LIST_BATCH),
             error_message=f"Failed to list jobs for user by batch.",
             model=ListByBatchResponse
         )
