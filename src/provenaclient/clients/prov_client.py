@@ -79,7 +79,7 @@ class ProvAdminClient(ClientService):
 
         return response.text
     
-    async def store_record(self, registry_record: ItemModelRun) -> StatusResponse:
+    async def store_record(self, registry_record: ItemModelRun, validate_record: bool) -> StatusResponse:
         """An admin only endpoint which enables the reupload/storage of an existing completed provenance record.
 
         Parameters
@@ -99,12 +99,12 @@ class ProvAdminClient(ClientService):
             client=self, 
             url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORD),
             error_message=f"Failed to store record with display name {registry_record.display_name} and id {registry_record.id}",
-            params = {},
+            params = {"validate_record": validate_record},
             json_body=py_to_dict(registry_record),
             model = StatusResponse
         )
     
-    async def store_multiple_records(self, registry_record: List[ItemModelRun]) -> StatusResponse:
+    async def store_multiple_records(self, registry_record: List[ItemModelRun], validate_record: bool) -> StatusResponse:
         """An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
 
         Parameters
@@ -124,7 +124,7 @@ class ProvAdminClient(ClientService):
             client=self, 
             url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORDS),
             error_message=f"Failed to complete multiple store record request.",
-            params = {},
+            params = {"validate_record": validate_record},
             json_body= json.loads(json.dumps([item.json() for item in registry_record])),
             model = StatusResponse
         )

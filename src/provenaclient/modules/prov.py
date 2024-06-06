@@ -73,7 +73,7 @@ class ProvAPISubModule(ModuleService):
             A status response indicating the success of the request and any other details.
         """
 
-        return await self._prov_api_client.admin.store_record(registry_record=registry_record)
+        return await self._prov_api_client.admin.store_record(registry_record=registry_record, validate_record = validate_record)
         
     async def store_multiple_records(self, registry_record: List[ItemModelRun], validate_record: bool = True) -> StatusResponse:
         """An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
@@ -91,7 +91,7 @@ class ProvAPISubModule(ModuleService):
             A status response indicating the success of the request and any other details.
         """
 
-        return await self._prov_api_client.admin.store_multiple_records(registry_record=registry_record)
+        return await self._prov_api_client.admin.store_multiple_records(registry_record=registry_record, validate_record = validate_record)
 
     async def store_all_registry_records(self, validate_record: bool = True) -> StatusResponse:
         """Applies the store record endpoint action across a list of ItemModelRuns '
