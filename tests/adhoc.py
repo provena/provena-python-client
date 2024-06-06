@@ -2,8 +2,10 @@ from provenaclient import ProvenaClient, Config
 from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, SortOptions, SortType
+from ProvenaInterfaces.ProvenanceAPI import ModelRunRecord, TemplatedDataset, RegisterBatchModelRunRequest
+from ProvenaInterfaces.ProvenanceModels import DatasetType, AssociationInfo
 import asyncio
-
+from typing import List
 
 async def main() -> None:
     config = Config(
@@ -89,7 +91,7 @@ async def main() -> None:
     result = await client.auth_api.admin.get_all_pending_request_history()
     print(result.json(indent=2))
 
-    """
+
 
     list_dataset_request =  NoFilterSubtypeListRequest(
             sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None), 
@@ -111,8 +113,51 @@ async def main() -> None:
 
     print(count)
 
+    """
 
+    model_run = ModelRunRecord(
+        workflow_template_id= "10378.1/1905251", 
+        model_version="1.0", 
+        inputs=[
+            TemplatedDataset(
+                dataset_template_id="10378.1/1905250",
+                dataset_id="10378.1/1904961",
+                dataset_type=DatasetType.DATA_STORE,
+                resources= None 
 
+            )
+        ],
+        outputs=[
+            TemplatedDataset(
+                dataset_template_id="10378.1/1905250",
+                dataset_id="10378.1/1900159",
+                dataset_type=DatasetType.DATA_STORE,
+                resources= None 
 
+            )
+        ], 
+        annotations=None,
+        display_name="Parth Model Run",
+        description="Testing modl run parth", 
+        study_id=None,
+        associations= AssociationInfo(
+            modeller_id="10378.1/1893843", 
+            requesting_organisation_id= None
+        ),
+        start_time=0,
+        end_time=1
+    )
+
+    #batch = RegisterBatchModelRunRequest(records=[model_run])
+
+    #res = await client.prov_api.convert_model_runs_to_csv(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
+
+    #print(res)
+
+    #res = await client.prov_api.register_batch_model_runs(batch_model_run_payload= "7bd3e0e9-1a47-458b-820e-315f514c8640")
+
+    #print(res)
+
+    await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640")
 
 asyncio.run(main())

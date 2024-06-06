@@ -63,7 +63,7 @@ class HttpClient:
             return response
 
     @staticmethod
-    async def make_post_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_post_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] = None, files: Any = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP POST request to the specified URL with the provided data, authentication, and headers.
 
         Parameters
@@ -85,7 +85,7 @@ class HttpClient:
             The response from the server as an httpx.Response object.
         """
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(url, params=params, json=data, headers=headers, auth=auth)
+            response = await client.post(url, params=params, json=data, headers=headers, files=files, auth=auth)
             return response
 
     @staticmethod

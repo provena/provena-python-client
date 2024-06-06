@@ -3,14 +3,115 @@ from provenaclient.utils.config import Config
 from provenaclient.clients import ProvClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
+from provenaclient.utils.helpers import write_file_helper, write_csv_file_helper
 from typing import List
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
-
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
+from ProvenaInterfaces.RegistryAPI import ItemModelRun
+from ProvenaInterfaces.SharedTypes import StatusResponse
 
 # L3 interface.
 
 PROV_API_DEFAULT_SEARCH_DEPTH = 100
+DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
+
+
+class ProvAPISubModule(ModuleService):
+    _prov_api_client: ProvClient
+
+    def __init__(self, auth: AuthManager, config: Config, prov_api_client: ProvClient) -> None:
+        """
+        System reviewer sub module of the Datastore API functionality
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow
+            method.
+        config : Config
+            A config object which contains information related to the Provena
+            instance. 
+        auth_client: AuthClient
+            The instantiated auth client
+        """
+        self._auth = auth
+        self._config = config
+
+        # Clients related to the datastore scoped as private.
+        self._prov_api_client = prov_api_client
+
+    async def generate_config_files(self, required_only: bool = True, file_name: str = DEFAULT_CONFIG_FILE_NAME) -> None:
+        """Generates a nicely formatted .env file of the current required/non supplied properties 
+        Used to quickly bootstrap a local environment or to understand currently deployed API.
+
+        Parameters
+        ----------
+        required_only : bool, optional
+            By default True
+        file_name : str, optional
+            The filename you want to have, by default DEFAULT_CONFIG_FILE_NAME (prov-api.env)
+        """
+
+        response = await self._prov_api_client.admin.generate_config_file(required_only=required_only)
+
+        if response:
+            write_file_helper(file_name=file_name, content=response)
+    
+    async def store_record(self, registry_record: ItemModelRun, validate_record: bool = True) -> StatusResponse:
+        """An admin only endpoint which enables the reupload/storage of an existing completed provenance record.
+
+        Parameters
+        ----------
+        registry_record : ItemModelRun
+            The completed registry record for the model run.
+        validate_record: bool
+            Optional Should the ids in the payload be validated?, by default True
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
+
+        return await self._prov_api_client.admin.store_record(registry_record=registry_record)
+        
+    async def store_multiple_records(self, registry_record: List[ItemModelRun], validate_record: bool = True) -> StatusResponse:
+        """An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
+
+        Parameters
+        ----------
+        registry_record : List[ItemModelRun]
+            List of the completed registry record for the model run validate_record
+        validate_record: bool
+            Optional Should the ids in the payload be validated?, by default True
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
+
+        return await self._prov_api_client.admin.store_multiple_records(registry_record=registry_record)
+
+    async def store_all_registry_records(self, validate_record: bool = True) -> StatusResponse:
+        """Applies the store record endpoint action across a list of ItemModelRuns '
+           which is found by querying the registry model run list endpoint directly.
+
+        Parameters
+        ----------
+        validate_record : bool
+            Optional Should the ids in the payload be validated?, by default True
+
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
+
+        return await self._prov_api_client.admin.store_all_registry_records(validate_record=validate_record)
+
+
 
 class Prov(ModuleService):
     _prov_client: ProvClient
@@ -33,6 +134,8 @@ class Prov(ModuleService):
         # Clients related to the prov-api scoped as private.
         self._prov_api_client = prov_client
 
+        # Submodules 
+        self.admin = ProvAPISubModule(auth, config, prov_client)
     
     async def get_health_check(self) -> HealthCheckResponse:
         """Checks the health status of the PROV-API.
@@ -194,3 +297,53 @@ class Prov(ModuleService):
         """
 
         return await self._prov_api_client.register_model_run(model_run_payload=model_run_payload)
+    
+    async def generate_csv_template(self, workflow_template_id: str) -> None:
+        """Generates a model run csv template for direction purposes.
+
+        Parameters
+        ----------
+        workflow_template_id : str
+            An ID of a created and existing model run workflow template.
+        """
+
+        response = await self._prov_api_client.generate_csv_template(workflow_template_id=workflow_template_id)
+
+        if response:
+            write_csv_file_helper(file_name="WorkflowTemplate", content = response)
+
+    async def convert_model_runs_to_csv(self, file_path: str) -> ConvertModelRunsResponse:
+        """Reads a CSV file, and it's defined model run contents
+        and lodges a model run.
+
+        Parameters
+        ----------
+        file_path : str
+            The path of an existing created CSV file containing
+            the necessary parameters for model run lodge.
+
+        Returns
+        -------
+        ConvertModelRunsResponse
+            Returns the model run information in an interactive python
+            datatype.
+        """
+        
+        return await self._prov_api_client.convert_model_runs_to_csv(csv_file_path= file_path)
+    
+    async def regenerate_csv_from_model_run_batch(self, batch_id: str) -> None:
+        """Regenerate/create a csv file containing model 
+        run information from a model run batch job.
+
+        The batch id must exist in the system.
+
+        Parameters
+        ----------
+        batch_id : str
+            Obtained from creating a batch model run.
+        """
+        
+        response = await self._prov_api_client.regenerate_csv_from_model_run_batch(batch_id=batch_id)
+
+        if response:
+            write_csv_file_helper(file_name=batch_id, content=response)

@@ -1,11 +1,14 @@
 from pydantic import BaseModel, ValidationError
 from typing import Dict, Any, Optional, TypeVar, Type, Union
 import json
+import csv
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
 from ProvenaInterfaces.RegistryModels import ItemBase
+from io import StringIO
+
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
@@ -16,6 +19,77 @@ JsonData = Dict[str, Any]
 
 ParamTypes = Union[str, int, bool]
 
+
+def write_csv_file_helper(file_name: str, content: str) -> None:
+    """
+    Writes provided CSV content to a file.
+
+    Parameters
+    ----------
+    file_name : str
+        The name of the file where the CSV content will be written.
+    content : str
+        The CSV formatted string which includes headers and data rows.
+
+    Raises
+    ------
+    IOError
+        If an I/O error occurs during file operations.
+    Exception
+        For non-I/O related exceptions that may occur during CSV processing or writing.
+    """
+
+    # Create a buffer from the content string
+    buffer = StringIO(content)
+    # Use csv.reader to handle complex CSVs properly
+    reader = csv.reader(buffer, delimiter=',')
+    rows = list(reader)
+
+    headers = rows[0]  # First row should be headers
+    data = rows[1:]    # All other rows are data
+
+    try:
+
+        # Write to CSV using the corrected headers and data
+        with open(file_name + '.csv', 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            csv_writer.writerow(headers)  # Write the headers
+            csv_writer.writerows(data)    # Write the data rows
+    
+    except IOError as e:
+        raise IOError(f"Failed to write CSV file {file_name} due to I/O error: {e}")
+
+    except Exception as e:
+        raise Exception(f"CSV file writing failed. Exception {e}")
+
+def write_file_helper(file_name: str, content: str) -> None:
+    """
+    Writes provided content to a file.
+
+    Parameters
+    ----------
+    file_name : str
+        The name of the file to write content into.
+    content : str
+        The content to be written into the file.
+
+    Raises
+    ------
+    IOError
+        If an I/O error occurs during file operations.
+    Exception
+        For non-I/O related exceptions that may occur during file writing.
+    """
+
+    try:
+        with open(file_name, "w") as f:
+            f.write(content)
+
+    except IOError as e:
+        raise IOError(f"Failed to write file {file_name} due to I/O error: {e}")
+
+    except Exception as e:
+        raise Exception(f"File writing failed. Exception {e}")
 
 def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """

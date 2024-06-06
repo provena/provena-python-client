@@ -156,7 +156,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     return data
 
-async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType], files: Optional[Dict[str, Any]] = None) -> BaseModelType:
     """
 
     High level helper function which 
@@ -188,7 +188,7 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
     filtered_params = build_params_exclude_none(params if params else {})
 
     try:
-        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, auth=get_auth())
+        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, files = files, auth=get_auth())
         data = handle_response_with_status(
             response=response,
             model=model,
@@ -396,7 +396,53 @@ async def parsed_put_request_with_status(client: ClientService, params: Optional
     return data
 
 
-async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
+
+async def parsed_get_request_none_model(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> Response:
+    """
+
+    High level helper function which 
+
+    - gets the auth
+    - builds the filtered param list
+    - makes get request
+    - checks http codes
+
+    This method does not do any base model parsing and only checks HTTP status codes.
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        url (str): The url to make GET request to
+        error_message (str): The error message to embed in other exceptions
+
+    Raises:
+        e: Exception depending on error
+
+    Returns:
+        None
+    """
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_get_request(url=url, params=filtered_params, auth=get_auth())
+        
+        handle_err_codes(
+            response=response,
+            error_message=error_message
+        )
+
+        return response
+
+    except BaseException as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
+
+
+async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> Optional[Response]:
     """
 
     High level helper function which 
@@ -406,7 +452,7 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
     - makes POST request
     - checks http codes
 
-    This method does not do any method parsing and only checks HTTP status codes.
+    This method does not do any base model parsing and only checks HTTP status codes.
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
@@ -433,6 +479,8 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
             error_message=error_message
         )
 
+        return response
+
     except BaseException as e:
         raise e
     except Exception as e:
@@ -450,7 +498,7 @@ async def parsed_delete_request_non_return(client: ClientService, params: Option
     - makes DELETE request
     - checks http/status codes
 
-    This method does not do any method parsing and only checks HTTP status codes.
+    This method does not do any base model parsing and only checks HTTP status codes.
 
     Args:
         client (ClientService): The client being used. Relies on client interface.

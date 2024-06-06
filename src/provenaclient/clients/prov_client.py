@@ -6,7 +6,7 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse,ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse,ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 
 class ProvAPIEndpoints(str, Enum):
@@ -22,6 +22,9 @@ class ProvAPIEndpoints(str, Enum):
     GET_EXPLORE_SPECIAL_CONTRIBUTING_AGENTS = "/explore/special/contributing_agents"
     GET_EXPLORE_SPECIAL_EFFECTED_AGENTS = "/explore/special/effected_agents"
     GET_HEALTH_CHECK = "/"
+    GET_BULK_GENERATE_TEMPLATE_CSV = "/bulk/generate_template/csv"
+    POST_BULK_CONVERT_MODEL_RUNS_CSV = "/bulk/convert_model_runs/csv"
+    GET_BULK_REGENERATE_FROM_BATCH_CSV = "/bulk/regenerate_from_batch/csv"
 
     
     
@@ -30,9 +33,7 @@ class ProvAPIEndpoints(str, Enum):
     GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS = "/check-access/check-admin-access"
     GET_CHECK_ACCESS_CHECK_READ_ACCESS = "/check-access/check-read-access"
     GET_CHECK_ACCESS_CHECK_WRITE_ACCESS = "/check-access/check-write-access"
-    GET_BULK_GENERATE_TEMPLATE_CSV = "/bulk/generate_template/csv"
-    POST_BULK_CONVERT_MODEL_RUNS_CSV = "/bulk/convert_model_runs/csv"
-    GET_BULK_REGENERATE_FROM_BATCH_CSV = "/bulk/regenerate_from_batch/csv"
+ 
 
 class ProvAPIAdminEndpoints(str, Enum):
 
@@ -57,18 +58,42 @@ class ProvAdminClient(ClientService):
        return self._config.prov_api_endpoint + endpoint.value
     
 
-    async def generate_config_file(self, required_only: bool) -> FileResponse:
+    async def generate_config_file(self, required_only: bool) -> str:
+        """Generates a nicely formatted .env file of the current required/non supplied properties 
+        Used to quickly bootstrap a local environment or to understand currently deployed API.
 
-        response = await parsed_get_request_non_status(
+        Parameters
+        ----------
+        required_only : bool, optional
+            By default True
+        file_name : str, optional
+            The filename you want to have, by default DEFAULT_CONFIG_FILE_NAME (prov-api.env)
+        """
+
+        response = await parsed_get_request_none_model(
             client=self, 
-            url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORD),
-            error_message=f"Failed to store record with display name {registry_record.display_name} and id {registry_record.id}",
-            params = {},
-            json_body=py_to_dict(registry_record),
+            url = self._build_endpoint(ProvAPIAdminEndpoints.GET_ADMIN_CONFIG),
+            error_message=f"Failed to generate config file",
+            params = {"required_only": required_only},
         )
 
+        return response.text
     
     async def store_record(self, registry_record: ItemModelRun) -> StatusResponse:
+        """An admin only endpoint which enables the reupload/storage of an existing completed provenance record.
+
+        Parameters
+        ----------
+        registry_record : ItemModelRun
+            The completed registry record for the model run.
+        validate_record: bool
+            Optional Should the ids in the payload be validated?, by default True
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
 
         return await parsed_post_request_with_status(
             client=self, 
@@ -80,6 +105,20 @@ class ProvAdminClient(ClientService):
         )
     
     async def store_multiple_records(self, registry_record: List[ItemModelRun]) -> StatusResponse:
+        """An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
+
+        Parameters
+        ----------
+        registry_record : List[ItemModelRun]
+            List of the completed registry record for the model run validate_record
+        validate_record: bool
+            Optional Should the ids in the payload be validated?, by default True
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
 
         return await parsed_post_request_with_status(
             client=self, 
@@ -91,6 +130,20 @@ class ProvAdminClient(ClientService):
         )
     
     async def store_all_registry_records(self, validate_record: bool) -> StatusResponse:
+        """Applies the store record endpoint action across a list of ItemModelRuns '
+           which is found by querying the registry model run list endpoint directly.
+
+        Parameters
+        ----------
+        validate_record : bool
+            Optional Should the ids in the payload be validated?, by default True
+
+
+        Returns
+        -------
+        StatusResponse
+            A status response indicating the success of the request and any other details.
+        """
 
         return await parsed_post_request_with_status(
             client=self, 
@@ -348,8 +401,81 @@ class ProvClient(ClientService):
     
 
     # CSV template tools endpoints
-    #async def generate_csv_template(self, workflow_template_id: str) -> None: 
-    #async def convert_model_runs_to_csv(self) -> None:
+    async def generate_csv_template(self, workflow_template_id: str) -> str:
+        """Generates a model run csv template for direction purposes.
+
+        Parameters
+        ----------
+        workflow_template_id : str
+            An ID of a created and existing model run workflow template.
+        """
+
+        response = await parsed_get_request_none_model(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_BULK_GENERATE_TEMPLATE_CSV),
+            error_message=f"Failed to generate CSV file",
+            params = {"workflow_template_id": workflow_template_id},
+        )
+
+
+        return response.text
+    
+    async def convert_model_runs_to_csv(self, csv_file_path: str) -> ConvertModelRunsResponse:
+        """Reads a CSV file, and it's defined model run contents
+        and lodges a model run.
+
+        Parameters
+        ----------
+        file_path : str
+            The path of an existing created CSV file containing
+            the necessary parameters for model run lodge.
+
+        Returns
+        -------
+        ConvertModelRunsResponse
+            Returns the model run information in an interactive python
+            datatype.
+        """
+
+        with open(csv_file_path, 'rb') as file:
+
+            files = {'csv_file': (file)}
+
+            return await parsed_post_request_with_status(
+                client=self, 
+                url=self._build_endpoint(ProvAPIEndpoints.POST_BULK_CONVERT_MODEL_RUNS_CSV),
+                error_message="Failed to generate CSV file",
+                files=files,
+                json_body=None,
+                params={},
+                model=ConvertModelRunsResponse
+            )
+    
+    async def regenerate_csv_from_model_run_batch(self, batch_id: str) -> str:
+        """Regenerate/create a csv file containing model 
+        run information from a model run batch job.
+
+        The batch id must exist in the system.
+
+        Parameters
+        ----------
+        batch_id : str
+            Obtained from creating a batch model run.
+        """
+
+        response = await parsed_get_request_none_model(
+            client=self, 
+            url = self._build_endpoint(ProvAPIEndpoints.GET_BULK_REGENERATE_FROM_BATCH_CSV),
+            error_message=f"Failed to generate CSV file from batch_id {batch_id}",
+            params = {"batch_id": batch_id},
+        )
+
+        return response.text
+
+
+
+
+
 
 
         
