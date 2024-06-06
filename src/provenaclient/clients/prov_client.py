@@ -1,3 +1,4 @@
+from typing import List
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.http_client import HttpClient
@@ -5,8 +6,8 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
-
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse,ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
+from ProvenaInterfaces.RegistryAPI import ItemModelRun
 
 class ProvAPIEndpoints(str, Enum):
     """An ENUM containing the prov api endpoints."""
@@ -52,8 +53,54 @@ class ProvAdminClient(ClientService):
         self._auth = auth
         self._config = config
     
-    def _build_endpoint(self, endpoint: ProvAPIEndpoints) -> str:
+    def _build_endpoint(self, endpoint: ProvAPIAdminEndpoints) -> str:
        return self._config.prov_api_endpoint + endpoint.value
+    
+
+    async def generate_config_file(self, required_only: bool) -> FileResponse:
+
+        response = await parsed_get_request_non_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORD),
+            error_message=f"Failed to store record with display name {registry_record.display_name} and id {registry_record.id}",
+            params = {},
+            json_body=py_to_dict(registry_record),
+        )
+
+    
+    async def store_record(self, registry_record: ItemModelRun) -> StatusResponse:
+
+        return await parsed_post_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORD),
+            error_message=f"Failed to store record with display name {registry_record.display_name} and id {registry_record.id}",
+            params = {},
+            json_body=py_to_dict(registry_record),
+            model = StatusResponse
+        )
+    
+    async def store_multiple_records(self, registry_record: List[ItemModelRun]) -> StatusResponse:
+
+        return await parsed_post_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORDS),
+            error_message=f"Failed to complete multiple store record request.",
+            params = {},
+            json_body= json.loads(json.dumps([item.json() for item in registry_record])),
+            model = StatusResponse
+        )
+    
+    async def store_all_registry_records(self, validate_record: bool) -> StatusResponse:
+
+        return await parsed_post_request_with_status(
+            client=self, 
+            url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_ALL_REGISTRY_RECORDS),
+            error_message=f"Failed to validate records.",
+            params = {"validate_record": validate_record},
+            json_body= None,
+            model = StatusResponse
+        )
+
     
 class ProvClient(ClientService):
 
