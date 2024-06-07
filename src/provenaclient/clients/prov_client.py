@@ -1,5 +1,4 @@
-from io import BufferedReader
-from typing import List
+from typing import List, cast
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.http_client import HttpClient
@@ -71,7 +70,7 @@ class ProvAdminClient(ClientService):
             The filename you want to have, by default DEFAULT_CONFIG_FILE_NAME (prov-api.env)
         """
 
-        response = await parsed_get_request_none_model(
+        response = await validated_get_request(
             client=self, 
             url = self._build_endpoint(ProvAPIAdminEndpoints.GET_ADMIN_CONFIG),
             error_message=f"Failed to generate config file",
@@ -126,9 +125,8 @@ class ProvAdminClient(ClientService):
             url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORDS),
             error_message=f"Failed to complete multiple store record request.",
             params = {"validate_record": validate_record},
-            # The line below is a bit funky but all it does is create a list of json objects e.g [{}, {}, {}]
-            json_body= json.loads(json.dumps([item.json() for item in registry_record])), 
-            model = StatusResponse
+            model = StatusResponse,
+            json_body = cast(List[Dict[str, Any]], [py_to_dict(item) for item in registry_record])
         )
     
     async def store_all_registry_records(self, validate_record: bool) -> StatusResponse:
@@ -356,6 +354,9 @@ class ProvClient(ClientService):
     async def register_batch_model_runs(self, model_run_batch_payload:RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
         """This function allows you to register multiple model runs in one go (batch) asynchronously.
 
+        Note: You can utilise the returned session ID to poll on 
+        the JOB API to check status of the model run registration(s).
+
         Parameters
         ----------
         batch_model_run_payload : RegisterBatchModelRunRequest
@@ -378,6 +379,9 @@ class ProvClient(ClientService):
 
     async def register_model_run(self, model_run_payload: ModelRunRecord) -> RegisterModelRunResponse:
         """Asynchronously registers a single model run.
+
+        Note: You can utilise the returned session ID to poll on 
+        the JOB API to check status of the model run registration.
 
         Parameters
         ----------
@@ -404,7 +408,8 @@ class ProvClient(ClientService):
 
     # CSV template tools endpoints
     async def generate_csv_template(self, workflow_template_id: str) -> str:
-        """Generates a model run csv template for direction purposes.
+        """Generates a model run csv template to be utilised 
+        for creating model runs through csv format.
 
         Parameters
         ----------
@@ -412,7 +417,7 @@ class ProvClient(ClientService):
             An ID of a created and existing model run workflow template.
         """
 
-        response = await parsed_get_request_none_model(
+        response = await validated_get_request(
             client=self, 
             url = self._build_endpoint(ProvAPIEndpoints.GET_BULK_GENERATE_TEMPLATE_CSV),
             error_message=f"Failed to generate CSV file",
@@ -422,14 +427,18 @@ class ProvClient(ClientService):
 
         return response.text
     
-    async def convert_model_runs_to_csv(self, csv_file: Dict[str, Any]) -> ConvertModelRunsResponse:
+    async def convert_model_runs_to_csv(self, csv_file: HttpxFileUpload) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
         and lodges a model run.
 
         Parameters
         ----------
-        csv_file : str
-            The csv file object to be used for httpx post requests. 
+        csv_file : HttpxFileUpload
+            The csv file object to be used for httpx post requests
+            A dictionary representing file(s) to be uploaded with the
+               request. Each key in the dictionary is the name of the form field for the file according,
+               to API specifications. For Provena it's "csv_file" and and the value 
+               is a tuple of (filename, filedata, MIME type / media type).  
 
         Returns
         -------
@@ -461,7 +470,7 @@ class ProvClient(ClientService):
             Obtained from creating a batch model run.
         """
 
-        response = await parsed_get_request_none_model(
+        response = await validated_get_request(
             client=self, 
             url = self._build_endpoint(ProvAPIEndpoints.GET_BULK_REGENERATE_FROM_BATCH_CSV),
             error_message=f"Failed to generate CSV file from batch_id {batch_id}",

@@ -151,15 +151,15 @@ async def main() -> None:
 
     list_of_model_runs = [model_run, model_run,  model_run]
 
-    list_y = json.loads(json.dumps([item.json() for item in list_of_model_runs]))
+    #list_y = json.loads(json.dumps([item.json() for item in list_of_model_runs]))
                         
-    print(list_y)
+    #print(list_y)
 
     #batch = RegisterBatchModelRunRequest(records=[model_run])
 
-    #res = await client.prov_api.convert_model_runs_to_csv(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
+    res = await client.prov_api.convert_model_runs_to_csv(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
 
-    #print(res)
+    print(res)
 
     #res = await client.prov_api.register_batch_model_runs(batch_model_run_payload= "7bd3e0e9-1a47-458b-820e-315f514c8640")
 

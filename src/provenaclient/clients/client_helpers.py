@@ -1,4 +1,5 @@
 from abc import ABC
+from io import BufferedReader
 from provenaclient.auth import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.helpers import *
@@ -156,7 +157,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     return data
 
-async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType], files: Optional[Dict[str, Any]] = None) -> BaseModelType:
+async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType], files: Optional[HttpxFileUpload] = None) -> BaseModelType:
     """
 
     High level helper function which 
@@ -176,6 +177,10 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
         json_body: Optional[JsonData]: JSON data to post if any
+        files: Optional[HttpxFileUpload]: A dictionary representing file(s) to be uploaded with the
+               request. Each key in the dictionary is the name of the form field for the file according,
+               to API specifications. For Provena it's "csv_file" and and the value 
+               is a tuple of (filename, filedata, MIME type or media type).
 
     Raises:
         e: Exception depending on error
@@ -397,7 +402,7 @@ async def parsed_put_request_with_status(client: ClientService, params: Optional
 
 
 
-async def parsed_get_request_none_model(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> Response:
+async def validated_get_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> Response:
     """
 
     High level helper function which 
@@ -442,7 +447,7 @@ async def parsed_get_request_none_model(client: ClientService, params: Optional[
             f"{error_message} Exception: {e}") from e
 
 
-async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> Optional[Response]:
+async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
     """
 
     High level helper function which 
@@ -478,8 +483,6 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
             response=response,
             error_message=error_message
         )
-
-        return response
 
     except BaseException as e:
         raise e

@@ -1,68 +1,26 @@
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, Optional, TypeVar, Type, Union
+from typing import BinaryIO, Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
-import csv
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
 from ProvenaInterfaces.RegistryModels import ItemBase
-from io import StringIO
-
+import os
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
 ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 
 # Type alias for json data
-JsonData = Dict[str, Any]
+JsonData = List[Dict[str, Any]] | Dict[str, Any]
+# Type alias for httpx file upload.
+HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 
 ParamTypes = Union[str, int, bool]
 
 
-def write_csv_file_helper(file_name: str, content: str) -> None:
-    """
-    Writes provided CSV content to a file.
-
-    Parameters
-    ----------
-    file_name : str
-        The name of the file where the CSV content will be written.
-    content : str
-        The CSV formatted string which includes headers and data rows.
-
-    Raises
-    ------
-    IOError
-        If an I/O error occurs during file operations.
-    Exception
-        For non-I/O related exceptions that may occur during CSV processing or writing.
-    """
-
-    # Create a buffer from the content string
-    buffer = StringIO(content)
-    # Use csv.reader to handle complex CSVs properly
-    reader = csv.reader(buffer, delimiter=',')
-    rows = list(reader)
-
-    headers = rows[0]  # First row should be headers
-    data = rows[1:]    # All other rows are data
-
-    try:
-
-        # Write to CSV using the corrected headers and data
-        with open(file_name + '.csv', 'w', newline='') as csvfile:
-            csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(headers)  # Write the headers
-            csv_writer.writerows(data)    # Write the data rows
-    
-    except IOError as e:
-        raise IOError(f"Failed to write CSV file {file_name} due to I/O error: {e}")
-
-    except Exception as e:
-        raise Exception(f"CSV file writing failed. Exception {e}")
-
-def write_file_helper(file_name: str, content: str) -> None:
+def write_file_helper(file_name: str, path_to_save_at: Optional[str], content: str) -> None:
     """
     Writes provided content to a file.
 
@@ -82,14 +40,61 @@ def write_file_helper(file_name: str, content: str) -> None:
     """
 
     try:
-        with open(file_name, "w") as f:
-            f.write(content)
+        if path_to_save_at:
+            if not os.path.isdir(path_to_save_at):
+                raise ValueError(f"The provided path {path_to_save_at} is incorrect. Please try again.")
+            file_path = os.path.join(path_to_save_at, file_name)
+
+        else:
+            file_path = file_name
+
+        # Write to file
+        with open(file_path, 'w') as file:
+            file.write(content)
 
     except IOError as e:
-        raise IOError(f"Failed to write file {file_name} due to I/O error: {e}")
+        raise IOError(f"Failed to file {file_name} due to I/O error: {e}")
 
     except Exception as e:
         raise Exception(f"File writing failed. Exception {e}")
+
+    
+def prepare_httpx_files_csv_request(file_path: str) -> HttpxFileUpload:
+
+    # This method could be made more "generic" to accept various file types
+    # however, I have scoped it to csv for our use cases.
+
+    """Prepares an httpx files request object.
+
+    Parameters
+    ----------
+    file_path : str
+        The path of an existing created file.
+    Returns
+    -------
+    HttpxFileUpload
+        A dictionary representing file(s) to be uploaded with the
+        request. Each key in the dictionary is the name of the form field for the file according,
+        to API specifications. For Provena it's "csv_file" and and the value 
+        is a tuple of (filename, filedata or file contents, MIME type or media type).
+
+    Raises
+    ------
+    Exception
+        If there any error with reading the CSV file 
+        this general exception is raised.
+    """
+
+    try:
+            file = open(file_path, 'rb')  # Open the file in binary-read mode
+            file_content = file.read() # Save the contents of the file.
+            files = {'csv_file': (file_path, file_content, 'text/csv')}  # Prepare the request object, passed to httpx.
+            file.close()
+
+            return files
+
+    except Exception as e:
+        raise Exception(f"Error with CSV file. Exception {e}")
 
 def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """
@@ -231,7 +236,7 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
                               error_code=response.status_code, payload=error_message)
 
 
-def check_status_response(json_data: Dict) -> None:
+def check_status_response(json_data: JsonData) -> None:
     """
     Parses JSON data as StatusResponse model, then asserts success is true,
     throwing exception with embedded details if not.

@@ -1,4 +1,5 @@
-from typing import Any, Optional
+from io import BufferedReader
+from typing import Any, List, Optional, Union
 import httpx
 from provenaclient.auth.helpers import HttpxBearerAuth
 
@@ -63,7 +64,7 @@ class HttpClient:
             return response
 
     @staticmethod
-    async def make_post_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] = None, files: Any = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_post_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Union[Optional[dict[str, Any]], Optional[List[dict[str,Any]]]] = None, files: Optional[dict[str, tuple[str, bytes, str]]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP POST request to the specified URL with the provided data, authentication, and headers.
 
         Parameters
@@ -89,7 +90,7 @@ class HttpClient:
             return response
 
     @staticmethod
-    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] | Optional[List[dict[str,Any]]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP put request to the specified URL with the provided data, authentication, and headers.
 
         Parameters
