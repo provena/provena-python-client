@@ -3,9 +3,10 @@ from provenaclient.utils.config import Config
 from provenaclient.clients import JobAPIClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
-from provenaclient.models import HealthCheckResponse
+from provenaclient.models import HealthCheckResponse, AsyncAwaitSettings, DEFAULT_AWAIT_SETTINGS
+from provenaclient.utils.async_job_helpers import wait_for_full_lifecycle, wait_for_full_successful_lifecycle
 from ProvenaInterfaces.AsyncJobAPI import *
-from typing import List
+from typing import List, AsyncGenerator
 
 # L3 interface.
 
@@ -66,6 +67,72 @@ class JobAdminSubService(ModuleService):
             AdminListJobsResponse: The list of jobs response.
         """
         return await self._job_api_client.admin.list_jobs(list_jobs_request=list_jobs_request)
+    
+    async def list_all_jobs(self, list_jobs_request: AdminListJobsRequest, limit: Optional[int] = None) -> List[JobStatusTable]:
+        """
+        Lists all jobs for the given user.
+
+        Will automatically paginate until list is exhausted.
+
+        Args:
+            list_jobs_request (AdminListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        all_jobs: List[JobStatusTable] = []
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.admin.list_jobs(list_jobs_request=list_jobs_request)
+            count += len(new_list.jobs)
+            all_jobs.extend(new_list.jobs)
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_jobs_request.pagination_key = new_list.pagination_key
+
+        return all_jobs
+
+    async def for_all_jobs(self, list_jobs_request: AdminListJobsRequest, limit: Optional[int] = None) -> AsyncGenerator[JobStatusTable, None]:
+        """
+        Lists all jobs for the given user.
+
+        Returns lazy generator for use in for loops.
+
+        Will automatically paginate until list is exhausted.
+
+        Args:
+            list_jobs_request (AdminListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.admin.list_jobs(list_jobs_request=list_jobs_request)
+            count += len(new_list.jobs)
+
+            for job in new_list.jobs:
+                yield job
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_jobs_request.pagination_key = new_list.pagination_key
+    
 
     async def list_job_batch(self, list_request: AdminListByBatchRequest) -> AdminListByBatchResponse:
         """
@@ -79,6 +146,72 @@ class JobAdminSubService(ModuleService):
         """
         return await self._job_api_client.admin.list_jobs_in_batch(list_request=list_request)
 
+    async def list_all_jobs_in_batch(self, list_request: AdminListByBatchRequest, limit: Optional[int] = None) -> List[JobStatusTable]:
+        """
+        Lists all jobs for the given user. Will automatically paginate all
+        entries to exhaust list 
+
+        NOTE this could return more than limit - but figure it may as well
+        return data fetched for efficiency reasons
+
+        Args:
+            list_jobs_request (AdminListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        all_jobs: List[JobStatusTable] = []
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.admin.list_jobs_in_batch(list_request=list_request)
+            count += len(new_list.jobs)
+            all_jobs.extend(new_list.jobs)
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_request.pagination_key = new_list.pagination_key
+
+        return all_jobs
+
+    async def for_all_jobs_in_batch(self, list_request: AdminListByBatchRequest, limit: Optional[int] = None) -> AsyncGenerator[JobStatusTable, None]:
+        """
+        Lists all jobs for the given user. Will automatically paginate all
+        entries to exhaust list
+
+        NOTE this could return more than limit - but figure it may as well
+        return data fetched for efficiency reasons
+
+        Args:
+            list_jobs_request (AdminListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.admin.list_jobs_in_batch(list_request=list_request)
+            count += len(new_list.jobs)
+
+            for job in new_list.jobs:
+                yield job
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_request.pagination_key = new_list.pagination_key
 
 class JobService(ModuleService):
     _job_api_client: JobAPIClient
@@ -133,6 +266,8 @@ class JobService(ModuleService):
         """
         Lists all jobs for the given user
 
+        Can return pagination if page size exceeded
+
         Args:
             list_jobs_request (ListJobsRequest): The request including details
 
@@ -141,9 +276,76 @@ class JobService(ModuleService):
         """
         return await self._job_api_client.list_jobs(list_jobs_request=list_jobs_request)
 
+    async def list_all_jobs(self, list_jobs_request: ListJobsRequest, limit: Optional[int] = None) -> List[JobStatusTable]:
+        """
+        Lists all jobs for the given user.
+
+        Will automatically paginate until list is exhausted.
+
+        Args:
+            list_jobs_request (ListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        all_jobs: List[JobStatusTable] = []
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.list_jobs(list_jobs_request=list_jobs_request)
+            count += len(new_list.jobs)
+            all_jobs.extend(new_list.jobs)
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_jobs_request.pagination_key = new_list.pagination_key
+
+        return all_jobs
+
+    async def for_all_jobs(self, list_jobs_request: ListJobsRequest, limit: Optional[int] = None) -> AsyncGenerator[JobStatusTable, None]:
+        """
+        Lists all jobs for the given user.
+
+        Returns lazy generator for use in for loops.
+
+        Will automatically paginate until list is exhausted.
+
+        Args:
+            list_jobs_request (ListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.list_jobs(list_jobs_request=list_jobs_request)
+            count += len(new_list.jobs)
+
+            for job in new_list.jobs:
+                yield job
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_jobs_request.pagination_key = new_list.pagination_key
+
     async def list_jobs_in_batch(self, list_request: ListByBatchRequest) -> ListByBatchResponse:
         """
         Gets all jobs within a batch.
+
+        Can return pagination if page size exceeded
 
         Args:
             list_request (ListByBatchRequest): The request including batch ID
@@ -152,3 +354,110 @@ class JobService(ModuleService):
             ListByBatchResponse: The response including list of jobs
         """
         return await self._job_api_client.list_jobs_in_batch(list_request=list_request)
+
+    async def list_all_jobs_in_batch(self, list_request: ListByBatchRequest, limit: Optional[int] = None) -> List[JobStatusTable]:
+        """
+        Lists all jobs for the given user. Will automatically paginate all
+        entries to exhaust list 
+
+        NOTE this could return more than limit - but figure it may as well
+        return data fetched for efficiency reasons
+
+        Args:
+            list_jobs_request (ListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        all_jobs: List[JobStatusTable] = []
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.list_jobs_in_batch(list_request=list_request)
+            count += len(new_list.jobs)
+            all_jobs.extend(new_list.jobs)
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_request.pagination_key = new_list.pagination_key
+
+        return all_jobs
+
+    async def for_all_jobs_in_batch(self, list_request: ListByBatchRequest, limit: Optional[int] = None) -> AsyncGenerator[JobStatusTable, None]:
+        """
+        Lists all jobs for the given user. Will automatically paginate all
+        entries to exhaust list
+
+        NOTE this could return more than limit - but figure it may as well
+        return data fetched for efficiency reasons
+
+        Args:
+            list_jobs_request (ListJobsRequest): The request including details
+            limit (Optional[int]): Total record limit to enforce, if any
+
+        Returns:
+            ListJobsResponse: The list of jobs
+        """
+        count = 0
+
+        # paginate until limit hit
+        while True:
+            new_list = await self._job_api_client.list_jobs_in_batch(list_request=list_request)
+            count += len(new_list.jobs)
+
+            for job in new_list.jobs:
+                yield job
+
+            if limit is not None and count >= limit:
+                break
+
+            if new_list.pagination_key is None:
+                break
+
+            list_request.pagination_key = new_list.pagination_key
+
+    async def await_job_completion(self, session_id: str, settings: AsyncAwaitSettings = DEFAULT_AWAIT_SETTINGS) -> JobStatusTable:
+        """
+
+        Awaits completion of a given job then provides the job info.
+
+        Completion is defined as a job status which is not pending or in progress.
+
+        Args:
+            session_id (str): The ID of the job to monitor and await completion.
+
+        Returns:
+            JobStatusTable: The entry at the latest point.
+        """
+
+        return await wait_for_full_lifecycle(
+            session_id=session_id,
+            client=self._job_api_client,
+            settings=settings
+        )
+
+    async def await_successful_job_completion(self, session_id: str, settings: AsyncAwaitSettings = DEFAULT_AWAIT_SETTINGS) -> JobStatusTable:
+        """
+
+        Awaits successful completion of a given job then provides the job info.
+
+        Completion is defined as a job status which is not pending or in progress.
+
+        Args:
+            session_id (str): The ID of the job to monitor and await completion.
+
+        Returns:
+            JobStatusTable: The entry at the latest point.
+        """
+
+        return await wait_for_full_successful_lifecycle(
+            session_id=session_id,
+            client=self._job_api_client,
+            settings=settings
+        )
