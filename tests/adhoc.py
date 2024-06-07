@@ -1,3 +1,4 @@
+import json
 from provenaclient import ProvenaClient, Config
 from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
@@ -148,6 +149,12 @@ async def main() -> None:
         end_time=1
     )
 
+    list_of_model_runs = [model_run, model_run,  model_run]
+
+    list_y = json.loads(json.dumps([item.json() for item in list_of_model_runs]))
+                        
+    print(list_y)
+
     #batch = RegisterBatchModelRunRequest(records=[model_run])
 
     #res = await client.prov_api.convert_model_runs_to_csv(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
@@ -158,6 +165,10 @@ async def main() -> None:
 
     #print(res)
 
-    await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640")
+    #await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640")
+
+    #await client.prov_api.generate_csv_template("10378.1/1905251")
+
+    #res = await client.prov_api.admin.store_multiple_records(registry_record=list_of_model_runs)
 
 asyncio.run(main())

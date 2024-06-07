@@ -1,3 +1,4 @@
+from io import BufferedReader
 from typing import List
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
@@ -125,7 +126,8 @@ class ProvAdminClient(ClientService):
             url = self._build_endpoint(ProvAPIAdminEndpoints.POST_ADMIN_STORE_RECORDS),
             error_message=f"Failed to complete multiple store record request.",
             params = {"validate_record": validate_record},
-            json_body= json.loads(json.dumps([item.json() for item in registry_record])),
+            # The line below is a bit funky but all it does is create a list of json objects e.g [{}, {}, {}]
+            json_body= json.loads(json.dumps([item.json() for item in registry_record])), 
             model = StatusResponse
         )
     
@@ -420,15 +422,14 @@ class ProvClient(ClientService):
 
         return response.text
     
-    async def convert_model_runs_to_csv(self, csv_file_path: str) -> ConvertModelRunsResponse:
+    async def convert_model_runs_to_csv(self, csv_file: Dict[str, Any]) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
         and lodges a model run.
 
         Parameters
         ----------
-        file_path : str
-            The path of an existing created CSV file containing
-            the necessary parameters for model run lodge.
+        csv_file : str
+            The csv file object to be used for httpx post requests. 
 
         Returns
         -------
@@ -437,19 +438,16 @@ class ProvClient(ClientService):
             datatype.
         """
 
-        with open(csv_file_path, 'rb') as file:
 
-            files = {'csv_file': (file)}
-
-            return await parsed_post_request_with_status(
-                client=self, 
-                url=self._build_endpoint(ProvAPIEndpoints.POST_BULK_CONVERT_MODEL_RUNS_CSV),
-                error_message="Failed to generate CSV file",
-                files=files,
-                json_body=None,
-                params={},
-                model=ConvertModelRunsResponse
-            )
+        return await parsed_post_request_with_status(
+            client=self, 
+            url=self._build_endpoint(ProvAPIEndpoints.POST_BULK_CONVERT_MODEL_RUNS_CSV),
+            error_message="Failed to generate CSV file",
+            files=csv_file,
+            json_body=None,
+            params={},
+            model=ConvertModelRunsResponse
+        )
     
     async def regenerate_csv_from_model_run_batch(self, batch_id: str) -> str:
         """Regenerate/create a csv file containing model 

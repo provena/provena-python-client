@@ -310,7 +310,7 @@ class Prov(ModuleService):
         response = await self._prov_api_client.generate_csv_template(workflow_template_id=workflow_template_id)
 
         if response:
-            write_csv_file_helper(file_name="WorkflowTemplate", content = response)
+            write_csv_file_helper(file_name=f"WorkflowTemplate-{workflow_template_id}", content = response)
 
     async def convert_model_runs_to_csv(self, file_path: str) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
@@ -327,10 +327,28 @@ class Prov(ModuleService):
         ConvertModelRunsResponse
             Returns the model run information in an interactive python
             datatype.
+
+        Raises
+        ------
+        Exception
+            If there any error with reading the CSV file 
+            this general exception is raised.
+
         """
-        
-        return await self._prov_api_client.convert_model_runs_to_csv(csv_file_path= file_path)
-    
+
+        try:
+            file = open(file_path, 'rb')  # Open the file in binary-read mode
+            files = {'csv_file': (file)}  # Prepare the request object, passed to httpx.
+        except Exception as e:
+            raise Exception(f"Error with CSV file. Exception {e}")
+        else:
+            response = await self._prov_api_client.convert_model_runs_to_csv(csv_file=files)
+        finally:
+            # Close the file.
+            file.close()
+
+        return response
+
     async def regenerate_csv_from_model_run_batch(self, batch_id: str) -> None:
         """Regenerate/create a csv file containing model 
         run information from a model run batch job.
