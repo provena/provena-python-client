@@ -1,6 +1,5 @@
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
@@ -8,22 +7,28 @@ from provenaclient.models import *
 from ProvenaInterfaces.AsyncJobAPI import *
 
 
-class JobAPIEndpoints(str, Enum):
+class JobAPIAdminEndpoints(str, Enum):
     """An ENUM containing the job api endpoints."""
-    GET_JOBS_USER_FETCH = "/jobs/user/fetch"
-    POST_JOBS_USER_LIST = "/jobs/user/list"
-    POST_JOBS_USER_LIST_BATCH = "/jobs/user/list_batch"
     POST_JOBS_ADMIN_LAUNCH = "/jobs/admin/launch"
     GET_JOBS_ADMIN_FETCH = "/jobs/admin/fetch"
     POST_JOBS_ADMIN_LIST = "/jobs/admin/list"
     POST_JOBS_ADMIN_LIST_BATCH = "/jobs/admin/list_batch"
 
+    # not implemented
+    GET_ADMIN_CONFIG = "/admin/config"
+    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
+
+
+class JobAPIEndpoints(str, Enum):
+    """An ENUM containing the job api endpoints."""
+    GET_JOBS_USER_FETCH = "/jobs/user/fetch"
+    POST_JOBS_USER_LIST = "/jobs/user/list"
+    POST_JOBS_USER_LIST_BATCH = "/jobs/user/list_batch"
+
     # Done
     GET_HEALTH_CHECK = "/"
 
     # not implemented
-    GET_ADMIN_CONFIG = "/admin/config"
-    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
     GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS = "/check-access/check-general-access"
     GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS = "/check-access/check-admin-access"
     GET_CHECK_ACCESS_CHECK_READ_ACCESS = "/check-access/check-read-access"
@@ -46,7 +51,7 @@ class JobAPIAdminSubClient(ClientService):
         self._auth = auth
         self._config = config
 
-    def _build_endpoint(self, endpoint: JobAPIEndpoints) -> str:
+    def _build_endpoint(self, endpoint: JobAPIAdminEndpoints) -> str:
         return self._config.jobs_service_api_endpoint + endpoint.value
 
     async def launch_job(self, request: AdminLaunchJobRequest) -> AdminLaunchJobResponse:
@@ -63,7 +68,8 @@ class JobAPIAdminSubClient(ClientService):
             client=self,
             json_body=py_to_dict(request),
             params={},
-            url=self._build_endpoint(JobAPIEndpoints.POST_JOBS_ADMIN_LAUNCH),
+            url=self._build_endpoint(
+                JobAPIAdminEndpoints.POST_JOBS_ADMIN_LAUNCH),
             error_message=f"Failed to launch job of subtype {request.job_sub_type}.",
             model=AdminLaunchJobResponse
         )
@@ -81,7 +87,8 @@ class JobAPIAdminSubClient(ClientService):
         return await parsed_get_request(
             client=self,
             params={'session_id': session_id},
-            url=self._build_endpoint(JobAPIEndpoints.GET_JOBS_ADMIN_FETCH),
+            url=self._build_endpoint(
+                JobAPIAdminEndpoints.GET_JOBS_ADMIN_FETCH),
             error_message=f"Failed to fetch job (admin) for session id {session_id}",
             model=AdminGetJobResponse
         )
@@ -100,7 +107,8 @@ class JobAPIAdminSubClient(ClientService):
             client=self,
             json_body=py_to_dict(list_jobs_request),
             params={},
-            url=self._build_endpoint(JobAPIEndpoints.POST_JOBS_ADMIN_LIST),
+            url=self._build_endpoint(
+                JobAPIAdminEndpoints.POST_JOBS_ADMIN_LIST),
             error_message=f"Failed to list jobs for user (admin).",
             model=AdminListJobsResponse
         )
@@ -120,7 +128,7 @@ class JobAPIAdminSubClient(ClientService):
             json_body=py_to_dict(list_request),
             params={},
             url=self._build_endpoint(
-                JobAPIEndpoints.POST_JOBS_ADMIN_LIST_BATCH),
+                JobAPIAdminEndpoints.POST_JOBS_ADMIN_LIST_BATCH),
             error_message=f"Failed to list jobs for specified batch (admin).",
             model=AdminListByBatchResponse
         )
