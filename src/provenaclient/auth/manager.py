@@ -21,10 +21,6 @@ class AuthManager(ABC):
         """Get token information and other metadata."""
         pass
 
-    @abstractmethod
-    def get_auth(self) -> HttpxBearerAuth:
-        """Prepares and returns an auth object of Bearer type."""
-        pass
 
     ############################################################
     #                       Helper methods
@@ -139,7 +135,7 @@ class AuthManager(ABC):
 
         if (not response.status_code == 200):
             raise Exception(
-                f"The refresh token has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}.")
+                f"The token used for refresh is invalid or has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}.")
 
         return response.json()
 
@@ -182,7 +178,7 @@ class AuthManager(ABC):
             The tokens object to validate, by default None
         """
 
-        self.optional_print("Attempting to validate provided tokens.")
+        self.optional_print("Attempting to validate tokens.")
 
         try:
 

@@ -27,7 +27,7 @@ class DeviceFlow(AuthManager):
         self.silent = silent
 
         """ Create and generate a DeviceFlow object. The tokens are automatically refreshed when
-        accessed through the get_auth() function. 
+        accessed through the get_auth() function.
 
         Tokens are cached in local storage with a configurable file name and are
         only reproduced if the refresh token expires.
@@ -84,7 +84,7 @@ class DeviceFlow(AuthManager):
 
     def start_device_flow(self) -> None:
         """Initiates the device authorisation flow by requesting a device code from server and prompts
-        user for authentication through the web browser and continues to handle the flow. 
+        user for authentication through the web browser and continues to handle the flow.
 
         Raises
         ------
@@ -116,8 +116,8 @@ class DeviceFlow(AuthManager):
             raise Exception("Failed to initiate device flow auth.")
 
     def display_device_auth_flow(self, user_code: str, verification_url: str) -> None:
-        """Displays the current device auth flow challenge - first by trying to 
-        open a browser window - if this fails then prints suggestion to stdout 
+        """Displays the current device auth flow challenge - first by trying to
+        open a browser window - if this fails then prints suggestion to stdout
         to try using the URL manually.
 
         Parameters
@@ -136,7 +136,7 @@ class DeviceFlow(AuthManager):
 
     def handle_auth_flow(self) -> None:
         """Handles the device authorisation flow by constantly polling the token endpoint until a token
-        is received, an error is received or a timeout occurs. 
+        is received, an error is received or a timeout occurs.
         """
 
         device_grant_type = "urn:ietf:params:oauth:grant-type:device_code"
@@ -207,7 +207,7 @@ class DeviceFlow(AuthManager):
                     f"Failed with unknown error, failed to find error message.")
 
     def get_token(self) -> str:
-        """Uses the current token - validates it, 
+        """Uses the current token - validates it,
         refreshes if necessary, and returns the valid token
         ready to be used.
 
@@ -219,7 +219,7 @@ class DeviceFlow(AuthManager):
         Raises
         ------
         Exception
-            Raises exception if tokens/public_key are not setup - make sure 
+            Raises exception if tokens/public_key are not setup - make sure
             that the object is instantiated properly before calling this function.
         Exception
             If the token is invalid and cannot be refreshed.
@@ -260,7 +260,7 @@ class DeviceFlow(AuthManager):
                 "Failed to obtain a valid token after initiating a new device flow.")
 
     def force_refresh(self) -> None:
-        """A method to reset the current authentication state. 
+        """A method to reset the current authentication state.
         """
 
         # Force refresh everything hear, so reset the tokens file and re-generate the device flow.
@@ -281,7 +281,8 @@ class OfflineFlow(AuthManager):
 
     def __init__(self, keycloak_endpoint: str, client_id: str, offline_token: Optional[str] = None, silent: bool = False, offline_token_file: Optional[str] = None) -> None:
         f"""Create and generate an OfflineFlow object. Instatiate from provided offline token, or attempt to read
-        one from file and generate the access token.
+        one from file and generate the access token. Can provide the offline token directly, a file for it stored as plain text, or the device
+        will attempt to read a pair of tokens from the default cache file '{self.file_name}' it may have managed previously.
 
         Parameters
         ----------
@@ -290,9 +291,12 @@ class OfflineFlow(AuthManager):
         client_id : str
             The client to target for auth. E.g., landing-portal-ui
         offline_token : Optional[str], optional
-            The offline token to bootstrap the auth device from. If not provided, defaults to None and an offline token is read from file {self.file_name}
+            The offline token to bootstrap the auth device from. If not provided, defaults to None and init will try use offline_token_file to read an offline_token.
         silent : bool, optional
             Whether to print debug or not, by default False
+        offline_token_file : Optional[str], optional
+            The file name to read the offline token from, where it is stored as plain text. If not provided and neither was offline_token, defaults to None and tokens are attempted to be read, validated, and refreshed from {self.file_name}, the default cache file. Be sure
+            to add this file to your .gitignore if using this parameter.
 
         Raises
         ------
@@ -319,67 +323,53 @@ class OfflineFlow(AuthManager):
             raise Exception(
                 "Failed to retrieve the Keycloak public key, authentication cannot proceed.") from e
 
-        # if an offline_token was provided, use it to generate the tokens, if not, try use the file to get the offline token
-
-        # TODO - consolidate some of the refresh logic here. Main goal is to get the offline/refresh token then
-        # TODO, just do a read from offline token only file, or from provided variable.
-        # do the refresh/validation
         if offline_token:
             self.optional_print(
                 "Offline token provided, attempting to generate tokens from it.")
             self.offline_token = offline_token
-
-            self.tokens = Tokens(
-                access_token="To Be Refreshed",
-                refresh_token=self.offline_token,
-            )
-            # refresh self.tokens()
-            self.refresh_tokens()
-            if self.validate_token(self.tokens):
-                self.optional_print("Successfully refreshed tokens from file.")
-                # TODO, dont do this with the refresh token.
-                self.offline_token = self.tokens.refresh_token
-            else:
-                raise Exception("Failed to validate refreshed tokens.")
+            try:
+                self.get_tokens_from_offline_token()
+            except Exception as e:
+                raise Exception(
+                    "Failed to validate new tokens generated from provided offline token.") from e
 
         elif offline_token_file:
-
-            # TODO - turn this into a function and call it when refreshes with the short refresh token fail (like when the complete restart of device auth flow happens)
             assert offline_token_file != self.file_name, "Offline token file cannot be the same as the default file for storing access and refresh tokens."
-            self.offline_token = self.load_offline_token(offline_token_file)
-            self.tokens = Tokens(
-                access_token="To Be Refreshed",
-                refresh_token=self.offline_token,
-            )
-            # refresh self.tokens()
-            self.refresh_tokens()
-            if self.validate_token(self.tokens):
-                self.optional_print("Successfully refreshed tokens from file.")
-                # TODO dont do this.
-                self.offline_token = self.tokens.refresh_token
-            else:
-                raise Exception("Failed to validate refreshed tokens.")
-
-        else:  # no offline token provided, try read from default file
             self.optional_print(
-                "No offline token provided, attempting to load tokens from file.")
+                "Offline token file provided, attempting to generate tokens from it.")
+            self.offline_token = self.load_offline_token(offline_token_file)
+            try:
+                self.get_tokens_from_offline_token()
+            except Exception as e:
+                raise Exception(
+                    "Failed to validate new tokens generated from offline token file.") from e
+
+        else:  # no offline token provided, try read from .tokens.json default file
+            self.optional_print(
+                "No offline token provided, attempting to load tokens from cached file.")
             assert os.path.exists(
                 self.file_name), "No offline token provided and no tokens file found."
-            self.tokens = self.load_tokens()
 
-            if self.validate_token(self.tokens):
-                self.optional_print(
-                    "Successfully read already valid tokens from file.")
-                self.offline_token = self.tokens.refresh_token
-            else:  # invalid tokens were read from file, try refreshing them.
-                self.refresh_tokens()
-                if self.validate_token(self.tokens):
-                    self.optional_print(
-                        "Successfully refreshed tokens from file.")
-                    self.offline_token = self.tokens.refresh_token
-                else:
-                    raise Exception(
-                        "Failed to validate tokens refreshed from file.")
+            self.tokens = self.load_tokens()
+            self.offline_token = self.tokens.refresh_token
+            try:
+                self.get_tokens_from_offline_token()
+            except Exception as e:
+                raise Exception(
+                    "Failed to validate tokens read from cached file. They've most likely expired and a long living offline token is needed to auth") from e
+
+    def get_tokens_from_offline_token(self) -> None:
+        self.tokens = Tokens(
+            access_token="To Be Refreshed",
+            refresh_token=self.offline_token,
+        )
+        self.refresh_tokens()
+        if self.validate_token(self.tokens):
+            self.optional_print(
+                "Successfully generated refresh and access tokens offline token.")
+        else:
+            raise Exception(
+                "Failed to generate refresh and access tokens from the offline token.")
 
     def load_offline_token(self, file_name: str) -> str:
         """Loads the offline token from the provided file.
@@ -442,12 +432,15 @@ class OfflineFlow(AuthManager):
             if self.validate_token(self.tokens):
                 return self.tokens.access_token
             else:
-                # refresh and attempt re validation
+                # refresh with refresh token and attempt re validation
                 self.refresh_tokens()
                 if self.validate_token(self.tokens):
                     return self.tokens.access_token
                 else:
-                    raise Exception("Failed to validate token after refresh.")
+                    self.optional_print(
+                        "Failed to validate token after refresh. Trying again with force refresh")
+                    self.force_refresh()
+
         except JWTError as e:
             raise Exception("Failed to refresh tokens.") from e
         except Exception as e:
@@ -472,4 +465,5 @@ class OfflineFlow(AuthManager):
             self.optional_print("Successfully refreshed tokens.")
             self.offline_token = self.tokens.refresh_token
         else:
-            raise Exception("Failed to validate tokens refreshed tokens.")
+            raise Exception(
+                "Failed to validate refreshed tokens generated from the offline token.")
