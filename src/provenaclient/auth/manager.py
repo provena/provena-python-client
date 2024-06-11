@@ -110,7 +110,7 @@ class AuthManager(ABC):
             If no refresh token is provided or found in the class token variable. 
         Exception
             If the HTTP request fails a message is displayed with the HTTP status code. Can occur 
-            if the refresh/offline token has expired.
+            if the refresh token has expired.
         """
 
         # Perform a refresh grant
@@ -139,7 +139,7 @@ class AuthManager(ABC):
 
         if (not response.status_code == 200):
             raise Exception(
-                f"The refresh/offline token has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}.")
+                f"The refresh token has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}.")
 
         return response.json()
 
