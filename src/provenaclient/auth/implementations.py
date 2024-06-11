@@ -348,7 +348,7 @@ class OfflineFlow(AuthManager):
             self.optional_print(
                 "No offline token provided, attempting to load tokens from cached file.")
             assert os.path.exists(
-                self.file_name), "No offline token provided and no tokens file found."
+                self.file_name), "No offline token provided and no cached tokens file found to attempt refresh from."
 
             self.tokens = self.load_tokens()
             self.offline_token = self.tokens.refresh_token
