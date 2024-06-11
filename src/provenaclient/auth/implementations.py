@@ -4,9 +4,8 @@ import requests
 import webbrowser
 import time
 import os
-import json
 from jose import JWTError  # type: ignore
-from provenaclient.auth.helpers import HttpxBearerAuth, Tokens
+from provenaclient.auth.helpers import Tokens
 
 
 class DeviceFlow(AuthManager):

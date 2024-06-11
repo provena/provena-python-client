@@ -21,7 +21,6 @@ class AuthManager(ABC):
         """Get token information and other metadata."""
         pass
 
-
     ############################################################
     #                       Helper methods
     ############################################################
