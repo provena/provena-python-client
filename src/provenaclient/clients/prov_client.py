@@ -427,19 +427,16 @@ class ProvClient(ClientService):
 
         return response.text
     
-    async def convert_model_runs_to_csv(self, csv_file: HttpxFileUpload) -> ConvertModelRunsResponse:
+    async def convert_model_runs_to_csv(self, csv_file_contents: ByteString) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
         and lodges a model run.
 
         Parameters
         ----------
-        csv_file : HttpxFileUpload
-            The csv file object to be used for httpx post requests
-            A dictionary representing file(s) to be uploaded with the
-               request. Each key in the dictionary is the name of the form field for the file according,
-               to API specifications. For Provena it's "csv_file" and and the value 
-               is a tuple of (filename, filedata, MIME type / media type).  
-
+        csv_file_contents : Bytestring or bytes
+            Contains the model run contents encoded
+            in bytes.
+           
         Returns
         -------
         ConvertModelRunsResponse
@@ -447,6 +444,12 @@ class ProvClient(ClientService):
             datatype.
         """
 
+        # The csv file object to be used for httpx post requests
+        # A dictionary representing file(s) to be uploaded with the
+        # request. Each key in the dictionary is the name of the form field for the file according,
+        # to API specifications. For Provena it's "csv_file" and and the value 
+        # is a tuple of (filename, filedata, MIME type / media type).  
+        csv_file: HttpxFileUpload = {"csv_file": ("upload.csv", csv_file_contents, "text/csv")}
 
         return await parsed_post_request_with_status(
             client=self, 

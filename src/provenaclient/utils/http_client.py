@@ -77,6 +77,8 @@ class HttpClient:
             Authentication object (e.g., bearer token), which is required for the POST request.
         data : Optional[dict[str,Any]], optional
             A dictionary of the data to be sent in the body of the POST request, by default None.
+        files: Optional[dict[str, tuple[str, bytes, str]]], optional
+            A files request object containing the file content and the media type.
         headers : Optional[dict[str, Any]], optional
             A dictionary representing additional HTTP headers to send with the POST request, by default None.
 

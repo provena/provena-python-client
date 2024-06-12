@@ -3,18 +3,18 @@ from provenaclient.utils.config import Config
 from provenaclient.clients import ProvClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
-from provenaclient.utils.helpers import prepare_httpx_files_csv_request, write_file_helper
-from typing import List
+from provenaclient.utils.helpers import read_csv_file_helper, write_file_helper, validate_existing_path, get_and_validate_file_path
+from typing import ByteString, List
 from provenaclient.models.general import HealthCheckResponse
 from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
+import os
 
 # L3 interface.
 
 PROV_API_DEFAULT_SEARCH_DEPTH = 3
 DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
-
 
 class ProvAPIAdminSubModule(ModuleService):
     _prov_api_client: ProvClient
@@ -41,7 +41,7 @@ class ProvAPIAdminSubModule(ModuleService):
         # Clients related to the datastore scoped as private.
         self._prov_api_client = prov_api_client
 
-    async def generate_config_file(self, path_to_save_file: Optional[str], required_only: bool = True, file_name: str = DEFAULT_CONFIG_FILE_NAME, write_to_file: bool = True) -> str:
+    async def generate_config_file(self, required_only: bool = True, file_path: Optional[str] = None, write_to_file: bool = False) -> str:
         """Generates a nicely formatted .env file of the current required/non supplied properties 
         Used to quickly bootstrap a local environment or to understand currently deployed API.
 
@@ -49,12 +49,10 @@ class ProvAPIAdminSubModule(ModuleService):
         ----------
         required_only : bool, optional
             By default True
-        file_name : str, optional
-            The filename you want to have, by default DEFAULT_CONFIG_FILE_NAME (prov-api.env)
-        path_to_save_file: str, optional
-            The path you want to save the config file at. If you don't specify a path
+        file_path: str, optional
+            The path you want to save the config file at WITH the file name. If you don't specify a path
             this will be saved in a relative directory.
-        write_to_file: bool, By default True
+        write_to_file: bool, By default False
             A boolean flag to indicate whether you want to save the config response to a file
             or not.
 
@@ -64,10 +62,25 @@ class ProvAPIAdminSubModule(ModuleService):
 
         """
 
+        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_file, default_file_name=DEFAULT_CONFIG_FILE_NAME)
+
+
+        if file_path and not write_to_file:
+            raise Exception(f"Write to File must be enabled. Currently {write_to_file}")
+        
+        if file_path and write_to_file:
+            # Validate the provided or created path directory.
+            validate_existing_path(file_path)
+
+        if not file_path and write_to_file:
+            # Create the default path.
+            file_path = DEFAULT_CONFIG_FILE_NAME
+
         config_text: str = await self._prov_api_client.admin.generate_config_file(required_only=required_only)
 
-        if config_text and write_to_file:
-            write_file_helper(file_name=file_name, path_to_save_at=path_to_save_file, content=config_text)
+        # Write to file if config text is not None, write to file is True and file path is not None.
+        if config_text and write_to_file and file_path:
+            write_file_helper(file_path=file_path, content=config_text)
 
         return config_text
     
@@ -318,7 +331,7 @@ class Prov(ModuleService):
 
         return await self._prov_api_client.register_model_run(model_run_payload=model_run_payload)
     
-    async def generate_csv_template(self, workflow_template_id: str, path_to_save_csv: Optional[str] = None, write_to_csv: bool = True) -> str:
+    async def generate_csv_template(self, workflow_template_id: str, file_path: Optional[str] = None, write_to_csv: bool = False) -> str:
         """Generates a model run csv template to be utilised 
         for creating model runs through csv format..
 
@@ -327,9 +340,9 @@ class Prov(ModuleService):
         workflow_template_id : str
             An ID of a created and existing model run workflow template.
         path_to_save_csv: str, optional 
-            The path you want to save the csv file at. If you don't specify a path
+            The path you want to save the csv file at WITH csv file name. If you don't specify a path
             this will be saved in a relative directory.
-        write_to_csv: bool, By default True
+        write_to_csv: bool, By default False
             A boolean flag to indicate whether you want to save the template to a csv file
             or not.
 
@@ -339,14 +352,49 @@ class Prov(ModuleService):
         
         """
 
+        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_csv, default_file_name=workflow_template_id + ".csv")
+
         csv_text = await self._prov_api_client.generate_csv_template(workflow_template_id=workflow_template_id)
 
-        if csv_text and write_to_csv:
-            write_file_helper(file_name=f"WorkflowTemplate-{workflow_template_id}.csv", path_to_save_at=path_to_save_csv, content = csv_text)
+        # Write to file if CSV content is returned and write_to_csv is True and file_path is not None.
+        if csv_text and write_to_csv and file_path:
+            write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text
+    
 
-    async def convert_model_runs_to_csv(self, file_path: str) -> ConvertModelRunsResponse:
+    async def convert_model_runs(self,model_run_content: str) -> ConvertModelRunsResponse: 
+        """Converts model run with model_run_content provided as a string.
+        
+        Parameters
+        ----------
+        model_run_content : str
+            The model run information containing
+            the necessary parameters for model run lodge.
+
+        Returns
+        -------
+        ConvertModelRunsResponse
+            Returns the model run information in an interactive python
+            datatype.
+
+        Raises
+        ------
+        Exception
+            Exception raised when converting string to bytes.
+        """
+
+        # Convert string to bytes. 
+        try:
+            model_run_content_encoded: ByteString = model_run_content.encode("utf-8")
+        except Exception as e:
+            raise Exception(f"Exception has occurred while encoding model run content: {e}")
+
+        response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=model_run_content_encoded)
+
+        return response
+
+    async def convert_model_runs_to_csv_with_file(self, file_path: str) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
         and lodges a model run.
 
@@ -364,12 +412,12 @@ class Prov(ModuleService):
 
         """
 
-        files = prepare_httpx_files_csv_request(file_path = file_path)
+        file_content = read_csv_file_helper(file_path = file_path)
 
-        response = await self._prov_api_client.convert_model_runs_to_csv(csv_file=files)
+        response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=file_content)
         return response
 
-    async def regenerate_csv_from_model_run_batch(self, batch_id: str, path_to_save_csv: Optional[str] = None, write_to_csv: bool = True) -> str:
+    async def regenerate_csv_from_model_run_batch(self, batch_id: str, file_path: Optional[str] = None, write_to_csv: bool = False) -> str:
         """Regenerate/create a csv file containing model 
         run information from a model run batch job.
 
@@ -379,10 +427,10 @@ class Prov(ModuleService):
         ----------
         batch_id : str
             Obtained from creating a batch model run.
-        path_to_save_csv: str, optional 
-            The path you want to save the csv file at. If you don't specify a path
+        file_path: str, optional 
+            The path you want to save the csv file at WITH CSV file name. If you don't specify a path
             this will be saved in a relative directory.
-        write_to_csv: bool, By default True
+        write_to_csv: bool, By default False
             A boolean flag to indicate whether you want to save the template to a csv file
             or not.
 
@@ -391,10 +439,13 @@ class Prov(ModuleService):
         str: Response containing the model run information (encoded in csv format).
         
         """
-        
+
+        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_csv, default_file_name=batch_id + ".csv")
+
         csv_text: str = await self._prov_api_client.regenerate_csv_from_model_run_batch(batch_id=batch_id)
 
-        if csv_text and write_to_csv:
-            write_file_helper(file_name=batch_id + ".csv", path_to_save_at=path_to_save_csv, content=csv_text)
+        # Write to file if CSV content is returned and write_to_csv is True and file path is assigned.
+        if csv_text and write_to_csv and file_path:
+            write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text

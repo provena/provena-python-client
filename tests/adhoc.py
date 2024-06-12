@@ -157,15 +157,22 @@ async def main() -> None:
 
     #batch = RegisterBatchModelRunRequest(records=[model_run])
 
-    res = await client.prov_api.convert_model_runs_to_csv(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
+    #res = await client.prov_api.convert_model_runs_to_csv_with_file(file_path="/home/parth/client_work/provena-python-client/7bd3e0e9-1a47-458b-820e-315f514c8640.csv")
 
-    print(res)
+    #print(res)
 
     #res = await client.prov_api.register_batch_model_runs(batch_model_run_payload= "7bd3e0e9-1a47-458b-820e-315f514c8640")
 
     #print(res)
 
-    #await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640")
+    # This will not pass
+    #res = await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640", file_path="/path/does/not/exist", write_to_csv=True)
+    #print(res)
+
+    # This will pass
+    res = await client.prov_api.regenerate_csv_from_model_run_batch(batch_id= "7bd3e0e9-1a47-458b-820e-315f514c8640", file_path=None, write_to_csv=True)
+    print(res)
+
 
     #await client.prov_api.generate_csv_template("10378.1/1905251")
 

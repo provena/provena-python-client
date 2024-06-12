@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ValidationError
-from typing import BinaryIO, Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
+from typing import Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
@@ -20,7 +20,77 @@ HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 ParamTypes = Union[str, int, bool]
 
 
-def write_file_helper(file_name: str, path_to_save_at: Optional[str], content: str) -> None:
+def get_and_validate_file_path(file_path: Optional[str], write_to_file: bool, default_file_name: str) -> Optional[str]:
+    """Determine and validate the file path for writing a file.
+
+    If file_path is not provided and write_to_file is True then will use a dynamic 
+    default file name. 
+
+    Parameters
+    ----------
+    file_path : Optional[str]
+        The path to save the file at.
+    write_to_file : bool
+        A boolean flag  indicating whether writing to the file is enabled.
+    default_file_name : str
+        The default file name to use if file_path is not provided.
+
+    Returns
+    -------
+    Optional[str]
+        The validated file path, or None if writing to file is not enabled.
+
+    Raises
+    ------
+    ValueError
+        If a file path is provided but writing to the file is not enabled.
+    """
+
+    if file_path and not write_to_file:
+        raise ValueError(f"Write to CSV must be enabled. Currently {write_to_file}")
+    
+    if file_path and write_to_file:
+        # Validate provided or created file path directory.
+        validate_existing_path(file_path)
+
+    if not file_path and write_to_file:
+        # Create default file path directory.
+        file_path = default_file_name
+
+    return file_path
+
+def validate_existing_path(file_path: str) -> None :
+    """Validates a provided file path, and checks if 
+    the directory exists. 
+
+    Parameters
+    ----------
+    file_path : str
+        The file path to validate.
+
+    Raises
+    ------
+    ValueError
+        If the directory part of the path does not exist.
+    IOError
+        If an I/O error occurs during file operations.
+    Exception
+        For any other exceptions that may occur.
+    """
+
+    try:
+        directory = os.path.dirname(file_path)
+        if not os.path.isdir(directory):
+            raise ValueError(f"The provided path {file_path} is incorrect. Please try again.")
+        
+    except IOError as e:
+        raise IOError(f"Failed to validate {file_path} due to I/O error: {e}")
+
+    except Exception as e:
+        raise Exception(f"Path validation failed. Exception {e}")
+
+
+def write_file_helper(file_path: str, content: str) -> None:
     """
     Writes provided content to a file.
 
@@ -40,31 +110,20 @@ def write_file_helper(file_name: str, path_to_save_at: Optional[str], content: s
     """
 
     try:
-        if path_to_save_at:
-            if not os.path.isdir(path_to_save_at):
-                raise ValueError(f"The provided path {path_to_save_at} is incorrect. Please try again.")
-            file_path = os.path.join(path_to_save_at, file_name)
-
-        else:
-            file_path = file_name
-
         # Write to file
         with open(file_path, 'w') as file:
             file.write(content)
 
     except IOError as e:
-        raise IOError(f"Failed to file {file_name} due to I/O error: {e}")
+        raise IOError(f"Failed to file {file_path} due to I/O error: {e}")
 
     except Exception as e:
         raise Exception(f"File writing failed. Exception {e}")
 
     
-def prepare_httpx_files_csv_request(file_path: str) -> HttpxFileUpload:
+def read_csv_file_helper(file_path: str) -> ByteString:
 
-    # This method could be made more "generic" to accept various file types
-    # however, I have scoped it to csv for our use cases.
-
-    """Prepares an httpx files request object.
+    """Reads a valid CSV file and returns its content
 
     Parameters
     ----------
@@ -88,10 +147,9 @@ def prepare_httpx_files_csv_request(file_path: str) -> HttpxFileUpload:
     try:
             file = open(file_path, 'rb')  # Open the file in binary-read mode
             file_content = file.read() # Save the contents of the file.
-            files = {'csv_file': (file_path, file_content, 'text/csv')}  # Prepare the request object, passed to httpx.
             file.close()
 
-            return files
+            return file_content
 
     except Exception as e:
         raise Exception(f"Error with CSV file. Exception {e}")
