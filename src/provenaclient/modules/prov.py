@@ -3,13 +3,12 @@ from provenaclient.utils.config import Config
 from provenaclient.clients import ProvClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
-from provenaclient.utils.helpers import read_csv_file_helper, write_file_helper, validate_existing_path, get_and_validate_file_path
-from typing import ByteString, List
+from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
+from typing import List
 from provenaclient.models.general import HealthCheckResponse
 from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
-import os
 
 # L3 interface.
 
@@ -64,22 +63,15 @@ class ProvAPIAdminSubModule(ModuleService):
 
         file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_file, default_file_name=DEFAULT_CONFIG_FILE_NAME)
 
-
-        if file_path and not write_to_file:
-            raise Exception(f"Write to File must be enabled. Currently {write_to_file}")
-        
-        if file_path and write_to_file:
-            # Validate the provided or created path directory.
-            validate_existing_path(file_path)
-
-        if not file_path and write_to_file:
-            # Create the default path.
-            file_path = DEFAULT_CONFIG_FILE_NAME
-
         config_text: str = await self._prov_api_client.admin.generate_config_file(required_only=required_only)
 
+        if config_text is None:
+            raise ValueError(f"No data returned for generate config file endpoint.")
+
         # Write to file if config text is not None, write to file is True and file path is not None.
-        if config_text and write_to_file and file_path:
+        if write_to_file:
+            if file_path is None:
+                raise ValueError("File path is not set for writing the CSV.")
             write_file_helper(file_path=file_path, content=config_text)
 
         return config_text
@@ -356,8 +348,13 @@ class Prov(ModuleService):
 
         csv_text = await self._prov_api_client.generate_csv_template(workflow_template_id=workflow_template_id)
 
-        # Write to file if CSV content is returned and write_to_csv is True and file_path is not None.
-        if csv_text and write_to_csv and file_path:
+        if csv_text is None:
+            raise ValueError(f"No data returned for generate CSV template workflow template ID {workflow_template_id}")
+
+        # Write to file if CSV content is returned and write_to_csv is True and file path is assigned.
+        if write_to_csv:
+            if file_path is None:
+                raise ValueError("File path is not set for writing the CSV.")
             write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text
@@ -384,13 +381,7 @@ class Prov(ModuleService):
             Exception raised when converting string to bytes.
         """
 
-        # Convert string to bytes. 
-        try:
-            model_run_content_encoded: ByteString = model_run_content.encode("utf-8")
-        except Exception as e:
-            raise Exception(f"Exception has occurred while encoding model run content: {e}")
-
-        response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=model_run_content_encoded)
+        response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=model_run_content)
 
         return response
 
@@ -412,7 +403,7 @@ class Prov(ModuleService):
 
         """
 
-        file_content = read_csv_file_helper(file_path = file_path)
+        file_content = read_file_helper(file_path = file_path)
 
         response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=file_content)
         return response
@@ -444,8 +435,13 @@ class Prov(ModuleService):
 
         csv_text: str = await self._prov_api_client.regenerate_csv_from_model_run_batch(batch_id=batch_id)
 
+        if csv_text is None:
+            raise ValueError(f"No data returned for batch ID {batch_id}")
+        
         # Write to file if CSV content is returned and write_to_csv is True and file path is assigned.
-        if csv_text and write_to_csv and file_path:
+        if write_to_csv:
+            if file_path is None:
+                raise ValueError("File path is not set for writing the CSV.")
             write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text

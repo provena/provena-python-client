@@ -50,7 +50,7 @@ def get_and_validate_file_path(file_path: Optional[str], write_to_file: bool, de
         raise ValueError(f"Write to CSV must be enabled. Currently {write_to_file}")
     
     if file_path and write_to_file:
-        # Validate provided or created file path directory.
+        # Validate provided file path directory.
         validate_existing_path(file_path)
 
     if not file_path and write_to_file:
@@ -79,6 +79,7 @@ def validate_existing_path(file_path: str) -> None :
     """
 
     try:
+        # Validates if the provided directory part of the file path exists.
         directory = os.path.dirname(file_path)
         if not os.path.isdir(directory):
             raise ValueError(f"The provided path {file_path} is incorrect. Please try again.")
@@ -121,9 +122,9 @@ def write_file_helper(file_path: str, content: str) -> None:
         raise Exception(f"File writing failed. Exception {e}")
 
     
-def read_csv_file_helper(file_path: str) -> ByteString:
+def read_file_helper(file_path: str) -> str:
 
-    """Reads a valid CSV file and returns its content
+    """Reads a valid file and returns its content
 
     Parameters
     ----------
@@ -131,28 +132,25 @@ def read_csv_file_helper(file_path: str) -> ByteString:
         The path of an existing created file.
     Returns
     -------
-    HttpxFileUpload
-        A dictionary representing file(s) to be uploaded with the
-        request. Each key in the dictionary is the name of the form field for the file according,
-        to API specifications. For Provena it's "csv_file" and and the value 
-        is a tuple of (filename, filedata or file contents, MIME type or media type).
+    str
+        A string representation of the file contents.
 
     Raises
     ------
     Exception
-        If there any error with reading the CSV file 
+        If there any error with reading the file 
         this general exception is raised.
     """
 
     try:
-            file = open(file_path, 'rb')  # Open the file in binary-read mode
+            file = open(file_path, 'r')  # Open the file in read mode
             file_content = file.read() # Save the contents of the file.
             file.close()
 
             return file_content
 
     except Exception as e:
-        raise Exception(f"Error with CSV file. Exception {e}")
+        raise Exception(f"Error with file. Exception {e}")
 
 def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """

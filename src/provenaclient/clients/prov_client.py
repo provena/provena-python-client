@@ -36,14 +36,18 @@ class ProvAPIEndpoints(str, Enum):
  
 
 class ProvAPIAdminEndpoints(str, Enum):
-
-
-    # Not completed yet, TODO.
+    """An ENUM containing the prov api admin endpoints."""
+    
+    # Completed
     GET_ADMIN_CONFIG = "/admin/config"
-    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
     POST_ADMIN_STORE_RECORD = "/admin/store_record"
     POST_ADMIN_STORE_RECORDS = "/admin/store_records"
     POST_ADMIN_STORE_ALL_REGISTRY_RECORDS = "/admin/store_all_registry_records"
+
+
+    # Not completed yet, TODO.
+    GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
+  
     
 #L2 interface.
 
@@ -427,16 +431,15 @@ class ProvClient(ClientService):
 
         return response.text
     
-    async def convert_model_runs_to_csv(self, csv_file_contents: ByteString) -> ConvertModelRunsResponse:
+    async def convert_model_runs_to_csv(self, csv_file_contents: str) -> ConvertModelRunsResponse:
         """Reads a CSV file, and it's defined model run contents
         and lodges a model run.
 
         Parameters
         ----------
-        csv_file_contents : Bytestring or bytes
-            Contains the model run contents encoded
-            in bytes.
-           
+        csv_file_contents : str
+            Contains the model run contents.
+
         Returns
         -------
         ConvertModelRunsResponse
@@ -444,13 +447,19 @@ class ProvClient(ClientService):
             datatype.
         """
 
+        # Convert string to bytes. 
+        try:
+            model_run_content_encoded: ByteString = csv_file_contents.encode("utf-8")
+        except Exception as e:
+            raise Exception(f"Exception has occurred while encoding model run content: {e}")
+
         # The csv file object to be used for httpx post requests
         # A dictionary representing file(s) to be uploaded with the
         # request. Each key in the dictionary is the name of the form field for the file according,
         # to API specifications. For Provena it's "csv_file" and and the value 
         # is a tuple of (filename, filedata, MIME type / media type).  
-        csv_file: HttpxFileUpload = {"csv_file": ("upload.csv", csv_file_contents, "text/csv")}
-
+        csv_file: HttpxFileUpload = {"csv_file": ("upload.csv", model_run_content_encoded, "text/csv")}
+    
         return await parsed_post_request_with_status(
             client=self, 
             url=self._build_endpoint(ProvAPIEndpoints.POST_BULK_CONVERT_MODEL_RUNS_CSV),
