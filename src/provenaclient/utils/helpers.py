@@ -1,21 +1,156 @@
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, Optional, TypeVar, Type, Union
+from typing import Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
 from ProvenaInterfaces.RegistryModels import ItemBase
+import os
 
 # Type var to refer to base models
 BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
 ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 
 # Type alias for json data
-JsonData = Dict[str, Any]
+JsonData = List[Dict[str, Any]] | Dict[str, Any]
+# Type alias for httpx file upload.
+HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 
 ParamTypes = Union[str, int, bool]
 
+
+def get_and_validate_file_path(file_path: Optional[str], write_to_file: bool, default_file_name: str) -> Optional[str]:
+    """Determine and validate the file path for writing a file.
+
+    If file_path is not provided and write_to_file is True then will use a dynamic 
+    default file name. 
+
+    Parameters
+    ----------
+    file_path : Optional[str]
+        The path to save the file at.
+    write_to_file : bool
+        A boolean flag  indicating whether writing to the file is enabled.
+    default_file_name : str
+        The default file name to use if file_path is not provided.
+
+    Returns
+    -------
+    Optional[str]
+        The validated file path, or None if writing to file is not enabled.
+
+    Raises
+    ------
+    ValueError
+        If a file path is provided but writing to the file is not enabled.
+    """
+
+    if file_path and not write_to_file:
+        raise ValueError(f"Write to CSV must be enabled. Currently {write_to_file}")
+    
+    if file_path and write_to_file:
+        # Validate provided file path directory.
+        validate_existing_path(file_path)
+
+    if not file_path and write_to_file:
+        # Create default file path directory.
+        file_path = default_file_name
+
+    return file_path
+
+def validate_existing_path(file_path: str) -> None :
+    """Validates a provided file path, and checks if 
+    the directory exists. 
+
+    Parameters
+    ----------
+    file_path : str
+        The file path to validate.
+
+    Raises
+    ------
+    ValueError
+        If the directory part of the path does not exist.
+    IOError
+        If an I/O error occurs during file operations.
+    Exception
+        For any other exceptions that may occur.
+    """
+
+    try:
+        # Validates if the provided directory part of the file path exists.
+        directory = os.path.dirname(file_path)
+        if not os.path.isdir(directory):
+            raise ValueError(f"The provided path {file_path} is incorrect. Please try again.")
+        
+    except IOError as e:
+        raise IOError(f"Failed to validate {file_path} due to I/O error: {e}")
+
+    except Exception as e:
+        raise Exception(f"Path validation failed. Exception {e}")
+
+
+def write_file_helper(file_path: str, content: str) -> None:
+    """
+    Writes provided content to a file.
+
+    Parameters
+    ----------
+    file_name : str
+        The name of the file to write content into.
+    content : str
+        The content to be written into the file.
+
+    Raises
+    ------
+    IOError
+        If an I/O error occurs during file operations.
+    Exception
+        For non-I/O related exceptions that may occur during file writing.
+    """
+
+    try:
+        # Write to file
+        with open(file_path, 'w') as file:
+            file.write(content)
+
+    except IOError as e:
+        raise IOError(f"Failed to file {file_path} due to I/O error: {e}")
+
+    except Exception as e:
+        raise Exception(f"File writing failed. Exception {e}")
+
+    
+def read_file_helper(file_path: str) -> str:
+
+    """Reads a valid file and returns its content
+
+    Parameters
+    ----------
+    file_path : str
+        The path of an existing created file.
+    Returns
+    -------
+    str
+        A string representation of the file contents.
+
+    Raises
+    ------
+    Exception
+        If there any error with reading the file 
+        this general exception is raised.
+    """
+
+    try:
+            file = open(file_path, 'r')  # Open the file in read mode
+            file_content = file.read() # Save the contents of the file.
+            file.close()
+
+            return file_content
+
+    except Exception as e:
+        raise Exception(f"Error with file. Exception {e}")
 
 def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """
@@ -157,7 +292,7 @@ def handle_err_codes(response: Response, error_message: Optional[str]) -> None:
                               error_code=response.status_code, payload=error_message)
 
 
-def check_status_response(json_data: Dict) -> None:
+def check_status_response(json_data: JsonData) -> None:
     """
     Parses JSON data as StatusResponse model, then asserts success is true,
     throwing exception with embedded details if not.
