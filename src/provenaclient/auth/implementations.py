@@ -429,12 +429,10 @@ class OfflineFlow(AuthManager):
     scopes: list
 
     public_key: str
-    file_name = ".tokens.json"
 
     def __init__(self, keycloak_endpoint: str, client_id: str, offline_token: Optional[str] = None, offline_token_file: Optional[str] = None, log_level: Optional[LogType] = None) -> None:
         f"""Create and generate an OfflineFlow object. Instatiate from provided offline token, or attempt to read
-        one from file and generate the access token. Can provide the offline token directly, a file for it stored as plain text, or the device
-        will attempt to read a pair of tokens from the default cache file '{self.file_name}' it may have managed previously.
+        one from file and generate the access token. Can provide the offline token directly, a file for it stored as plain text.
 
         Parameters
         ----------
@@ -443,7 +441,7 @@ class OfflineFlow(AuthManager):
         client_id : str
             The client to target for auth. E.g., landing-portal-ui
         offline_token : Optional[str], optional
-            The offline token to bootstrap the auth device from. If not provided, defaults to None and init will try use offline_token_file to read an offline_token.
+            The offline token to use for generating access tokens from. If not provided, defaults to None and init will try use offline_token_file to read an offline_token.
         offline_token_file : Optional[str], optional
             The file name to read the offline token from, where it is stored as plain text. Be sure to add this file to your .gitignore if using this parameter.
 
@@ -485,7 +483,6 @@ class OfflineFlow(AuthManager):
                 "Offline token provided, attempting to generate tokens from it.")
             self.offline_token = offline_token
         elif offline_token_file:
-            assert offline_token_file != self.file_name, "Offline token file cannot be the same as the default file for storing access and refresh tokens."
             self.logger.info(
                 "Offline token file provided, attempting to generate tokens from it.")
             self.offline_token = self.load_offline_token(offline_token_file)
@@ -614,7 +611,7 @@ class OfflineFlow(AuthManager):
             raise Exception(err_msg)
 
         with open(file_name, 'r') as f:
-            offline_token = f.read()
+            offline_token = f.read().strip()
 
         if not offline_token or offline_token == "":
             err_msg = f"File {file_name} is empty."

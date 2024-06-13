@@ -3,6 +3,7 @@ from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, SortOptions, SortType
 import asyncio
+from provenaclient.auth.manager import Log
 
 
 async def main() -> None:
@@ -12,7 +13,7 @@ async def main() -> None:
     )
 
     auth = DeviceFlow(keycloak_endpoint=config.keycloak_endpoint,
-                      client_id="client-tools")
+                      client_id="client-tools", log_level=Log.DEBUG)
 
     client = ProvenaClient(config=config, auth=auth)
 
