@@ -417,12 +417,17 @@ class DeviceFlow(AuthManager):
 
 
 class OfflineFlow(AuthManager):
+    # The keycloak endpoint to target for tokens
     keycloak_endpoint: str
+    # The offline token provided by user
     offline_token: str
+    # The client ID to target for auth
     client_id: str
-
+    # The token endpoint to use
     token_endpoint: str
+
     scopes: list
+
     public_key: str
     file_name = ".tokens.json"
 
@@ -440,8 +445,7 @@ class OfflineFlow(AuthManager):
         offline_token : Optional[str], optional
             The offline token to bootstrap the auth device from. If not provided, defaults to None and init will try use offline_token_file to read an offline_token.
         offline_token_file : Optional[str], optional
-            The file name to read the offline token from, where it is stored as plain text. If not provided and neither was offline_token, defaults to None and tokens are attempted to be read, validated, and refreshed from {self.file_name}, the default cache file. Be sure
-            to add this file to your .gitignore if using this parameter.
+            The file name to read the offline token from, where it is stored as plain text. Be sure to add this file to your .gitignore if using this parameter.
 
         Raises
         ------

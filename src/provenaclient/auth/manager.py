@@ -11,7 +11,7 @@ class Log(Enum):
     WARNING = logging.WARNING
     ERROR = logging.ERROR
 
-
+# Type alias so we can type the function properly using high level types
 LogType = Literal[Log.DEBUG, Log.INFO, Log.WARNING, Log.ERROR]
 
 DEFAULT_LOG_LEVEL = Log.ERROR
@@ -25,11 +25,11 @@ class AuthManager(ABC):
         # Create a logger
         self.logger = logging.getLogger('auth-logger')
 
-        # LOGGING LEVEL - change this later
+        # LOGGING LEVEL
         self.logger.setLevel(
             log_level.value if log_level else DEFAULT_LOG_LEVEL.value)
 
-        # Create a console handler and set its log level to INFO
+        # Create a console handler and set its log level
         console_handler = logging.StreamHandler()
         console_handler.setLevel(log_level.value if log_level else DEFAULT_LOG_LEVEL.value)
 
