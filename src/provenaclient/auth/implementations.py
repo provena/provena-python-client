@@ -115,29 +115,30 @@ class DeviceFlow(AuthManager):
             # Attempt to validate the current token.
             if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
                 return self.tokens.access_token
-        except JWTError as e:
-            # This flow means that the tokens are invalid.
-            # Now we will check if the refresh token is valid as well, and attempt to re-generate.
+            
+            # didnt return, refresh and try again. 
+            self.logger.info("Token was invalid. Attempting Refresh")
+            self.refresh_tokens()
+            if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
+                return self.tokens.access_token
+            
+            # still no good, restart flow
+            self.logger.info("Token was invalid after refresh. Re-iniating Device Flow")
+            self.start_device_flow()
+            if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
+                return self.tokens.access_token
 
-            try:
-                self.refresh_tokens()
-                if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
-                    return self.tokens.access_token
-                else:
-                    raise Exception("Something has gone wrong..")
-
-            except Exception as e:
-                self.logger.info(
-                    f"Refresh token has expired or is invalid {e}")
-                # This mean something that the refresh token is invalid as well, and new set of tokens need to be re-generated.
-                self.start_device_flow()
-
-        if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
-            return self.tokens.access_token
-
-        else:
-            raise Exception(
-                "Failed to obtain a valid token after initiating a new device flow.")
+        except Exception as e:
+            self.logger.info("Something went wrong during get_token operation. Starting device flow.")
+            self.start_device_flow()
+            if validate_access_token(public_key=self.public_key, access_token=self.tokens.access_token, logger=self.logger):
+                return self.tokens.access_token
+        
+        # no error, but also no valid token. Something is wrong.
+        err_msg = "Failed to obtain a valid token after refreshing and initiating a new device flow."
+        self.logger.error(err_msg)
+        raise Exception(err_msg)
+            
 
     def force_refresh(self) -> None:
         """
