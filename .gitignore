@@ -145,3 +145,4 @@ dmypy.json
 .DS_Store
 
 openapi.json
+.offline_token.txt
