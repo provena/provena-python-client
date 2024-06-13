@@ -12,7 +12,6 @@ async def main() -> None:
     )
 
     auth = DeviceFlow(keycloak_endpoint=config.keycloak_endpoint,
-                      silent=True,
                       client_id="client-tools")
 
     client = ProvenaClient(config=config, auth=auth)
