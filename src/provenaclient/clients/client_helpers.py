@@ -1,10 +1,13 @@
 from abc import ABC
 from io import BufferedReader
+
+import httpx
 from provenaclient.auth import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.helpers import *
 from provenaclient.utils.http_client import HttpClient
 from typing import Dict, Optional
+from provenaclient.utils.exceptions import CustomTimeoutException
 
 
 class ClientService(ABC):
@@ -15,6 +18,12 @@ class ClientService(ABC):
     _auth: AuthManager
     _config: Config
 
+
+class GenericClient(ClientService):
+
+    def __init__(self, auth: AuthManager, config: Config) -> None:
+        self._auth = auth
+        self._config = config
 
 async def parsed_get_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
@@ -484,6 +493,8 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
             error_message=error_message
         )
 
+    except httpx.TimeoutException as e:
+        raise CustomTimeoutException(str(e), url = None)
     except BaseException as e:
         raise e
     except Exception as e:

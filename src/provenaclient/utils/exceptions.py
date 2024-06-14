@@ -1,5 +1,7 @@
 from typing import Optional
 
+import httpx
+
 
 class BaseException(Exception):
     """A custom exception class that inherits from python's base exception.
@@ -53,7 +55,7 @@ class BaseException(Exception):
         return base_message
 
 
-class CustomTimeoutException(BaseException):
+class CustomTimeoutException(httpx.TimeoutException):
     """ An exception raised when a timeout occurs during an HTTP request.
 
     Parameters
