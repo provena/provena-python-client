@@ -2,6 +2,7 @@ from io import BufferedReader
 from typing import Any, List, Optional, Union
 import httpx
 from provenaclient.auth.helpers import HttpxBearerAuth
+from provenaclient.utils.helpers import JsonData
 
 # 60s timeout for connecting, and a 10s timeout elsewhere.
 timeout = httpx.Timeout(timeout=10.0, connect=60.0)
@@ -92,7 +93,7 @@ class HttpClient:
             return response
 
     @staticmethod
-    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] | Optional[List[dict[str,Any]]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[JsonData] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP put request to the specified URL with the provided data, authentication, and headers.
 
         Parameters
