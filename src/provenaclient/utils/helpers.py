@@ -13,7 +13,7 @@ BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
 ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 
 # Type alias for json data
-JsonData = List[Dict[str, Any]] | Dict[str, Any]
+JsonData = Union[List[Dict[str, Any]],Dict[str, Any]]
 # Type alias for httpx file upload.
 HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 
