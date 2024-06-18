@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.5.0 (2024-06-18)
+
+### Feature
+
+* feat: forcing another attempt ([`5bb0e49`](https://github.com/provena/provena-python-client/commit/5bb0e49235992bbe8d46d48c4b58dd7c99564826))
+
 ## v0.4.0 (2024-06-18)
 
 ### Feature
