@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.4.0 (2024-06-18)
+
+### Feature
+
+* feat: Updating pyproject to promote new release ([`34b71da`](https://github.com/provena/provena-python-client/commit/34b71dad6235781294787b4325c9c10891c62b8b))
+
+### Unknown
+
+* Trigger another build ([`12205b4`](https://github.com/provena/provena-python-client/commit/12205b47ca15b6ed266dab5d63e6ed0d90aa8b0b))
+
 ## v0.3.0 (2024-06-17)
 
 ### Feature
