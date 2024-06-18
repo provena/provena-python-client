@@ -7,6 +7,8 @@ from provenaclient.models import HealthCheckResponse, LoadedSearchResponse, Load
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, VersionRequest, VersionResponse, SortOptions, SortType, DatasetListResponse
+from provenaclient.modules.submodules import IOSubModule
+import cloudpathlib.s3 as s3  # type: ignore
 
 from typing import AsyncGenerator, List
 
@@ -15,8 +17,7 @@ from typing import AsyncGenerator, List
 DEFAULT_SEARCH_LIMIT = 25
 DATASTORE_DEFAULT_SEARCH_LIMIT = 20
 
-
-class DatastoreSubModule(ModuleService):
+class ReviewSubModule(ModuleService):
     _datastore_client: DatastoreClient
 
     def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient) -> None:
@@ -40,8 +41,7 @@ class DatastoreSubModule(ModuleService):
         # Clients related to the datastore scoped as private.
         self._datastore_client = datastore_client
 
-
-    async def delete_dataset_reviewer(self, reviewer_id: str) -> None: 
+    async def delete_dataset_reviewer(self, reviewer_id: str) -> None:
         """Delete a reviewer.  
 
         Parameters
@@ -51,7 +51,7 @@ class DatastoreSubModule(ModuleService):
         """
         await self._datastore_client.review.delete_dataset_reviewer(reviewer_id=reviewer_id)
 
-    async def add_dataset_reviewer(self, reviewer_id: str) -> None: 
+    async def add_dataset_reviewer(self, reviewer_id: str) -> None:
         """Add a reviewer.
 
         Parameters
@@ -82,12 +82,12 @@ class DatastoreSubModule(ModuleService):
         -------
         ReleaseApprovalRequestResponse:
             Contains details of the approval request.
-            
+
         """
 
-        return await self._datastore_client.review.approval_request(approval_request_payload= approval_request)
-    
-    async def action_approval_request(self, action_approval_request: ActionApprovalRequest)-> ActionApprovalRequestResponse:
+        return await self._datastore_client.review.approval_request(approval_request_payload=approval_request)
+
+    async def action_approval_request(self, action_approval_request: ActionApprovalRequest) -> ActionApprovalRequestResponse:
         """Action an approval request from a dataset approval request via the datastore.
 
         Parameters
@@ -102,13 +102,16 @@ class DatastoreSubModule(ModuleService):
             The details of the approval action and the relevant dataset details.
         """
 
-        return await self._datastore_client.review.action_approval_request(action_approval_request_payload= action_approval_request) 
-
+        return await self._datastore_client.review.action_approval_request(action_approval_request_payload=action_approval_request)
 
 
 class Datastore(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
+
+    # sub modules
+    review: ReviewSubModule
+    io: IOSubModule
 
     def __init__(self, auth: AuthManager, config: Config, datastore_client: DatastoreClient, search_client: SearchClient) -> None:
         """Initialise a new datastore object, which sits between the user and the datastore api operations.
@@ -128,6 +131,16 @@ class Datastore(ModuleService):
         # Clients related to the datastore scoped as private.
         self._datastore_client = datastore_client
         self._search_client = search_client
+        self.review = ReviewSubModule(
+            auth=auth,
+            config=config,
+            datastore_client=self._datastore_client
+        )
+        self.io = IOSubModule(
+            auth=auth,
+            config=config,
+            datastore_client=self._datastore_client
+        )
 
     async def get_health_check(self) -> HealthCheckResponse:
         """Health check the API
@@ -179,7 +192,7 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.mint_dataset(dataset_mint_info)
-    
+
     async def validate_dataset_metadata(self, metadata_payload: CollectionFormat) -> StatusResponse:
         """Validates the dataset metadata creation for testing and does not publish.
 
@@ -196,7 +209,7 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.validate_metadata(metadata_payload=metadata_payload)
-    
+
     async def update_dataset_metadata(self, handle_id: str, reason: str, metadata_payload: CollectionFormat) -> UpdateMetadataResponse:
         """Updates an existing dataset's metadata.
 
@@ -217,7 +230,7 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.update_metadata(handle_id=handle_id, reason=reason, metadata_payload=metadata_payload)
-    
+
     async def revert_dataset_metadata(self, metadata_payload: RevertMetadata) -> StatusResponse:
         """Reverts the metadata for a dataset to a previous identified historical version.
 
@@ -234,8 +247,8 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.revert_metadata(metadata_payload=metadata_payload)
-    
-    async def version_dataset(self, version_request: VersionRequest) -> VersionResponse: 
+
+    async def version_dataset(self, version_request: VersionRequest) -> VersionResponse:
         """Versioning operation which creates a new version from the specified ID.
 
         Parameters
@@ -251,7 +264,6 @@ class Datastore(ModuleService):
         """
 
         return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
-    
 
     async def for_all_datasets(self, list_dataset_request: NoFilterSubtypeListRequest, total_limit: Optional[int] = None) -> AsyncGenerator[ItemDataset, None]:
         """Fetches all datasets based on the provided datasets in datastore based on 
@@ -272,22 +284,22 @@ class Datastore(ModuleService):
         AsyncGenerator[ItemDataset, None]
             An asynchronous generator yielding "ItemDataset"
             object which is an individual dataset from the datastore.
-        
+
         Yields
         ------
         Iterator[AsyncGenerator[ItemDataset, None]]
             Each yield provides a "ItemDataset" containing an individual dataset.
-        
+
         """
-    
+
         total_fetched = 0
-    
+
         while True:
-            response = await self._datastore_client.list_datasets(list_request= list_dataset_request)
-            
-            # We will keep track of the total numbers of items fetched in the request from the API itself. 
+            response = await self._datastore_client.list_datasets(list_request=list_dataset_request)
+
+            # We will keep track of the total numbers of items fetched in the request from the API itself.
             if response.items:
-                for dataset in response.items: 
+                for dataset in response.items:
                     if total_limit is not None and total_fetched >= total_limit:
                         return
                     yield dataset
@@ -301,7 +313,7 @@ class Datastore(ModuleService):
 
             # Update the pagination key for the next set of requests.
             list_dataset_request.pagination_key = response.pagination_key
-            
+
     async def list_datasets(self, list_dataset_request: NoFilterSubtypeListRequest) -> DatasetListResponse:
         """Takes a specific dataset list request and returns the response.
 
@@ -319,11 +331,10 @@ class Datastore(ModuleService):
             such as total_item_counts and optional pagination key.
         """
 
-        datasets = await self._datastore_client.list_datasets(list_request= list_dataset_request)
+        datasets = await self._datastore_client.list_datasets(list_request=list_dataset_request)
         return datasets
 
     async def list_all_datasets(self, sort_criteria: Optional[SortOptions] = None) -> List[ItemDataset]:
-
         """Fetches all datasets from the datastore and you may provide your own sort criteria.
         By default uses display name sort criteria. 
 
@@ -340,19 +351,19 @@ class Datastore(ModuleService):
         """
 
         list_dataset_request: NoFilterSubtypeListRequest = NoFilterSubtypeListRequest(
-            sort_by=sort_criteria, 
-            pagination_key=None, 
+            sort_by=sort_criteria,
+            pagination_key=None,
             page_size=DATASTORE_DEFAULT_SEARCH_LIMIT
         )
 
         combined_dataset_list: List[ItemDataset] = []
 
-        while True: 
-            response = await self._datastore_client.list_datasets(list_request= list_dataset_request)
+        while True:
+            response = await self._datastore_client.list_datasets(list_request=list_dataset_request)
 
-            if response.items: 
+            if response.items:
                 combined_dataset_list.extend(response.items)
-        
+
             if response.pagination_key is None:
                 break
 
@@ -360,7 +371,6 @@ class Datastore(ModuleService):
             list_dataset_request.pagination_key = response.pagination_key
 
         return combined_dataset_list
-
 
     async def generate_dataset_presigned_url(self, dataset_presigned_request: PresignedURLRequest) -> PresignedURLResponse:
         """Generates a presigned url for an existing dataset.
@@ -376,8 +386,8 @@ class Datastore(ModuleService):
             A response with the presigned url.
         """
 
-        return await self._datastore_client.generate_presigned_url(presigned_url= dataset_presigned_request)
-    
+        return await self._datastore_client.generate_presigned_url(presigned_url=dataset_presigned_request)
+
     async def generate_read_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
         """Given an S3 location, will attempt to generate programmatic access keys for 
            the storage bucket at this particular subdirectory.
@@ -393,8 +403,8 @@ class Datastore(ModuleService):
             The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
         """
 
-        return await self._datastore_client.generate_read_access_credentials(read_access_credentials= credentials)
-    
+        return await self._datastore_client.generate_read_access_credentials(read_access_credentials=credentials)
+
     async def generate_write_access_credentials(self, credentials: CredentialsRequest) -> CredentialResponse:
         """Given an S3 location, will attempt to generate programmatic access keys for 
            the storage bucket at this particular subdirectory.
@@ -410,8 +420,8 @@ class Datastore(ModuleService):
             The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
         """
 
-        return await self._datastore_client.generate_write_access_credentials(write_access_credentials= credentials)
-    
+        return await self._datastore_client.generate_write_access_credentials(write_access_credentials=credentials)
+
     async def search_datasets(self, query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> LoadedSearchResponse:
         """
 
