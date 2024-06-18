@@ -1,3 +1,19 @@
+'''
+Created Date: Tuesday June 18th 2024
+Author: Peter Baker
+-----
+Last Modified: Tuesday June 18th 2024 2:56:41 am +0000
+Modified By: Peter Baker
+-----
+Description: Implements the Datastore file IO sub module
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | First implementation including download_all_files and upload_all_files methods
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import DatastoreClient
@@ -8,7 +24,6 @@ import cloudpathlib.s3 as s3  # type: ignore
 
 def setup_s3_client(creds: CredentialResponse) -> s3.S3Client:
     """
-
     Uses the datastore creds response to generate an s3 cloud path lib client
     with auth.
 
