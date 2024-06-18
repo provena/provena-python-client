@@ -144,7 +144,7 @@ def keycloak_refresh_token_request(token_endpoint: str, client_id: str, scopes: 
     response = requests.post(token_endpoint, data=data)
 
     if (not response.status_code == 200):
-            err_msg = "The token used for refresh is invalid or has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}."
+            err_msg = f"The token used for refresh is invalid or has potentially expired. Something went wrong during token refresh. Status code: {response.status_code}."
             logger.error(err_msg)
             raise Exception(err_msg)
 
