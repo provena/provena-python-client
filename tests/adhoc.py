@@ -8,6 +8,8 @@ from ProvenaInterfaces.ProvenanceModels import DatasetType, AssociationInfo
 import asyncio
 from provenaclient.auth.manager import Log
 from typing import List
+import os
+import random
 
 
 async def main() -> None:
@@ -178,6 +180,7 @@ async def main() -> None:
 
     # res = await client.prov_api.admin.store_multiple_records(registry_record=list_of_model_runs)
 
+    last: str = ""
     async for ds in client.datastore.for_all_datasets(
         list_dataset_request=NoFilterSubtypeListRequest(
             sort_by=SortOptions(sort_type=SortType.UPDATED_TIME,
@@ -185,5 +188,32 @@ async def main() -> None:
             pagination_key=None),
     ):
         print(ds.id)
+        last = ds.id
+
+    output_path = "local_test"
+
+    await client.datastore.io.download_all_files(
+        destination_directory=output_path,
+        dataset_id=last
+    )
+
+    # create a file
+    def random_num() -> int: return random.randint(100, 1000)
+
+    with open(f"{output_path}/testfile{random_num()}.txt", 'w') as f:
+        f.write("Hello world!")
+    with open(f"{output_path}/nested/testfile{random_num()}.txt", 'w') as f:
+        f.write("Hello world!")
+
+    await client.datastore.io.upload_all_files(
+        source_directory=output_path,
+        dataset_id=last
+    )
+
+    # list files
+    files = await client.datastore.io.list_all_files(
+        dataset_id=last,
+        print_list=True
+    )
 
 asyncio.run(main())
