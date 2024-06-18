@@ -1,3 +1,17 @@
+'''
+Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+-----
+Description: Set of route maps for the Registry API used to help generate routes from subtype + Action combinations.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from enum import Enum
 from typing import Dict
 from ProvenaInterfaces.RegistryModels import ItemSubType

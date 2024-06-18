@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+Modified By: Peter Baker
+-----
+Description: General helper functions which are useful across the client library.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel, ValidationError
 from typing import Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json

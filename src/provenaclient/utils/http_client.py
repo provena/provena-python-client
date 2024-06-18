@@ -1,4 +1,17 @@
-from io import BufferedReader
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+Modified By: Peter Baker
+-----
+Description: A HTTP client which wraps HTTPx async so that we can swap out a different http library later if needed.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from typing import Any, List, Optional, Union
 import httpx
 from provenaclient.auth.helpers import HttpxBearerAuth

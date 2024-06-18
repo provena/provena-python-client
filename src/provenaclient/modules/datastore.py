@@ -1,3 +1,17 @@
+'''
+Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+-----
+Description: Datastore L3 module. Includes the Data store review sub module.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import DatastoreClient, SearchClient
@@ -8,7 +22,6 @@ from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, VersionRequest, VersionResponse, SortOptions, SortType, DatasetListResponse
 from provenaclient.modules.submodules import IOSubModule
-import cloudpathlib.s3 as s3  # type: ignore
 
 from typing import AsyncGenerator, List
 
@@ -16,6 +29,7 @@ from typing import AsyncGenerator, List
 
 DEFAULT_SEARCH_LIMIT = 25
 DATASTORE_DEFAULT_SEARCH_LIMIT = 20
+
 
 class ReviewSubModule(ModuleService):
     _datastore_client: DatastoreClient

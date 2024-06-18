@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: General interfaces defined to help with typing the client library/configuring
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel
 
 

@@ -1,3 +1,17 @@
+'''
+Created Date: Thursday May 30th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+Modified By: Peter Baker
+-----
+Description: Defines a collection of exceptions produced by the Provena Client, extending a common base handled exception.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from typing import Optional
 
 

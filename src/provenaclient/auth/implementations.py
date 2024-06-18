@@ -1,3 +1,17 @@
+'''
+Created Date: Tuesday June 18th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Tuesday June 18th 2024 12:44:03 pm +1000
+Modified By: Peter Baker
+-----
+Description: Implementations of the Auth interface defined in auth/manager.py
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from typing import Any, Dict, Optional
 from provenaclient.auth.manager import AuthManager, LogType
 import requests

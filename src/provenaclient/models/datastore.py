@@ -1,3 +1,17 @@
+'''
+Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+-----
+Description: Set of Pydantic models used to define client interfaces which are missing.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel
 from ProvenaInterfaces.RegistryModels import ItemDataset
 from typing import List, Union

@@ -1,3 +1,17 @@
+'''
+Created Date: Tuesday June 18th 2024 +1000
+Author: peter
+-----
+Last Modified: Tuesday June 18th 2024 12:44:03 pm +1000
+Modified By: peter
+-----
+Description: Miscellaneous helper functions assisting with implementation of auth flows
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel
 from typing import Optional, Any
 from datetime import datetime, timezone

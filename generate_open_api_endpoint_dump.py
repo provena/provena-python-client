@@ -1,12 +1,27 @@
-import json
-
-"""
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description:
 Generates an enumeration of endpoints for a given openapi.json file. Can be used
 to accelerate client development. Use as `python
 generate_open_api_endpoint_dump.py`. Ensure the desired file is called
 openapi.json in the working directory. The enum will be printed to the terminal
 ready to be copy pasted into the application code.
-"""
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Parth | Updated to include the admin endpoints using chat gpt
+
+18-06-2024 | Peter Baker | Initially generated with Chat GPT
+'''
+
+import json
 
 # Read the openapi.json spec file
 with open("openapi.json", "r") as f:
@@ -25,7 +40,7 @@ for path, path_content in data.get('paths', {}).items():
 
         # Generate the enum key by formatting URL as per requirements
         endpoint = method.upper() + path.replace('/', '_').replace('-', '_').upper()
-        
+
         if path == "/":
             endpoint = "GET_HEALTH_CHECK"
 
