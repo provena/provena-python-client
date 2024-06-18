@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## v0.6.0 (2024-06-18)
+
+### Feature
+
+* feat: forcing update to 0.6.0 ([`91e2879`](https://github.com/provena/provena-python-client/commit/91e2879c45dc35fcb6c97e467de8133f6dfee4cc))
+
+### Unknown
+
+* Adding dataset L3 level IO functions + class header files (#14)
+
+* Download method completed in sub module to isolate s3 functionality - added sub module sub folder
+
+* Implementing the upload method and improving variable names
+
+* Adding file header and configuration for the psioniq extensions
+
+* Class header documentation and other clean up
+
+* Fixing lock files
+
+* Adding list all files ([`b7a4388`](https://github.com/provena/provena-python-client/commit/b7a438839a7f2987f8fa3ce79ae89b29154bc66c))
+
 ## v0.5.0 (2024-06-18)
 
 ### Feature
