@@ -1,3 +1,17 @@
+'''
+Created Date: Tuesday May 28th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Tuesday May 28th 2024 11:18:32 am +1000
+Modified By: Peter Baker
+-----
+Description: Defines the primary config object for the Provena Client - notably the endpoints.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel
 from typing import Optional
 

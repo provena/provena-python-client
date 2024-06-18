@@ -1,5 +1,20 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: Helper methods for clients namely a standard interface ClientService along with reusable patterns to interact with the HTTPX L1 Layer
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Just noting I think we could streamline the helper functions a bit
+'''
+
 from abc import ABC
-from io import BufferedReader
 from provenaclient.auth import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.helpers import *

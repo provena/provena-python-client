@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: Auth Manager interface which defines key methods for authorising API requests in the provena client
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from abc import ABC, abstractmethod
 from provenaclient.auth.helpers import HttpxBearerAuth
 from typing import Optional, Literal

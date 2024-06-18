@@ -1,3 +1,17 @@
+'''
+Created Date: Thursday May 30th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+Modified By: Peter Baker
+-----
+Description: A template file for creating an L3 module.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 # from provenaclient.auth.manager import AuthManager
 # from provenaclient.utils.config import Config
 # from pydantic import BaseModel

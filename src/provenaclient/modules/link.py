@@ -1,10 +1,25 @@
+'''
+Created Date: Friday May 31st 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Friday May 31st 2024 9:50:26 am +1000
+Modified By: Peter Baker
+-----
+Description: A L3 module which is setup to interact more nicely with the Username Person Link service.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Initial ideas included but is not finished/ready. Blocked by Registry API functionality.
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.modules.module_helpers import ModuleService
 from provenaclient.clients import AuthClient
 
 # L3 interface.
-
 
 class Link(ModuleService):
     _auth_client: AuthClient

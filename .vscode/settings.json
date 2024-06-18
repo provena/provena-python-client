@@ -1,0 +1,44 @@
+{
+  "psi-header.config": {
+    "forceToTop": true,
+    "blankLinesAfter": 1
+  },
+  "psi-header.templates": [
+    {
+      "language": "javascript",
+      "template": [
+        "Created Date: <<filecreated('dddd MMMM Do YYYY ZZ')>>",
+        "Author: <<author>>",
+        "-----",
+        "Last Modified: <<filecreated('dddd MMMM Do YYYY h:mm:ss a ZZ')>>",
+        "Modified By: <<author>>",
+        "-----",
+        "Description: TODO",
+        "-----",
+        "HISTORY:",
+        "Date      \tBy\tComments",
+        "----------\t---\t---------------------------------------------------------"
+      ],
+      "changeLogCaption": "HISTORY",
+      "changeLogHeaderLineCount": 2,
+      "changeLogEntryTemplate": [
+        "",
+        "<<dateformat('DD-MM-YYYY')>> | <<author>> | "
+      ],
+      "changeLogNaturalOrder": false,
+      "changeLogFooterLineCount": 0
+    },
+    {
+      "language": "typescript",
+      "mapTo": "javascript"
+    },
+    {
+      "language": "typescriptreact",
+      "mapTo": "javascript"
+    },
+    {
+      "language": "python",
+      "mapTo": "javascript"
+    }
+  ]
+}
