@@ -1,6 +1,6 @@
 import json
 
-from provenaclient.clients.client_helpers import parsed_delete_request, parsed_delete_request_with_status, parsed_get_request, parsed_post_request, parsed_put_request, parsed_put_request_with_status
+from provenaclient.clients.client_helpers import parsed_delete_request, parsed_delete_request_with_status, parsed_get_request, parsed_post_request, parsed_post_request_with_status, parsed_put_request, parsed_put_request_with_status
 from provenaclient.utils.helpers import build_params_exclude_none, py_to_dict
 from provenaclient.utils.http_client import HttpClient, HttpxBearerAuth
 from provenaclient.utils.exceptions import AuthException, BadRequestException, CustomTimeoutException, HTTPValidationException, ServerException, ValidationException
@@ -346,7 +346,7 @@ async def test_unauthorised_exception(httpx_mock: HTTPXMock, client_service: Moc
     assert error_message in str(exec_info.value)
 
     # DELETE request with unauthorized exception
-    httpx_mock.add_response(method="DELETE", url=url, status_code=401)
+    httpx_mock.add_response(method="DELETE", url=final_url, status_code=401)
     with pytest.raises(AuthException) as exec_info:
         await parsed_delete_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
     assert error_message in str(exec_info.value)
@@ -457,7 +457,7 @@ async def test_successful_get_request_standard_model(httpx_mock: HTTPXMock, clie
     final_url = httpx.URL(url, params = params)
     response_model = MockResponseModel(bar = "example_return_value")
                                         
-    httpx_mock.add_response(method="GET", url=final_url, status_code=200)
+    httpx_mock.add_response(method="GET", url=final_url, json= response_model.dict(), status_code=200)
 
     result = await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message="Error occurred")
     assert result == response_model
@@ -513,7 +513,7 @@ async def test_failed_post_request_status_response(httpx_mock: HTTPXMock, client
     httpx_mock.add_response(method="POST", url=url, json=response_model.dict(), status_code=200)
     
     with pytest.raises(Exception) as exc_info:
-        await parsed_put_request_with_status(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message=error_message)
+        await parsed_post_request_with_status(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message=error_message)
     
     assert error_message in str(exc_info.value)
     assert "Status object from API indicated failure" in str(exc_info.value)
