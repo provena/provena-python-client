@@ -6,7 +6,7 @@ from provenaclient.auth import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.utils.helpers import *
 from provenaclient.utils.http_client import HttpClient
-from typing import Dict, Optional
+from typing import Dict, Mapping, Optional
 from provenaclient.utils.exceptions import CustomTimeoutException
 
 
@@ -19,13 +19,7 @@ class ClientService(ABC):
     _config: Config
 
 
-class GenericClient(ClientService):
-
-    def __init__(self, auth: AuthManager, config: Config) -> None:
-        self._auth = auth
-        self._config = config
-
-async def parsed_get_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_get_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -40,7 +34,7 @@ async def parsed_get_request_with_status(client: ClientService, params: Optional
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make GET request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -72,7 +66,7 @@ async def parsed_get_request_with_status(client: ClientService, params: Optional
     return data
 
 
-async def parsed_get_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_get_request(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -87,7 +81,7 @@ async def parsed_get_request(client: ClientService, params: Optional[Dict[str, O
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make GET request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -119,7 +113,7 @@ async def parsed_get_request(client: ClientService, params: Optional[Dict[str, O
     return data
 
 
-async def parsed_post_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_post_request(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -134,7 +128,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -166,7 +160,7 @@ async def parsed_post_request(client: ClientService, params: Optional[Dict[str, 
 
     return data
 
-async def parsed_post_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType], files: Optional[HttpxFileUpload] = None) -> BaseModelType:
+async def parsed_post_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType], files: Optional[HttpxFileUpload] = None) -> BaseModelType:
     """
 
     High level helper function which 
@@ -181,7 +175,7 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -218,7 +212,7 @@ async def parsed_post_request_with_status(client: ClientService, params: Optiona
     return data
 
 
-async def parsed_delete_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_delete_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -233,7 +227,7 @@ async def parsed_delete_request_with_status(client: ClientService, params: Optio
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -266,7 +260,7 @@ async def parsed_delete_request_with_status(client: ClientService, params: Optio
     return data
 
 
-async def parsed_delete_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_delete_request(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -281,7 +275,7 @@ async def parsed_delete_request(client: ClientService, params: Optional[Dict[str
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -314,7 +308,7 @@ async def parsed_delete_request(client: ClientService, params: Optional[Dict[str
     return data
 
 
-async def parsed_put_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_put_request(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -329,7 +323,7 @@ async def parsed_put_request(client: ClientService, params: Optional[Dict[str, O
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make put request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -362,7 +356,7 @@ async def parsed_put_request(client: ClientService, params: Optional[Dict[str, O
     return data
 
 
-async def parsed_put_request_with_status(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
+async def parsed_put_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str, model: Type[BaseModelType]) -> BaseModelType:
     """
 
     High level helper function which 
@@ -377,7 +371,7 @@ async def parsed_put_request_with_status(client: ClientService, params: Optional
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make put request to
         error_message (str): The error message to embed in other exceptions
         model (Type[BaseModelType]): Model to parse for response JSON
@@ -411,7 +405,7 @@ async def parsed_put_request_with_status(client: ClientService, params: Optional
 
 
 
-async def validated_get_request(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> Response:
+async def validated_get_request(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str) -> Response:
     """
 
     High level helper function which 
@@ -425,7 +419,7 @@ async def validated_get_request(client: ClientService, params: Optional[Dict[str
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make GET request to
         error_message (str): The error message to embed in other exceptions
 
@@ -456,7 +450,7 @@ async def validated_get_request(client: ClientService, params: Optional[Dict[str
             f"{error_message} Exception: {e}") from e
 
 
-async def parsed_post_request_none_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
+async def parsed_post_request_none_return(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
     """
 
     High level helper function which 
@@ -470,7 +464,7 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
         json_body: Optional[JsonData]: JSON data to post if any
@@ -502,7 +496,7 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
             f"{error_message} Exception: {e}") from e
     
 
-async def parsed_delete_request_non_return(client: ClientService, params: Optional[Dict[str, Optional[ParamTypes]]], url: str, error_message: str) -> None:
+async def parsed_delete_request_non_return(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str) -> None:
     """
 
     High level helper function which 
@@ -516,7 +510,7 @@ async def parsed_delete_request_non_return(client: ClientService, params: Option
 
     Args:
         client (ClientService): The client being used. Relies on client interface.
-        params (Optional[Dict[str, Optional[ParamTypes]]]): The params if any
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any
         url (str): The url to make POST request to
         error_message (str): The error message to embed in other exceptions
 

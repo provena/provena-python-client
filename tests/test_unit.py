@@ -1,10 +1,13 @@
 import json
+
+from provenaclient.clients.client_helpers import parsed_delete_request, parsed_delete_request_with_status, parsed_get_request, parsed_post_request, parsed_put_request, parsed_put_request_with_status
+from provenaclient.utils.helpers import build_params_exclude_none, py_to_dict
 from provenaclient.utils.http_client import HttpClient, HttpxBearerAuth
-from provenaclient.utils.exceptions import CustomTimeoutException
+from provenaclient.utils.exceptions import AuthException, BadRequestException, CustomTimeoutException, HTTPValidationException, ServerException, ValidationException
 import pytest
 import httpx
 from pytest_httpx import HTTPXMock
-
+from ProvenaInterfaces.SharedTypes import StatusResponse, Status
 
 
 @pytest.fixture
@@ -220,5 +223,437 @@ async def test_http_client_post_request_errors(valid_token: HttpxBearerAuth) -> 
     assert response.status_code == 404
     assert response.json() == {}
 
+
+
+"""L2 Layer Testing
+
+  Defining the components that are used: 
+
+  1. Auth Service
+  2. Client
+
+"""
+
+from unit_helpers import MockedClientService, MockedAuthService, MockRequestModel, MockResponseModel
+from provenaclient.utils.config import Config
+
+@pytest.fixture
+def mock_auth_manager() -> MockedAuthService:
+    return MockedAuthService()
+
+@pytest.fixture
+def client_service(mock_auth_manager: MockedAuthService) -> MockedClientService:
+
+    mocked_config = Config(
+        domain="dev.rrap-is.com",
+        realm_name="rrap"
+    )
+
+    return MockedClientService(auth=mock_auth_manager, config=mocked_config)
+
+"""Testing Exceptions on L2 Layer
+
+   This will occur on all the higher level functions within client_helpers.py
+
+   1. Focusing on direct requests that don't return status models and others that return status models.
+
+      - Base Exceptions (Timeout, HTTP Validation, Unauthorised)
+
+"""
+
+"""Failure to connect, wrong or incorrect hostname simulations
+
+  These three tests below are being caught very generally itself within 
+  exceptions, and not within a specific exception itself by the client library.
+
+"""
+
+@pytest.mark.asyncio
+async def test_request_connect_error(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    error_message = "Connection error has occurred."
+
+    # GET Request. 
+    httpx_mock.add_exception(httpx.ConnectError(message="Failed to connect."), method = "GET", url= url )
     
+    with pytest.raises(Exception) as exc_info:
+        await parsed_get_request(client=client_service, url=url, params=None, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info.value)
+
+    # POST Request
+    httpx_mock.add_exception(httpx.ConnectError(message=error_message), method = "POST", url= url )
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info.value)
+
+    # DELETE Request
+    httpx_mock.add_exception(httpx.ConnectError(message=error_message), method = "DELETE", url= url )
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_delete_request(client=client_service, url=url, params=None, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info.value)
+
+    # PUT Request 
+    httpx_mock.add_exception(httpx.ConnectError(message=error_message), method = "PUT", url= url )
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info.value)
+
+@pytest.mark.asyncio
+async def test_request_hostname_error(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://invalid_hostname/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    error_message = "Hostname error occurred."
+
+    httpx_mock.add_exception(httpx.RequestError("Failed to resolve hostname"), method="PUT", url=url)
+
+    with pytest.raises(httpx.RequestError) as exc_info:
+        await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+
+
+    assert error_message in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_unauthorised_exception(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None: 
+
+    url = "http://example.com/api"
+    model = MockRequestModel(foo = "yeh")
+    json_body = py_to_dict(model)
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = {"key": "value"})
+    error_message = "Unauthorised access"
+
+    # POST request with unauthorized exception
+    httpx_mock.add_response(method="POST", url=url, status_code=401)
+    with pytest.raises(AuthException) as exec_info:
+        await parsed_post_request(client=client_service, url=url, json_body=json_body, params=None, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # PUT request with unauthorized exception
+    httpx_mock.add_response(method="PUT", url=url, status_code=401)
+    with pytest.raises(AuthException) as exec_info:
+        await parsed_put_request(client=client_service, url=url, json_body=json_body, params=None, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # GET request with unauthorized exception
+    httpx_mock.add_response(method="GET", url=final_url, status_code=401)
+    with pytest.raises(AuthException) as exec_info:
+        await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # DELETE request with unauthorized exception
+    httpx_mock.add_response(method="DELETE", url=url, status_code=401)
+    with pytest.raises(AuthException) as exec_info:
+        await parsed_delete_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+
+@pytest.mark.asyncio
+async def test_bad_request_exception(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
     
+    url = "http://example.com/api"
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = params)
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    error_message = "Bad request"
+
+    # GET request with bad request exception
+    httpx_mock.add_response(method="GET", url=final_url, status_code=400)
+    with pytest.raises(BadRequestException) as exec_info:
+        await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # POST request with bad request exception
+    httpx_mock.add_response(method="POST", url=url, status_code=400)
+    with pytest.raises(BadRequestException) as exec_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # PUT request with bad request exception
+    httpx_mock.add_response(method="PUT", url=url, status_code=400)
+    with pytest.raises(BadRequestException) as exec_info:
+        await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # DELETE request with bad request exception
+    httpx_mock.add_response(method="DELETE", url=final_url, status_code=400)
+    with pytest.raises(BadRequestException) as exec_info:
+        await parsed_delete_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+
+@pytest.mark.asyncio
+async def test_http_validation_exception(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = params)
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    
+    # GET request with HTTP validation exception
+    httpx_mock.add_response(method="GET", url=final_url, status_code=422)
+    with pytest.raises(HTTPValidationException):
+        await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message="")
+
+    # POST request with HTTP validation exception
+    httpx_mock.add_response(method="POST", url=url, status_code=422)
+    with pytest.raises(HTTPValidationException):
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message="")
+
+    # PUT request with HTTP validation exception
+    httpx_mock.add_response(method="PUT", url=url, status_code=422)
+    with pytest.raises(HTTPValidationException):
+        await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message="")
+
+    # DELETE request with HTTP validation exception
+    httpx_mock.add_response(method="DELETE", url=final_url, status_code=422)
+    with pytest.raises(HTTPValidationException):
+        await parsed_delete_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message="")
+
+@pytest.mark.asyncio
+async def test_internal_server_error_exception(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = params)
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    error_message = "Internal server error"
+
+    # GET request with server error exception
+    httpx_mock.add_response(method="GET", url=final_url, status_code=500)
+    with pytest.raises(ServerException) as exec_info:
+        await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # POST request with server error exception
+    httpx_mock.add_response(method="POST", url=url, status_code=500)
+    with pytest.raises(ServerException) as exec_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # PUT request with server error exception
+    httpx_mock.add_response(method="PUT", url=url, status_code=500)
+    with pytest.raises(ServerException) as exec_info:
+        await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+    # DELETE request with server error exception
+    httpx_mock.add_response(method="DELETE", url=final_url, status_code=500)
+    with pytest.raises(ServerException) as exec_info:
+        await parsed_delete_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exec_info.value)
+
+
+
+"""Standard Model Response and Status Response Model Testing"""
+
+# Test successful GET request with standard model
+@pytest.mark.asyncio
+async def test_successful_get_request_standard_model(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = params)
+    response_model = MockResponseModel(bar = "example_return_value")
+                                        
+    httpx_mock.add_response(method="GET", url=final_url, status_code=200)
+
+    result = await parsed_get_request(client=client_service, url=url, params=params, model=MockResponseModel, error_message="Error occurred")
+    assert result == response_model
+
+# Test successful GET request with StatusResponse
+@pytest.mark.asyncio
+async def test_successful_get_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    params = {"key": "value"}
+    final_url = httpx.URL(url, params = params)
+    response_model = StatusResponse(status=Status(success=True, details="GET request completed successfully"))
+
+    httpx_mock.add_response(method="GET", url=final_url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_get_request(client=client_service, url=url, params=params, model=StatusResponse, error_message="Error occurred")
+    assert result == response_model
+
+
+#Test successful POST request with standard model
+@pytest.mark.asyncio
+async def test_post_request_standard_model(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = {"foo": "example_value"}
+    response_model = MockResponseModel(bar="example_value")
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message="Error occurred")
+    assert result == response_model
+
+# Test successful POST request with StatusResponse
+@pytest.mark.asyncio
+async def test_post_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = {"foo": "example_value"}
+    response_model = StatusResponse(status=Status(success=True, details="POST request completed successfully"))
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message="Error occurred")
+    assert result == response_model
+
+# Test failed POST request with StatusResponse.
+@pytest.mark.asyncio
+async def test_failed_post_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo= "mocked-request"))
+    error_message = "Error occurred"
+
+    response_model = StatusResponse(status=Status(success=False, details="POST request did not complete successfully"))
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model.dict(), status_code=200)
+    
+    with pytest.raises(Exception) as exc_info:
+        await parsed_put_request_with_status(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message=error_message)
+    
+    assert error_message in str(exc_info.value)
+    assert "Status object from API indicated failure" in str(exc_info.value)
+
+
+#Test successful PUT request with standard model
+@pytest.mark.asyncio
+async def test_successful_put_request_standard_model(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo = "mocked-request"))
+    response_model = MockResponseModel(bar="example_value")
+
+    httpx_mock.add_response(method="PUT", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_put_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message="Error occurred")
+    assert result == response_model
+
+# Test successful PUT request with StatusResponse
+@pytest.mark.asyncio
+async def test_successful_put_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo = "mocked-request"))
+    response_model = StatusResponse(status=Status(success=True, details="PUT request completed successfully"))
+
+    httpx_mock.add_response(method="PUT", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_put_request_with_status(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message="Error occurred")
+    assert result == response_model
+
+# Test failed PUT request with StatusResponse
+@pytest.mark.asyncio
+async def test_failed_put_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo = "mocked-request"))
+    error_message = "Error occurred"
+    
+    response_model = StatusResponse(status=Status(success=False, details="PUT request did not complete successfully"))
+
+    httpx_mock.add_response(method="PUT", url=url, json=response_model.dict(), status_code=200)
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_put_request_with_status(client=client_service, url=url, params=None, json_body=json_body, model=StatusResponse, error_message=error_message)
+    
+    assert error_message in str(exc_info.value)
+    assert "Status object from API indicated failure" in str(exc_info.value)
+
+# Test successful DELETE request with standard model.
+@pytest.mark.asyncio
+async def test_successful_delete_request_standard_model(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    response_model = MockResponseModel(bar="example_value")
+
+    httpx_mock.add_response(method="DELETE", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_delete_request(client=client_service, url=url, params=None, model=MockResponseModel, error_message="Error occurred")
+    assert result == response_model
+
+# Test successful DELETE request with StatusResponse
+@pytest.mark.asyncio
+async def test_successful_delete_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    response_model = StatusResponse(status=Status(success=True, details="DELETE request completed successfully"))
+
+    httpx_mock.add_response(method="DELETE", url=url, json=response_model.dict(), status_code=200)
+
+    result = await parsed_delete_request_with_status(client=client_service, url=url, params=None, model=StatusResponse, error_message="Error occurred")
+    assert result == response_model
+
+# Test failed DELETE request with StatusResponse
+@pytest.mark.asyncio
+async def test_failed_delete_request_status_response(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    error_message = "Error occurred"
+    
+    response_model = StatusResponse(status=Status(success=False, details="DELETE request did not complete successfully"))
+
+    httpx_mock.add_response(method="DELETE", url=url, json=response_model.dict(), status_code=200)
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_delete_request_with_status(client=client_service, url=url, params=None, model=StatusResponse, error_message=error_message)
+    
+    assert error_message in str(exc_info.value)
+    assert "Status object from API indicated failure" in str(exc_info.value)
+
+
+"""Unsuccessful model parsing for POST Requests"""
+
+@pytest.mark.asyncio
+async def test_post_request_missing_required_field(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    response_model: dict = {}  # Missing required field
+    error_message = "Error occurred Validating Model"
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model, status_code=200)
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info)
+
+@pytest.mark.asyncio
+async def test_post_request_incorrect_data_format(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    response_model = {"bar": [1, 2, 3]}  # Incorrect type
+    error_message = "Error occurred Validating Model"
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model, status_code=200)
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info)
+
+@pytest.mark.asyncio
+async def test_post_request_null_or_none(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    response_model = None 
+    error_message = "Error occurred Validating Model"
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model, status_code=200)
+
+    with pytest.raises(ValidationException) as exc_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert "JSON parsing failed" in str(exc_info)
+
+
+@pytest.mark.asyncio
+async def test_put_request_incorrect_data_type(httpx_mock: HTTPXMock, client_service: MockedClientService) -> None:
+    url = "http://example.com/api"
+    json_body = py_to_dict(MockRequestModel(foo="mocked-request"))
+    response_model = {"bar": None}  # None type
+    error_message = "Error occurred Validating Model"
+
+    httpx_mock.add_response(method="POST", url=url, json=response_model, status_code=200)
+
+    with pytest.raises(Exception) as exc_info:
+        await parsed_post_request(client=client_service, url=url, params=None, json_body=json_body, model=MockResponseModel, error_message=error_message)
+    assert error_message in str(exc_info)
+
+    
+
+
