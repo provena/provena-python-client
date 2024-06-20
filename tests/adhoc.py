@@ -18,7 +18,7 @@ async def main() -> None:
         realm_name="rrap"
     )
 
-    auth = DeviceFlow(keycloak_endpoint=config.keycloak_endpoint,
+    auth = DeviceFlow(config=config,
                       client_id="client-tools", log_level=Log.DEBUG)
 
     client = ProvenaClient(config=config, auth=auth)

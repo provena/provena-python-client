@@ -18,11 +18,10 @@ import requests
 import webbrowser
 import time
 import os
-from jose import JWTError  # type: ignore
 from provenaclient.auth.helpers import AccessToken, Tokens, keycloak_refresh_token_request, validate_access_token, retrieve_keycloak_public_key
 import json
-import logging
 from provenaclient.auth.manager import DEFAULT_LOG_LEVEL
+from provenaclient.utils.config import Config
 
 
 class DeviceFlow(AuthManager):
@@ -32,7 +31,7 @@ class DeviceFlow(AuthManager):
     device_endpoint: str
     token_endpoint: str
 
-    def __init__(self, keycloak_endpoint: str, client_id: str, log_level: Optional[LogType] = None) -> None:
+    def __init__(self, config: Config, client_id: str, log_level: Optional[LogType] = None) -> None:
         f""" Create and generate a DeviceFlow object. The tokens are automatically refreshed when
         accessed through the get_auth() function.
 
@@ -52,12 +51,12 @@ class DeviceFlow(AuthManager):
         # construct parent class and include log level
         super().__init__(log_level=log_level)
 
-        self.keycloak_endpoint = keycloak_endpoint
+        self.keycloak_endpoint = config.keycloak_endpoint
         self.client_id = client_id
         self.scopes: list = []
         self.file_name = ".tokens.json"
-        self.device_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/auth/device'
-        self.token_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/token'
+        self.device_endpoint = f'{self.keycloak_endpoint}/protocol/openid-connect/auth/device'
+        self.token_endpoint = f'{self.keycloak_endpoint}/protocol/openid-connect/token'
 
         try:
             # First thing to do here is obtain the keycloak public key.
@@ -444,7 +443,7 @@ class OfflineFlow(AuthManager):
 
     public_key: str
 
-    def __init__(self, keycloak_endpoint: str, client_id: str, offline_token: Optional[str] = None, offline_token_file: Optional[str] = None, log_level: Optional[LogType] = None) -> None:
+    def __init__(self, config: Config, client_id: str, offline_token: Optional[str] = None, offline_token_file: Optional[str] = None, log_level: Optional[LogType] = None) -> None:
         f"""Create and generate an OfflineFlow object. Instatiate from provided offline token, or attempt to read
         one from file and generate the access token. Can provide the offline token directly, a file for it stored as plain text.
 
@@ -471,11 +470,11 @@ class OfflineFlow(AuthManager):
         # construct parent class and include log level
         super().__init__(log_level=log_level)
 
-        self.keycloak_endpoint = keycloak_endpoint
+        self.keycloak_endpoint = config.keycloak_endpoint
         self.client_id = client_id
         self.scopes: list = []
 
-        self.token_endpoint = f'{keycloak_endpoint}/protocol/openid-connect/token'
+        self.token_endpoint = f'{self.keycloak_endpoint}/protocol/openid-connect/token'
 
         try:
             # First thing to do here is obtain the keycloak public key.
