@@ -500,8 +500,6 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
             error_message=error_message
         )
 
-    except httpx.TimeoutException as e:
-        raise CustomTimeoutException(str(e), url = None)
     except BaseException as e:
         raise e
     except Exception as e:
