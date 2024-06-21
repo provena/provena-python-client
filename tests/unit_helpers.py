@@ -1,3 +1,4 @@
+from typing import Optional, Type
 from provenaclient.auth.helpers import HttpxBearerAuth, Tokens
 from provenaclient.auth.manager import AuthManager
 from provenaclient.clients.client_helpers import ClientService
@@ -46,3 +47,25 @@ class MockRequestModel(BaseModel):
 
 class MockResponseModel(BaseModel):
     bar: str
+
+def is_exception_in_chain(exc: BaseException, exception_type: Type[BaseException]) -> bool:
+    """Checks for the presence of a specified exception type in the exception chain.
+
+    Parameters
+    ----------
+    exc : BaseException
+        The starting exception in the chain.
+    exception_type : Type[BaseException]
+        The exception type to search for in the chain.
+    Returns
+    -------
+    bool
+        True if the exception type is found, False otherwise.
+    """
+        
+    current_exception: Optional[BaseException] = exc
+    while current_exception:
+        if isinstance(current_exception, exception_type):
+            return True
+        current_exception = current_exception.__context__
+    return False
