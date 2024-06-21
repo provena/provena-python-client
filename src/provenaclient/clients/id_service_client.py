@@ -1,3 +1,19 @@
+'''
+Created Date: Friday May 31st 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Friday May 31st 2024 9:50:26 am +1000
+Modified By: Peter Baker
+-----
+Description: ID/Handle service L2 Client
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Noting that the models published for the endpoints are not being detected in Swagger docs due to a type Alias being used
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from enum import Enum

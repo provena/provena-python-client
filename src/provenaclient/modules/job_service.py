@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: Job API L3 Module. Includes Job Admin sub module.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import JobAPIClient

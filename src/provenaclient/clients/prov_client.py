@@ -1,7 +1,22 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: Prov API L2 Client.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Note that this layer does not provide any file IO capabilities - see L3
+'''
+
 from typing import List, cast
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *

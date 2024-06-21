@@ -1,3 +1,19 @@
+'''
+Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+-----
+Description: Registry API L3 module.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Initial proof of concept with fetch/update methods from L2. Sub Modules for each subtype.
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.modules.module_helpers import *

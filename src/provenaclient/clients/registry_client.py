@@ -1,6 +1,21 @@
+'''
+Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+-----
+Description: Incomplete Registry API L2 Client.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+
+18-06-2024 | Peter Baker | Initial structure setup to help dispatch into the various sub types in the L3.
+'''
+
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.utils.http_client import HttpClient
 from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *

@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+Modified By: Peter Baker
+-----
+Description: Set of helpers for running polling tasks against the job API until completion etc.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from typing import Dict, Any, Callable, Optional, cast, Tuple, Coroutine
 from ProvenaInterfaces.AsyncJobModels import JobStatusTable
 from ProvenaInterfaces.AsyncJobAPI import *

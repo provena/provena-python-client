@@ -1,7 +1,21 @@
-from io import BufferedReader
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+Modified By: Peter Baker
+-----
+Description: A HTTP client which wraps HTTPx async so that we can swap out a different http library later if needed.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from typing import Any, List, Optional, Union
 import httpx
 from provenaclient.auth.helpers import HttpxBearerAuth
+from provenaclient.utils.helpers import JsonData
 
 # 60s timeout for connecting, and a 10s timeout elsewhere.
 timeout = httpx.Timeout(timeout=10.0, connect=60.0)
@@ -92,7 +106,7 @@ class HttpClient:
             return response
 
     @staticmethod
-    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[dict[str, Any]] | Optional[List[dict[str,Any]]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
+    async def make_put_request(url: str, auth: HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[JsonData] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response:
         """ Makes an asynchronous HTTP put request to the specified URL with the provided data, authentication, and headers.
 
         Parameters

@@ -1,3 +1,17 @@
+'''
+Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+-----
+Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+Modified By: Peter Baker
+-----
+Description: General helper functions which are useful across the client library.
+-----
+HISTORY:
+Date      	By	Comments
+----------	---	---------------------------------------------------------
+'''
+
 from pydantic import BaseModel, ValidationError
 from typing import Dict, Any, List, Mapping, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
@@ -13,7 +27,7 @@ BaseModelType = TypeVar("BaseModelType", bound=BaseModel)
 ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 
 # Type alias for json data
-JsonData = List[Dict[str, Any]] | Dict[str, Any]
+JsonData = Union[List[Dict[str, Any]],Dict[str, Any]]
 # Type alias for httpx file upload.
 HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 

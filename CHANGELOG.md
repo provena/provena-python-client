@@ -1,6 +1,148 @@
 # CHANGELOG
 
+## v0.6.0 (2024-06-18)
 
+### Feature
+
+* feat: forcing update to 0.6.0 ([`91e2879`](https://github.com/provena/provena-python-client/commit/91e2879c45dc35fcb6c97e467de8133f6dfee4cc))
+
+### Unknown
+
+* Adding dataset L3 level IO functions + class header files (#14)
+
+* Download method completed in sub module to isolate s3 functionality - added sub module sub folder
+
+* Implementing the upload method and improving variable names
+
+* Adding file header and configuration for the psioniq extensions
+
+* Class header documentation and other clean up
+
+* Fixing lock files
+
+* Adding list all files ([`b7a4388`](https://github.com/provena/provena-python-client/commit/b7a438839a7f2987f8fa3ce79ae89b29154bc66c))
+
+## v0.5.0 (2024-06-18)
+
+### Feature
+
+* feat: forcing another attempt ([`5bb0e49`](https://github.com/provena/provena-python-client/commit/5bb0e49235992bbe8d46d48c4b58dd7c99564826))
+
+## v0.4.0 (2024-06-18)
+
+### Feature
+
+* feat: Updating pyproject to promote new release ([`34b71da`](https://github.com/provena/provena-python-client/commit/34b71dad6235781294787b4325c9c10891c62b8b))
+
+### Unknown
+
+* Trigger another build ([`12205b4`](https://github.com/provena/provena-python-client/commit/12205b47ca15b6ed266dab5d63e6ed0d90aa8b0b))
+
+## v0.3.0 (2024-06-17)
+
+### Feature
+
+* feat(major): First major release ([`30ac329`](https://github.com/provena/provena-python-client/commit/30ac329ed30a88c397ff98b31b4d24198ddee585))
+
+### Unknown
+
+* Removing union pipes (#12) ([`ea83080`](https://github.com/provena/provena-python-client/commit/ea83080307a9a7c601670f56f67c7c4a3d3b202f))
+
+* Jira-1670(Minor): Offline token auth flow  (#11)
+
+Implements offline token authentication method ([`0a6f0b3`](https://github.com/provena/provena-python-client/commit/0a6f0b32709231dfa2c6a4e1741f9b4fea1807c3))
+
+* JIRA 1692 - Completion of Prov API functionalities for Client Library.  (#9)
+
+* completed explore endpoints as a concept, and now working on the model run endpoint.
+
+* Completed prov-api L2 methods and setup of L3 methods.
+
+* Completed documentation and working on building the Admin Client of Prov-API.
+
+* commiting current changes, currently working on admin endpoints.
+
+* Completion of Prov-API, completed all documentation and remaining admin and CSV related endpoints.
+
+* Fixed missing parameters in two of the admin methods. One of the admin endpoints needs to be tested.
+
+* Completed Prov API with testing and improved the L2 and L3 layer exchange of the csv to model run method.
+
+* Completed pull request comments and updated open api endpoints fetch script through GPT.
+
+* Updated file  writing functions according to pull request comments and created more flexibility between L2 and L3 for launching model runs endpoint.
+
+* Made writing file logic more robust by having more checks and throwing exceptions accordingly. Updated L2 method to encode string to bytes internally. ([`ccdcdaa`](https://github.com/provena/provena-python-client/commit/ccdcdaaee2ef64381ec66125ac65b7d421d8813b))
+
+* Revert &#34;refactoring&#34;
+
+This reverts commit b4f13026a3a93ef22843fc52487c10cbaacb4812. ([`0c39cee`](https://github.com/provena/provena-python-client/commit/0c39cee8f414c6d95ce2e1a03f6f9f7959a6e536))
+
+* Revert &#34;added read offline token from file. Need to consolidate offline and refreh token mishaps&#34;
+
+This reverts commit 0eb280a96a2f2935751cfa1a3be02d35a79879ec. ([`999a812`](https://github.com/provena/provena-python-client/commit/999a8124b8a3b06395c03ad8545b598b48c7362b))
+
+* Revert &#34;improved error handling and tidying&#34;
+
+This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https://github.com/provena/provena-python-client/commit/186ec49201efb527477b2285e2caade9ca9bfece))
+
+* git pushMerge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`e333078`](https://github.com/provena/provena-python-client/commit/e333078e9f86d7bddf067b4537fb121f6ca5595e))
+
+* improved error handling and tidying ([`b5a679a`](https://github.com/provena/provena-python-client/commit/b5a679ab36a23dd9e1cb2c655775fbe234068c76))
+
+* Implements Job API L2 and L3 + additional L3 helper methods (#10)
+
+* Basic L2/L3 complete
+
+* Building out L3 functions to await completion of job lifecycle + list all + for all methods. ([`0871e96`](https://github.com/provena/provena-python-client/commit/0871e96944be0f9b26e9ab167e1a050a2c80bd65))
+
+* added read offline token from file. Need to consolidate offline and refreh token mishaps ([`0eb280a`](https://github.com/provena/provena-python-client/commit/0eb280a96a2f2935751cfa1a3be02d35a79879ec))
+
+* refactoring ([`b4f1302`](https://github.com/provena/provena-python-client/commit/b4f13026a3a93ef22843fc52487c10cbaacb4812))
+
+* Completion of Datastore Functionality (Need Review on Pagination Implementation)  (#8)
+
+* In progressing completing of the datastore api&#39;s.
+
+* (In progress) Completing the datastore client library functionality.
+
+* Completion of core datastore functionalities, and need a review on pagination implementation.
+
+* Updated pull request comments, implemented new pagination methods and removed api_exceptions list as they all inherit from BaseException.
+
+* Completion - Improved variable naming, changed structure of listing dataset methods to be flat and not nested and removed default sort options as this is handled by the API. ([`b9e976d`](https://github.com/provena/provena-python-client/commit/b9e976dd61fcc934fa0c3945e67c24c0212e133a))
+
+* Registry concept (#7)
+
+* Proof of concept for registry implementation
+
+* Adding documentation and mvp for registry implementation - not complete ([`7da100e`](https://github.com/provena/provena-python-client/commit/7da100ee6772bfe4b876112521316a187753c436))
+
+* JIRA 1687 - Fleshing out base structure of Prov, Registry, Job and Handle ID API&#39;s (#6)
+
+* Completed a base setup for the remaining API&#39;s (registry,prov) in respect to L2 and L3 and included all endpoints.
+
+* Completion of missing API implementation and used a more robust approach suggested by Ross for Registry Endpoint collection.
+
+* Changed handle to ID and implemented auto-generated routes for registry.
+
+* Implementing L2 and L3 for ID service, renaming client file.
+
+---------
+
+Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https://github.com/provena/provena-python-client/commit/831e80be517154dfa239e773c41c73f4813264ad))
+
+* Complete L2 &amp; L3 for Auth API (#5)
+
+* Implementing remaining L2 methods for auth api client
+
+* Direct map L3 methods
+
+* Adding placeholder L3 module for streamlining user links and adding doc strings for L2 auth API.
+
+* Transferring doc strings from L2 to L3 to match - auto docs need to pick these up
+
+* Minor corrections ([`26afd0a`](https://github.com/provena/provena-python-client/commit/26afd0a066dd66b2362687e5ce4e22ae473143a1))
 
 ## v0.2.0 (2024-05-30)
 
@@ -13,7 +155,6 @@
 ### Unknown
 
 * Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`293cf17`](https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882))
-
 
 ## v0.1.0 (2024-05-30)
 
@@ -110,7 +251,6 @@ Co-authored-by: Peter Baker &lt;87056634+PeterBaker0@users.noreply.github.com&gt
 Completed base auth interface + device flow, provided more type safety to the auth device flow methods, completed config interface file with docstrings, and updated CI-CD script to only run on main.
 
 co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`cb5b19b`](https://github.com/provena/provena-python-client/commit/cb5b19b5ac2fd4de6a0383d2592c29201ec6c464))
-
 
 ## v0.0.0 (2024-04-05)
 
