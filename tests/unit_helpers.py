@@ -31,14 +31,9 @@ class MockedAuthService(AuthManager):
         self.refresh_token = "mock_refresh_token"
         self.public_key = "mock_public_key"
 
-    def refresh_tokens(self) -> None:
-        """Simulate refreshing tokens."""
-        self.token = "refreshed_mock_access_token"
-        self.refresh_token = "refreshed_mock_refresh_token"
-
     def force_refresh(self) -> None:
         """Simulate force refreshing tokens."""
-        self.refresh_tokens()
+        pass
 
     def get_token(self) -> str:
         """Return the mock access token."""
@@ -47,11 +42,6 @@ class MockedAuthService(AuthManager):
     def get_auth(self) -> HttpxBearerAuth:
         """Return a mock HttpxBearerAuth object."""
         return HttpxBearerAuth(token=self.token)
-
-    def validate_token(self, tokens: Tokens) -> bool:
-        """Simulate token validation."""
-        return True
-
 
 class MockedClientService(ClientService):
 
@@ -85,5 +75,8 @@ def is_exception_in_chain(exc: BaseException, exception_type: Type[BaseException
     while current_exception:
         if isinstance(current_exception, exception_type):
             return True
-        current_exception = current_exception.__context__
+        try:
+            current_exception = current_exception.__context__
+        except Exception:
+            return False
     return False
