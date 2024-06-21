@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## v0.7.0 (2024-06-21)
+
+### Feature
+
+* feat: Testing version increment. ([`bff0daf`](https://github.com/provena/provena-python-client/commit/bff0daf3ceef3d7af025ba187cc96601942ce9eb))
+
+### Unknown
+
+* Included pytest-asycnio missing dependency. ([`8d4442a`](https://github.com/provena/provena-python-client/commit/8d4442a46a358efe1bc01eebdbcda00ed297b51f))
+
+* Completed Unit Testing for L1 &amp; L2 Layers.
+
+* Completed L1 layer testing mocked with various http methods and status codes.
+
+* Completed L1 layer testing, created fixtures and also added small set of integration tests for L1 layer.
+
+* Completed L2 Layer Testing, need further review on missing tests and what can be improved.
+
+* Fixed some tests that were failing due to wrong HTTP type or incorrect use of final url.
+
+* Completed unit tests with doc string and exception chain identification.
+
+* Updated CI-CD script to run only once.
+
+* Added header commenting to files.
+
+* Updated lock file.
+
+* mypy testing. Does not seem to be an issue on my end.
+
+* Included pytest-httpx dependency.
+
+* change mocked auth service to use  base class methods only and updated robustness of exception chaining function. ([`8c52602`](https://github.com/provena/provena-python-client/commit/8c52602482c15eb71f694a90172b5ac0c2538498))
+
+* Refactoring auth interface (#13)
+
+Small refactor of config instantiation ([`7d6dea5`](https://github.com/provena/provena-python-client/commit/7d6dea55a6a80bff49774f0e7bd9e967d36d4dc7))
+
 ## v0.6.0 (2024-06-18)
 
 ### Feature
