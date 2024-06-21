@@ -28,9 +28,11 @@ sphinx-rtd-theme = "<2.0.0"
 types-requests="*"
 
 [tool.semantic_release]
+version_toml = [
+    "pyproject.toml:tool.poetry.version"
+]
 version_variable = [
-    "src/provenaclient/__init__.py:__version__",
-    "pyproject.toml:version"
+    "src/provenaclient/__init__.py:__version__"
 ]                                                   # version location
 branch = "main"                                      # branch to make releases of
 changelog_file = "CHANGELOG.md"                      # changelog file
@@ -40,6 +42,7 @@ upload_to_release = true
 upload_to_pypi = true 
 remove_dist = false
 patch_without_tag = true
+commit_version_number = true
 
 
 [build-system]
