@@ -13,7 +13,7 @@ Date      	By	Comments
 '''
 
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, List, Optional, Tuple, TypeVar, Type, Union, ByteString
+from typing import Dict, Any, List, Mapping, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
 from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
@@ -166,7 +166,7 @@ def read_file_helper(file_path: str) -> str:
     except Exception as e:
         raise Exception(f"Error with file. Exception {e}")
 
-def build_params_exclude_none(params: Dict[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
+def build_params_exclude_none(params: Mapping[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """
 
     Takes a raw params dict with optional args and returns filtered.
