@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.8.0 (2024-06-21)
+
+### Feature
+
+* feat: Updated pyproject.toml settings to increment project versioning. ([`b61fe49`](https://github.com/provena/provena-python-client/commit/b61fe49c598052863a6ea6f7ab472301b6d04035))
+
+* feat: changed semantic release settings to increment project version. ([`1899df9`](https://github.com/provena/provena-python-client/commit/1899df90d798765ec4082e1eccf93c24960ce23a))
+
+### Unknown
+
+* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`cd6ad90`](https://github.com/provena/provena-python-client/commit/cd6ad90cafdc39242540e5a55b1bfdffa40332e8))
+
 ## v0.7.0 (2024-06-21)
 
 ### Feature
