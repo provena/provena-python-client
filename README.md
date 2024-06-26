@@ -34,6 +34,13 @@ You can then make vs code use this environment easily with `ctrl + shift + p` se
 5) Verify that your poetry is now running, using the command `poetry --version`.
 
 
+## Release Process and Requirements of Provena Client:
+Follow this guide to better understand the conventions and requirements of 
+contributing to the Client Library and how it manages automated deployment and testing.
+
+[Release Process for Provena Client Library  Confluence Page](https://confluence.csiro.au/pages/viewpage.action?pageId=1920938798)
+
+
 
 ## Contributing
 TODO
