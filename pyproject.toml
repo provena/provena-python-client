@@ -43,6 +43,8 @@ upload_to_pypi = true
 remove_dist = false
 patch_without_tag = true
 commit_version_number = true
+patch_tag = ["fix", "perf"]
+ignore_tags = ["chore", "docs", "style", "refactor", "test"]
 
 
 [build-system]
