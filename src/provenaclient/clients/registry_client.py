@@ -22,6 +22,7 @@ from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.utils.registry_endpoints import *
 from ProvenaInterfaces.RegistryModels import *
+from ProvenaInterfaces.RegistryAPI import *
 
 
 class GenericRegistryEndpoints(str, Enum):
@@ -182,5 +183,254 @@ class RegistryClient(ClientService):
             model=update_response_model,
             url=endpoint,
         )
+    
+    async def list_items(self, list_items_payload: GeneralListRequest, item_subtype: ItemSubType, update_model_response: Type[BaseModelType]) -> BaseModelType: 
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.LIST, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_post_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(list_items_payload),
+            error_message=f"Failed to list items for {item_subtype}",
+            model=update_model_response,
+            url=endpoint
+        )
+    
+    async def seed_item(self, item_subtype: ItemSubType, update_model_response: Type[BaseModelType]) -> BaseModelType: 
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.SEED, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_post_request_with_status(
+            client=self, 
+            params=None,
+            json_body=None,
+            error_message=f"Failed to seed items for {item_subtype}",
+            model=update_model_response,
+            url=endpoint
+        )
+
+    
+    async def revert_item(self, revert_request: ItemRevertRequest, item_subtype: ItemSubType) -> ItemRevertResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.REVERT, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_put_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(revert_request),
+            error_message=f"Failed to revert items for {item_subtype}",
+            model=ItemRevertResponse,
+            url=endpoint
+        )
+    
+    async def create_item(self, create_item_request: DomainInfoBase, item_subtype: ItemSubType, update_model_response: Type[BaseModelType]) -> BaseModelType:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.CREATE, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_post_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(create_item_request),
+            error_message=f"Failed to create items for {item_subtype}",
+            model=update_model_response,
+            url=endpoint
+        )
+    
+    async def get_schema(self, item_subtype: ItemSubType) -> JsonSchemaResponse:
+
+          #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.SCHEMA, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request_with_status(
+            client=self, 
+            params=None,
+            error_message=f"Failed to get schema for {item_subtype}",
+            model=JsonSchemaResponse,
+            url=endpoint
+        )
+    
+    async def validate_item(self, validate_request: DomainInfoBase, item_subtype: ItemSubType) -> StatusResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.VALIDATE, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_post_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(validate_request),
+            error_message=f"Failed to validate item for {item_subtype}",
+            model=JsonSchemaResponse,
+            url=endpoint
+        )
+    
+    async def evaluate_auth_access(self, id: str, item_subtype: ItemSubType) -> DescribeAccessResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.AUTH_EVALUATE, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request(
+            client=self, 
+            params={"id": id},
+            error_message=f"Failed to evaluate auth access for {item_subtype}",
+            model=DescribeAccessResponse,
+            url=endpoint
+        )
+    
+    async def get_auth_configuration(self, id: str, item_subtype: ItemSubType) -> AccessSettings:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.AUTH_CONFIGURATION, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request(
+            client=self, 
+            params={"id": id},
+            error_message=f"Failed to get auth config for {item_subtype}",
+            model=AccessSettings,
+            url=endpoint
+        )
+    
+    async def modify_auth_configuration(self, id:str, auth_change_request: AccessSettings, item_subtype: ItemSubType) -> StatusResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.AUTH_CONFIGURATION, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_put_request_with_status(
+            client=self, 
+            params={"id": id},
+            json_body=py_to_dict(auth_change_request),
+            error_message=f"Failed to modify auth config for {item_subtype}",
+            model=StatusResponse,
+            url=endpoint
+        )
+    
+    async def get_auth_roles(self, item_subtype: ItemSubType) -> AuthRolesResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.AUTH_ROLES, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request(
+            client=self, 
+            params=None,
+            error_message=f"Failed to get auth roles for {item_subtype}",
+            model=AuthRolesResponse,
+            url=endpoint
+        )
+    
+    async def lock_resource(self, lock_resource_request: LockChangeRequest, item_subtype: ItemSubType) -> StatusResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.LOCK, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_put_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(lock_resource_request),
+            error_message=f"Failed to lock resource for {item_subtype}",
+            model=StatusResponse,
+            url=endpoint
+        )
+    
+    async def unlock_resource(self, unlock_resource_request: LockChangeRequest, item_subtype: ItemSubType) -> StatusResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.UNLOCK, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_put_request_with_status(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(unlock_resource_request),
+            error_message=f"Failed to unlock resource for {item_subtype}",
+            model=StatusResponse,
+            url=endpoint
+        )
+    
+    async def get_lock_history(self, handle_id: str, item_subtype: ItemSubType) -> LockHistoryResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.LOCK_HISTORY, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request_with_status(
+            client=self, 
+            params={"id": handle_id},
+            error_message=f"Failed to get lock history for id {id} for subtype {item_subtype}",
+            model=LockHistoryResponse,
+            url=endpoint
+        )
+    
+    async def get_lock_status(self, id: str, item_subtype: ItemSubType) -> LockStatusResponse:
+
+        #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.LOCK_HISTORY, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_get_request_with_status(
+            client=self, 
+            params={"id": id},
+            error_message=f"Failed to get lock status for id {id} with subtype {item_subtype}",
+            model=LockStatusResponse,
+            url=endpoint
+        )
+
+
+        
+
+
+
+
+        
+        
+        
+
+
+    
+
+
+
     
     

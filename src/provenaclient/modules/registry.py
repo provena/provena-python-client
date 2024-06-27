@@ -119,7 +119,34 @@ class OrganisationClient(ModuleService):
             update_response_model=StatusResponse,
         )
     
-    async def create(self, item_info: OrganisationDomainInfo)
+    async def list_items(self, list_items_payload: GeneralListRequest) -> OrganisationListResponse:
+        """Lists all orgainsations within registry based on filter
+        criteria.
+
+        Parameters
+        ----------
+        list_items_payload : GeneralListRequest
+            Payload contaning the filter/sort criteria
+        """
+
+        return await self._registry_client.list_items(
+            list_items_payload=list_items_payload,
+            item_subtype=ItemSubType.ORGANISATION, 
+            update_model_response=OrganisationListResponse
+        )
+    
+    async def seed_item(self) -> OrganisationSeedResponse:
+
+        return await self._registry_client.seed_item(
+            item_subtype=ItemSubType.ORGANISATION,
+            update_model_response=OrganisationSeedResponse
+        )
+
+
+    
+   # TODO: async def create(self, item_info: OrganisationDomainInfo)
+
+
 
 
 class CreateActivityClient(ModuleService):
