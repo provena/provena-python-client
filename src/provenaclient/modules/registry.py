@@ -15,6 +15,7 @@ Date      	By	Comments
 '''
 
 from provenaclient.auth.manager import AuthManager
+from provenaclient.models.general import HealthCheckResponse
 from provenaclient.utils.config import Config
 from provenaclient.modules.module_helpers import *
 from provenaclient.clients import RegistryClient
@@ -25,6 +26,38 @@ from typing import Optional
 
 # L3 interface.
 
+class RegistryAdminClient(ModuleService):
+    _registry_client: RegistryClient
+
+    def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
+        """
+        Admin sub module of the Registry API providing functionality
+        for the admin endpoints.
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow
+            method.
+        config : Config
+            A config object which contains information related to the Provena
+            instance. 
+        auth_client: AuthClient
+            The instantiated auth client
+        """
+        self._auth = auth
+        self._config = config
+
+        # Clients related to the registry_api scoped as private.
+        self._registry_client = registry_client
+
+    
+    async def delete(self, id: str, item_subtype: ItemSubType) -> StatusResponse:
+
+        return await self._registry_client.admin.delete_item(
+            id = id, 
+            item_subtype=item_subtype
+        )
 
 class OrganisationClient(ModuleService):
     _registry_client: RegistryClient
@@ -85,6 +118,90 @@ class OrganisationClient(ModuleService):
             reason=reason,
             update_response_model=StatusResponse,
         )
+    
+    async def create(self, item_info: OrganisationDomainInfo)
+
+
+class CreateActivityClient(ModuleService):
+    
+    def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
+        """
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow
+            method.
+        config : Config
+            A config object which contains information related to the Provena
+            instance.
+        """
+        # Module service
+        self._auth = auth
+        self._config = config
+
+        # Clients related to the registry scoped as private.
+        self._registry_client = registry_client
+
+    async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelFetchResponse:
+        """
+        Fetches a create activity item from the registry
+
+        Args:
+            id (str): The model ID
+            seed_allowed (Optional[bool], optional): Allow seed items. Defaults to None.
+
+        Returns:
+            ModelFetchResponse: The fetch response
+        """
+        return await self._registry_client.fetch_item(
+            id=id,
+            item_subtype=ItemSubType.CREATE,
+            fetch_response_model=ModelFetchResponse,
+            seed_allowed=seed_allowed
+        )
+
+
+class VersionActivityClient(ModuleService):
+
+    def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
+        """
+
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow
+            method.
+        config : Config
+            A config object which contains information related to the Provena
+            instance.
+        """
+        # Module service
+        self._auth = auth
+        self._config = config
+
+        # Clients related to the registry scoped as private.
+        self._registry_client = registry_client
+
+    async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelFetchResponse:
+        """
+        Fetches a version item from the registry
+
+        Args:
+            id (str): The model ID
+            seed_allowed (Optional[bool], optional): Allow seed items. Defaults to None.
+
+        Returns:
+            ModelFetchResponse: The fetch response
+        """
+        return await self._registry_client.fetch_item(
+            id=id,
+            item_subtype=ItemSubType.VERSION,
+            fetch_response_model=ModelFetchResponse,
+            seed_allowed=seed_allowed
+        )
+
+
 
 
 class ModelClient(ModuleService):
@@ -155,6 +272,9 @@ class Registry(ModuleService):
     # Sub modules
     organisation: OrganisationClient
     model: ModelClient
+    create_activity: CreateActivityClient
+    version_acitvity: VersionActivityClient
+    admin: RegistryAdminClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
         """
@@ -180,3 +300,20 @@ class Registry(ModuleService):
             auth=auth, config=config, registry_client=registry_client)
         self.model = ModelClient(
             auth=auth, config=config, registry_client=registry_client)
+        self.create_activity = CreateActivityClient(
+            auth=auth, config=config, registry_client=registry_client)
+        self.version_acitvity = VersionActivityClient(
+            auth=auth, config=config, registry_client=registry_client)
+        self.admin = RegistryAdminClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
+    
+    async def get_health_check(self) -> HealthCheckResponse:
+        """
+        Health check the API
+
+        Returns:
+            HealthCheckResponse: Response
+        """
+        return await self._registry_client.get_health_check()
+        

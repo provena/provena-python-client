@@ -15,6 +15,7 @@ Date      	By	Comments
 '''
 
 from provenaclient.auth.manager import AuthManager
+from provenaclient.models.general import HealthCheckResponse
 from provenaclient.utils.config import Config
 from enum import Enum
 from provenaclient.utils.helpers import *
@@ -58,7 +59,27 @@ class RegistryAdminClient(ClientService):
 
     def _build_endpoint(self, endpoint: RegistryAdminEndpoints) -> str:
         return f"{self._config.registry_api_endpoint}{endpoint.value}"
+    
+    def _build_subtype_endpoint(self, action: RegistryAction, item_subtype: ItemSubType) -> str:
+        return subtype_action_to_endpoint(
+            base=self._config.registry_api_endpoint,
+            action=action,
+            item_subtype=item_subtype
+        )
+    
+    async def delete_item(self, id: str, item_subtype: ItemSubType) -> StatusResponse:
 
+        endpoint = self._build_subtype_endpoint(
+            action = RegistryAction.DELETE, item_subtype=item_subtype
+        )
+
+        return await parsed_delete_request_with_status(
+            client = self, 
+            params = {'id': id}, 
+            error_message = f"Failed to delete item with id {id} and subtype {item_subtype}",
+            model = StatusResponse,
+            url = endpoint            
+        )
 
 # L2 interface.
 class RegistryClient(ClientService):
@@ -91,6 +112,22 @@ class RegistryClient(ClientService):
 
     def _build_general_endpoint(self, endpoint: GenericRegistryEndpoints) -> str:
         return f"{self._config.registry_api_endpoint}{endpoint.value}"
+    
+
+    async def get_health_check(self) -> HealthCheckResponse:
+        """
+        Health check the API
+
+        Returns:
+            HealthCheckResponse: Response
+        """
+        return await parsed_get_request(
+            client=self,
+            url=self._build_general_endpoint(GenericRegistryEndpoints.GET_HEALTH_CHECK),
+            error_message="Health check failed!",
+            params={},
+            model=HealthCheckResponse
+        )
 
     async def fetch_item(self, id: str, item_subtype: ItemSubType, fetch_response_model: Type[BaseModelType], seed_allowed: Optional[bool] = None) -> BaseModelType:
         """
@@ -145,3 +182,5 @@ class RegistryClient(ClientService):
             model=update_response_model,
             url=endpoint,
         )
+    
+    
