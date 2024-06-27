@@ -67,6 +67,55 @@ class RegistryAdminClient(ClientService):
             action=action,
             item_subtype=item_subtype
         )
+
+    async def export_items(self) -> RegistryExportResponse:
+
+        endpoint = self._build_endpoint(RegistryAdminEndpoints.GET_ADMIN_EXPORT)
+
+        return await parsed_get_request_with_status(
+            client = self,
+            url = endpoint, 
+            params = None,
+            error_message=f"Failed to export all items from the registry!", 
+            model = RegistryExportResponse
+        )
+    
+    async def import_items(self, registry_import_request: RegistryImportRequest) -> RegistryImportResponse:
+
+        endpoint = self._build_endpoint(RegistryAdminEndpoints.POST_ADMIN_IMPORT)
+
+        return await parsed_post_request_with_status(
+            client = self,
+            url = endpoint, 
+            params = None,
+            json_body=py_to_dict(registry_import_request),
+            error_message=f"Failed to import items into the registry!", 
+            model = RegistryImportResponse
+        )
+    
+    async def restore_items_from_dynamo_table(self, restore_request: RegistryRestoreRequest) -> RegistryImportResponse:
+
+        endpoint = self._build_endpoint(RegistryAdminEndpoints.POST_ADMIN_IMPORT)
+
+        return await parsed_post_request_with_status(
+            client = self,
+            url = endpoint, 
+            params = None,
+            json_body=py_to_dict(restore_request),
+            error_message=f"Failed to import items into the registry!", 
+            model = RegistryImportResponse
+        )
+    
+    async def generate_config_file(self, required_only: bool) -> str:
+
+        response = await validated_get_request(
+            client=self, 
+            url = self._build_endpoint(RegistryAdminEndpoints.GET_ADMIN_CONFIG),
+            error_message=f"Failed to generate config file",
+            params = {"required_only": required_only},
+        )
+
+        return response.text
     
     async def delete_item(self, id: str, item_subtype: ItemSubType) -> StatusResponse:
 
@@ -82,10 +131,74 @@ class RegistryAdminClient(ClientService):
             url = endpoint            
         )
 
+class RegistryGeneralClient(ClientService):
+
+    def __init__(self, auth: AuthManager, config: Config) -> None:
+        """Initialises the RegistryGeneralClient with authentication and configuration.
+
+        Parameters
+        ----------
+        auth: AuthManager
+            An abstract interface containing the user's requested auth flow method.
+        config: Config
+            A config object which contains information related to the Provena instance.
+        """
+        self._auth = auth
+        self._config = config
+
+
+    def _build_subtype_endpoint(self, action: RegistryAction, item_subtype: ItemSubType) -> str:
+        return subtype_action_to_endpoint(
+            base=self._config.registry_api_endpoint,
+            action=action,
+            item_subtype=item_subtype
+        )
+
+    def _build_general_endpoint(self, endpoint: GenericRegistryEndpoints) -> str:
+        return f"{self._config.registry_api_endpoint}{endpoint.value}"
+    
+    async def list_general_registry_items(self, general_list_request: GeneralListRequest) -> PaginatedListResponse:
+
+        endpoint = self._build_general_endpoint(endpoint=GenericRegistryEndpoints.POST_REGISTRY_GENERAL_LIST)
+
+        return await parsed_post_request_with_status(
+            client = self, 
+            url = endpoint,
+            params=None,
+            json_body=py_to_dict(general_list_request), 
+            error_message=f"General list fetch failed!",
+            model = PaginatedListResponse
+        )
+    
+    async def general_fetch_item(self, id: str) -> UntypedFetchResponse:
+
+        endpoint = self._build_general_endpoint(endpoint=GenericRegistryEndpoints.GET_REGISTRY_GENERAL_FETCH)
+
+        return await parsed_get_request_with_status(
+            client = self,
+            url = endpoint, 
+            params = {"id": id},
+            error_message=f"Failed to fetch item with id {id} from general registry!", 
+            model = UntypedFetchResponse
+        )
+    
+    async def get_current_provena_version(self) -> VersionResponse:
+
+        endpoint = self._build_general_endpoint(endpoint=GenericRegistryEndpoints.GET_REGISTRY_GENERAL_ABOUT_VERSION)
+
+        return await parsed_get_request(
+            client = self, 
+            url = endpoint,
+            params = None, 
+            error_message="Failed to fetch the current Provena version of your instance.",
+            model = VersionResponse
+        )
+
 # L2 interface.
 class RegistryClient(ClientService):
     # Sub clients
     admin: RegistryAdminClient
+    general: RegistryGeneralClient
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """Initialises the RegistryClient with authentication and configuration.
@@ -102,6 +215,7 @@ class RegistryClient(ClientService):
 
         # Sub clients
         self.admin = RegistryAdminClient(auth=auth, config=config)
+        self.general = RegistryGeneralClient(auth=auth, config=config)
 
     # Function to get the endpoint URL
     def _build_subtype_endpoint(self, action: RegistryAction, item_subtype: ItemSubType) -> str:
@@ -282,7 +396,7 @@ class RegistryClient(ClientService):
             params=None,
             json_body=py_to_dict(validate_request),
             error_message=f"Failed to validate item for {item_subtype}",
-            model=JsonSchemaResponse,
+            model=StatusResponse,
             url=endpoint
         )
     
@@ -416,6 +530,25 @@ class RegistryClient(ClientService):
             model=LockStatusResponse,
             url=endpoint
         )
+    
+    async def version(self, version_request: VersionRequest, item_subtype: ItemSubType) -> VersionResponse:
+
+         #determine endpoint
+        endpoint = self._build_subtype_endpoint(
+            action=RegistryAction.VERSION, item_subtype=item_subtype
+        )
+
+        #fetch item from the subtype specific endpoint
+        return await parsed_post_request(
+            client=self, 
+            params=None,
+            json_body=py_to_dict(version_request),
+            error_message=f"Failed to complete versioning for subtype {item_subtype}",
+            model=VersionResponse,
+            url=endpoint
+        )
+    
+
 
 
         
