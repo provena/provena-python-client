@@ -230,7 +230,11 @@ async def main() -> None:
     print(response)
 
 
-    print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
+    #res = await client.registry.admin.delete(id="10378.1/1913346")
+
+    #print(res)
+
+    #print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
 
     model_create_request = ModelDomainInfo(
         display_name="Parth testing",

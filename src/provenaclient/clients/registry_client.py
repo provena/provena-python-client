@@ -126,7 +126,7 @@ class RegistryAdminClient(ClientService):
         RegistryImportResponse
             The response containing the result of the restore operation.
         """
-        endpoint = self._build_endpoint(RegistryAdminEndpoints.POST_ADMIN_IMPORT)
+        endpoint = self._build_endpoint(RegistryAdminEndpoints.POST_ADMIN_RESTORE_FROM_TABLE)
 
         return await parsed_post_request_with_status(
             client=self,
@@ -435,7 +435,7 @@ class RegistryClient(ClientService):
             url=endpoint
         )
 
-    async def seed_item(self, item_subtype: ItemSubType, update_model_response: Type[BaseModelType]) -> BaseModelType:
+    async def seed_item(self, item_subtype: ItemSubType, seed_model_response: Type[BaseModelType]) -> BaseModelType:
         """
         Seeds an item in the registry.
 
@@ -443,7 +443,7 @@ class RegistryClient(ClientService):
         ----------
         item_subtype : ItemSubType
             The subtype of the item to seed.
-        update_model_response : Type[BaseModelType]
+        seed_model_response : Type[BaseModelType]
             The response model to parse.
 
         Returns
@@ -462,7 +462,7 @@ class RegistryClient(ClientService):
             params=None,
             json_body=None,
             error_message=f"Failed to seed items for {item_subtype}",
-            model=update_model_response,
+            model=seed_model_response,
             url=endpoint
         )
 
@@ -497,7 +497,7 @@ class RegistryClient(ClientService):
             url=endpoint
         )
 
-    async def create_item(self, create_item_request: DomainInfoBase, item_subtype: ItemSubType, update_model_response: Type[BaseModelType]) -> BaseModelType:
+    async def create_item(self, create_item_request: DomainInfoBase, item_subtype: ItemSubType, create_response_model: Type[BaseModelType]) -> BaseModelType:
         """
         Creates an item in the registry.
 
@@ -507,7 +507,7 @@ class RegistryClient(ClientService):
             The domain information required to create the item.
         item_subtype : ItemSubType
             The subtype of the item to create.
-        update_model_response : Type[BaseModelType]
+        create_response_model : Type[BaseModelType]
             The response model to parse.
 
         Returns
@@ -526,7 +526,7 @@ class RegistryClient(ClientService):
             params=None,
             json_body=py_to_dict(create_item_request),
             error_message=f"Failed to create items for {item_subtype}",
-            model=update_model_response,
+            model=create_response_model,
             url=endpoint
         )
 
@@ -863,22 +863,3 @@ class RegistryClient(ClientService):
             model=VersionResponse,
             url=endpoint
         )
-
-
-
-        
-
-
-
-
-        
-        
-        
-
-
-    
-
-
-
-    
-    

@@ -24,7 +24,7 @@ from provenaclient.clients import RegistryClient
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from typing import Optional
-from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
+from provenaclient.utils.helpers import convert_to_item_subtype, write_file_helper, get_and_validate_file_path
 
 
 
@@ -143,7 +143,7 @@ class RegistryAdminClient(ModuleService):
 
         return config_text
     
-    async def delete(self, id: str, item_subtype: ItemSubType) -> StatusResponse:
+    async def delete(self, id: str) -> StatusResponse:
         """Admin only endpoint for deleting item from registry. USE CAREFULLY!
 
         Parameters
@@ -159,6 +159,14 @@ class RegistryAdminClient(ModuleService):
             Response indicating the success/failure of your request.
         """
 
+        fetch_item = await self._registry_client.general.general_fetch_item(id=id)
+
+        if fetch_item.item: 
+            item_subtype_str: Optional[str] = fetch_item.item.get("item_subtype")
+            item_subtype = convert_to_item_subtype(item_subtype_str)
+        else:
+            raise ValueError("Item not found")
+                    
         return await self._registry_client.admin.delete_item(
             id = id, 
             item_subtype=item_subtype
@@ -451,7 +459,7 @@ class OrganisationClient(RegistryBaseClass):
         """
         return await self._registry_client.seed_item(
             item_subtype=self.item_subtype,
-            update_model_response=OrganisationSeedResponse
+            seed_model_response=OrganisationSeedResponse
         )
 
     async def create_item(self, create_item_request: OrganisationDomainInfo) -> OrganisationCreateResponse:
@@ -470,7 +478,7 @@ class OrganisationClient(RegistryBaseClass):
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
             item_subtype=self.item_subtype,
-            update_model_response=OrganisationCreateResponse
+            create_response_model=OrganisationCreateResponse
         )
 
     async def validate_item(self, validate_request: OrganisationDomainInfo) -> StatusResponse:
@@ -523,7 +531,7 @@ class PersonClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.PERSON,
+            item_subtype=self.item_subtype,
             fetch_response_model=PersonFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -542,7 +550,7 @@ class PersonClient(RegistryBaseClass):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.PERSON,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
@@ -560,7 +568,7 @@ class PersonClient(RegistryBaseClass):
 
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.PERSON, 
+            item_subtype=self.item_subtype, 
             update_model_response=PersonListResponse
         )
     
@@ -574,8 +582,8 @@ class PersonClient(RegistryBaseClass):
         """
 
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.PERSON,
-            update_model_response=PersonSeedResponse
+            item_subtype=self.item_subtype,
+            seed_model_response=PersonSeedResponse
         )
     
     async def create_item(self, create_item_request: PersonDomainInfo) -> PersonCreateResponse:
@@ -594,8 +602,8 @@ class PersonClient(RegistryBaseClass):
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.PERSON,
-            update_model_response=PersonCreateResponse
+            item_subtype=self.item_subtype,
+            create_response_model=PersonCreateResponse
         )
     
     async def validate_item(self, validate_request: PersonDomainInfo) -> StatusResponse:
@@ -614,7 +622,7 @@ class PersonClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.PERSON
+            item_subtype=self.item_subtype
         )
     
 
@@ -648,7 +656,7 @@ class CreateActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.CREATE,
+            item_subtype=self.item_subtype,
             fetch_response_model=CreateFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -668,7 +676,7 @@ class CreateActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.CREATE,
+            item_subtype=self.item_subtype,
             update_model_response=CreateListResponse
         )
     
@@ -688,7 +696,7 @@ class CreateActivityClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.CREATE
+            item_subtype=self.item_subtype
         )
 
 
@@ -723,7 +731,7 @@ class VersionActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.VERSION,
+            item_subtype=self.item_subtype,
             fetch_response_model=VersionFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -743,7 +751,7 @@ class VersionActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.VERSION,
+            item_subtype=self.item_subtype,
             update_model_response=VersionListResponse
         )
     
@@ -763,7 +771,7 @@ class VersionActivityClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.VERSION
+            item_subtype=self.item_subtype
         )
     
 
@@ -797,7 +805,7 @@ class ModelRunActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.MODEL_RUN,
+            item_subtype=self.item_subtype,
             fetch_response_model=ModelRunFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -817,7 +825,7 @@ class ModelRunActivityClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.MODEL_RUN,
+            item_subtype=self.item_subtype,
             update_model_response=ModelRunListResponse
         )
     
@@ -837,7 +845,7 @@ class ModelRunActivityClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.MODEL_RUN
+            item_subtype=self.item_subtype
         )
     
 
@@ -873,7 +881,7 @@ class ModelClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.MODEL,
+            item_subtype=self.item_subtype,
             fetch_response_model=ModelFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -892,7 +900,7 @@ class ModelClient(RegistryBaseClass):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.MODEL,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
@@ -910,7 +918,7 @@ class ModelClient(RegistryBaseClass):
 
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.MODEL, 
+            item_subtype=self.item_subtype, 
             update_model_response=ModelListResponse
         )
     
@@ -924,8 +932,8 @@ class ModelClient(RegistryBaseClass):
         """
 
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.MODEL,
-            update_model_response=ModelSeedResponse
+            item_subtype=self.item_subtype,
+            seed_model_response=ModelSeedResponse
         )
     
     
@@ -945,8 +953,8 @@ class ModelClient(RegistryBaseClass):
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.MODEL,
-            update_model_response=ModelCreateResponse
+            item_subtype=self.item_subtype,
+            create_response_model=ModelCreateResponse
         )
     
     async def validate_item(self, validate_request: ModelDomainInfo) -> StatusResponse:
@@ -965,7 +973,7 @@ class ModelClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.MODEL
+            item_subtype=self.item_subtype
         )
     
      
@@ -985,7 +993,7 @@ class ModelClient(RegistryBaseClass):
 
         return await self._registry_client.version(
             version_request=version_request,
-            item_subtype=ItemSubType.MODEL
+            item_subtype=self.item_subtype
         )
     
 class ModelRunWorkFlowClient(RegistryBaseClass):
@@ -1004,7 +1012,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
             instance.
         """
         
-        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE)
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.WORKFLOW_TEMPLATE)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelRunWorkflowTemplateFetchResponse:
         """
@@ -1019,7 +1027,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
+            item_subtype=self.item_subtype,
             fetch_response_model=ModelRunWorkflowTemplateFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -1038,7 +1046,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
@@ -1056,7 +1064,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
 
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
+            item_subtype=self.item_subtype,
             update_model_response=ModelRunWorkflowTemplateListResponse
         )
     
@@ -1070,8 +1078,8 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
         """
 
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
-            update_model_response=ModelRunWorkflowTemplateSeedResponse
+            item_subtype=self.item_subtype,
+            seed_model_response=ModelRunWorkflowTemplateSeedResponse
         )
     
     
@@ -1091,8 +1099,8 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
-            update_model_response=ModelRunWorkflowTemplateCreateResponse
+            item_subtype=self.item_subtype,
+            create_response_model=ModelRunWorkflowTemplateCreateResponse
         )
     
     async def validate_item(self, validate_request: ModelRunWorkflowTemplateDomainInfo) -> StatusResponse:
@@ -1111,7 +1119,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
+            item_subtype=self.item_subtype
         )
     
     async def version_item(self, version_request: VersionRequest) -> VersionResponse:
@@ -1130,7 +1138,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
 
         return await self._registry_client.version(
             version_request=version_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
+            item_subtype=self.item_subtype
         )
     
 
@@ -1164,7 +1172,7 @@ class DatasetTemplateClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.DATASET_TEMPLATE,
+            item_subtype=self.item_subtype,
             fetch_response_model=DatasetTemplateFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -1183,7 +1191,7 @@ class DatasetTemplateClient(RegistryBaseClass):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.DATASET_TEMPLATE,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
@@ -1201,7 +1209,7 @@ class DatasetTemplateClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.DATASET_TEMPLATE,
+            item_subtype=self.item_subtype,
             update_model_response=DatasetTemplateListResponse
         )
 
@@ -1214,8 +1222,8 @@ class DatasetTemplateClient(RegistryBaseClass):
         DatasetTemplateSeedResponse: The seed response
         """
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.DATASET_TEMPLATE,
-            update_model_response=DatasetTemplateSeedResponse
+            item_subtype=self.item_subtype,
+            seed_model_response=DatasetTemplateSeedResponse
         )
 
     async def create_item(self, create_item_request: DatasetTemplateDomainInfo) -> DatasetTemplateCreateResponse:
@@ -1233,8 +1241,8 @@ class DatasetTemplateClient(RegistryBaseClass):
         """
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE,
-            update_model_response=DatasetTemplateCreateResponse
+            item_subtype=self.item_subtype,
+            create_response_model=DatasetTemplateCreateResponse
         )
     
     async def validate_item(self, validate_request: DatasetTemplateDomainInfo) -> StatusResponse:
@@ -1253,7 +1261,7 @@ class DatasetTemplateClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
+            item_subtype=self.item_subtype
         )
 
     async def version_item(self, version_request: VersionRequest) -> VersionResponse:
@@ -1271,7 +1279,7 @@ class DatasetTemplateClient(RegistryBaseClass):
         """
         return await self._registry_client.version(
             version_request=version_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
+            item_subtype=self.item_subtype
         )
 
 
@@ -1305,7 +1313,7 @@ class DatasetClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.DATASET,
+            item_subtype=self.item_subtype,
             fetch_response_model=DatasetFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -1325,7 +1333,7 @@ class DatasetClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.DATASET,
+            item_subtype=self.item_subtype,
             update_model_response=DatasetListResponse
         )
     
@@ -1346,7 +1354,7 @@ class DatasetClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.DATASET
+            item_subtype=self.item_subtype
         )
 
 
@@ -1380,7 +1388,7 @@ class StudyClient(RegistryBaseClass):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.STUDY,
+            item_subtype=self.item_subtype,
             fetch_response_model=StudyFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -1400,7 +1408,7 @@ class StudyClient(RegistryBaseClass):
         """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.STUDY,
+            item_subtype=self.item_subtype,
             update_model_response=StudyListResponse
         )
 
@@ -1413,8 +1421,8 @@ class StudyClient(RegistryBaseClass):
         StudySeedResponse: The seed response
         """
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.STUDY,
-            update_model_response=StudySeedResponse
+            item_subtype=self.item_subtype,
+            seed_model_response=StudySeedResponse
         )
 
     async def update(self, id: str, domain_info: StudyDomainInfo, reason: Optional[str]) -> StatusResponse:
@@ -1436,7 +1444,7 @@ class StudyClient(RegistryBaseClass):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.STUDY,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
@@ -1457,8 +1465,8 @@ class StudyClient(RegistryBaseClass):
         """
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.STUDY,
-            update_model_response=StudyCreateResponse
+            item_subtype=self.item_subtype,
+            create_response_model=StudyCreateResponse
         )
     
     async def validate_item(self, validate_request: StudyDomainInfo) -> StatusResponse:
@@ -1477,7 +1485,7 @@ class StudyClient(RegistryBaseClass):
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.STUDY
+            item_subtype=self.item_subtype
         )
 
     
