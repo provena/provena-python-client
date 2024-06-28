@@ -51,7 +51,7 @@ class ProvAPIAdminSubModule(ModuleService):
         self._auth = auth
         self._config = config
 
-        # Clients related to the datastore scoped as private.
+        # Clients related to the prov_api scoped as private.
         self._prov_api_client = prov_api_client
 
     async def generate_config_file(self, required_only: bool = True, file_path: Optional[str] = None, write_to_file: bool = False) -> str:
