@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.9.0 (2024-06-28)
+
+### Documentation
+
+* docs: Completed Release Process Documentation. (#17) ([`2c8f20f`](https://github.com/provena/provena-python-client/commit/2c8f20fd45137be6f1b483a72a5e18ff542e0429))
+
+### Feature
+
+* feat: JIRA-1710 (minor) completing registry api L2 and L3 interfaces with support for admin, general and other endpoints.  (#18) ([`cd2b4e9`](https://github.com/provena/provena-python-client/commit/cd2b4e9b37f1c1359694014854cde47121ee5ff8))
+
 ## v0.8.0 (2024-06-21)
 
 ### Feature
