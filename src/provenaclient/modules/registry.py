@@ -143,15 +143,16 @@ class RegistryAdminClient(ModuleService):
 
         return config_text
     
-    async def delete(self, id: str) -> StatusResponse:
+    async def delete(self, id: str, item_subtype: Optional[ItemSubType] = None) -> StatusResponse:
         """Admin only endpoint for deleting item from registry. USE CAREFULLY!
 
         Parameters
         ----------
         id : str
             ID of entity/item you want to delete.
-        item_subtype : ItemSubType
+        item_subtype : Optional[ItemSubType]
             Subtype of item you want to delete (E.g ORGANISATION, PERSON, CREATE)
+            If not provided, it will be fetched from the registry.
 
         Returns
         -------
@@ -159,14 +160,15 @@ class RegistryAdminClient(ModuleService):
             Response indicating the success/failure of your request.
         """
 
-        fetch_item = await self._registry_client.general.general_fetch_item(id=id)
-
-        if fetch_item.item: 
-            item_subtype_str: Optional[str] = fetch_item.item.get("item_subtype")
-            item_subtype = convert_to_item_subtype(item_subtype_str)
-        else:
-            raise ValueError("Item not found")
-                    
+        if item_subtype is None: 
+            fetch_item = await self._registry_client.general.general_fetch_item(id=id)
+            
+            if fetch_item.item: 
+                item_subtype_str: Optional[str] = fetch_item.item.get("item_subtype")
+                item_subtype = convert_to_item_subtype(item_subtype_str)
+            else:
+                raise ValueError("Item not found")
+                        
         return await self._registry_client.admin.delete_item(
             id = id, 
             item_subtype=item_subtype
@@ -193,6 +195,26 @@ class RegistryBaseClass(ModuleService):
         self._config = config
         self._registry_client = registry_client
         self.item_subtype = item_subtype
+
+    
+    async def admin_delete(self, id: str) -> StatusResponse:
+        """Admin only endpoint for deleting item from registry. USE CAREFULLY!
+
+        Parameters
+        ----------
+        id : str
+            ID of entity/item you want to delete.
+
+        Returns
+        -------
+        StatusResponse
+            Response indicating the success/failure of your request.
+        """
+
+        return await self._registry_client.admin.delete_item(
+            id = id, 
+            item_subtype=self.item_subtype
+        )
 
     async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
         """
