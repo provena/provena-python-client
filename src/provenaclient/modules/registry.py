@@ -10,8 +10,10 @@ Description: Registry API L3 module.
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
-
+28-06-2024 | Parth Kulkarni | Completion of Registry L3 interface with General, Admin and Other endpoints. 
 18-06-2024 | Peter Baker | Initial proof of concept with fetch/update methods from L2. Sub Modules for each subtype.
+
+
 '''
 
 from provenaclient.auth.manager import AuthManager
@@ -57,16 +59,49 @@ class RegistryAdminClient(ModuleService):
 
     
     async def export_items(self) -> RegistryExportResponse:
+        """Provides a mechanism for admins to dump the current contents of the registry table without any validation/parsing.
+        
+        Returns
+        -------
+        RegistryExportResponse
+            A status response including items in the payload
+        """
 
         return await self._registry_client.admin.export_items()
     
     async def import_items(self, registry_import_request: RegistryImportRequest) -> RegistryImportResponse:
+        """This admin only endpoint enables rapid restoration of items in into the registry table.
+
+        Parameters
+        ----------
+        registry_import_request : RegistryImportRequest
+            Contains the import mode, more info can be found on API docs.
+
+        Returns
+        -------
+        RegistryImportResponse
+            Returns an import response which includes status + statistics.
+        """
 
         return await self._registry_client.admin.import_items(
             registry_import_request=registry_import_request
         )
     
     async def restore_items_from_dynamo_table(self, restore_request: RegistryRestoreRequest) -> RegistryImportResponse:
+        """Provides an admin only mechanism for copying/restoring the contents from another dynamoDB table into the currently active registry table. 
+        This endpoint does not create any new tables - it just uses the items from a restored table (e.g. from a backup) as inputs to an import operation 
+        against the current registry table.
+
+        Parameters
+        ----------
+        restore_request : RegistryRestoreRequest
+            The restore request settings - these will be used when propagating the items from the external table.
+
+        Returns
+        -------
+        RegistryImportResponse
+            Returns information about the import, including status and statistics.
+        """
 
         return await self._registry_client.admin.restore_items_from_dynamo_table(
             restore_request=restore_request
@@ -109,34 +144,245 @@ class RegistryAdminClient(ModuleService):
         return config_text
     
     async def delete(self, id: str, item_subtype: ItemSubType) -> StatusResponse:
+        """Admin only endpoint for deleting item from registry. USE CAREFULLY!
+
+        Parameters
+        ----------
+        id : str
+            ID of entity/item you want to delete.
+        item_subtype : ItemSubType
+            Subtype of item you want to delete (E.g ORGANISATION, PERSON, CREATE)
+
+        Returns
+        -------
+        StatusResponse
+            Response indicating the success/failure of your request.
+        """
 
         return await self._registry_client.admin.delete_item(
             id = id, 
             item_subtype=item_subtype
         )
-    
 
-class OrganisationClient(ModuleService):
+
+class RegistryBaseClass(ModuleService):
+    _registry_client: RegistryClient
+
+    def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient, item_subtype: ItemSubType) -> None:
+        """
+        Parameters
+        ----------
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow method.
+        config : Config
+            A config object which contains information related to the Provena instance.
+        registry_client : RegistryClient
+            The registry client to use for registry interactions.
+        item_subtype : ItemSubType
+            The subtype of the item (e.g., ORGANISATION, PERSON).
+        """
+        self._auth = auth
+        self._config = config
+        self._registry_client = registry_client
+        self.item_subtype = item_subtype
+
+    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
+        """
+        Reverts an item in the registry based on item subtype.
+
+        Parameters
+        ----------
+        revert_request : ItemRevertRequest
+            The revert request
+
+        Returns
+        -------
+        ItemRevertResponse
+            The revert response
+        """
+        return await self._registry_client.revert_item(
+            revert_request=revert_request,
+            item_subtype=self.item_subtype
+        )
+    
+    async def get_schema(self) -> JsonSchemaResponse:
+        """
+        Gets the schema for the item subtype
+
+        Returns
+        -------
+        JsonSchemaResponse
+            The JSON schema response
+        """
+        return await self._registry_client.get_schema(
+            item_subtype=self.item_subtype
+        )
+    
+    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
+        """
+        Evaluates the auth access for an item based on item subtype.
+
+        Parameters
+        ----------
+        id : str
+            The item ID
+
+        Returns
+        -------
+        DescribeAccessResponse
+            The describe access response
+        """
+        return await self._registry_client.evaluate_auth_access(
+            id=id, 
+            item_subtype=self.item_subtype
+        )
+    
+    async def get_auth_configuration(self, id: str) -> AccessSettings:
+        """
+        Gets the auth configuration for an item based on item subtype.
+
+        Parameters
+        ----------
+        id : str
+            The item ID
+
+        Returns
+        -------
+        AccessSettings
+            The access settings
+        """
+        return await self._registry_client.get_auth_configuration(
+            id=id,
+            item_subtype=self.item_subtype
+        )
+    
+    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
+        """
+        Modifies the auth configuration for an item based on item subtype.
+
+        Parameters
+        ----------
+        id : str
+            The item ID
+        auth_change_request : AccessSettings
+            The auth change request
+
+        Returns
+        -------
+        StatusResponse
+            The status response
+        """
+        return await self._registry_client.modify_auth_configuration(
+            id=id,
+            auth_change_request=auth_change_request,
+            item_subtype=self.item_subtype
+        )
+    
+    async def get_auth_roles(self) -> AuthRolesResponse:
+        """
+        Gets the auth roles for the item subtype.
+
+        Returns
+        -------
+        AuthRolesResponse
+            The auth roles response
+        """
+        return await self._registry_client.get_auth_roles(
+            item_subtype=self.item_subtype
+        )
+    
+    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
+        """
+        Locks a resource in the registry based on item subtype.
+
+        Parameters
+        ----------
+        lock_resource_request : LockChangeRequest
+            The lock resource request
+
+        Returns
+        -------
+        StatusResponse
+            The status response
+        """
+        return await self._registry_client.lock_resource(
+            lock_resource_request=lock_resource_request,
+            item_subtype=self.item_subtype
+        )
+
+    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
+        """
+        Unlocks a resource in the registry based on item subtype.
+
+        Parameters
+        ----------
+        unlock_resource_request : LockChangeRequest
+            The unlock resource request
+
+        Returns
+        -------
+        StatusResponse
+            The status response
+        """
+        return await self._registry_client.unlock_resource(
+            unlock_resource_request=unlock_resource_request,
+            item_subtype=self.item_subtype
+        )
+    
+    async def get_lock_history(self, id: str) -> LockHistoryResponse:
+        """
+        Gets the lock history for an item based on item subtype.
+
+        Parameters
+        ----------
+        id : str
+            The item ID
+
+        Returns
+        -------
+        LockHistoryResponse
+            The lock history response
+        """
+        return await self._registry_client.get_lock_history(
+            handle_id=id,
+            item_subtype=self.item_subtype
+        )
+    
+    async def get_lock_status(self, id: str) -> LockStatusResponse:
+        """
+        Gets the lock status for an item based on item subtype.
+
+        Parameters
+        ----------
+        id : str
+            The item ID
+
+        Returns
+        -------
+        LockStatusResponse
+            The lock status response
+        """
+        return await self._registry_client.get_lock_status(
+            id=id,
+            item_subtype=self.item_subtype
+        )
+
+    
+class OrganisationClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
         """
-
         Parameters
         ----------
         auth : AuthManager
-            An abstract interface containing the user's requested auth flow
-            method.
+            An abstract interface containing the user's requested auth flow method.
         config : Config
-            A config object which contains information related to the Provena
-            instance.
+            A config object which contains information related to the Provena instance.
+        registry_client : RegistryClient
+            The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.ORGANISATION)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> OrganisationFetchResponse:
         """
@@ -151,7 +397,7 @@ class OrganisationClient(ModuleService):
         """
         return await self._registry_client.fetch_item(
             id=id,
-            item_subtype=ItemSubType.ORGANISATION,
+            item_subtype=self.item_subtype,
             fetch_response_model=OrganisationFetchResponse,
             seed_allowed=seed_allowed
         )
@@ -170,122 +416,83 @@ class OrganisationClient(ModuleService):
         """
         return await self._registry_client.update_item(
             id=id,
-            item_subtype=ItemSubType.ORGANISATION,
+            item_subtype=self.item_subtype,
             domain_info=domain_info,
             reason=reason,
             update_response_model=StatusResponse,
         )
-    
+
     async def list_items(self, list_items_payload: GeneralListRequest) -> OrganisationListResponse:
-        """Lists all orgainsations within registry based on filter
-        criteria.
+        """
+        Lists all organisations within the registry based on filter criteria.
 
         Parameters
         ----------
         list_items_payload : GeneralListRequest
-            Payload contaning the filter/sort criteria
-        """
+            Payload containing the filter/sort criteria
 
+        Returns
+        -------
+        OrganisationListResponse: The list response
+        """
         return await self._registry_client.list_items(
             list_items_payload=list_items_payload,
-            item_subtype=ItemSubType.ORGANISATION, 
+            item_subtype=self.item_subtype, 
             update_model_response=OrganisationListResponse
         )
-    
-    async def seed_item(self) -> OrganisationSeedResponse:
 
+    async def seed_item(self) -> OrganisationSeedResponse:
+        """
+        Seeds an organisation in the registry
+
+        Returns
+        -------
+        OrganisationSeedResponse: The seed response
+        """
         return await self._registry_client.seed_item(
-            item_subtype=ItemSubType.ORGANISATION,
+            item_subtype=self.item_subtype,
             update_model_response=OrganisationSeedResponse
         )
-    
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
 
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
     async def create_item(self, create_item_request: OrganisationDomainInfo) -> OrganisationCreateResponse:
+        """
+        Creates an organisation in the registry
 
+        Parameters
+        ----------
+        create_item_request : OrganisationDomainInfo
+            The create item request
+
+        Returns
+        -------
+        OrganisationCreateResponse: The create response
+        """
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
-            item_subtype=ItemSubType.ORGANISATION,
+            item_subtype=self.item_subtype,
             update_model_response=OrganisationCreateResponse
         )
-    
-    async def get_schema(self) -> JsonSchemaResponse:
 
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
     async def validate_item(self, validate_request: OrganisationDomainInfo) -> StatusResponse:
+        """
+        Validates an organisation in the registry
 
+        Parameters
+        ----------
+        validate_request : OrganisationDomainInfo
+            The validate request
+
+        Returns
+        -------
+        StatusResponse: The status response
+        """
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def evaluate_auth_access(self, id:str) -> DescribeAccessResponse:
-
-        return await self._registry_client.evaluate_auth_access(
-            id=id, 
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def get_auth_configuration(self, id:str) -> AccessSettings:
-
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def get_auth_roles(self) -> AuthRolesResponse:
-
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.ORGANISATION
-        )
-    
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.ORGANISATION
+            item_subtype=self.item_subtype
         )
     
 
-
-class PersonClient(ModuleService):
+class PersonClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -300,12 +507,8 @@ class PersonClient(ModuleService):
             A config object which contains information related to the Provena
             instance.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.PERSON)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> PersonFetchResponse:
         """
@@ -316,7 +519,7 @@ class PersonClient(ModuleService):
             seed_allowed (Optional[bool], optional): Allow seed items. Defaults to None.
 
         Returns:
-            OrganisationFetchResponse: The fetch response
+            PersonFetch: The fetch response
         """
         return await self._registry_client.fetch_item(
             id=id,
@@ -362,20 +565,32 @@ class PersonClient(ModuleService):
         )
     
     async def seed_item(self) -> PersonSeedResponse:
+        """
+        Seeds a person in the registry
+
+        Returns
+        -------
+        PersonSeedResponse: The seed response
+        """
 
         return await self._registry_client.seed_item(
             item_subtype=ItemSubType.PERSON,
             update_model_response=PersonSeedResponse
         )
     
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
-
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.PERSON
-        )
-    
     async def create_item(self, create_item_request: PersonDomainInfo) -> PersonCreateResponse:
+        """
+        Creates a person in the registry
+
+        Parameters
+        ----------
+        create_item_request : OrganisationDomainInfo
+            The create item request
+
+        Returns
+        -------
+        PersonCreateResponse: The create response
+        """
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
@@ -383,76 +598,27 @@ class PersonClient(ModuleService):
             update_model_response=PersonCreateResponse
         )
     
-    async def get_schema(self) -> JsonSchemaResponse:
-
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.PERSON
-        )
-    
     async def validate_item(self, validate_request: PersonDomainInfo) -> StatusResponse:
+        """
+        Validates a person in the registry
+
+        Parameters
+        ----------
+        validate_request : PersonDomainInfo
+            The validate request
+
+        Returns
+        -------
+        StatusResponse: The status response
+        """
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.PERSON
         )
     
-    async def evaluate_auth_access(self, id:str) -> DescribeAccessResponse:
 
-        return await self._registry_client.evaluate_auth_access(
-            id=id, 
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def get_auth_configuration(self, id:str) -> AccessSettings:
-
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def get_auth_roles(self) -> AuthRolesResponse:
-
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.PERSON
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.PERSON
-        )
-    
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.PERSON
-        )
-
-class CreateActivityClient(ModuleService):
+class CreateActivityClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -466,12 +632,8 @@ class CreateActivityClient(ModuleService):
         registry_client : RegistryClient
             The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.CREATE)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> CreateFetchResponse:
         """
@@ -509,22 +671,10 @@ class CreateActivityClient(ModuleService):
             item_subtype=ItemSubType.CREATE,
             update_model_response=CreateListResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for create activity items
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.CREATE
-        )
-
+    
     async def validate_item(self, validate_request: CreateDomainInfo) -> StatusResponse:
         """
-        Validates a create activity item in the registry
+        Validates a create-item activity in the registry
 
         Parameters
         ----------
@@ -535,154 +685,15 @@ class CreateActivityClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.CREATE
         )
 
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a create activity item
-
-        Parameters
-        ----------
-        id : str
-            The create activity item ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a create activity item
-
-        Parameters
-        ----------
-        id : str
-            The create activity item ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a create activity item
-
-        Parameters
-        ----------
-        id : str
-            The create activity item ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for create activity items
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a create activity item in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a create activity item in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a create activity item
-
-        Parameters
-        ----------
-        id : str
-            The create activity item ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.CREATE
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a create activity item
-
-        Parameters
-        ----------
-        id : str
-            The create activity item ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.CREATE
-        )
 
 
-class VersionActivityClient(ModuleService):
+class VersionActivityClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -696,12 +707,8 @@ class VersionActivityClient(ModuleService):
         registry_client : RegistryClient
             The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.VERSION)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> VersionFetchResponse:
         """
@@ -739,22 +746,10 @@ class VersionActivityClient(ModuleService):
             item_subtype=ItemSubType.VERSION,
             update_model_response=VersionListResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for version activity items
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.VERSION
-        )
-
+    
     async def validate_item(self, validate_request: VersionDomainInfo) -> StatusResponse:
         """
-        Validates a version activity item in the registry
+        Validates a version activity in the registry
 
         Parameters
         ----------
@@ -765,154 +760,14 @@ class VersionActivityClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.VERSION
         )
+    
 
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a version activity item
-
-        Parameters
-        ----------
-        id : str
-            The version activity item ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a version activity item
-
-        Parameters
-        ----------
-        id : str
-            The version activity item ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a version activity item
-
-        Parameters
-        ----------
-        id : str
-            The version activity item ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for version activity items
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a version activity item in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a version activity item in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a version activity item
-
-        Parameters
-        ----------
-        id : str
-            The version activity item ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.VERSION
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a version activity item
-
-        Parameters
-        ----------
-        id : str
-            The version activity item ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.VERSION
-        )
-
-
-class ModelRunActivityClient(ModuleService):
+class ModelRunActivityClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -926,12 +781,8 @@ class ModelRunActivityClient(ModuleService):
         registry_client : RegistryClient
             The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.MODEL_RUN)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelRunFetchResponse:
         """
@@ -969,22 +820,10 @@ class ModelRunActivityClient(ModuleService):
             item_subtype=ItemSubType.MODEL_RUN,
             update_model_response=ModelRunListResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for model run activity items
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
+    
     async def validate_item(self, validate_request: ModelRunDomainInfo) -> StatusResponse:
         """
-        Validates a model run activity item in the registry
+        Validates a model run in the registry
 
         Parameters
         ----------
@@ -995,156 +834,15 @@ class ModelRunActivityClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.MODEL_RUN
         )
+    
 
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a model run activity item
-
-        Parameters
-        ----------
-        id : str
-            The model run activity item ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a model run activity item
-
-        Parameters
-        ----------
-        id : str
-            The model run activity item ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a model run activity item
-
-        Parameters
-        ----------
-        id : str
-            The model run activity item ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for model run activity items
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a model run activity item in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a model run activity item in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a model run activity item
-
-        Parameters
-        ----------
-        id : str
-            The model run activity item ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a model run activity item
-
-        Parameters
-        ----------
-        id : str
-            The model run activity item ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.MODEL_RUN
-        )
-
-
-
-
-class ModelClient(ModuleService):
+    
+class ModelClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -1159,12 +857,8 @@ class ModelClient(ModuleService):
             A config object which contains information related to the Provena
             instance.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
 
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.MODEL)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelFetchResponse:
         """
@@ -1221,20 +915,33 @@ class ModelClient(ModuleService):
         )
     
     async def seed_item(self) -> ModelSeedResponse:
+        """
+        Seeds a model in the registry
+
+        Returns
+        -------
+        ModelSeedResponse: The seed response
+        """
 
         return await self._registry_client.seed_item(
             item_subtype=ItemSubType.MODEL,
             update_model_response=ModelSeedResponse
         )
     
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
-
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.MODEL
-        )
     
     async def create_item(self, create_item_request: ModelDomainInfo) -> ModelCreateResponse:
+        """
+        Creates a model in the registry
+
+        Parameters
+        ----------
+        create_item_request : ModelDomainInfo
+            The create item request
+
+        Returns
+        -------
+        ModelCreateResponse: The create response
+        """
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
@@ -1242,83 +949,46 @@ class ModelClient(ModuleService):
             update_model_response=ModelCreateResponse
         )
     
-    async def get_schema(self) -> JsonSchemaResponse:
-
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.MODEL
-        )
-    
     async def validate_item(self, validate_request: ModelDomainInfo) -> StatusResponse:
+        """
+        Validates a model item in the registry
+
+        Parameters
+        ----------
+        validate_request : ModelDomainInfo
+            The validate request
+
+        Returns
+        -------
+        StatusResponse: The status response
+        """
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.MODEL
         )
     
-    async def evaluate_auth_access(self, id:str) -> DescribeAccessResponse:
-
-        return await self._registry_client.evaluate_auth_access(
-            id=id, 
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def get_auth_configuration(self, id:str) -> AccessSettings:
-
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def get_auth_roles(self) -> AuthRolesResponse:
-
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.MODEL
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.MODEL
-        )
-    
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.MODEL
-        )
-    
+     
     async def version_item(self, version_request: VersionRequest) -> VersionResponse:
+        """
+        Versions a model in the registry
+
+        Parameters
+        ----------
+        version_request : VersionRequest
+            The version request
+
+        Returns
+        -------
+        VersionResponse: The version response
+        """
 
         return await self._registry_client.version(
             version_request=version_request,
             item_subtype=ItemSubType.MODEL
         )
     
-class ModelRunWorkFlowClient(ModuleService):
+class ModelRunWorkFlowClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -1333,12 +1003,8 @@ class ModelRunWorkFlowClient(ModuleService):
             A config object which contains information related to the Provena
             instance.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelRunWorkflowTemplateFetchResponse:
         """
@@ -1394,21 +1060,34 @@ class ModelRunWorkFlowClient(ModuleService):
             update_model_response=ModelRunWorkflowTemplateListResponse
         )
     
-    async def seed_item(self) -> ModelSeedResponse:
+    async def seed_item(self) -> ModelRunWorkflowTemplateSeedResponse:
+        """
+        Seeds a model run workflow template in the registry
+
+        Returns
+        -------
+        ModelRunWorkflowTemplateSeedResponse: The seed response
+        """
 
         return await self._registry_client.seed_item(
             item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
-            update_model_response=ModelSeedResponse
+            update_model_response=ModelRunWorkflowTemplateSeedResponse
         )
     
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
-
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
     
     async def create_item(self, create_item_request: ModelRunWorkflowTemplateDomainInfo) -> ModelRunWorkflowTemplateCreateResponse:
+        """
+        Creates a model run workflow template in the registry
+
+        Parameters
+        ----------
+        create_item_request : ModelRunWorkflowTemplateDomainInfo
+            The create item request
+
+        Returns
+        -------
+        ModelRunWorkflowTemplateCreateResponse: The create response
+        """
 
         return await self._registry_client.create_item(
             create_item_request=create_item_request,
@@ -1416,76 +1095,38 @@ class ModelRunWorkFlowClient(ModuleService):
             update_model_response=ModelRunWorkflowTemplateCreateResponse
         )
     
-    async def get_schema(self) -> JsonSchemaResponse:
-
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
     async def validate_item(self, validate_request: ModelRunWorkflowTemplateDomainInfo) -> StatusResponse:
+        """
+        Validates a model run workflow template item in the registry
+
+        Parameters
+        ----------
+        validate_request : ModelRunWorkflowTemplateDomainInfo
+            The validate request
+
+        Returns
+        -------
+        StatusResponse: The status response
+        """
 
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
         )
     
-    async def evaluate_auth_access(self, id:str) -> DescribeAccessResponse:
-
-        return await self._registry_client.evaluate_auth_access(
-            id=id, 
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def get_auth_configuration(self, id:str) -> AccessSettings:
-
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def get_auth_roles(self) -> AuthRolesResponse:
-
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE
-        )
-    
     async def version_item(self, version_request: VersionRequest) -> VersionResponse:
+        """
+        Versions a model run workflow template in the registry
+
+        Parameters
+        ----------
+        version_request : VersionRequest
+            The version request
+
+        Returns
+        -------
+        VersionResponse: The version response
+        """
 
         return await self._registry_client.version(
             version_request=version_request,
@@ -1493,7 +1134,7 @@ class ModelRunWorkFlowClient(ModuleService):
         )
     
 
-class DatasetTemplateClient(ModuleService):
+class DatasetTemplateClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -1507,12 +1148,8 @@ class DatasetTemplateClient(ModuleService):
             A config object which contains information related to the Provena
             instance.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.DATASET_TEMPLATE)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> DatasetTemplateFetchResponse:
         """
@@ -1581,24 +1218,6 @@ class DatasetTemplateClient(ModuleService):
             update_model_response=DatasetTemplateSeedResponse
         )
 
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
-        """
-        Reverts a dataset template in the registry
-
-        Parameters
-        ----------
-        revert_request : ItemRevertRequest
-            The revert request
-
-        Returns
-        -------
-        ItemRevertResponse: The revert response
-        """
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
     async def create_item(self, create_item_request: DatasetTemplateDomainInfo) -> DatasetTemplateCreateResponse:
         """
         Creates a dataset template in the registry
@@ -1617,22 +1236,10 @@ class DatasetTemplateClient(ModuleService):
             item_subtype=ItemSubType.DATASET_TEMPLATE,
             update_model_response=DatasetTemplateCreateResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for dataset templates
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
+    
     async def validate_item(self, validate_request: DatasetTemplateDomainInfo) -> StatusResponse:
         """
-        Validates a dataset template in the registry
+        Validates a dataset template item in the registry
 
         Parameters
         ----------
@@ -1643,149 +1250,9 @@ class DatasetTemplateClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a dataset template
-
-        Parameters
-        ----------
-        id : str
-            The dataset template ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a dataset template
-
-        Parameters
-        ----------
-        id : str
-            The dataset template ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a dataset template
-
-        Parameters
-        ----------
-        id : str
-            The dataset template ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for dataset templates
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a dataset template in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a dataset template in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a dataset template
-
-        Parameters
-        ----------
-        id : str
-            The dataset template ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.DATASET_TEMPLATE
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a dataset template
-
-        Parameters
-        ----------
-        id : str
-            The dataset template ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
             item_subtype=ItemSubType.DATASET_TEMPLATE
         )
 
@@ -1808,7 +1275,7 @@ class DatasetTemplateClient(ModuleService):
         )
 
 
-class DatasetClient(ModuleService):
+class DatasetClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -1822,12 +1289,8 @@ class DatasetClient(ModuleService):
         registry_client : RegistryClient
             The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.DATASET)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> DatasetFetchResponse:
         """
@@ -1865,22 +1328,11 @@ class DatasetClient(ModuleService):
             item_subtype=ItemSubType.DATASET,
             update_model_response=DatasetListResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for datasets
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.DATASET
-        )
+    
 
     async def validate_item(self, validate_request: DatasetDomainInfo) -> StatusResponse:
         """
-        Validates a dataset in the registry
+        Validates a dataset item in the registry
 
         Parameters
         ----------
@@ -1891,153 +1343,14 @@ class DatasetClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.DATASET
         )
 
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a dataset
 
-        Parameters
-        ----------
-        id : str
-            The dataset ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a dataset
-
-        Parameters
-        ----------
-        id : str
-            The dataset ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a dataset
-
-        Parameters
-        ----------
-        id : str
-            The dataset ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for datasets
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a dataset in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a dataset in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a dataset
-
-        Parameters
-        ----------
-        id : str
-            The dataset ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.DATASET
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a dataset
-
-        Parameters
-        ----------
-        id : str
-            The dataset ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.DATASET
-        )
-
-class StudyClient(ModuleService):
+class StudyClient(RegistryBaseClass):
     _registry_client: RegistryClient
 
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
@@ -2051,12 +1364,8 @@ class StudyClient(ModuleService):
         registry_client : RegistryClient
             The registry client to use for registry interactions.
         """
-        # Module service
-        self._auth = auth
-        self._config = config
-
-        # Clients related to the registry scoped as private.
-        self._registry_client = registry_client
+        
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.STUDY)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> StudyFetchResponse:
         """
@@ -2133,24 +1442,6 @@ class StudyClient(ModuleService):
             update_response_model=StatusResponse,
         )
 
-    async def revert_item(self, revert_request: ItemRevertRequest) -> ItemRevertResponse:
-        """
-        Reverts a study in the registry
-
-        Parameters
-        ----------
-        revert_request : ItemRevertRequest
-            The revert request
-
-        Returns
-        -------
-        ItemRevertResponse: The revert response
-        """
-        return await self._registry_client.revert_item(
-            revert_request=revert_request,
-            item_subtype=ItemSubType.STUDY
-        )
-
     async def create_item(self, create_item_request: StudyDomainInfo) -> StudyCreateResponse:
         """
         Creates a study in the registry
@@ -2169,22 +1460,10 @@ class StudyClient(ModuleService):
             item_subtype=ItemSubType.STUDY,
             update_model_response=StudyCreateResponse
         )
-
-    async def get_schema(self) -> JsonSchemaResponse:
-        """
-        Gets the schema for studies
-
-        Returns
-        -------
-        JsonSchemaResponse: The JSON schema response
-        """
-        return await self._registry_client.get_schema(
-            item_subtype=ItemSubType.STUDY
-        )
-
+    
     async def validate_item(self, validate_request: StudyDomainInfo) -> StatusResponse:
         """
-        Validates a study in the registry
+        Validates a study item in the registry
 
         Parameters
         ----------
@@ -2195,166 +1474,32 @@ class StudyClient(ModuleService):
         -------
         StatusResponse: The status response
         """
+
         return await self._registry_client.validate_item(
             validate_request=validate_request,
             item_subtype=ItemSubType.STUDY
         )
 
-    async def evaluate_auth_access(self, id: str) -> DescribeAccessResponse:
-        """
-        Evaluates the auth access for a study
-
-        Parameters
-        ----------
-        id : str
-            The study ID
-
-        Returns
-        -------
-        DescribeAccessResponse: The describe access response
-        """
-        return await self._registry_client.evaluate_auth_access(
-            id=id,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def get_auth_configuration(self, id: str) -> AccessSettings:
-        """
-        Gets the auth configuration for a study
-
-        Parameters
-        ----------
-        id : str
-            The study ID
-
-        Returns
-        -------
-        AccessSettings: The access settings
-        """
-        return await self._registry_client.get_auth_configuration(
-            id=id,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def modify_auth_configuration(self, id: str, auth_change_request: AccessSettings) -> StatusResponse:
-        """
-        Modifies the auth configuration for a study
-
-        Parameters
-        ----------
-        id : str
-            The study ID
-        auth_change_request : AccessSettings
-            The auth change request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.modify_auth_configuration(
-            id=id,
-            auth_change_request=auth_change_request,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def get_auth_roles(self) -> AuthRolesResponse:
-        """
-        Gets the auth roles for studies
-
-        Returns
-        -------
-        AuthRolesResponse: The auth roles response
-        """
-        return await self._registry_client.get_auth_roles(
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def lock_resource(self, lock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Locks a study in the registry
-
-        Parameters
-        ----------
-        lock_resource_request : LockChangeRequest
-            The lock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.lock_resource(
-            lock_resource_request=lock_resource_request,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def unlock_resource(self, unlock_resource_request: LockChangeRequest) -> StatusResponse:
-        """
-        Unlocks a study in the registry
-
-        Parameters
-        ----------
-        unlock_resource_request : LockChangeRequest
-            The unlock resource request
-
-        Returns
-        -------
-        StatusResponse: The status response
-        """
-        return await self._registry_client.unlock_resource(
-            unlock_resource_request=unlock_resource_request,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def get_lock_history(self, id: str) -> LockHistoryResponse:
-        """
-        Gets the lock history for a study
-
-        Parameters
-        ----------
-        id : str
-            The study ID
-
-        Returns
-        -------
-        LockHistoryResponse: The lock history response
-        """
-        return await self._registry_client.get_lock_history(
-            handle_id=id,
-            item_subtype=ItemSubType.STUDY
-        )
-
-    async def get_lock_status(self, id: str) -> LockStatusResponse:
-        """
-        Gets the lock status for a study
-
-        Parameters
-        ----------
-        id : str
-            The study ID
-
-        Returns
-        -------
-        LockStatusResponse: The lock status response
-        """
-        return await self._registry_client.get_lock_status(
-            id=id,
-            item_subtype=ItemSubType.STUDY
-        )
-
-
-
-
+    
 class Registry(ModuleService):
     # L2 clients used
     _registry_client: RegistryClient
 
-    # Sub modules
-    organisation: OrganisationClient
-    model: ModelClient
-    create_activity: CreateActivityClient
-    version_acitvity: VersionActivityClient
+    # Admin sub module
     admin: RegistryAdminClient
 
+    # Sub modules
+    organisation: OrganisationClient
+    person: PersonClient
+    model: ModelClient
+    model_run_workflow: ModelRunWorkFlowClient
+    dataset_template: DatasetTemplateClient
+    dataset: DatasetClient
+    study: StudyClient
+    create_activity: CreateActivityClient
+    version_acitvity: VersionActivityClient
+    model_run: ModelRunActivityClient
+    
     def __init__(self, auth: AuthManager, config: Config, registry_client: RegistryClient) -> None:
         """
 
@@ -2374,16 +1519,33 @@ class Registry(ModuleService):
         # Clients related to the registry scoped as private.
         self._registry_client = registry_client
 
+        # Admin sub module
+        self.admin = RegistryAdminClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
+
         # Sub modules
         self.organisation = OrganisationClient(
-            auth=auth, config=config, registry_client=registry_client)
+            auth=auth, config=config, registry_client=registry_client)    
+        self.person = PersonClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
         self.model = ModelClient(
             auth=auth, config=config, registry_client=registry_client)
+        self.model_run_workflow = ModelRunWorkFlowClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
+        self.dataset_template = DatasetTemplateClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
+        self.study = StudyClient(
+            auth=auth, config=config, registry_client=registry_client
+        )
         self.create_activity = CreateActivityClient(
             auth=auth, config=config, registry_client=registry_client)
         self.version_acitvity = VersionActivityClient(
             auth=auth, config=config, registry_client=registry_client)
-        self.admin = RegistryAdminClient(
+        self.model_run = ModelRunActivityClient(
             auth=auth, config=config, registry_client=registry_client
         )
     
@@ -2398,17 +1560,53 @@ class Registry(ModuleService):
     
 
     async def list_general_registry_items(self, general_list_request: GeneralListRequest) -> PaginatedListResponse:
+        """
+        Lists general registry items based on filter criteria.
+
+        Parameters
+        ----------
+        general_list_request : GeneralListRequest
+            The request containing filter and sort criteria.
+
+        Returns
+        -------
+        PaginatedListResponse
+            The response containing the paginated list of registry items.
+        """
 
         return await self._registry_client.general.list_general_registry_items(
             general_list_request=general_list_request
         )
+
     
     async def general_fetch_item(self, id: str) -> UntypedFetchResponse:
+        """
+        Fetches a general item from the registry.
+
+        Parameters
+        ----------
+        id : str
+            The ID of the item to fetch.
+
+        Returns
+        -------
+        UntypedFetchResponse
+            The fetch response containing the item details.
+        """
 
         return await self._registry_client.general.general_fetch_item(
             id=id
         )
+
     
     async def get_current_provena_version(self) -> VersionResponse:
+        """
+        Gets the current Provena version deployed on your domain.
+
+        Returns
+        -------
+        VersionResponse
+            The response containing the current Provena version.
+        """
 
         return await self._registry_client.general.get_current_provena_version()

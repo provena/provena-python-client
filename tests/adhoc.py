@@ -2,9 +2,9 @@ import json
 from provenaclient import ProvenaClient, Config
 from provenaclient.auth import DeviceFlow
 from ProvenaInterfaces.RegistryModels import *
-from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, SortOptions, SortType
-from ProvenaInterfaces.ProvenanceAPI import ModelRunRecord, TemplatedDataset, RegisterBatchModelRunRequest
-from ProvenaInterfaces.ProvenanceModels import DatasetType, AssociationInfo
+from ProvenaInterfaces.RegistryAPI import *
+from ProvenaInterfaces.ProvenanceAPI import *
+from ProvenaInterfaces.ProvenanceModels import *
 import asyncio
 from provenaclient.auth.manager import Log
 from typing import List
@@ -180,6 +180,8 @@ async def main() -> None:
 
     # res = await client.prov_api.admin.store_multiple_records(registry_record=list_of_model_runs)
 
+    """
+
     last: str = ""
     async for ds in client.datastore.for_all_datasets(
         list_dataset_request=NoFilterSubtypeListRequest(
@@ -215,5 +217,31 @@ async def main() -> None:
         dataset_id=last,
         print_list=True
     )
+
+    """
+
+    general_list_request = GeneralListRequest(
+        filter_by=None,
+        sort_by=None,
+        pagination_key=None
+    )
+
+    response = await client.registry.model.list_items(list_items_payload=general_list_request)
+    print(response)
+
+
+    print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
+
+    model_create_request = ModelDomainInfo(
+        display_name="Parth testing",
+        user_metadata=None,
+        name= "Parth adchoc model",
+        description="Parth testing adhoc model",
+        documentation_url= "https://example.com.au", #type:ignore
+        source_url= "https://example.com.au" #type:ignore
+    )
+
+    # res_two = await client.registry.model.create_item(create_item_request=model_create_request) - Disabled to avoid spamming create models.
+    #print(res_two)
 
 asyncio.run(main())
