@@ -4,3 +4,5 @@ __version__ = version("provenaclient")
 
 from provenaclient.modules.provena_client import ProvenaClient
 from provenaclient.utils.config import Config, EndpointConfig
+
+import ProvenaInterfaces as interfaces
