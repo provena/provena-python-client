@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.10.0 (2024-07-02)
+
+### Feature
+
+* feat: improving dependency resolution and adding interfaces (#19) ([`d941a8c`](https://github.com/provena/provena-python-client/commit/d941a8cdb5031bbb9d634ec9ee8d58a6681660b2))
+
 ## v0.9.0 (2024-06-28)
 
 ### Documentation
