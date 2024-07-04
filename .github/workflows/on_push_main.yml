@@ -1,0 +1,22 @@
+name: on_push_main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI
+        uses: ./.github/actions/ci
+  cd:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    needs: ci
+    steps:
+      - name: CD
+        uses: ./.github/actions/cd
