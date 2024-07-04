@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.10.3 (2024-07-04)
+
+### Fix
+
+* fix: forcing rebuild due to trusted publisher issue ([`3575b29`](https://github.com/provena/provena-python-client/commit/3575b2949fecb412e7f3c52060f0509a61ea0b6f))
+
 ## v0.10.2 (2024-07-04)
 
 ### Fix
