@@ -24,3 +24,5 @@ jobs:
         uses: actions/checkout@v3
       - name: CD
         uses: ./.github/actions/cd
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
