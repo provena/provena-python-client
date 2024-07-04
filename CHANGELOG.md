@@ -1,5 +1,39 @@
 # CHANGELOG
 
+## v0.10.1 (2024-07-04)
+
+### Ci
+
+* ci: Fixing missing fetch depth = 0 and documenting ([`2302b7a`](https://github.com/provena/provena-python-client/commit/2302b7a7370fbcbdc1d72ac9164286dc2d5cb5f3))
+
+* ci: Fixing missing pass through for CD action (#22) ([`0896a36`](https://github.com/provena/provena-python-client/commit/0896a3645f44634c53f340bbfc91387c35a29b5f))
+
+* ci: Modularisation of CI/CD into actions to clearly separate trigger files (#21) ([`e1f4664`](https://github.com/provena/provena-python-client/commit/e1f46640b600d8388fcba6be6b6d42ab886ea0bd))
+
+### Fix
+
+* fix: Adding more py.typed markers ([`ff3e029`](https://github.com/provena/provena-python-client/commit/ff3e02983637ba2c2343c039412b0347b1523e02))
+
+### Unknown
+
+* Merge branches &#39;modular-actions-setup&#39; and &#39;main&#39; of github.com:provena/provena-python-client into main ([`fee9615`](https://github.com/provena/provena-python-client/commit/fee96152cc82198c6934387d6f86fcf8a665c511))
+
+* Fixing not using new input ([`45cc98c`](https://github.com/provena/provena-python-client/commit/45cc98c7c436dc7e0d10cdd540ae5f1ee74eec54))
+
+* Merge branch &#39;main&#39; into modular-actions-setup ([`36bfd12`](https://github.com/provena/provena-python-client/commit/36bfd128d936a77961008e16da106598845951ae))
+
+* Pass through GITHUB_TOKEN from parent workflow ([`296eba3`](https://github.com/provena/provena-python-client/commit/296eba3e0c5d1cdbe9ffd22d439992aba501ba14))
+
+* Removing test file ([`eae09bf`](https://github.com/provena/provena-python-client/commit/eae09bf37c19ee6bb6faeedc4d5acd7090497ba3))
+
+* Removing fetch depth zero to be safe ([`88fcdba`](https://github.com/provena/provena-python-client/commit/88fcdbaf2f926941fed5425da9aa581e18f2f739))
+
+* Cloning repo before all actions ([`69f2309`](https://github.com/provena/provena-python-client/commit/69f23094a16afa960f2b5d4f5d90438923b43a90))
+
+* Update including test ([`e16f672`](https://github.com/provena/provena-python-client/commit/e16f6728171520dd9e73a231bebcb332e1c58a95))
+
+* fix:Update auth&#39;s __init__.py (#20) ([`b555bd1`](https://github.com/provena/provena-python-client/commit/b555bd1bfea9a48eb302ab4c839950dc0feac9be))
+
 ## v0.10.0 (2024-07-02)
 
 ### Feature
