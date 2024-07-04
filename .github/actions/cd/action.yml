@@ -2,7 +2,7 @@
 #  permissions:
 #    id-token: write
 #    contents: write
-# Ensure the github token is passed through
+# Ensure the github token is passed through and that fetch-depth = 0 (to get historical commits)
 name: cd
 description: CD steps including pypi deployment and semantic versioning
 inputs:
