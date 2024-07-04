@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.10.2 (2024-07-04)
+
+### Fix
+
+* fix: forcing rebuild due to trusted publisher issue ([`7136675`](https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f))
+
+### Unknown
+
+* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`bda5606`](https://github.com/provena/provena-python-client/commit/bda5606d3a6d083c2d31e1f6e7e06d5095c0a3db))
+
 ## v0.10.1 (2024-07-04)
 
 ### Ci
