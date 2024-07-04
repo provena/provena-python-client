@@ -8,9 +8,6 @@ runs:
       with:
         python-version: "3.9"
 
-    - name: Check-out repository
-      uses: actions/checkout@v3
-
     - name: Install poetry
       uses: snok/install-poetry@v1
 
