@@ -2,8 +2,13 @@
 #  permissions:
 #    id-token: write
 #    contents: write
+# Ensure the github token is passed through
 name: cd
 description: CD steps including pypi deployment and semantic versioning
+inputs:
+  github_token:
+    description: 'GitHub Token'
+    required: true
 runs:
   using: "composite"
   steps:
