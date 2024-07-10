@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "provenaclient"
-version = "0.8.0"
+version = "0.10.3"
 description = "A client library for interfacing with a Provena instance."
 authors = ["RRAP <rrapisdev@gmail.com>"]
 license = "None"
@@ -12,7 +12,7 @@ httpx = "^0.27.0"
 pydantic = "<2.0"
 python-jose = "<3.3.0"
 provena-interfaces = "^2.6.0"
-botocore = "1.30.1"
+boto3 = "1.27.1"
 cloudpathlib = { extras = ["s3"], version = "0.15.1" }
 
 [tool.poetry.dev-dependencies]
@@ -43,6 +43,8 @@ upload_to_pypi = true
 remove_dist = false
 patch_without_tag = true
 commit_version_number = true
+patch_tag = ["fix", "perf"]
+ignore_tags = ["chore", "docs", "style", "refactor", "test"]
 
 
 [build-system]

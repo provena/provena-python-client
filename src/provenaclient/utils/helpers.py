@@ -19,7 +19,7 @@ from httpx import Response
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
-from ProvenaInterfaces.RegistryModels import ItemBase
+from ProvenaInterfaces.RegistryModels import ItemBase, ItemSubType
 import os
 
 # Type var to refer to base models
@@ -33,6 +33,35 @@ HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
 
 ParamTypes = Union[str, int, bool]
 
+
+def convert_to_item_subtype(item_subtype_str: Optional[str]) -> ItemSubType:
+    """Converts a string into ItemSubType supported enum type.
+
+    Parameters
+    ----------
+    item_subtype_str : Optional[str]
+        Optional string containing similar enum text.
+
+    Returns
+    -------
+    ItemSubType
+        Enum type of ItemSubType.
+
+    Raises
+    ------
+    ValueError
+        Item subtype field was not present.
+    ValueError
+        Item subtype cannot be converted to ENUM.
+    """
+
+    if item_subtype_str is None:
+        raise ValueError("Item subtype field not found!")
+    
+    try:
+        return ItemSubType[item_subtype_str.upper()]
+    except KeyError as e:
+        raise ValueError(f"Invalid item_subtype: {item_subtype_str}") from e
 
 def get_and_validate_file_path(file_path: Optional[str], write_to_file: bool, default_file_name: str) -> Optional[str]:
     """Determine and validate the file path for writing a file.

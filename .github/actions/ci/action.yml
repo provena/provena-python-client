@@ -1,0 +1,33 @@
+name: ci
+description: Unit testing and other CI steps
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install package
+      shell: bash
+      run: poetry install
+
+    - name: Mypy type check
+      shell: bash
+      run: poetry run mypy .
+
+    - name: Test with pytest
+      shell: bash
+      run: poetry run pytest tests/ --cov=provenaclient --cov-report=xml
+
+    - name: Use Codecov to track coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+
+    - name: Build documentation
+      shell: bash
+      run: poetry run make html --directory docs/
