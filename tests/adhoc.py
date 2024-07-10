@@ -37,7 +37,7 @@ async def main() -> None:
 
     # print("minting")
     # create_dataset = await client.datastore.mint_dataset(
-    #    CollectionFormat(
+      CollectionFormat(
     #        associations=CollectionFormatAssociations(
     #        organisation_id="10378.1/1893860",
     #        data_custodian_id="10378.1/1893843",
@@ -49,7 +49,7 @@ async def main() -> None:
     #            indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained= False),
     #            export_controls=ExportControls(relevant=False, obtained=False)
     #        ),
-    #        dataset_info=CollectionFormatDatasetInfo(
+            dataset_info=CollectionFormatDatasetInfo(
     #            name="Parth testing",
     #            description="testing dataset",
     #            access_info=AccessInfo(reposited=True, uri=None, description=None),

@@ -254,6 +254,12 @@ async def test_searching_items_in_registry(client: ProvenaClient) -> None:
         assert fetched_create_activity_response.item
         assert fetched_create_activity_response.item.id == dataset_fetch_item
 
+    
+    # Create items within registry of different types
+
+
+    # 
+
     # Perform search using the dataset handles
     for dataset_handle in dataset_handles:
         search_response = await client.search.search_registry(query=dataset_handle, subtype_filter=None, limit = None)
