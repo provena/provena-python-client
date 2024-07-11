@@ -27,6 +27,7 @@ from provenaclient.utils.config import Config
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
+from ProvenaInterfaces.ProvenanceModels import *
 
 from integration_helpers import *
 from provenaclient.utils.exceptions import BadRequestException
@@ -273,7 +274,7 @@ async def test_search_non_chained_entites(client: ProvenaClient, cleanup_items: 
 async def test_list_all_datasets(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None: 
 
     """Create dataset"""
-    dataset_handle = create_and_verify_dataset(client=client, cleanup_items=cleanup_items)
+    dataset_handle = await create_and_verify_dataset(client=client, cleanup_items=cleanup_items)
 
     """Fetch all datasets, and test if the datasets we created are part of this list."""
 
@@ -438,7 +439,7 @@ async def test_datastore_pagination(client: ProvenaClient, cleanup_items: CLEANU
 
 
 @pytest.mark.asyncio
-async def test_registry_pagination(client: ProvenaClient) -> None:
+async def test_registry_pagination(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
 
     created_organisation_1 = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
     assert created_organisation_1 is not None, "Created organisation is Null or None"
@@ -490,9 +491,208 @@ async def test_registry_pagination(client: ProvenaClient) -> None:
 
 """Provenance - Registring Model Runs Etc.."""
 
+async def test_provenance_workflow(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    # prov test that will create the requirements needed for a model run record and register it
+    # Procedure:
+    # create the simple entities required (person, organisation)
+    # register custom dataset templates for input and output datasets
+    # register simple model
+    # register model run workflow tempalte using references to pre registered entities
+    # create and register the model run object using references to pre registered entitites
+
+    # Create datasets needed for model runs
+    dataset_1_id = await create_and_verify_dataset(client = client, cleanup_items=cleanup_items)
+    dataset_2_id = await create_and_verify_dataset(client = client, cleanup_items=cleanup_items)
+
+    person = await create_item(client = client, item_subtype = ItemSubType.PERSON)
+    assert person is not None, "Created person is None"
+    assert person.created_item is not None, "Created person does not contain created_item"
+    assert person.created_item.id is not None, "Created person does not have handle ID"
+
+    organisation = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
+    assert organisation is not None, "Created organisation is None"
+    assert organisation.created_item is not None, "Created organisation does not contain created_item"
+    assert organisation.created_item.id is not None, "Created organisation does not have handle ID"
+
+
+    # register custom dataset templates (input and output)
+    input_template = await create_item(client = client, item_subtype= ItemSubType.DATASET_TEMPLATE)
+    assert input_template is not None, "Created input template is None"
+    assert input_template.created_item is not None, "Created input template does not contain created_item"
+    assert input_template.created_item.id is not None, "Created input template does not have handle ID"
+
+    cleanup_items.append((ItemSubType.DATASET_TEMPLATE, input_template.created_item.id))
+
+    # cleanup create activity
+    await cleanup_create_activity_from_item_base(
+        client = client,
+        item=input_template.created_item,
+        cleanup_items=cleanup_items
+    )
+
+    output_template = await create_item(client = client, item_subtype= ItemSubType.DATASET_TEMPLATE)
+    assert output_template is not None, "Created ouput template is None"
+    assert output_template.created_item is not None, "Created ouput template does not contain created_item"
+    assert output_template.created_item.id is not None, "Created ouput template does not have handle ID"
+
+    cleanup_items.append((ItemSubType.DATASET_TEMPLATE, output_template.created_item.id))
+
+    # cleanup create activity
+    await cleanup_create_activity_from_item_base(
+        client = client,
+        item=output_template.created_item,
+        cleanup_items=cleanup_items
+    )
+
+    # Register the model used in the model run
+    model = await create_item(client = client, item_subtype= ItemSubType.MODEL)
+    assert model is not None, "Created model is None"
+    assert model.created_item is not None, "Created model does not contain created_item"
+    assert model.created_item.id is not None, "Created model does not have handle ID"
+
+    cleanup_items.append((ItemSubType.MODEL, model.created_item.id))
+
+    # cleanup create activity
+    await cleanup_create_activity_from_item_base(
+        client = client,
+        item=model.created_item,
+        cleanup_items=cleanup_items
+    )
+
+    # create and register model run workflow template
+    required_annotation_key = "annotation_key1"
+    optional_annotation_key = "annotation_key2"
+    mrwt_domain_info = ModelRunWorkflowTemplateDomainInfo(
+        display_name="IntegrationTestMRWT",
+        software_id=model.created_item.id,  # model is software
+        input_templates=[TemplateResource(
+            template_id=input_template.created_item.id, optional=False)],
+        output_templates=[TemplateResource(
+            template_id=output_template.created_item.id, optional=False)],
+        annotations=WorkflowTemplateAnnotations(
+            required=[required_annotation_key],
+            optional=[optional_annotation_key]
+        ), 
+        user_metadata=None
+    )
+    mrwt = await create_item_from_domain_info_successfully(
+        client = client,
+        item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE,
+        domain_info=mrwt_domain_info)
+    assert mrwt is not None, "Created Model Run Workflow Template is None"
+    assert mrwt.created_item is not None, "Created Model Run Workflow Template does not contain created_item"
+    assert mrwt.created_item.id is not None, "Created Model Run Workflow Template does not have handle ID"
+
+    cleanup_items.append((ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE, mrwt.created_item.id))
+
+    # cleanup create activity
+    await cleanup_create_activity_from_item_base(
+        client = client,
+        item=mrwt.created_item,
+        cleanup_items=cleanup_items
+    )
+
+    # create model run to register
+    model_run_record = ModelRunRecord(
+        workflow_template_id=mrwt.created_item.id,
+        inputs=[TemplatedDataset(
+            dataset_template_id=input_template.created_item.id,
+            dataset_id=dataset_1_id,
+            dataset_type=DatasetType.DATA_STORE,
+            resources={
+                "input_deferred_resource_key": "/path/to/resource.csv"
+            }
+        )],
+        outputs=[TemplatedDataset(
+            dataset_template_id=output_template.created_item.id,
+            dataset_id=dataset_2_id,
+            dataset_type=DatasetType.DATA_STORE,
+            resources={
+                "output_deferred_resource_key": "/path/to/resource.csv"
+            }
+        )],
+        associations=AssociationInfo(
+            modeller_id=person.created_item.id,
+            requesting_organisation_id=organisation.created_item.id
+        ),
+        display_name="Integration test fake model run display name",
+        start_time=int((datetime.now().timestamp())),
+        end_time=int((datetime.now().timestamp())),
+        description="Integration test fake model run",
+        annotations={
+            required_annotation_key: 'somevalue',
+            optional_annotation_key: 'some other optional value'
+        }
+    )
+
+    # register model run
+    response_model_run_record = await register_model_run_successfully(
+        client = client, 
+        model_run_record= model_run_record
+    )
+
+    model_run_id = response_model_run_record.id
+    cleanup_items.append((ItemSubType.MODEL_RUN, model_run_id))
+
+    # create model run to register including a linked study
+    study = await create_item(
+        client = client,
+        item_subtype=ItemSubType.STUDY)
+    
+    assert study is not None, "Created study is None"
+    assert study.created_item is not None, "Created study does not contain created_item"
+    assert study.created_item.id is not None, "Created study does not have handle ID"
+    
+    cleanup_items.append((ItemSubType.STUDY, study.created_item.id))
+
+    model_run_record.study_id = study.created_item.id
+
+    # register model run
+    response_model_run_record = await register_model_run_successfully(
+        client = client, 
+        model_run_record = model_run_record
+    )
+
+    model_run_id = response_model_run_record.id
+    cleanup_items.append((ItemSubType.MODEL_RUN, model_run_id))
+
+    # - check the prov graph lineage is appropriate
+
+    # The lineage should have 
+    
+    activity_upstream_query = await client.prov_api.explore_upstream(
+        starting_id=model_run_id,
+        depth=1,
+    )
+
+    # model run -wasInformedBy-> study
+    assert_non_empty_graph_property(
+        prop=GraphProperty(
+            type="wasInformedBy",
+            source=model_run_id,
+            target=study.created_item.id
+        ),
+        lineage_response=activity_upstream_query
+    )
+
+
+    # ensure invalid study id results in failure
+    model_run_record.study_id = '1234'
+
+    # register model run
+    failed, possible_model_run_record = register_modelrun_from_record_info_failed(
+        get_token=write_token, model_run_record=model_run_record, expected_code=400)
+
+    if not failed:
+        assert possible_model_run_record
+        model_run_id = possible_model_run_record.id
+        cleanup_items.append((ItemSubType.MODEL_RUN, model_run_id))
+        assert False, f"Model run registration with invalid study should have failed, but did not."
+
 
 
 """Querying Provenance"""
+
 
 
 
