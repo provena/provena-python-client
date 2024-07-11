@@ -14,7 +14,7 @@ jobs:
       - name: CI
         uses: ./.github/actions/ci
         with:
-          PROVENA_OFFLINE_TOKEN: ${{secrets.prod.PROVENA_OFFLINE_TOKEN}}
-          DOMAIN: ${{secrets.prod.DOMAIN}}
-          REALM_NAME: ${{secrets.prod.REALM_NAME}}
-          CLIENT_ID: ${{secrets.prod.CLIENT_ID}}
+          PROVENA_OFFLINE_TOKEN: ${{secrets.PROVENA_OFFLINE_TOKEN}}
+          DOMAIN: ${{secrets.DOMAIN}}
+          REALM_NAME: ${{secrets.REALM_NAME}}
+          CLIENT_ID: ${{secrets.CLIENT_ID}}
