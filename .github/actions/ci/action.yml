@@ -21,6 +21,11 @@ runs:
 
     - name: Test with pytest
       shell: bash
+      env:
+        PROVENA_OFFLINE_TOKEN: ${{secrets.PROVENA_OFFLINE_TOKEN}}
+        DOMAIN: ${{secrets.DOMAIN}}
+        REALM_NAME: ${{secrets.REALM_NAME}}
+        CLIENT_ID: ${{secrets.CLIENT_ID}}
       run: poetry run pytest tests/ --cov=provenaclient --cov-report=xml
 
     - name: Use Codecov to track coverage

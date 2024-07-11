@@ -5,11 +5,12 @@ Author: Parth Kuulkarni
 Last Modified: Wednesday June 26th 2024 3:16:19 PM +0000
 Modified By: Parth Kulkarni
 -----
-Description: TODO
+Description: Integration tests for the client library!
 -----
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+11-07-2024 | Parth Kulkarni | Completed Integration Testing (Need Review) 
 10-07-2024 | Parth Kulkarni | In Progress of Integration Testing. 
 
 '''
@@ -19,7 +20,7 @@ import pytest
 import pytest_asyncio
 import httpx
 
-from provenaclient.auth import DeviceFlow
+from provenaclient.auth import DeviceFlow, OfflineFlow
 from provenaclient.modules.provena_client import ProvenaClient
 from provenaclient.modules.registry import Registry
 from provenaclient.utils.config import Config
@@ -28,34 +29,38 @@ from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
 from ProvenaInterfaces.ProvenanceModels import *
+from dotenv import load_dotenv
 
 from integration_helpers import *
 from provenaclient.utils.exceptions import BadRequestException
 import time
+import os
 
-"""Pre-requiests before running unit tests: 
-
-   1. You will need to setup token flow to be able to run these tests.
-      For now I will use my tokens through device flow. 
-   2. Creating various helper functions.
-
-"""
-
-
-"""Registering and Finding Dataset"""
 
 @pytest.fixture(scope="session")
-def auth_manager() -> DeviceFlow:
+def auth_manager() -> OfflineFlow:
+
+    load_dotenv()
+    domain=os.getenv("DOMAIN")
+    realm_name=os.getenv("REALM_NAME")
+    offline_token = os.getenv("PROVENA_OFFLINE_TOKEN")
+    client_id = os.getenv("CLIENT_ID")
+
+    assert domain, "DOMAIN environment variable is not set"
+    assert realm_name, "REALM_NAME environment variable is not set"
+    assert offline_token, "PROVENA_OFFLINE_TOKEN environment variable is not set"
+    assert client_id, "CLIENT_ID environment variable is not set"
 
     config = Config(
-        domain="dev.rrap-is.com",
-        realm_name="rrap"
+        domain=domain,
+        realm_name=realm_name
     )
 
-    return DeviceFlow(config=config, client_id="client-tools")
+    return OfflineFlow(config=config, client_id=client_id, offline_token=offline_token, offline_token_file=None)
 
 @pytest.fixture(scope="session")
-def client(auth_manager: DeviceFlow) -> ProvenaClient:
+def client(auth_manager: OfflineFlow) -> ProvenaClient:
+    """Insinatates the Provena Client"""
     
     config = Config(
         domain="dev.rrap-is.com",
@@ -66,13 +71,15 @@ def client(auth_manager: DeviceFlow) -> ProvenaClient:
 
 @pytest_asyncio.fixture(scope="session")
 async def cleanup_items(client: ProvenaClient) -> AsyncGenerator[CLEANUP_ITEMS, None]:
+    """ Stores all entites minted as a part of the integration test for cleanup purposes."""
+
     items: CLEANUP_ITEMS = []
     yield items
     await cleanup_helper(client, items)
 
-"""Helper method to create and verify dataset"""
-
 async def create_and_verify_dataset(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> str:
+    """Helper method to create datasets and related chained entities needed."""
+    
     created_organisation = await create_item(client=client, item_subtype=ItemSubType.ORGANISATION)
     assert created_organisation, "The organisation failed to create."
     assert created_organisation.created_item, "Created organisation does not contain a created item response"
@@ -135,7 +142,9 @@ async def create_and_verify_dataset(client: ProvenaClient, cleanup_items: CLEANU
 
     return mint_response.handle
 
-async def health_check_of_all_apis(client: ProvenaClient) -> None:
+@pytest.mark.asyncio
+async def test_health_check_of_all_apis(client: ProvenaClient) -> None:
+    """Health checks all API's"""
 
     health_check_successful_message = "Health check successful."
 
@@ -159,6 +168,7 @@ async def health_check_of_all_apis(client: ProvenaClient) -> None:
 
 @pytest.mark.asyncio
 async def test_invalid_handle_fetch_dataset(client: ProvenaClient) -> None:
+    """Attempts to fetch invalid dataset handle"""
 
     invalid_dataset_handle = "1234567890123"
 
@@ -167,6 +177,7 @@ async def test_invalid_handle_fetch_dataset(client: ProvenaClient) -> None:
 
 @pytest.mark.asyncio
 async def test_register_dataset(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    """Register dataset through helper function."""
     
     dataset_handle = await create_and_verify_dataset(client, cleanup_items)
     assert dataset_handle, "Dataset handle should not be None or empty."
@@ -175,6 +186,7 @@ async def test_register_dataset(client: ProvenaClient, cleanup_items: CLEANUP_IT
 
 @pytest.mark.asyncio
 async def test_searching_dataset(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    """Creates datasets and searches for dataset"""
 
     dataset_handle = await create_and_verify_dataset(client, cleanup_items)
     assert dataset_handle, "Dataset handle should not be None or empty."
@@ -188,6 +200,7 @@ async def test_searching_dataset(client: ProvenaClient, cleanup_items: CLEANUP_I
 
 @pytest.mark.asyncio
 async def test_search_non_chained_entites(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    """Searches all registry items, by first creating them and then uses search api to search. """
 
     # Organisations 
     organisation_domain_info = get_item_subtype_domain_info_example(ItemSubType.ORGANISATION)
@@ -272,6 +285,8 @@ async def test_search_non_chained_entites(client: ProvenaClient, cleanup_items: 
 
 @pytest.mark.asyncio
 async def test_list_all_datasets(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None: 
+    """Creates a datasets, retrieves datastore dataset list and assert that
+       recently created dataset is present."""
 
     """Create dataset"""
     dataset_handle = await create_and_verify_dataset(client=client, cleanup_items=cleanup_items)
@@ -362,6 +377,8 @@ async def test_list_registry_items(client: ProvenaClient, cleanup_items: CLEANUP
 
 @pytest.mark.asyncio
 async def test_export_all_items_in_registry(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    """Creates an organisation (to have at least one item in registry) and exports all items
+       in registry in a dump fashion (without pagination)"""
 
     created_organisation = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
     assert created_organisation is not None, "Created organisation is Null or None"
@@ -381,6 +398,7 @@ async def test_export_all_items_in_registry(client: ProvenaClient, cleanup_items
 
 @pytest.mark.asyncio
 async def test_datastore_pagination(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+    """Testing datastore pagination across different use cases."""
 
     dataset_handle_1 = await create_and_verify_dataset(client = client, cleanup_items = cleanup_items)
     dataset_handle_2 = await create_and_verify_dataset(client = client, cleanup_items = cleanup_items)
@@ -441,6 +459,8 @@ async def test_datastore_pagination(client: ProvenaClient, cleanup_items: CLEANU
 @pytest.mark.asyncio
 async def test_registry_pagination(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
 
+    """Creates two organisation items and tests pagination logic and support."""
+
     created_organisation_1 = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
     assert created_organisation_1 is not None, "Created organisation is Null or None"
     assert created_organisation_1.created_item is not None, "Created organisation is missing field created_item"
@@ -491,6 +511,7 @@ async def test_registry_pagination(client: ProvenaClient, cleanup_items: CLEANUP
 
 """Provenance - Registring Model Runs Etc.."""
 
+@pytest.mark.asyncio
 async def test_provenance_workflow(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
     # prov test that will create the requirements needed for a model run record and register it
     # Procedure:
@@ -508,11 +529,13 @@ async def test_provenance_workflow(client: ProvenaClient, cleanup_items: CLEANUP
     assert person is not None, "Created person is None"
     assert person.created_item is not None, "Created person does not contain created_item"
     assert person.created_item.id is not None, "Created person does not have handle ID"
+    cleanup_items.append((ItemSubType.PERSON, person.created_item.id))
 
     organisation = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
     assert organisation is not None, "Created organisation is None"
     assert organisation.created_item is not None, "Created organisation does not contain created_item"
     assert organisation.created_item.id is not None, "Created organisation does not have handle ID"
+    cleanup_items.append((ItemSubType.ORGANISATION, organisation.created_item.id))
 
 
     # register custom dataset templates (input and output)
@@ -599,17 +622,14 @@ async def test_provenance_workflow(client: ProvenaClient, cleanup_items: CLEANUP
             dataset_template_id=input_template.created_item.id,
             dataset_id=dataset_1_id,
             dataset_type=DatasetType.DATA_STORE,
-            resources={
-                "input_deferred_resource_key": "/path/to/resource.csv"
-            }
+            resources={"item_key" : "some-key"}
+
         )],
         outputs=[TemplatedDataset(
             dataset_template_id=output_template.created_item.id,
             dataset_id=dataset_2_id,
             dataset_type=DatasetType.DATA_STORE,
-            resources={
-                "output_deferred_resource_key": "/path/to/resource.csv"
-            }
+            resources={"item_key" : "some-key"}
         )],
         associations=AssociationInfo(
             modeller_id=person.created_item.id,
@@ -680,21 +700,17 @@ async def test_provenance_workflow(client: ProvenaClient, cleanup_items: CLEANUP
     model_run_record.study_id = '1234'
 
     # register model run
-    failed, possible_model_run_record = register_modelrun_from_record_info_failed(
-        get_token=write_token, model_run_record=model_run_record, expected_code=400)
 
-    if not failed:
-        assert possible_model_run_record
-        model_run_id = possible_model_run_record.id
-        cleanup_items.append((ItemSubType.MODEL_RUN, model_run_id))
-        assert False, f"Model run registration with invalid study should have failed, but did not."
+    # Bad Request Exception since this is an invalid study ID
+    with pytest.raises(BadRequestException):
+        possible_model_run_record = await register_model_run_failure(
+            client = client, 
+            model_run_record = model_run_record
+        )
 
-
-
-"""Querying Provenance"""
-
-
-
-
+        if possible_model_run_record:
+            model_run_id = possible_model_run_record.id
+            cleanup_items.append((ItemSubType.MODEL_RUN, model_run_id))
+            assert False, f"Model run registration with invalid study should have failed, but did not."
 
 
