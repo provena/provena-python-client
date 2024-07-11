@@ -69,7 +69,6 @@ async def cleanup_items(client: ProvenaClient) -> AsyncGenerator[CLEANUP_ITEMS, 
     yield items
     await cleanup_helper(client, items)
 
-
 """Helper method to create and verify dataset"""
 
 async def create_and_verify_dataset(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> str:
@@ -268,17 +267,107 @@ async def test_search_non_chained_entites(client: ProvenaClient, cleanup_items: 
 
 
 
-"""Listing items that is present. - No Pagination"""
+"""Listing items that is present. - No Pagination Testing"""
 
 @pytest.mark.asyncio
-async def test_list_all_datasets(client: ProvenaClient) -> None: 
+async def test_list_all_datasets(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None: 
+
+    """Create dataset"""
+    dataset_handle = create_and_verify_dataset(client=client, cleanup_items=cleanup_items)
+
+    """Fetch all datasets, and test if the datasets we created are part of this list."""
 
     datasets = await client.datastore.list_all_datasets()
-    assert datasets is not None
-    assert len(datasets) > 0
+    assert datasets is not None, "Datastore dataset list is None or Null."
+    assert len(datasets) > 0, "Datastore dataset list is empty"
+
+    # Get handles of datasets from datastore.
+    returned_dataset_ids = {dataset.id for dataset in datasets}
+    
+    # Check if all test dataset IDs are in the returned dataset IDs
+    assert dataset_handle in returned_dataset_ids, f"Test dataset with ID {dataset_handle} not in the datastore."
 
 @pytest.mark.asyncio
-async def test_export_all_items_in_registry(client: ProvenaClient) -> None:
+async def test_list_registry_items(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+
+    """Fetches items from registry based on their subtype, and asserts that the created items
+    during the integration tests are present."""
+
+    generic_list_request = GeneralListRequest(
+        filter_by=None,
+        sort_by=None,
+        pagination_key=None, 
+        page_size=100
+    )
+
+   # Organisations
+    created_organisation = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
+    assert created_organisation is not None, "Created organisation is Null or None"
+    assert created_organisation.created_item is not None, "Created organisation is missing field created_item"
+    assert created_organisation.created_item.id is not None, "Created organisation is missing handle ID"
+    created_org_id = created_organisation.created_item.id
+    cleanup_items.append((ItemSubType.ORGANISATION, created_org_id))
+
+
+    organisation_list = await client.registry.organisation.list_items(list_items_payload=generic_list_request)
+    assert organisation_list is not None, "Organisation List is None or Null"
+    assert organisation_list.items, "Organisation list items field not present."
+    # Get all handles of Organisations from org_list 
+    returned_organisation_ids = {org.id for org in organisation_list.items} 
+    assert created_organisation.created_item.id in returned_organisation_ids, f"Organisation with ID {created_organisation.created_item.id} not in registry."
+
+    # Person
+    created_person = await create_item(client=client, item_subtype=ItemSubType.PERSON)
+    assert created_person is not None, "Created person is Null or None"
+    assert created_person.created_item is not None, "Created person is missing field created_item"
+    assert created_person.created_item.id is not None, "Created person is missing handle ID"
+    created_person_id = created_person.created_item.id
+    cleanup_items.append((ItemSubType.PERSON, created_person_id))
+
+    person_list = await client.registry.person.list_items(list_items_payload=generic_list_request)
+    assert person_list is not None, "Person List is None or Null"
+    assert person_list.items, "Person list items field not present."
+    returned_person_ids = {person.id for person in person_list.items}
+    assert created_person.created_item.id in returned_person_ids, f"Person with ID {created_person.created_item.id} not in registry."
+
+    # Study
+    created_study = await create_item(client=client, item_subtype=ItemSubType.STUDY)
+    assert created_study is not None, "Created study is Null or None"
+    assert created_study.created_item is not None, "Created study is missing field created_item"
+    assert created_study.created_item.id is not None, "Created study is missing handle ID"
+    created_study_id = created_study.created_item.id
+    cleanup_items.append((ItemSubType.STUDY, created_study_id))
+
+    study_list = await client.registry.study.list_items(list_items_payload=generic_list_request)
+    assert study_list is not None, "Study List is None or Null"
+    assert study_list.items, "Study list items field not present."
+    returned_study_ids = {study.id for study in study_list.items}
+    assert created_study.created_item.id in returned_study_ids, f"Study with ID {created_study.created_item.id} not in registry."
+
+    # Models
+    created_model = await create_item(client=client, item_subtype=ItemSubType.MODEL)
+    assert created_model is not None, "Created model is Null or None"
+    assert created_model.created_item is not None, "Created model is missing field created_item"
+    assert created_model.created_item.id is not None, "Created model is missing handle ID"
+    created_model_id = created_model.created_item.id
+    cleanup_items.append((ItemSubType.MODEL, created_model_id))
+
+    model_list = await client.registry.model.list_items(list_items_payload=generic_list_request)
+    assert model_list is not None, "Model List is None or Null"
+    assert model_list.items, "Model list items field not present."
+    returned_model_ids = {model.id for model in model_list.items}
+    assert created_model.created_item.id in returned_model_ids, f"Model with ID {created_model.created_item.id} not in registry."
+
+
+@pytest.mark.asyncio
+async def test_export_all_items_in_registry(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+
+    created_organisation = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
+    assert created_organisation is not None, "Created organisation is Null or None"
+    assert created_organisation.created_item is not None, "Created organisation is missing field created_item"
+    assert created_organisation.created_item.id is not None, "Created organisation is missing handle ID"
+    created_org_id = created_organisation.created_item.id
+    cleanup_items.append((ItemSubType.ORGANISATION, created_org_id))
 
     all_items_in_registry = await client.registry.admin.export_items()
     assert all_items_in_registry is not None, "Failed to export all items from the registry"
@@ -286,11 +375,15 @@ async def test_export_all_items_in_registry(client: ProvenaClient) -> None:
     assert all_items_in_registry.items, "Failed to find 'items' within registry export"
     assert len(all_items_in_registry.items) > 0, "Registry export failed. Item count is >= 1"
 
+
 """Listing Datastore Items and Registry Items - Pagination Present"""
 
 @pytest.mark.asyncio
-async def test_datastore_pagination(client: ProvenaClient) -> None:
+async def test_datastore_pagination(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
 
+    dataset_handle_1 = await create_and_verify_dataset(client = client, cleanup_items = cleanup_items)
+    dataset_handle_2 = await create_and_verify_dataset(client = client, cleanup_items = cleanup_items)
+    
     """Testing generally"""
     list_dataset_request = NoFilterSubtypeListRequest(
             sort_by=None, 
@@ -326,7 +419,7 @@ async def test_datastore_pagination(client: ProvenaClient) -> None:
     assert dataset_list, f"Datastore dataset list is None or Null."
     assert dataset_list.status.success, f"Datastore dataset fetch failed with status {dataset_list.status.details}"
     assert dataset_list.items, f"Dataset list does not contain items field."
-    sorted_dates = [(item.collection_format.dataset_info.created_date) for item in dataset_list.items]
+    sorted_dates = [(item.created_timestamp) for item in dataset_list.items]
     assert sorted_dates == sorted(sorted_dates), "Datasets are not sorted by CREATED_TIME in ascending order"
 
     """Testing with different page sizes"""
@@ -344,29 +437,60 @@ async def test_datastore_pagination(client: ProvenaClient) -> None:
     assert len(dataset_list.items) == 2, f"Dataset list exceed page size. Something is wrong!"
 
 
-"""Provenance"""
-
 @pytest.mark.asyncio
-async def test_search_other_items(client: ProvenaClient, cleanup_items: List[Tuple[ItemSubType, IdentifiedResource]]) -> None:
+async def test_registry_pagination(client: ProvenaClient) -> None:
 
-    # Model Run Workflow Template
-    mrwt_domain_info = get_item_subtype_domain_info_example(ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE)
-    mwrt_domain_info = cast(ModelRunWorkflowTemplateDomainInfo, mrwt_domain_info)
+    created_organisation_1 = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
+    assert created_organisation_1 is not None, "Created organisation is Null or None"
+    assert created_organisation_1.created_item is not None, "Created organisation is missing field created_item"
+    assert created_organisation_1.created_item.id is not None, "Created organisation is missing handle ID"
+    created_org_id_1 = created_organisation_1.created_item.id
+    cleanup_items.append((ItemSubType.ORGANISATION, created_org_id_1))
 
-    created_template = await client.registry.model_run_workflow.create_item(create_item_request=mwrt_domain_info)
-    assert created_template.status.success, "Reported failure when creating model run workflow template"
-    assert created_template.created_item, "Created workflow template does not contain a created item response"
-    assert created_template.created_item.id
+    created_organisation_2 = await create_item(client = client, item_subtype = ItemSubType.ORGANISATION)
+    assert created_organisation_2 is not None, "Created organisation is Null or None"
+    assert created_organisation_2.created_item is not None, "Created organisation is missing field created_item"
+    assert created_organisation_2.created_item.id is not None, "Created organisation is missing handle ID"
+    created_org_id_2 = created_organisation_2.created_item.id
+    cleanup_items.append((ItemSubType.ORGANISATION, created_org_id_2))
 
-    template_id = created_template.created_item.id
-    cleanup_items.append((ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE, template_id))
-
-    search_response = await client.search.search_registry(query=template_id, subtype_filter=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE, limit = None)
-    assert search_response.status.success, f"Search failed for model run workflow template with handle {template_id}"
-    assert search_response.results
-    assert template_id in search_response.results
-
+    sort_request = GeneralListRequest(
+        filter_by=None,
+        sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=True, begins_with=None),
+        pagination_key=None,
+        page_size=100
+    )
     
+    sorted_organisation_list = await client.registry.organisation.list_items(list_items_payload=sort_request)
+    assert sorted_organisation_list, "Sorted Organisation List is None or Null"
+    assert sorted_organisation_list.items, "Sorted organisation list items field not present."
+    sorted_names = [item.display_name for item in sorted_organisation_list.items]
+    assert sorted_names == sorted(sorted_names), "Organisations are not sorted by DISPLAY_NAME in ascending order"
+
+    sort_request.sort_by = SortOptions(sort_type=SortType.CREATED_TIME, ascending=True, begins_with=None)
+
+    sorted_organisation_list = await client.registry.organisation.list_items(list_items_payload=sort_request)
+    assert sorted_organisation_list, "Sorted Organisation List is None or Null"
+    assert sorted_organisation_list.items, "Sorted organisation list items field not present."
+    sorted_dates = [item.created_timestamp for item in sorted_organisation_list.items]
+    assert sorted_dates == sorted(sorted_dates), "Organisations are not sorted by CREATED_TIME in ascending order"
+
+    # Testing with different page sizes for organisations
+    page_request = GeneralListRequest(
+        filter_by=None,
+        sort_by=None, 
+        pagination_key=None, 
+        page_size=2
+    )
+
+    paged_organisation_list = await client.registry.organisation.list_items(list_items_payload=page_request)
+    assert paged_organisation_list, "Paged Organisation List is None or Null"
+    assert paged_organisation_list.items, "Paged organisation list items field not present."
+    assert len(paged_organisation_list.items) == 2, "Paged organisation list exceeds page size. Something is wrong!"
+
+"""Provenance - Registring Model Runs Etc.."""
+
+
 
 """Querying Provenance"""
 

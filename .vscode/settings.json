@@ -40,5 +40,7 @@
       "language": "python",
       "mapTo": "javascript"
     }
-  ]
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true
 }
