@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.11.0 (2024-07-12)
+
+### Feature
+
+* feat: Implemented L3 general method to get count of all items in registry. (#25) ([`096e037`](https://github.com/provena/provena-python-client/commit/096e03729aebceb2556cf139b99c12472fbd785e))
+
 ## v0.10.3 (2024-07-04)
 
 ### Fix
@@ -7,10 +13,6 @@
 * fix: forcing rebuild due to trusted publisher issue ([`3575b29`](https://github.com/provena/provena-python-client/commit/3575b2949fecb412e7f3c52060f0509a61ea0b6f))
 
 ## v0.10.2 (2024-07-04)
-
-### Fix
-
-* fix: forcing rebuild due to trusted publisher issue ([`7136675`](https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f))
 
 ### Unknown
 
@@ -27,6 +29,8 @@
 * ci: Modularisation of CI/CD into actions to clearly separate trigger files (#21) ([`e1f4664`](https://github.com/provena/provena-python-client/commit/e1f46640b600d8388fcba6be6b6d42ab886ea0bd))
 
 ### Fix
+
+* fix: forcing rebuild due to trusted publisher issue ([`7136675`](https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f))
 
 * fix: Adding more py.typed markers ([`ff3e029`](https://github.com/provena/provena-python-client/commit/ff3e02983637ba2c2343c039412b0347b1523e02))
 
@@ -72,8 +76,6 @@
 
 * feat: Updated pyproject.toml settings to increment project versioning. ([`b61fe49`](https://github.com/provena/provena-python-client/commit/b61fe49c598052863a6ea6f7ab472301b6d04035))
 
-* feat: changed semantic release settings to increment project version. ([`1899df9`](https://github.com/provena/provena-python-client/commit/1899df90d798765ec4082e1eccf93c24960ce23a))
-
 ### Unknown
 
 * Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`cd6ad90`](https://github.com/provena/provena-python-client/commit/cd6ad90cafdc39242540e5a55b1bfdffa40332e8))
@@ -81,6 +83,8 @@
 ## v0.7.0 (2024-06-21)
 
 ### Feature
+
+* feat: changed semantic release settings to increment project version. ([`1899df9`](https://github.com/provena/provena-python-client/commit/1899df90d798765ec4082e1eccf93c24960ce23a))
 
 * feat: Testing version increment. ([`bff0daf`](https://github.com/provena/provena-python-client/commit/bff0daf3ceef3d7af025ba187cc96601942ce9eb))
 
@@ -204,13 +208,13 @@ This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https
 
 * git pushMerge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`e333078`](https://github.com/provena/provena-python-client/commit/e333078e9f86d7bddf067b4537fb121f6ca5595e))
 
-* improved error handling and tidying ([`b5a679a`](https://github.com/provena/provena-python-client/commit/b5a679ab36a23dd9e1cb2c655775fbe234068c76))
-
 * Implements Job API L2 and L3 + additional L3 helper methods (#10)
 
 * Basic L2/L3 complete
 
 * Building out L3 functions to await completion of job lifecycle + list all + for all methods. ([`0871e96`](https://github.com/provena/provena-python-client/commit/0871e96944be0f9b26e9ab167e1a050a2c80bd65))
+
+* improved error handling and tidying ([`b5a679a`](https://github.com/provena/provena-python-client/commit/b5a679ab36a23dd9e1cb2c655775fbe234068c76))
 
 * added read offline token from file. Need to consolidate offline and refreh token mishaps ([`0eb280a`](https://github.com/provena/provena-python-client/commit/0eb280a96a2f2935751cfa1a3be02d35a79879ec))
 
@@ -266,8 +270,6 @@ Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https:/
 
 * feat: Updated the project version to not clash with pypi. ([`e67d002`](https://github.com/provena/provena-python-client/commit/e67d002b00003f9a4be402ec7a5fd461fb0c2a48))
 
-* feat: Updated project version to not clash with pypi. ([`a02a0b1`](https://github.com/provena/provena-python-client/commit/a02a0b181e744ff877e113e3fa9954b5e31cc2fe))
-
 ### Unknown
 
 * Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`293cf17`](https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882))
@@ -275,6 +277,8 @@ Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https:/
 ## v0.1.0 (2024-05-30)
 
 ### Feature
+
+* feat: Updated project version to not clash with pypi. ([`a02a0b1`](https://github.com/provena/provena-python-client/commit/a02a0b181e744ff877e113e3fa9954b5e31cc2fe))
 
 * feat: implement datastore, search and auth client. ([`f33d689`](https://github.com/provena/provena-python-client/commit/f33d689622d5905c7a5f77b5c8b1e0b00f3b6b6e))
 
