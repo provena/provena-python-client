@@ -17,6 +17,12 @@ runs:
       with:
         python-version: "3.9"
 
+    - name: Publish Documentation
+      env:
+        github_token: ${{inputs.github_token}}
+      shell: bash
+      run: poetry run ghp-import -n -p -f docs/_build/html
+
     - name: Use Python Semantic Release to prepare release
       id: release
       uses: python-semantic-release/python-semantic-release@v8.3.0
