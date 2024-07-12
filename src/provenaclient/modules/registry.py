@@ -1639,13 +1639,20 @@ class Registry(ModuleService):
         while True:
             list_response = await self.list_general_registry_items(general_list_request=general_list_request)
 
-            if not list_response.items:
-                break
+            assert list_response.items is not None, f"Expected a list of items but none was present."
 
             for item in list_response.items:
                 subtype: str = item.get("item_subtype")
 
                 if not subtype:
+                    unknown = "UNKNOWN"
+    
+                    if unknown not in item_count:
+                        item_count[unknown] = 1
+                    
+                    else:
+                        item_count[unknown] += 1
+                    
                     continue  # Skip this current iteration if subtype is missing
 
                 if subtype not in item_count:
