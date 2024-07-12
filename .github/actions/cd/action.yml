@@ -1,0 +1,49 @@
+#  Ensure token permissions include write e.g.
+#  permissions:
+#    id-token: write
+#    contents: write
+# Ensure the github token is passed through and that fetch-depth = 0 (to get historical commits)
+name: cd
+description: CD steps including pypi deployment and semantic versioning
+inputs:
+  github_token:
+    description: "GitHub Token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Use Python Semantic Release to prepare release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v8.3.0
+      with:
+        github_token: ${{ inputs.github_token }}
+
+    - name: Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      if: steps.release.outputs.released == 'true'
+      with:
+        repository-url: https://test.pypi.org/legacy/
+
+    - name: Test install from TestPyPI
+      shell: bash
+      if: steps.release.outputs.released == 'true'
+      run: |
+        pip install \
+        --index-url https://test.pypi.org/simple/ \
+        --extra-index-url https://pypi.org/simple \
+        provenaclient
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      if: steps.release.outputs.released == 'true'
+
+    - name: Publish package distributions to GitHub Releases
+      uses: python-semantic-release/upload-to-gh-release@main
+      if: steps.release.outputs.released == 'true'
+      with:
+        github_token: ${{ inputs.github_token }}

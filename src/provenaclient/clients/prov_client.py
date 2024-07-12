@@ -85,8 +85,6 @@ class ProvAdminClient(ClientService):
         ----------
         required_only : bool, optional
             By default True
-        file_name : str, optional
-            The filename you want to have, by default DEFAULT_CONFIG_FILE_NAME (prov-api.env)
         """
 
         response = await validated_get_request(

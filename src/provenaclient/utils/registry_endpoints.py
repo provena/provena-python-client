@@ -33,6 +33,7 @@ class RegistryAction(str, Enum):
     UNLOCK = "UNLOCK"
     REVERT = "REVERT"
     LOCK_HISTORY = "LOCK_HISTORY"
+    DELETE = "DELETE"
  
 # Define the mappings
 action_postfixes: Dict[RegistryAction, str] = {
@@ -52,6 +53,7 @@ action_postfixes: Dict[RegistryAction, str] = {
     RegistryAction.LOCK: "/locks/lock",
     RegistryAction.UNLOCK: "/locks/unlock",
     RegistryAction.LOCK_HISTORY: "/locks/history",
+    RegistryAction.DELETE: "/delete"
 }
  
 subtype_route_prefixes: Dict[ItemSubType, str] = {
