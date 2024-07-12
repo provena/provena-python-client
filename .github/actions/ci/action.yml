@@ -33,5 +33,7 @@ runs:
       run: poetry run make html --directory docs/
 
     - name: Run ghp-import
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       shell: bash
       run: poetry run ghp-import -n -p -f docs/_build/html
