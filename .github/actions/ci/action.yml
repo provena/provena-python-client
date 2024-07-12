@@ -1,5 +1,9 @@
 name: ci
 description: Unit testing and other CI steps
+inputs:
+  GITHUB_TOKEN:
+    description: "Github Token"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -34,6 +38,6 @@ runs:
 
     - name: Run ghp-import
       env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
       shell: bash
       run: poetry run ghp-import -n -p -f docs/_build/html
