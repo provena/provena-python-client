@@ -34,4 +34,4 @@ runs:
 
     - name: Run ghp-import
       shell: bash
-      run: ghp-import -n -p -f docs/_build/html
+      run: poetry run ghp-import -n -p -f docs/_build/html
