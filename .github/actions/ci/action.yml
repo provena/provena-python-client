@@ -31,3 +31,7 @@ runs:
     - name: Build documentation
       shell: bash
       run: poetry run make html --directory docs/
+
+    - name: Run ghp-import
+      shell: bash
+      run: ghp-import -n -p -f docs/_build/html
