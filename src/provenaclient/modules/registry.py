@@ -10,9 +10,10 @@ Description: Registry API L3 module.
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+
+12-07-2024 | Parth Kulkarni | Adding some useful L3 methods to retrieve summarized info of registry items. 
 28-06-2024 | Parth Kulkarni | Completion of Registry L3 interface with General, Admin and Other endpoints. 
 18-06-2024 | Peter Baker | Initial proof of concept with fetch/update methods from L2. Sub Modules for each subtype.
-
 
 '''
 
@@ -173,8 +174,8 @@ class RegistryAdminClient(ModuleService):
             id = id, 
             item_subtype=item_subtype
         )
-
-
+    
+    
 class RegistryBaseClass(ModuleService):
     _registry_client: RegistryClient
 
@@ -1607,7 +1608,57 @@ class Registry(ModuleService):
         return await self._registry_client.general.list_general_registry_items(
             general_list_request=general_list_request
         )
+    
+    async def list_registry_items_with_count(self) -> Dict[str, int]:
+        """
+        Retrieves a count of items in the registry, grouped by their subtypes.
 
+        This method sends requests to list items in the registry and counts the number of items for each subtype.
+        It handles pagination to ensure all items are counted.
+
+        Returns
+        -------
+        Dict[str, int]
+            A dictionary where the keys are item subtypes(string) and the values are the count of items for each subtype.
+        """
+    
+        item_count: Dict[str, int] = {}
+
+        general_list_request = GeneralListRequest(
+            filter_by=FilterOptions(
+                record_type=QueryRecordTypes.COMPLETE_ONLY,
+                item_subtype=None, 
+                release_reviewer=None,
+                release_status=None
+            ),
+            sort_by=SortOptions(sort_type=None, ascending=False, begins_with=None),
+            pagination_key=None, 
+            page_size=20
+        )
+
+        while True:
+            list_response = await self.list_general_registry_items(general_list_request=general_list_request)
+
+            if not list_response.items:
+                break
+
+            for item in list_response.items:
+                subtype: str = item.get("item_subtype")
+
+                if not subtype:
+                    continue  # Skip this current iteration if subtype is missing
+
+                if subtype not in item_count:
+                    item_count[subtype] = 1
+                else:
+                    item_count[subtype] += 1
+
+            if not list_response.pagination_key:
+                break
+
+            general_list_request.pagination_key = list_response.pagination_key
+
+        return item_count
     
     async def general_fetch_item(self, id: str) -> UntypedFetchResponse:
         """
