@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.11.1 (2024-07-19)
+
+### Fix
+
+* fix: (auth-api client) user link look up - Issue #26 (#27) ([`271df3c`](https://github.com/provena/provena-python-client/commit/271df3c0a4fc2c9d36a780dd951e0d643bcee2dc))
+
 ## v0.11.0 (2024-07-12)
 
 ### Feature
