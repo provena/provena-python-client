@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.11.2 (2024-07-21)
+
+### Fix
+
+* fix: Increasing httpx timeout to 30s global to mirror api gateway (#28) ([`98f325e`](https://github.com/provena/provena-python-client/commit/98f325efeb0b5e0586c7f5affcbd26978f3ee64b))
+
 ## v0.11.1 (2024-07-19)
 
 ### Fix
