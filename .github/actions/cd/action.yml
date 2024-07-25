@@ -21,7 +21,7 @@ runs:
       env:
         github_token: ${{inputs.github_token}}
       shell: bash
-      run: poetry run ghp-import -n -p -f docs/_build/html
+      run: poetry run ghp-import -n -p -f -o docs/_build/html
 
     - name: Use Python Semantic Release to prepare release
       id: release
