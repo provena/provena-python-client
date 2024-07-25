@@ -7,8 +7,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u"provenaclient"
-copyright = u"2024, Parth Kulkarni"
-author = u"Parth Kulkarni"
+copyright = u"2024, Provena Development Team (CSIRO)"
+author = u"Provena Development Team (CSIRO)"
 
 # -- General configuration ---------------------------------------------------
 
