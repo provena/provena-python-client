@@ -750,7 +750,7 @@ class AuthClient(ClientService):
         Returns:
             UserLinkUserLookupResponse: The response indicating link
         """
-        return await parsed_get_request_with_status(
+        return await parsed_get_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_LINK_USER_LOOKUP),
             error_message="Failed to lookup user in link service.",
