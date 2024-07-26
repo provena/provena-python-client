@@ -494,3 +494,22 @@ class Datastore(ModuleService):
             auth_errors=auth_err,
             misc_errors=misc_err
         )
+
+    # class InteractiveDataset():
+    #     # init that takes in id
+    #     def __inti__(self, id, _datastore_client, _auth)
+    #         self.id = id
+    #         # set clients
+
+    #     # all the methods
+    #     def fetch_dataset()
+    #         self._datastore_client.fetch_dataset(self.id)
+            
+
+    # async def interactive_dataset(id: str) -> 
+    #     return InteractiveDataset(
+    #         id=id,
+    #         _auth=self._auth,
+    #     )
+
+    
