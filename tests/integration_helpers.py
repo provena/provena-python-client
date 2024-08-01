@@ -1,6 +1,6 @@
 
-from datetime import date
 from dataclasses import dataclass
+import time
 from typing import cast
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
@@ -8,18 +8,22 @@ from ProvenaInterfaces.SearchAPI import *
 from ProvenaInterfaces.ProvenanceAPI import * 
 from ProvenaInterfaces.ProvenanceModels import *
 from ProvenaInterfaces.AsyncJobModels import *
+from ProvenaInterfaces.TestConfig import RouteParameters, route_params, non_test_route_params
 
+from provenaclient.clients.client_helpers import ClientService
+from provenaclient.modules import registry
+from provenaclient.modules.module_helpers import ModuleService
 from provenaclient.modules.provena_client import ProvenaClient
+from provenaclient.modules.registry import ModelClient, OrganisationClient, PersonClient, RegistryBaseClass, StudyClient, DatasetTemplateClient
 from provenaclient.utils.registry_endpoints import *
 from provenaclient.modules import Registry
-from test_config import RouteParameters, route_params, non_test_route_params
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
 
 
 CLEANUP_ITEMS = List[Tuple[ItemSubType, IdentifiedResource]] # Alias for cleanup items list
+REGISTRY_CLIENTS = OrganisationClient | PersonClient | StudyClient | ModelClient | DatasetTemplateClient # Alias for all the clients.
 
-
-async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> Optional[GenericCreateResponse]:
+async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> ItemBase:
     """
     Create an item of the specified subtype.
 
@@ -36,42 +40,37 @@ async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> Optio
         The response from the create item request, or None if the subtype is not handled.
     """
 
-    if item_subtype == ItemSubType.ORGANISATION:
-        example_org_domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
-        example_org_domain_info = cast(OrganisationDomainInfo, example_org_domain_info)
+    domain_info_mapping: Dict[ItemSubType, Type[DomainInfoBase]] = {
+        ItemSubType.ORGANISATION: OrganisationDomainInfo,
+        ItemSubType.PERSON: PersonDomainInfo,
+        ItemSubType.STUDY: StudyDomainInfo,
+        ItemSubType.MODEL: ModelDomainInfo,
+        ItemSubType.DATASET_TEMPLATE: DatasetTemplateDomainInfo
+    }
+  
+    # Mapping of item subtypes to their respective subclients
+    subtype_to_subclient: Dict[ItemSubType, REGISTRY_CLIENTS] = {
+        ItemSubType.ORGANISATION: client.registry.organisation,
+        ItemSubType.PERSON: client.registry.person,
+        ItemSubType.STUDY: client.registry.study,
+        ItemSubType.MODEL: client.registry.model,
+        ItemSubType.DATASET_TEMPLATE: client.registry.dataset_template
+    }
 
-        created_org = await client.registry.organisation.create_item(create_item_request=example_org_domain_info)
-        return created_org
+    domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
     
-    if item_subtype == ItemSubType.PERSON:
-        example_person_domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
-        example_person_domain_info = cast(PersonDomainInfo, example_person_domain_info)
-
-        created_person = await client.registry.person.create_item(create_item_request=example_person_domain_info)
-        return created_person
+    # Cast the domain info to the appropriate type
+    domain_info_type = domain_info_mapping[item_subtype]
+    specific_domain_info = cast(domain_info_type, domain_info) #type:ignore
     
-    if item_subtype == ItemSubType.STUDY:
-        example_study_domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
-        example_study_domain_info = cast(StudyDomainInfo, example_study_domain_info)
+    # Get the subclient and create the item
+    subclient = subtype_to_subclient[item_subtype]
+    created_item = await subclient.create_item(create_item_request=specific_domain_info)
 
-        created_study = await client.registry.study.create_item(create_item_request=example_study_domain_info)
-        return created_study
-    
-    if item_subtype == ItemSubType.MODEL:
-        example_model_domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
-        example_model_domain_info = cast(ModelDomainInfo, example_model_domain_info)
+    asserted_created_item = assert_created_item(item = created_item, item_subtype=item_subtype)
 
-        created_model = await client.registry.model.create_item(create_item_request=example_model_domain_info)
-        return created_model
-    
-    if item_subtype == ItemSubType.DATASET_TEMPLATE:
-        example_dataset_template_domain_info = get_item_subtype_domain_info_example(item_subtype=item_subtype)
-        example_dataset_template_domain_info = cast(DatasetTemplateDomainInfo, example_dataset_template_domain_info)
-
-        created_dataset_template = await client.registry.dataset_template.create_item(create_item_request=example_dataset_template_domain_info)
-        return created_dataset_template
-
-    return None
+    # Return Itembase
+    return asserted_created_item 
 
 async def create_item_from_domain_info_successfully(client: ProvenaClient, item_subtype: ItemSubType, domain_info: DomainInfoBase) -> Optional[GenericCreateResponse]:
     """
@@ -180,6 +179,50 @@ async def cleanup_helper(client: ProvenaClient, list_of_handles: CLEANUP_ITEMS) 
     for item_sub_type, handle in list_of_handles:
         delete_status_response = await client.registry.admin.delete(id=handle, item_subtype=item_sub_type)
         assert delete_status_response.status.success, f"Delete request has failed with details {delete_status_response.status.details}."
+
+def assert_created_item(item: GenericCreateResponse, item_subtype: ItemSubType) -> ItemBase:
+    """
+    Asserts that the item was created successfully.
+
+    Parameters
+    ----------
+    item : GenericCreateResponse
+        The created entity to be asserted.
+    item_subtype : ItemSubType
+        The subtype of the item.
+    """
+    assert item, f"The {item_subtype.name} is null or none."
+    assert item.created_item, f"Created {item_subtype.name} does not contain a created item field."
+    assert item.created_item.id, f"Created {item_subtype.name} does not contain a handle ID."
+
+    if item.status:
+        assert item.status.success, f"Reported failure when creating {item_subtype.name} with the following details\
+                                    {item.status.details}"
+        
+    return item.created_item
+
+def assert_list_items(item: GenericListResponse, item_subtype: ItemSubType) -> List[Any]: 
+
+    assert item, f"The {item_subtype.name} list response is null or none."
+    assert item.items, f"The {item_subtype.name} list response did not contain a items field."
+
+    if item.status:
+        assert item.status.success, f"The {item_subtype.name} list failed to create with the following error \
+                                    {item.status.details} "
+        
+    return item.items
+
+async def search_and_assert(client: ProvenaClient, item_id: str, item_subtype: ItemSubType) -> None:
+
+    # Sleep for 5 seconds, so search api can fairly detect created entity.
+    time.sleep(5)
+
+    search_response = await client.search.search_registry(query=item_id, subtype_filter=item_subtype, limit=None)
+    assert search_response.status.success, f"Search failed for {item_subtype.name} with handle {item_id}"
+    assert search_response.results, f"No results found for {item_subtype.name} with handle {item_id}"
+    search_result_ids = [result.id for result in search_response.results]
+    assert item_id in search_result_ids, f"{item_id} not found in search results"
+
 
 async def cleanup_create_activity_from_item_base(client: ProvenaClient, item: ItemBase, cleanup_items: CLEANUP_ITEMS) -> None:
     """
