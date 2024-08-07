@@ -459,7 +459,7 @@ class AuthAdminSubClient(ClientService):
         Returns:
             AdminLinkUserLookupResponse: Response
         """
-        return await parsed_get_request_with_status(
+        return await parsed_get_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_LINK_ADMIN_LOOKUP),
             error_message="Failed to lookup user in link service.",
@@ -478,7 +478,7 @@ class AuthAdminSubClient(ClientService):
         Returns:
             UserLinkReverseLookupResponse: The response
         """
-        return await parsed_get_request_with_status(
+        return await parsed_get_request(
             client=self,
             url=self._build_endpoint(
                 AuthEndpoints.GET_LINK_ADMIN_REVERSE_LOOKUP),
@@ -517,7 +517,7 @@ class AuthAdminSubClient(ClientService):
         Returns:
             AdminLinkUserClearResponse: The response
         """
-        return await parsed_delete_request_with_status(
+        return await parsed_delete_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.DELETE_LINK_ADMIN_CLEAR),
             error_message="Failed to clear link from user.",
@@ -750,7 +750,7 @@ class AuthClient(ClientService):
         Returns:
             UserLinkUserLookupResponse: The response indicating link
         """
-        return await parsed_get_request_with_status(
+        return await parsed_get_request(
             client=self,
             url=self._build_endpoint(AuthEndpoints.GET_LINK_USER_LOOKUP),
             error_message="Failed to lookup user in link service.",
@@ -790,7 +790,7 @@ class AuthClient(ClientService):
         """
         # Doesn't assert status as we want the status response to fall through
         # to user
-        return await parsed_post_request(
+        return await parsed_post_request_with_status(
             client=self,
             url=self._build_endpoint(AuthEndpoints.POST_LINK_USER_VALIDATE),
             error_message="Failed to validate user link.",
