@@ -218,7 +218,7 @@ async def main() -> None:
         print_list=True
     )
 
-    """
+
 
     general_list_request = GeneralListRequest(
         filter_by=None,
@@ -228,13 +228,16 @@ async def main() -> None:
 
     response = await client.registry.model.list_items(list_items_payload=general_list_request)
     print(response)
-
+ 
+    """
 
     #res = await client.registry.admin.delete(id="10378.1/1913346")
 
     #print(res)
 
     #print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
+
+    """
 
     model_create_request = ModelDomainInfo(
         display_name="Parth testing",
@@ -247,5 +250,12 @@ async def main() -> None:
 
     # res_two = await client.registry.model.create_item(create_item_request=model_create_request) - Disabled to avoid spamming create models.
     #print(res_two)
+
+    """
+
+
+    item_counts = await client.registry.list_registry_items_with_count()
+
+    print(item_counts)
 
 asyncio.run(main())
