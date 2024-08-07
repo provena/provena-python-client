@@ -1,7 +1,7 @@
 name: ci
 description: Unit testing and other CI steps
 inputs:
-  PROVENA_OFFLINE_TOKEN:
+  PROVENA_ADMIN_OFFLINE_TOKEN:
     description: "Provena Offline Token"
     required: true
   DOMAIN:
@@ -36,7 +36,7 @@ runs:
     - name: Test with pytest
       shell: bash
       env:
-        PROVENA_OFFLINE_TOKEN: ${{inputs.PROVENA_OFFLINE_TOKEN}}
+        PROVENA_ADMIN_OFFLINE_TOKEN: ${{inputs.PROVENA_ADMIN_OFFLINE_TOKEN}}
         DOMAIN: ${{inputs.DOMAIN}}
         REALM_NAME: ${{inputs.REALM_NAME}}
         CLIENT_ID: ${{inputs.CLIENT_ID}}
