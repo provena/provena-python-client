@@ -212,16 +212,37 @@ def assert_list_items(item: GenericListResponse, item_subtype: ItemSubType) -> L
         
     return item.items
 
-async def search_and_assert(client: ProvenaClient, item_id: str, item_subtype: ItemSubType) -> None:
+async def search_and_assert(client: ProvenaClient, item_id: str, item_subtype: ItemSubType, sleep_time: int = 10) -> None:
+    """Search for an item and assert that it exists in the search results. If the item was just created, it may be necessary to wait for the search index to update
+    by supplying a non-zero sleep time, or calling a time.sleep() before this function if there was a list of entities created and searching
+    is occuring all at the end.
 
+    Parameters
+    ----------
+    client : ProvenaClient
+        The ProvenaClient instance used to interact with the API.
+    item_id : str
+        item handle to search for
+    item_subtype : ItemSubType
+        item subtype of the item to search for
+    sleep_time : int, optional
+        Sleep time to allow for search api to index, by default 10. Set to 0 and use your own sleep as well.
+
+    Raises
+    ------
+    AssertionError
+        If the search fails to find the item in the search results. This could be
+        likely because the search API is yet to index the item.
+    """
     # Sleep for 5 seconds, so search api can fairly detect created entity.
-    time.sleep(5)
+    time.sleep(sleep_time)
 
     search_response = await client.search.search_registry(query=item_id, subtype_filter=item_subtype, limit=None)
     assert search_response.status.success, f"Search failed for {item_subtype.name} with handle {item_id}"
     assert search_response.results, f"No results found for {item_subtype.name} with handle {item_id}"
     search_result_ids = [result.id for result in search_response.results]
-    assert item_id in search_result_ids, f"{item_id} not found in search results"
+    if item_id not in search_result_ids:
+        raise AssertionError(f"Search failed to find {item_subtype.name} with handle {item_id} inside search results. Search result IDs: {search_result_ids}")
 
 
 async def cleanup_create_activity_from_item_base(client: ProvenaClient, item: ItemBase, cleanup_items: CLEANUP_ITEMS) -> None:
