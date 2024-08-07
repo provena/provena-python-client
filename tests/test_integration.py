@@ -31,6 +31,7 @@ from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
 from ProvenaInterfaces.ProvenanceModels import *
+from ProvenaInterfaces.AuthAPI import UserLinkUserAssignRequest
 from dotenv import load_dotenv
 
 from integration_helpers import *
@@ -77,13 +78,29 @@ def client(auth_manager: OfflineFlow) -> ProvenaClient:
 async def org_person_fixture(client: ProvenaClient) -> AsyncGenerator[Tuple[ItemBase, ItemBase], None]:
     """ A fixture to generate organisation and person entities.
     """
-
     created_organisation = await create_item(client=client, item_subtype=ItemSubType.ORGANISATION)
+
+    # create a person and link it to me (the user of the client)
+    # because I require to be linked to create datasets in later tests
     created_person = await create_item(client=client, item_subtype=ItemSubType.PERSON)
+
+    # check if somehow already linked to ID (test fail also failed cleanup), if so clear associated links
+    user_link_lookup_resp = await client.auth_api.get_link_lookup_username()
+    if user_link_lookup_resp.person_id is not None:
+        # clear all links associated with this person ID (potentially my many accounts)
+        await clear_all_links_with_person_id_user(
+            client=client, person_id=user_link_lookup_resp.person_id)
+    else:
+        # fresh slate, now assign so theres only one link
+        await client.auth_api.post_link_assign(body=UserLinkUserAssignRequest(person_id=created_person.id))
 
     # Provide the Org and Person to each test that requires it.
     yield created_organisation, created_person
 
+    # link clean up before item is deleted as we use ID to find the username(s) to remove the link
+    await clear_all_links_with_person_id_user(client=client, person_id=created_person.id)
+
+    # now remove the entities
     await cleanup_helper(client=client,
                          list_of_handles=[(created_organisation.item_subtype, created_organisation.id),
                                           (created_person.item_subtype,
