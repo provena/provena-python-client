@@ -1,5 +1,19 @@
 name: ci
 description: Unit testing and other CI steps
+inputs:
+  PROVENA_ADMIN_OFFLINE_TOKEN:
+    description: "Provena Offline Token"
+    required: true
+  DOMAIN:
+    description: "Domain"
+    required: true
+  REALM_NAME:
+    description: "Realm Name"
+    required: true
+  CLIENT_ID:
+    description: "Client ID"
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -21,6 +35,11 @@ runs:
 
     - name: Test with pytest
       shell: bash
+      env:
+        PROVENA_ADMIN_OFFLINE_TOKEN: ${{inputs.PROVENA_ADMIN_OFFLINE_TOKEN}}
+        DOMAIN: ${{inputs.DOMAIN}}
+        REALM_NAME: ${{inputs.REALM_NAME}}
+        CLIENT_ID: ${{inputs.CLIENT_ID}}
       run: poetry run pytest tests/ --cov=provenaclient --cov-report=xml
 
     - name: Use Codecov to track coverage

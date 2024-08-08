@@ -17,6 +17,8 @@ Date      	By	Comments
 
 '''
 
+from ProvenaInterfaces.RegistryAPI import Any, DomainInfoBase
+from ProvenaInterfaces.RegistryModels import Any, DomainInfoBase
 from provenaclient.auth.manager import AuthManager
 from provenaclient.models.general import HealthCheckResponse
 from provenaclient.utils.config import Config
@@ -26,7 +28,7 @@ from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from typing import Optional
 from provenaclient.utils.helpers import convert_to_item_subtype, write_file_helper, get_and_validate_file_path
-
+from abc import abstractmethod
 
 
 DEFAULT_CONFIG_FILE_NAME = "registry-api.env"
@@ -397,7 +399,6 @@ class RegistryBaseClass(ModuleService):
             id=id,
             item_subtype=self.item_subtype
         )
-
     
 class OrganisationClient(RegistryBaseClass):
     _registry_client: RegistryClient
@@ -721,6 +722,9 @@ class CreateActivityClient(RegistryBaseClass):
             validate_request=validate_request,
             item_subtype=self.item_subtype
         )
+    
+    async def create_item(self, create_item_request: DomainInfoBase) -> Any:
+        pass
 
 
 
@@ -1035,7 +1039,7 @@ class ModelRunWorkFlowClient(RegistryBaseClass):
             instance.
         """
         
-        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.WORKFLOW_TEMPLATE)
+        super().__init__(auth=auth, config=config, registry_client=registry_client, item_subtype=ItemSubType.MODEL_RUN_WORKFLOW_TEMPLATE)
 
     async def fetch(self, id: str, seed_allowed: Optional[bool] = None) -> ModelRunWorkflowTemplateFetchResponse:
         """
