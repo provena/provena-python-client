@@ -13,6 +13,12 @@ jobs:
         uses: actions/checkout@v3
       - name: CI
         uses: ./.github/actions/ci
+        with:
+          PROVENA_ADMIN_OFFLINE_TOKEN: ${{secrets.PROVENA_ADMIN_OFFLINE_TOKEN}}
+          DOMAIN: ${{secrets.DOMAIN}}
+          REALM_NAME: ${{secrets.REALM_NAME}}
+          CLIENT_ID: ${{secrets.CLIENT_ID}}
+
   cd:
     runs-on: ubuntu-latest
     permissions:
