@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import time
 from typing import cast
+
 from ProvenaInterfaces.RegistryModels import *
 from ProvenaInterfaces.RegistryAPI import *
 from ProvenaInterfaces.SearchAPI import *
@@ -9,21 +10,17 @@ from ProvenaInterfaces.ProvenanceAPI import *
 from ProvenaInterfaces.ProvenanceModels import *
 from ProvenaInterfaces.AsyncJobModels import *
 from ProvenaInterfaces.TestConfig import RouteParameters, route_params, non_test_route_params
-
-from provenaclient.clients.client_helpers import ClientService
-from provenaclient.modules import registry
-from provenaclient.modules.module_helpers import ModuleService
-from provenaclient.modules.provena_client import ProvenaClient
-from provenaclient.modules.registry import ModelClient, OrganisationClient, PersonClient, RegistryBaseClass, StudyClient, DatasetTemplateClient
-from provenaclient.utils.registry_endpoints import *
-from provenaclient.modules import Registry
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
+
+from provenaclient.modules.provena_client import ProvenaClient
+from provenaclient.modules.registry import ModelClient, OrganisationClient, PersonClient, StudyClient, DatasetTemplateClient
+from provenaclient.utils.registry_endpoints import *
 
 
 # Alias for cleanup items list
 CLEANUP_ITEMS = List[Tuple[ItemSubType, IdentifiedResource]]
-# Alias for all the clients.
-REGISTRY_CLIENTS = OrganisationClient | PersonClient | StudyClient | ModelClient | DatasetTemplateClient
+# Alias for all the registry clients (These clients can create entities through their create_item method)
+ENTITY_CREATING_REGISTRY_CLIENTS = OrganisationClient | PersonClient | StudyClient | ModelClient | DatasetTemplateClient
 
 
 async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> ItemBase:
@@ -52,7 +49,7 @@ async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> ItemB
     }
 
     # Mapping of item subtypes to their respective subclients
-    subtype_to_subclient: Dict[ItemSubType, REGISTRY_CLIENTS] = {
+    subtype_to_subclient: Dict[ItemSubType, ENTITY_CREATING_REGISTRY_CLIENTS] = {
         ItemSubType.ORGANISATION: client.registry.organisation,
         ItemSubType.PERSON: client.registry.person,
         ItemSubType.STUDY: client.registry.study,
@@ -246,7 +243,7 @@ async def search_and_assert(client: ProvenaClient, item_id: str, item_subtype: I
         If the search fails to find the item in the search results. This could be
         likely because the search API is yet to index the item.
     """
-    # Sleep for 5 seconds, so search api can fairly detect created entity.
+    # Sleep for 10 seconds, so search api can fairly detect created entity.
     time.sleep(sleep_time)
 
     search_response = await client.search.search_registry(query=item_id, subtype_filter=item_subtype, limit=None)

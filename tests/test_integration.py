@@ -20,7 +20,6 @@ Date      	By	Comments
 from typing import Any, AsyncGenerator, Collection, List, cast
 import pytest
 import pytest_asyncio
-import httpx
 
 from provenaclient.auth import DeviceFlow, OfflineFlow
 from provenaclient.modules.provena_client import ProvenaClient
@@ -259,7 +258,7 @@ async def test_searching_dataset(client: ProvenaClient, dataset_fixture: Tuple[s
 
 
 @pytest.mark.asyncio
-async def test_search_non_chained_entites(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
+async def test_search_created_entites(client: ProvenaClient, cleanup_items: CLEANUP_ITEMS) -> None:
     """Searches all registry items, by first creating them and then uses search api to search. """
 
     # Create an organisation and asserts/validates inside create_item
