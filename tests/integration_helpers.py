@@ -20,7 +20,7 @@ from provenaclient.utils.registry_endpoints import *
 # Alias for cleanup items list
 CLEANUP_ITEMS = List[Tuple[ItemSubType, IdentifiedResource]]
 # Alias for all the registry clients (These clients can create entities through their create_item method)
-ENTITY_CREATING_REGISTRY_CLIENTS = OrganisationClient | PersonClient | StudyClient | ModelClient | DatasetTemplateClient
+ENTITY_CREATING_REGISTRY_CLIENTS = Union[OrganisationClient, PersonClient, StudyClient, ModelClient, DatasetTemplateClient]
 
 
 async def create_item(client: ProvenaClient, item_subtype: ItemSubType) -> ItemBase:
