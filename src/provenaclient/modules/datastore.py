@@ -10,8 +10,11 @@ Description: Datastore L3 module. Includes the Data store review sub module.
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class. 
+
 '''
 
+from distutils.version import Version
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
 from provenaclient.clients import DatastoreClient, SearchClient
@@ -119,6 +122,56 @@ class ReviewSubModule(ModuleService):
         return await self._datastore_client.review.action_approval_request(action_approval_request_payload=action_approval_request)
 
 
+class InteractiveDataset(ModuleService):
+
+    def __init__(self, dataset_id: str, auth: AuthManager, datastore_client: DatastoreClient, io: IOSubModule) -> None:
+        self.dataset_id = dataset_id
+        self._auth = auth
+        self._datastore_client = datastore_client
+        self.io = io
+
+    async def fetch_dataset(self) -> RegistryFetchResponse :
+        return await self._datastore_client.fetch_dataset(id=self.dataset_id)
+    
+    async def download_all_files(self, destination_directory: str) -> None: 
+        return await self.io.download_all_files(destination_directory=destination_directory, dataset_id=self.dataset_id)
+    
+    async def upload_all_files(self, source_directory: str) -> None: 
+        return await self.io.upload_all_files(source_directory=source_directory, dataset_id=self.dataset_id)
+    
+    async def version(self, reason: str) -> VersionResponse:
+        version_request: VersionRequest = VersionRequest(
+            id = self.dataset_id, 
+            reason = reason
+        )
+        return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
+    
+    async def revert_dataset_metadata(self, history_id: int, reason: str) -> StatusResponse:
+        revert_request: RevertMetadata = RevertMetadata(
+            id=self.dataset_id, 
+            history_id=history_id,
+            reason=reason
+        )
+        return await self._datastore_client.revert_metadata(metadata_payload=revert_request)
+    
+    async def generate_read_access_credentials(self, console_session_required: bool) -> CredentialResponse:
+
+        credentials_request = CredentialsRequest(
+            dataset_id=self.dataset_id, 
+            console_session_required=console_session_required
+        )
+
+        return await self._datastore_client.generate_read_access_credentials(read_access_credentials=credentials_request)
+
+    async def generate_write_access_credentials(self, console_session_required: bool) -> CredentialResponse:
+
+        credentials_request = CredentialsRequest(
+            dataset_id=self.dataset_id, 
+            console_session_required=console_session_required
+        )
+
+        return await self._datastore_client.generate_write_access_credentials(write_access_credentials=credentials_request)
+
 class Datastore(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
@@ -150,6 +203,7 @@ class Datastore(ModuleService):
             config=config,
             datastore_client=self._datastore_client
         )
+
         self.io = IOSubModule(
             auth=auth,
             config=config,
@@ -493,4 +547,12 @@ class Datastore(ModuleService):
             items=success,
             auth_errors=auth_err,
             misc_errors=misc_err
+        )
+    
+    async def interactive_dataset(self, dataset_id: str) -> InteractiveDataset:
+        return InteractiveDataset(
+            dataset_id=dataset_id, 
+            datastore_client=self._datastore_client, 
+            io = self.io,
+            auth = self._auth
         )
