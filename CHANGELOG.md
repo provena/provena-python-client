@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v0.12.0 (2024-08-08)
+
+### Documentation
+
+* docs: Docs 1708 setup client documentation (#29)
+
+Setup documentation of client library in CI/CD Pipeline. CI builds docs, and CD publishes docs to github pages using ghp-import tool. ([`673dc6a`](https://github.com/provena/provena-python-client/commit/673dc6a07d2ceddf75183a3755a682a0002e7162))
+
+* docs: Docs 1708 setup client documentation (#24) ([`3b09394`](https://github.com/provena/provena-python-client/commit/3b09394ab79c76ac7733f858ab2314be8b56c0eb))
+
+### Feature
+
+* feat: Forcing new release to access &#34;requests&#34; dependency. ([`3595042`](https://github.com/provena/provena-python-client/commit/35950424b51ee61db268ebc5c6e8faf825360187))
+
+### Test
+
+* test: JIRA-1706: Tests 1706 integration tests (#23)
+
+Completed Integration Tests + Created a Guide for Client Library tests. 
+
+Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.com/provena/provena-python-client/commit/66d96faf6183be1e4236954fc62ea6be883cbf41))
+
+### Unknown
+
+* Added secerts capture on push to main workflow for CI/CD. ([`2d3e8c9`](https://github.com/provena/provena-python-client/commit/2d3e8c99d5bb047db8deca012be19b14e6a86b1a))
+
 ## v0.11.2 (2024-07-21)
 
 ### Fix

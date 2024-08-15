@@ -1,13 +1,7 @@
 # Provena Python Client
 
-Welcome to the Provena Python Client repository! This client library is a programmatic interface designed to interact seamlessly with your Provena instance. It allows you to replicate most functionalities of the Provena Web app through Python code, including fetching or minting datasets, creating items within the registry, and launching provenance workflows. With the Provena Python Client, you can achieve comprehensive interactions with only a few lines of code.
+Welcome to the Provena Python Client repository! This client library is a programmatic interface designed to interact seamlessly with your Provena instance. The client uses the same Pydantic models as the Provena API, ensuring a one-to-one typed interface with the API. This means that the models used in the client library directly correspond to those used by the API, providing consistency and ease of use. It allows you to replicate most functionalities of the Provena Web app through Python code, including fetching or minting datasets, creating items within the registry, and launching provenance workflows. With the Provena Python Client, you can achieve comprehensive interactions with only a few lines of code.
 
-## Core Technologies and Dependencies Used: 
-- Python + MyPy
-- Pydantic 
-- Httpx 
-
-Refer to [pyproject.toml](./pyproject.toml) for versioning info and information of other dependencies. 
 
 ## Getting Started
 
@@ -17,9 +11,14 @@ To install the Provena Python Client, simply use pip:
 pip install provenaclient
 ```
 
-Once you have successfully installed provenaclient, refer to the following Example Notebook here at: [Example Notebook](docs/example.ipynb) to start coding away!
+Once you have successfully installed provenaclient, refer to the following notebook for examples on how to use the client. Example Notebook here at: [Example Notebook](docs/example-client-workflow.ipynb). 
+
+To find more examples on how to use the client, refer to these collection of notebooks: [Provena Notebook Repository](https://github.com/provena/provena-example-notebooks)
+
 
 ## Testing
+
+If you are interested in running any tests, please make sure to first clone this repository and then follow the below steps: 
 
 ### Unit Tests
 
@@ -48,7 +47,7 @@ Find Provena Python Client documentation and API Reference at: ([Provena Client 
 Contact Provena Developers via https://www.csiro.au/en/contact
 
 ## Contributing:
- TODO 
+ Refer to the following doc [Contributing Guidelines](./CONTRIBUTING.md) 
 
 ## License
 
@@ -59,6 +58,6 @@ Contact Provena Developers via https://www.csiro.au/en/contact
 
  People who contributed and developed Provena Python Client (ordered alphabetically):
   - Jonathan Yu
-  - Peter Baker
   - Parth Kulkarni
+  - Peter Baker
   - Ross Petridis

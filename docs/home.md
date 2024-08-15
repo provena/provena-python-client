@@ -15,13 +15,13 @@ To get started with the Provena Python Client, you first need to install it. You
 pip install provenaclient
 ```
 
-Once you have installed, checked out the following [Example Notebook](./example.ipynb) on how to correctly start using the Provena Python Client.
+Once you have installed, checked out the following [Example Notebook](./example-client-workflow.ipynb) on how to correctly start using the Provena Python Client.
 
 # Documentation Sections
 
 For more detailed information on how to use the Provena Python Client, check out the following sections in the documentation:
 
-- [Example Notebook](./example.ipynb)
+- [Example Notebook](./example-client-workflow.ipynb)
 - [Changelog](./changelog.md)
 - [Contributing Guidelines](./contributing.md)
 - [API Documentation](/autoapi/index)
