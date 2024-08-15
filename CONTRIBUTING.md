@@ -1,6 +1,6 @@
-# provenaclient
+# Contributing Guidelines
 
-A client library for interfacing with a Provena instance.
+This is the contributing guidelines for the client library.
 
 ## Usage
 
@@ -28,7 +28,7 @@ You can then make vs code use this environment easily with `ctrl + shift + p` se
 5) Verify that your poetry is now running, using the command `poetry --version`.
 
 
-# Provena Client CI/CD and Release Process
+## Provena Client CI/CD and Release Process
 
 ## Overview
 
