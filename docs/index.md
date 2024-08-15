@@ -1,11 +1,11 @@
-```{include} ../README.md
+```{include} home.md
 ```
 
 ```{toctree}
 :maxdepth: 1
 :hidden:
 
-example.ipynb
+example-client-workflow.ipynb
 changelog.md
 contributing.md
 conduct.md
