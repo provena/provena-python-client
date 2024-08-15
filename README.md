@@ -11,7 +11,7 @@ To install the Provena Python Client, simply use pip:
 pip install provenaclient
 ```
 
-Once you have successfully installed provenaclient, refer to the following notebook for examples on how to use the client. Example Notebook here at: [Example Notebook](docs/example.ipynb). 
+Once you have successfully installed provenaclient, refer to the following notebook for examples on how to use the client. Example Notebook here at: [Example Notebook](docs/example-client-workflow.ipynb). 
 
 To find more examples on how to use the client, refer to these collection of notebooks: [Provena Notebook Repository](https://github.com/provena/provena-example-notebooks)
 

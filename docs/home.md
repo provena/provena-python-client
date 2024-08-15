@@ -21,7 +21,7 @@ Once you have installed, checked out the following [Example Notebook](./example.
 
 For more detailed information on how to use the Provena Python Client, check out the following sections in the documentation:
 
-- [Example Notebook](./example.ipynb)
+- [Example Notebook](./example-client-workflow.ipynb)
 - [Changelog](./changelog.md)
 - [Contributing Guidelines](./contributing.md)
 - [API Documentation](/autoapi/index)

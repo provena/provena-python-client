@@ -30,6 +30,9 @@ types-requests="*"
 python-dotenv = "^1.0.1"
 ghp-import = "2.1.0"
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
 [tool.semantic_release]
 version_toml = [
     "pyproject.toml:tool.poetry.version"
