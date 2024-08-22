@@ -254,8 +254,33 @@ async def main() -> None:
     """
 
 
-    item_counts = await client.registry.list_registry_items_with_count()
+    #item_counts = await client.registry.list_registry_items_with_count()
 
-    print(item_counts)
+    # print(item_counts)
+
+    """Example for downloading specific files..."""
+    
+    # Downloading a file at root level
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_file_path="metadata.json",  destination_directory="./")
+    # Downloading a file inside a folder 
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_file_path="nested/testfile430.txt",  destination_directory="./")
+
+        
+    # Downloading all contents within a directory (/ is important).
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_file_path="nested/",  destination_directory="./")
+
+    # Downloading a whole directory/folder (folder will download as well + contents, so folder/contents)
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_file_path="nested",  destination_directory="./")
+
+    # Downloading nested folder inside of a folder -> This will download a "nested" folder inside of that a "another-nested" folder
+    # The only contents downloaded will be the one's in the "another-nested folder" and not any in "nested". 
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_file_path="nested/another-nested",  destination_directory="./")
+
+
+
+
+
+    #await client.datastore.io.download_all_files(destination_directory="./", dataset_id="10378.1/1876000")
+
 
 asyncio.run(main())
