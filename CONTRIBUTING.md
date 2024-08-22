@@ -159,4 +159,3 @@ This setup ensures a streamlined and automated release process for the Provena C
 
 `provenaclient` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
 
-

@@ -254,8 +254,8 @@ async def main() -> None:
     """
 
 
-    item_counts = await client.registry.list_registry_items_with_count()
+    my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
+    await my_dataset.download_all_files(destination_directory="./")
 
-    print(item_counts)
 
 asyncio.run(main())

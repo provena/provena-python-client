@@ -10,6 +10,9 @@ Description: Datastore L3 module. Includes the Data store review sub module.
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+22-08-2024 | Parth Kulkarni | Completed Interactive Dataset class + Doc Strings. 
+15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class. 
+
 '''
 
 from provenaclient.auth.manager import AuthManager
@@ -20,7 +23,7 @@ from ProvenaInterfaces.RegistryModels import CollectionFormat, ItemSubType
 from provenaclient.models import HealthCheckResponse, LoadedSearchResponse, LoadedSearchItem, UnauthorisedSearchItem, FailedSearchItem, RevertMetadata
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
-from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, VersionRequest, VersionResponse, SortOptions, SortType, DatasetListResponse
+from ProvenaInterfaces.RegistryAPI import NoFilterSubtypeListRequest, VersionRequest, VersionResponse, SortOptions, DatasetListResponse
 from provenaclient.modules.submodules import IOSubModule
 
 from typing import AsyncGenerator, List
@@ -119,6 +122,167 @@ class ReviewSubModule(ModuleService):
         return await self._datastore_client.review.action_approval_request(action_approval_request_payload=action_approval_request)
 
 
+class InteractiveDataset(ModuleService):
+
+    dataset_id: str
+    auth: AuthManager
+    datastore_client: DatastoreClient
+    io: IOSubModule
+
+    def __init__(self, dataset_id: str, auth: AuthManager, datastore_client: DatastoreClient, io: IOSubModule) -> None:
+        """Initialise an interactive dataset session. 
+
+        Parameters
+        ----------
+        dataset_id : str
+            The unique identifier of the dataset to interact with.
+        datastore_client : DatastoreClient
+            The client responsible for interacting with the datastore API.
+        io : IOSubModule
+            The input/output submodule for handling dataset IO operations.
+        auth : AuthManager
+            An abstract interface containing the user's requested auth flow method.
+        """
+
+        self.dataset_id = dataset_id
+        self._auth = auth
+        self._datastore_client = datastore_client
+        self.io = io
+
+    async def fetch_dataset(self) -> RegistryFetchResponse :
+        """Fetches current dataset from the datastore.
+
+        Returns
+        -------
+        RegistryFetchResponse
+            A interactive python datatype of type RegistryFetchResponse
+            containing the dataset details.
+
+        """
+
+        return await self._datastore_client.fetch_dataset(id=self.dataset_id)
+    
+    async def download_all_files(self, destination_directory: str) -> None: 
+        """
+        Downloads all files to the destination path for your current dataset.
+
+        - Fetches info
+        - Fetches creds
+        - Uses s3 cloud path lib to download all files to specified location
+
+        Parameters:
+        ---------
+        destination_directory (str): 
+            The destination path to save files to - use a directory
+        """
+
+        return await self.io.download_all_files(destination_directory=destination_directory, dataset_id=self.dataset_id)
+    
+    async def upload_all_files(self, source_directory: str) -> None: 
+        """
+        Uploads all files in the source path to the current dataset's storage location.
+
+        - Fetches info
+        - Fetches creds
+        - Uses s3 cloud path lib to upload all files to specified location
+
+        Parameters
+        ----------
+        source_directory (str): 
+            The source path to upload files from - use a directory
+        """
+
+        return await self.io.upload_all_files(source_directory=source_directory, dataset_id=self.dataset_id)
+    
+    async def version(self, reason: str) -> VersionResponse:
+        """Versioning operation which creates a new version from the current dataset.
+
+        Parameters
+        ----------
+        reason : str
+            The reason for versioning this dataset.
+        Returns
+        -------
+        VersionResponse
+            Response of the versioning of the dataset, containing new version ID and 
+            job session ID.
+        """
+
+        version_request: VersionRequest = VersionRequest(
+            id = self.dataset_id, 
+            reason = reason
+        )
+
+        return await self._datastore_client.version_dataset(version_dataset_payload=version_request)
+    
+    async def revert_dataset_metadata(self, history_id: int, reason: str) -> StatusResponse:
+        """Reverts the metadata for the current dataset to a previous identified historical version.
+
+        Parameters
+        ----------
+        history_id : int
+            The identifier of the historical version to revert to.
+        reason : str
+            The reason for reverting the dataset's metadata.
+
+        Returns
+        -------
+        StatusResponse
+            Response indicating whether your dataset metadata revert request was successful.
+        """
+
+        revert_request: RevertMetadata = RevertMetadata(
+            id=self.dataset_id, 
+            history_id=history_id,
+            reason=reason
+        )
+
+        return await self._datastore_client.revert_metadata(metadata_payload=revert_request)
+    
+    async def generate_read_access_credentials(self, console_session_required: bool) -> CredentialResponse:
+        """Given an S3 location, will attempt to generate programmatic access keys for 
+           the storage bucket at this particular subdirectory.
+
+        Parameters
+        ----------
+        console_session_required : bool
+            Specifies whether a console session URL is required.
+            
+        Returns
+        -------
+        CredentialResponse
+            The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+        """
+
+        credentials_request = CredentialsRequest(
+            dataset_id=self.dataset_id, 
+            console_session_required=console_session_required
+        )
+
+        return await self._datastore_client.generate_read_access_credentials(read_access_credentials=credentials_request)
+
+    async def generate_write_access_credentials(self, console_session_required: bool) -> CredentialResponse:
+        """Given an S3 location, will attempt to generate programmatic access keys for 
+           the storage bucket at this particular subdirectory.
+
+        Parameters
+        ----------
+        console_session_required : bool
+            Specifies whether a console session URL is required.
+
+        Returns
+        -------
+        CredentialResponse
+            The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+        """
+
+        credentials_request = CredentialsRequest(
+            dataset_id=self.dataset_id, 
+            console_session_required=console_session_required
+        )
+
+        return await self._datastore_client.generate_write_access_credentials(write_access_credentials=credentials_request)
+
 class Datastore(ModuleService):
     _datastore_client: DatastoreClient
     _search_client: SearchClient
@@ -150,6 +314,7 @@ class Datastore(ModuleService):
             config=config,
             datastore_client=self._datastore_client
         )
+
         self.io = IOSubModule(
             auth=auth,
             config=config,
@@ -493,4 +658,28 @@ class Datastore(ModuleService):
             items=success,
             auth_errors=auth_err,
             misc_errors=misc_err
+        )
+    
+    async def interactive_dataset(self, dataset_id: str) -> InteractiveDataset:
+        """Creates an interactive "session" with a dataset that allows you 
+        to perform further operations without re-supplying dataset id and 
+        creating objects required for other methods.
+
+        Parameters
+        ----------
+        dataset_id : str
+            The unique identifier of the dataset to be retrieved.
+            For example: "10378.1/1451860"
+
+        Returns
+        -------
+        InteractiveDataset
+            An instance that allows you to perform various operations on the provided dataset. 
+        """
+
+        return InteractiveDataset(
+            dataset_id=dataset_id, 
+            datastore_client=self._datastore_client, 
+            io = self.io,
+            auth = self._auth
         )
