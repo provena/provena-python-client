@@ -47,7 +47,7 @@ Find Provena Python Client documentation and API Reference at: ([Provena Client 
 Contact Provena Developers via https://www.csiro.au/en/contact
 
 ## Contributing:
- TODO 
+ Refer to the following doc [Contributing Guidelines](./CONTRIBUTING.md) 
 
 ## License
 

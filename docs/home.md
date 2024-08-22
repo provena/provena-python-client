@@ -35,4 +35,3 @@ For further assistance and resources, consider the following:
 - **[Provena Official Documentation](https://docs.provena.io/API-access/overview.html)**: Official documentation for Provena.
 
 Thank you for using the Provena Python Client. If you have any questions or need support, please don't hesitate to reach out to the Provena Development Team. 
-

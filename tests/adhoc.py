@@ -281,6 +281,8 @@ async def main() -> None:
 
 
     #await client.datastore.io.download_all_files(destination_directory="./", dataset_id="10378.1/1876000")
+    #my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
+    #await my_dataset.download_all_files(destination_directory="./")
 
 
 asyncio.run(main())

@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v0.13.0 (2024-08-22)
+
+### Documentation
+
+* docs: Fixed missing link on docs home page and corrected contributing guide… (#31) ([`946729e`](https://github.com/provena/provena-python-client/commit/946729edef1b6ff0201e05288d3105e3c30c05f7))
+
+* docs: Docs-1734 - Completed Repo Level Docs + Created new Landing Page for Client docs. (#30)
+
+Completed Repo Root Level Documentation and created a new landing page for client documentation. 
+
+Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`d1f71ef`](https://github.com/provena/provena-python-client/commit/d1f71ef2c43a3e0492f8f418c4d16636897ba4e3))
+
+### Feature
+
+* feat: JIRA-1730 interactive dataset class in datastore module. (#32)
+
+Added interactive dataset session functionality within the datastore module. Allows users to contionusly perform operations on a specific dataset, without having to keep re-supplying the dataset ID. ([`efc8795`](https://github.com/provena/provena-python-client/commit/efc8795c03c9cdb02962c7806d7e0141acba4cc7))
+
 ## v0.12.0 (2024-08-08)
 
 ### Documentation
