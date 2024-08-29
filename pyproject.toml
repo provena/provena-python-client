@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "provenaclient"
-version = "0.13.0"
+version = "0.14.0"
 description = "A client library for interfacing with a Provena instance."
 authors = ["RRAP <rrapisdev@gmail.com>"]
 license = "None"

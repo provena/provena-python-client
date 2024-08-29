@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.14.0 (2024-08-29)
+
+### Feature
+
+* feat: Completed downloading specific files/directory from dataset. (#33)
+
+Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`d45906d`](https://github.com/provena/provena-python-client/commit/d45906dc5f703b6ff8474809725ff20bf89a84e8))
+
 ## v0.13.0 (2024-08-22)
 
 ### Documentation
