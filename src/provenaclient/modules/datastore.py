@@ -10,6 +10,8 @@ Description: Datastore L3 module. Includes the Data store review sub module.
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+
+29-08-2024 | Parth Kulkarni | Added Downloading Specific file/directory functionality to interactive class.
 22-08-2024 | Parth Kulkarni | Completed Interactive Dataset class + Doc Strings. 
 15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class. 
 
@@ -282,6 +284,37 @@ class InteractiveDataset(ModuleService):
         )
 
         return await self._datastore_client.generate_write_access_credentials(write_access_credentials=credentials_request)
+    
+    async def download_specific_file(self, s3_path: str, destination_directory: str) -> None: 
+        """
+        Downloads a specific file or folder for the current dataset 
+        from an S3 bucket to a provided destination path.
+
+        This method handles various cases:
+        - If `s3_path` is a specific file, it downloads that file directly to `destination_directory`.
+        - If `s3_path` is a folder (without a trailing slash), it downloads the entire folder and its contents,
+        preserving the folder structure in `destination_directory`.
+        - If `s3_path` is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the
+        folder itself to `destination_directory`.
+
+        Parameters
+        ----------
+        s3_path : str
+            The S3 path of the file or folder to download. 
+            - If this is a specific file, it will download just that file.
+            - If this is a folder without a trailing slash (e.g., 'nested'), it will download the entire folder 
+            and all its contents, preserving the structure.
+            - If this is a folder with a trailing slash (e.g., 'nested/'), it will download all contents within 
+            that folder but not the folder itself unless subfolders are present.
+        destination_directory : str
+            The destination path to save files to - use a directory.
+
+        """
+
+        # Calls the function in IO sub module.
+        await self.io.download_specific_file(dataset_id=self.dataset_id, 
+                                              s3_path=s3_path, 
+                                              destination_directory=destination_directory)
 
 class Datastore(ModuleService):
     _datastore_client: DatastoreClient

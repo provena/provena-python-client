@@ -17,13 +17,14 @@ Date      	By	Comments
 
 '''
 
-from typing import Any, AsyncGenerator, Collection, List, cast
+from pathlib import Path
+import shutil
+from typing import Any, AsyncGenerator, List, cast
 import pytest
 import pytest_asyncio
 
 from provenaclient.auth import DeviceFlow, OfflineFlow
 from provenaclient.modules.provena_client import ProvenaClient
-from provenaclient.modules.registry import Registry
 from provenaclient.utils.config import Config
 
 from ProvenaInterfaces.RegistryModels import *
@@ -37,6 +38,7 @@ from integration_helpers import *
 from provenaclient.utils.exceptions import BadRequestException
 import time
 import os
+
 
 
 @pytest.fixture(scope="session")
@@ -239,9 +241,59 @@ async def test_register_dataset(client: ProvenaClient, org_person_fixture: Tuple
     dataset_handle = await create_and_verify_dataset(client, org_person_fixture, cleanup_items)
     assert dataset_handle, "Dataset handle should not be None or empty."
 
+@pytest.mark.asyncio
+async def test_specific_file_directory_download_from_dataset(client: ProvenaClient, dataset_fixture: Tuple[str, str]) -> None:
+    """Datastore I/O Functionality Testing"""
+
+    # Ignoring the second dataset (Only testing on one)
+    created_dataset_1_handle, _ = dataset_fixture
+
+    # Set out the paths for the source and destination directories
+    source_directory = Path("./test_source_directory")
+    destination_directory = Path("./test_destination_directory")
+    test_file_name = "test.txt"
+
+    try:
+        # Create the source directory
+        source_directory.mkdir(parents=True, exist_ok=True)
+
+        # Assert that the source directory does exist 
+        assert source_directory.exists(), f"Missing the source directory {source_directory} cannot proceed further."        
+
+        # Generate random file within the directory
+        file_name_1 = source_directory / test_file_name
+        file_name_1.write_text("testing integration test")
+
+        # Upload everything in the source directory
+        await client.datastore.io.upload_all_files(
+            source_directory=str(source_directory),
+            dataset_id=created_dataset_1_handle
+        )
+
+        # Create the destination directory
+        destination_directory.mkdir(parents=True, exist_ok=True)
+
+        # Now downloading specific file to see if everything is available
+        await client.datastore.io.download_specific_file(
+            dataset_id=created_dataset_1_handle,
+            s3_path=test_file_name,
+            destination_directory=str(destination_directory)
+        )
+
+        # Assert that the file is present within the destination/custom directory.
+        downloaded_file_path = destination_directory / test_file_name
+        assert downloaded_file_path.exists(), f"File was not downloaded correctly to {downloaded_file_path}"
+
+        # Assert that the destination/custom directory does exist 
+        assert destination_directory.exists(), f"Missing the custom/destination directory {destination_directory}"        
+
+    finally:
+        if source_directory.exists():
+            shutil.rmtree(source_directory)
+        if destination_directory.exists():
+            shutil.rmtree(destination_directory)
+
 """Search-API related tests and finding newly related items."""
-
-
 @pytest.mark.asyncio
 async def test_searching_dataset(client: ProvenaClient, dataset_fixture: Tuple[str, str], cleanup_items: CLEANUP_ITEMS) -> None:
     """Searches for dataset that were created start of the test."""

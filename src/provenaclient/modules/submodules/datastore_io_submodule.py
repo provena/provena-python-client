@@ -109,8 +109,6 @@ class IOSubModule(ModuleService):
             S3Path instance that represent a path in S3 with filesystem path semantics.
         """
 
-        dataset_information = await self._datastore_client.fetch_dataset(id=dataset_id)
-
         # Fetch the dataset information
         dataset_information = await self._datastore_client.fetch_dataset(
             id=dataset_id
@@ -119,21 +117,21 @@ class IOSubModule(ModuleService):
         assert dataset_information.item is not None, f"Expected non None item from dataset fetch, details: {dataset_information.status.details}."
         s3_location = dataset_information.item.s3
 
+        credentials_request = CredentialsRequest(dataset_id=dataset_id, console_session_required=False)
+
         if access_type == AccessEnum.READ:
             creds = await self._datastore_client.generate_read_access_credentials(
-                read_access_credentials=CredentialsRequest(
-                    dataset_id=dataset_id,
-                    console_session_required=False
-                )
+                read_access_credentials=credentials_request
             )
 
         elif access_type == AccessEnum.WRITE:
             creds = await self._datastore_client.generate_write_access_credentials(
-                write_access_credentials=CredentialsRequest(
-                    dataset_id=dataset_id,
-                    console_session_required=False
-                )
+                write_access_credentials=credentials_request
             )
+
+        else: 
+            # This is highlighted as "unreachable code", but this is for safe guarding/future-proofing. 
+            raise NotImplementedError(f"This access type is not implemented {access_type.name}")
 
         client = setup_s3_client(creds=creds)
 
