@@ -1,6 +1,8 @@
 
 from dataclasses import dataclass
+from pathlib import Path
 import time
+import os
 from typing import cast
 
 from ProvenaInterfaces.RegistryModels import *
@@ -392,3 +394,34 @@ def assert_non_empty_graph_property(prop: GraphProperty, lineage_response: Linea
     g = lineage_response.graph
     assert g is not None, f"Empty graph when non empty graph was expected."
     assert_graph_property(prop=prop, graph=g)
+
+
+# Below function not in use, but I see it being useful potentially later on for extensive testing if needed.
+# Inspired from: https://stackoverflow.com/a/19308592
+def get_filepaths(directory: str)  -> List[str]: 
+    """This function gets all files and sub-directories within a directory.
+    You can utilise this to compare contents between two directories. 
+
+    Parameters
+    ----------
+    directory : str
+        Path of a directory.
+
+    Returns
+    -------
+    List[str]
+        A list of all files/folders represented in the following format: 
+        E.g: [textfile.txt, subfolder/textfile1.txt]
+    """
+    
+    file_paths = []
+    base_dir = Path(directory)
+
+    for root,_,files in os.walk(directory):
+        for filename in files: 
+            # Extracts relative path
+            filepath = os.path.relpath(os.path.join(root,filename), base_dir)
+            file_paths.append(filepath)
+    
+    # Returning this sorted for faster comparison.
+    return sorted(file_paths) 

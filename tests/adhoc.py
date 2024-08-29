@@ -37,7 +37,7 @@ async def main() -> None:
 
     # print("minting")
     # create_dataset = await client.datastore.mint_dataset(
-    #CollectionFormat(
+    # CollectionFormat(
     #        associations=CollectionFormatAssociations(
     #        organisation_id="10378.1/1893860",
     #        data_custodian_id="10378.1/1893843",
@@ -231,11 +231,11 @@ async def main() -> None:
  
     """
 
-    #res = await client.registry.admin.delete(id="10378.1/1913346")
+    # res = await client.registry.admin.delete(id="10378.1/1913346")
 
-    #print(res)
+    # print(res)
 
-    #print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
+    # print(await client.registry.model.get_auth_configuration(id = "10378.1/1875946")) # Existing Model in DEV
 
     """
 
@@ -253,9 +253,30 @@ async def main() -> None:
 
     """
 
+    # item_counts = await client.registry.list_registry_items_with_count()
 
-    my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
-    await my_dataset.download_all_files(destination_directory="./")
+    # print(item_counts)
+
+    """Example for downloading specific files..."""
+
+    # Downloading a file at root level
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="metadata.json",  destination_directory="./")
+    # Downloading a file inside a folder
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="nested/testfile430.txt",  destination_directory="./")
+
+    # Downloading all contents within a directory (/ is important).
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="nested/",  destination_directory="./")
+
+    # Downloading a whole directory/folder (folder will download as well + contents, so folder/contents)
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="nested",  destination_directory="./")
+
+    # Downloading nested folder inside of a folder -> This will download a "nested" folder inside of that a "another-nested" folder
+    # The only contents downloaded will be the one's in the "another-nested folder" and not any in "nested".
+    await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="nested/another-nested",  destination_directory="./")
+
+    # await client.datastore.io.download_all_files(destination_directory="./", dataset_id="10378.1/1876000")
+    # my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
+    # await my_dataset.download_all_files(destination_directory="./")
 
 
 asyncio.run(main())
