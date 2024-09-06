@@ -17,6 +17,8 @@
 ### Overview 
 The Provena Python Client uses a "layered architecture" that is supported by the Dependency Injection pattern, providing an approach that is modular and allows us to have a separation of concerns. 
 
+For a visual diagram of the layered architecture, refer to this [example of dataset fetch](./fetch-dataset-flow.svg).
+
 <hr>
 
 ### Layered Architecture Description (Tiered Approach):
