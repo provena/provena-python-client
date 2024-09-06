@@ -21,8 +21,6 @@ The Provena Python Client uses a "layered architecture" that is supported by the
 
 ### Layered Architecture Description (Tiered Approach):
 
-<div style="background-color: #f0f0f0; color: #333; padding: 10px; border-radius: 8px;">
-
 1. **Layer 1 (L1 - HTTP Client Wrapper):**
 
     - **Purpose**: This L1 layer serves as the foundational layer that wraps/encapsulates around an HTTP client, specifically `httpx` for Provena Python Client. This layer allows us to abstract the direct handling of HTTP methods (GET, PUT, POST, DELETE) and centralises certain HTTP client settings such as timeouts.
@@ -31,12 +29,7 @@ The Provena Python Client uses a "layered architecture" that is supported by the
 
     - **Benefit**: The benefit of having this separate HTTP layer is that it provides us with an option to replace the underlying HTTP library in the future without affecting the rest of the client library.
     
-</div>
-
 <hr>
-
-<div style="background-color: #f0f0f0; color: #333; padding: 10px; border-radius: 8px; padding: 2px">
-
 
 2. **Layer 2 (L2 - Client Interfaces):** 
     - **Purpose:** This L2 layer serves and sits between the HTTP client wrapper (Layer 1) and the user interface module (Layer 3). It's responsible for preparing the API request payload and parsing API responses to interactive Python datatype. This layer helps us simplify and streamline the process of constructing the API requests and parsing responses within the Provena Python Client. 
@@ -47,11 +40,7 @@ The Provena Python Client uses a "layered architecture" that is supported by the
 
     - **Benefit:** The benefit of having this L2 layer is that it enables us to abstract the complexity of API request payload preparation and parsing completely into its own designated area of the Provena Python Client and provide a simpler interface to the downstream layer (L3) utilising this L2 layer. Furthermore, the data parsing and validation handled by L2 ensures that all responses conform to the expected types and that the user is not interacting with any invalid interactive Python datatypes. 
     
-</div>
-
 <hr>
-
-<div style="background-color: #f0f0f0; color: #333; padding: 10px; border-radius: 8px;">
 
 3. **Layer 3 (L3 - User Interface Modules):** 
     - **Purpose:** This L3 layer serves as the topmost layer in the Provena Python Client architecture, that is directly interacted by the end-user using the Provena Python Client. This layer is responsible for providing a simple and user-friendly interface to the underlying API functionalities defined and created in Layer 2. This layer only presents users with a set of functions that are revealed based on the chosen API the user decides to interact with and allows to them to perform operations without having to worry and managing the API lifecycle.
@@ -60,7 +49,5 @@ The Provena Python Client uses a "layered architecture" that is supported by the
 
 
     - **Benefit:** The benefit of having this L3 layer is that it simplifies the user experience by providing a clear and accessible interface to complex backend functionalities. This design not only enhances ease of use but also ensures that changes to the Provena Python client can be managed without significantly changing or affecting the end-user’s interaction. 
-    
-</div>
-    
+        
     
