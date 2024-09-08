@@ -2,9 +2,9 @@
 
 ## Directory Structure Overview: 
 
-- **provenaclient/auth**: This directory contains the interfaces and helper functions supporting the authentication flow used by Provena Python Client, including device flow and offline flow. This directory also includes a logger specifically configured to track authentication-related requests and responses. Furthermore, helper functions within this directory handle tasks like token storage, expiry, and renewal validation, etc.
+- **provenaclient/auth**: This directory contains the interfaces and helper functions supporting the authentication flows used by Provena Python Client of which there a two. A device flow (for manual human auithentication) and an offline flow (for automated or scheduled tasks). This directory also includes a logger configured to track authentication-related requests and responses. Furthermore, helper functions within this directory handle tasks like token storage, expiry, and renewal validation, etc.
  
-- **provenaclient/clients**: This directory contains the client interfaces for various API's that the Provena Client interacts with. It includes separate modules for each Provena microservice such as `auth`, `datastore`, `job-api`, `prov-api`, `search-api`, `registry-api`, and `id-service-api`. Each module contains unique functions that facilitate API calls to the respective hosted API.
+- **provenaclient/clients**: This directory contains the client interfaces for various API's that the Provena Client interacts with on behalf of the user. It includes separate modules for each Provena microservice such as `auth`, `datastore`, `job-api`, `prov-api`, `search-api`, `registry-api`, and `id-service-api`. Each module contains unique functions that facilitate API calls to the respective hosted API.
  
 - **provenaclient/models**: This directory contains Pydantic models that are currently not present in [ProvenaInterfaces](https://pypi.org/project/provena-interfaces/) but are still required within the Client Library. 
 
