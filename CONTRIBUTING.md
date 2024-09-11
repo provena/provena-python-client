@@ -53,6 +53,7 @@ Before making any contributions, it's important to understand the core structure
 
     - Any new feature should be added within the `src/provenaclient/` directory, following the existing architecture structure and file organisation.
     - If you are extending or updating an existing feature or API endpoint, locate the relevant module and update the code accordingly to ensure consistency with the existing architecture.
+    - See the README in `src/` for more information on how to contribute to adding new features to Provena Python Client! 
 
 - **Adding Tests**:
 
