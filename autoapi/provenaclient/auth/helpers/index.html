@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.auth.helpers &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="provenaclient.auth.implementations" href="../implementations/index.html" />
+    <link rel="prev" title="provenaclient.auth" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">provenaclient</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">provenaclient.auth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../clients/index.html">provenaclient.clients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../models/index.html">provenaclient.models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../modules/index.html">provenaclient.modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../utils/index.html">provenaclient.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">provenaclient</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">provenaclient.auth</a></li>
+      <li class="breadcrumb-item active">provenaclient.auth.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/provenaclient/auth/helpers/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-provenaclient.auth.helpers">
+<span id="provenaclient-auth-helpers"></span><h1>provenaclient.auth.helpers<a class="headerlink" href="#module-provenaclient.auth.helpers" title="Link to this heading"></a></h1>
+<p>Created Date: Tuesday June 18th 2024 +1000
+Author: peter
+—–
+Last Modified: Tuesday June 18th 2024 12:44:03 pm +1000
+Modified By: peter
+—–
+Description: Miscellaneous helper functions assisting with implementation of auth flows
+—–
+HISTORY:
+Date            By      Comments
+———-      —     ———————————————————</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.JWT_DEFAULT_WINDOW" title="provenaclient.auth.helpers.JWT_DEFAULT_WINDOW"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JWT_DEFAULT_WINDOW</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.AccessToken" title="provenaclient.auth.helpers.AccessToken"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccessToken</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.Tokens" title="provenaclient.auth.helpers.Tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tokens</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.HttpxBearerAuth" title="provenaclient.auth.helpers.HttpxBearerAuth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HttpxBearerAuth</span></code></a></p></td>
+<td><p>Base class for all authentication schemes.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.check_token_expiry_window" title="provenaclient.auth.helpers.check_token_expiry_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_token_expiry_window</span></code></a>(→ bool)</p></td>
+<td><p>This helper function checks if the current JWT token will</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.retrieve_keycloak_public_key" title="provenaclient.auth.helpers.retrieve_keycloak_public_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrieve_keycloak_public_key</span></code></a>(→ str)</p></td>
+<td><p>Given the keycloak endpoint, retrieves the advertised</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.keycloak_refresh_token_request" title="provenaclient.auth.helpers.keycloak_refresh_token_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keycloak_refresh_token_request</span></code></a>(→ Dict[str, Any])</p></td>
+<td><p>Performs the token refresh by making an HTTP post request to the token endpoint</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.auth.helpers.validate_access_token" title="provenaclient.auth.helpers.validate_access_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_access_token</span></code></a>(→ bool)</p></td>
+<td><p>Uses the python-jose library to validate current creds.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.JWT_DEFAULT_WINDOW">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">JWT_DEFAULT_WINDOW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></em><a class="headerlink" href="#provenaclient.auth.helpers.JWT_DEFAULT_WINDOW" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.AccessToken">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">AccessToken</span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#AccessToken"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.AccessToken" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.AccessToken.access_token">
+<span class="sig-name descname"><span class="pre">access_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#provenaclient.auth.helpers.AccessToken.access_token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.Tokens">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">Tokens</span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#Tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.Tokens" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.Tokens.access_token">
+<span class="sig-name descname"><span class="pre">access_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#provenaclient.auth.helpers.Tokens.access_token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.Tokens.refresh_token">
+<span class="sig-name descname"><span class="pre">refresh_token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#provenaclient.auth.helpers.Tokens.refresh_token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.HttpxBearerAuth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">HttpxBearerAuth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#HttpxBearerAuth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.HttpxBearerAuth" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">httpx.Auth</span></code></p>
+<p>Base class for all authentication schemes.</p>
+<p>To implement a custom authentication scheme, subclass <cite>Auth</cite> and override
+the <cite>.auth_flow()</cite> method.</p>
+<p>If the authentication scheme does I/O such as disk access or network calls, or uses
+synchronization primitives such as locks, you should override <cite>.sync_auth_flow()</cite>
+and/or <cite>.async_auth_flow()</cite> instead of <cite>.auth_flow()</cite> to provide specialized
+implementations that will be used by <cite>Client</cite> and <cite>AsyncClient</cite> respectively.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.HttpxBearerAuth.token">
+<span class="sig-name descname"><span class="pre">token</span></span><a class="headerlink" href="#provenaclient.auth.helpers.HttpxBearerAuth.token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.HttpxBearerAuth.auth_flow">
+<span class="sig-name descname"><span class="pre">auth_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Request</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">httpx.Request</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">httpx.Response</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#HttpxBearerAuth.auth_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.HttpxBearerAuth.auth_flow" title="Link to this definition"></a></dt>
+<dd><p>Execute the authentication flow.</p>
+<p>To dispatch a request, <cite>yield</cite> it:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">yield</span> <span class="pre">request</span>
+<span class="pre">`</span></code></p>
+<p>The client will <cite>.send()</cite> the response back into the flow generator. You can
+access it like so:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">response</span> <span class="pre">=</span> <span class="pre">yield</span> <span class="pre">request</span>
+<span class="pre">`</span></code></p>
+<p>A <cite>return</cite> (or reaching the end of the generator) will result in the
+client returning the last response obtained from the server.</p>
+<p>You can dispatch as many requests as is necessary.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.check_token_expiry_window">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">check_token_expiry_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jwt_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jwt_token_expiry_window</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">JWT_DEFAULT_WINDOW</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#check_token_expiry_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.check_token_expiry_window" title="Link to this definition"></a></dt>
+<dd><p>This helper function checks if the current JWT token will
+expire or not expire either within the provided or default (30sec)  window.
+If the token is going to be expired in less than or within the provided or default (30sec).
+expiry window they will be refreshed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>jwt_data</strong> (<em>dict</em><em>[</em><em>str</em><em>,</em><em>Any</em><em>]</em>) – A dictionary containing the token validation results.</p></li>
+<li><p><strong>jwt_token_expiry_window</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – A potential integer value containing your desired JWT expiry
+window.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True: The current token will not expire within 30 seconds
+False: The current token will expire within 30 seconds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.retrieve_keycloak_public_key">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">retrieve_keycloak_public_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keycloak_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#retrieve_keycloak_public_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.retrieve_keycloak_public_key" title="Link to this definition"></a></dt>
+<dd><p>Given the keycloak endpoint, retrieves the advertised
+public key.
+Based on <a class="reference external" href="https://github.com/nurgasemetey/fastapi-keycloak-oidc/blob/main/main.py">https://github.com/nurgasemetey/fastapi-keycloak-oidc/blob/main/main.py</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.keycloak_refresh_token_request">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">keycloak_refresh_token_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scopes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#keycloak_refresh_token_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.keycloak_refresh_token_request" title="Link to this definition"></a></dt>
+<dd><p>Performs the token refresh by making an HTTP post request to the token endpoint
+to obtain new access and refresh tokens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tokens</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#provenaclient.auth.helpers.Tokens" title="provenaclient.auth.helpers.Tokens"><em>Tokens</em></a><em>]</em><em>, </em><em>optional</em>) – <p>An optional Tokens object containing the refresh token. If not provided,
+the method will use the class variable stored tokens.</p>
+<p>By default this parameter is None.</p>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the new access and refresh tokens if the refresh is successful.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If no refresh token is provided or found in the class token variable.</p></li>
+<li><p><strong>Exception</strong> – If the HTTP request fails a message is displayed with the HTTP status code. Can occur
+if the refresh token has expired.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.auth.helpers.validate_access_token">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.auth.helpers.</span></span><span class="sig-name descname"><span class="pre">validate_access_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">public_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">access_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/auth/helpers.html#validate_access_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.auth.helpers.validate_access_token" title="Link to this definition"></a></dt>
+<dd><p>Uses the python-jose library to validate current creds.</p>
+<p>In this context, it is basically just checking signature
+and expiry. The tokens are enforced at the API side
+as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tokens</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#provenaclient.auth.helpers.Tokens" title="provenaclient.auth.helpers.Tokens"><em>Tokens</em></a><em>]</em><em>, </em><em>optional</em>) – The tokens object to validate, by default None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="provenaclient.auth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../implementations/index.html" class="btn btn-neutral float-right" title="provenaclient.auth.implementations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
