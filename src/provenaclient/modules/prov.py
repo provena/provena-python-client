@@ -20,7 +20,7 @@ from provenaclient.modules.module_helpers import *
 from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
 from typing import List
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
 
@@ -28,6 +28,7 @@ from ProvenaInterfaces.SharedTypes import StatusResponse
 
 PROV_API_DEFAULT_SEARCH_DEPTH = 3
 DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
+
 
 class ProvAPIAdminSubModule(ModuleService):
     _prov_api_client: ProvClient
@@ -75,12 +76,14 @@ class ProvAPIAdminSubModule(ModuleService):
 
         """
 
-        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_file, default_file_name=DEFAULT_CONFIG_FILE_NAME)
+        file_path = get_and_validate_file_path(
+            file_path=file_path, write_to_file=write_to_file, default_file_name=DEFAULT_CONFIG_FILE_NAME)
 
         config_text: str = await self._prov_api_client.admin.generate_config_file(required_only=required_only)
 
         if config_text is None:
-            raise ValueError(f"No data returned for generate config file endpoint.")
+            raise ValueError(
+                f"No data returned for generate config file endpoint.")
 
         # Write to file if config text is not None, write to file is True and file path is not None.
         if write_to_file:
@@ -89,7 +92,7 @@ class ProvAPIAdminSubModule(ModuleService):
             write_file_helper(file_path=file_path, content=config_text)
 
         return config_text
-    
+
     async def store_record(self, registry_record: ItemModelRun, validate_record: bool = True) -> StatusResponse:
         """An admin only endpoint which enables the reupload/storage of an existing completed provenance record.
 
@@ -106,8 +109,8 @@ class ProvAPIAdminSubModule(ModuleService):
             A status response indicating the success of the request and any other details.
         """
 
-        return await self._prov_api_client.admin.store_record(registry_record=registry_record, validate_record = validate_record)
-        
+        return await self._prov_api_client.admin.store_record(registry_record=registry_record, validate_record=validate_record)
+
     async def store_multiple_records(self, registry_record: List[ItemModelRun], validate_record: bool = True) -> StatusResponse:
         """An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
 
@@ -124,7 +127,7 @@ class ProvAPIAdminSubModule(ModuleService):
             A status response indicating the success of the request and any other details.
         """
 
-        return await self._prov_api_client.admin.store_multiple_records(registry_record=registry_record, validate_record = validate_record)
+        return await self._prov_api_client.admin.store_multiple_records(registry_record=registry_record, validate_record=validate_record)
 
     async def store_all_registry_records(self, validate_record: bool = True) -> StatusResponse:
         """Applies the store record endpoint action across a list of ItemModelRuns '
@@ -143,7 +146,6 @@ class ProvAPIAdminSubModule(ModuleService):
         """
 
         return await self._prov_api_client.admin.store_all_registry_records(validate_record=validate_record)
-
 
 
 class Prov(ModuleService):
@@ -167,9 +169,9 @@ class Prov(ModuleService):
         # Clients related to the prov-api scoped as private.
         self._prov_api_client = prov_client
 
-        # Submodules 
+        # Submodules
         self.admin = ProvAPIAdminSubModule(auth, config, prov_client)
-    
+
     async def get_health_check(self) -> HealthCheckResponse:
         """Checks the health status of the PROV-API.
 
@@ -180,6 +182,37 @@ class Prov(ModuleService):
         """
 
         return await self._prov_api_client.get_health_check()
+
+    async def update_model_run(self, model_run_id: str, reason: str, record: ModelRunRecord) -> PostUpdateModelRunResponse:
+        """Updates an existing model run with new information.
+
+        This function triggers an asynchronous update of a model run. The update is processed as a job,
+        and the job session ID is returned for tracking the update progress.
+
+        Args:
+            model_run_id (str): The ID of the model run to update
+            reason (str): The reason for updating the model run 
+            record (ModelRunRecord): The new model run record details
+
+        Returns:
+            PostUpdateModelRunResponse: Response containing the job session ID tracking the update
+
+        Example:
+            ```python
+            response = await prov_api.update_model_run(
+                model_run_id="10378.1/1234567",
+                reason="Updating input dataset information",
+                record=updated_model_run_record
+            )
+            # Get the session ID to track progress
+            session_id = response.session_id
+            ```
+        """
+        return await self._prov_api_client.post_update_model_run(
+            model_run_id=model_run_id,
+            reason=reason,
+            record=record
+        )
 
     async def explore_upstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Explores in the upstream direction (inputs/associations) 
@@ -199,8 +232,8 @@ class Prov(ModuleService):
             A response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth) 
-    
+        return await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth)
+
     async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Explores in the downstream direction (inputs/associations) 
         starting at the specified node handle ID. 
@@ -220,8 +253,8 @@ class Prov(ModuleService):
         """
 
         return await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
-    
-    async def get_contributing_datasets(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+    async def get_contributing_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Fetches datasets (inputs) which involved in a model run
         naturally in the upstream direction.
 
@@ -239,8 +272,8 @@ class Prov(ModuleService):
         """
 
         return await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
-    
-    async def get_effected_datasets(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+
+    async def get_effected_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Fetches datasets (outputs) which are derived from the model run
         naturally in the downstream direction.
 
@@ -259,7 +292,7 @@ class Prov(ModuleService):
 
         return await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
 
-    async def get_contributing_agents(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_contributing_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
         naturally in the upstream direction.
 
@@ -278,7 +311,7 @@ class Prov(ModuleService):
 
         return await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
 
-    async def get_effected_agents(self, starting_id: str, depth:int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_effected_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
         naturally in the downstream direction.
 
@@ -314,7 +347,7 @@ class Prov(ModuleService):
             The job session id derived from job-api for the model-run batch. 
         """
 
-        return await self._prov_api_client.register_batch_model_runs(model_run_batch_payload = batch_model_run_payload)
+        return await self._prov_api_client.register_batch_model_runs(model_run_batch_payload=batch_model_run_payload)
 
     async def register_model_run(self, model_run_payload: ModelRunRecord) -> RegisterModelRunResponse:
         """Asynchronously registers a single model run.
@@ -336,7 +369,7 @@ class Prov(ModuleService):
         """
 
         return await self._prov_api_client.register_model_run(model_run_payload=model_run_payload)
-    
+
     async def generate_csv_template(self, workflow_template_id: str, file_path: Optional[str] = None, write_to_csv: bool = False) -> str:
         """Generates a model run csv template to be utilised 
         for creating model runs through csv format..
@@ -355,15 +388,17 @@ class Prov(ModuleService):
         Returns
         ----------
         str: Response containing the csv template text (encoded in a csv format). 
-        
+
         """
 
-        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_csv, default_file_name=workflow_template_id + ".csv")
+        file_path = get_and_validate_file_path(
+            file_path=file_path, write_to_file=write_to_csv, default_file_name=workflow_template_id + ".csv")
 
         csv_text = await self._prov_api_client.generate_csv_template(workflow_template_id=workflow_template_id)
 
         if csv_text is None:
-            raise ValueError(f"No data returned for generate CSV template workflow template ID {workflow_template_id}")
+            raise ValueError(
+                f"No data returned for generate CSV template workflow template ID {workflow_template_id}")
 
         # Write to file if CSV content is returned and write_to_csv is True and file path is assigned.
         if write_to_csv:
@@ -372,11 +407,10 @@ class Prov(ModuleService):
             write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text
-    
 
-    async def convert_model_runs(self,model_run_content: str) -> ConvertModelRunsResponse: 
+    async def convert_model_runs(self, model_run_content: str) -> ConvertModelRunsResponse:
         """Converts model run with model_run_content provided as a string.
-        
+
         Parameters
         ----------
         model_run_content : str
@@ -417,7 +451,7 @@ class Prov(ModuleService):
 
         """
 
-        file_content = read_file_helper(file_path = file_path)
+        file_content = read_file_helper(file_path=file_path)
 
         response = await self._prov_api_client.convert_model_runs_to_csv(csv_file_contents=file_content)
         return response
@@ -442,16 +476,17 @@ class Prov(ModuleService):
         Returns
         ----------
         str: Response containing the model run information (encoded in csv format).
-        
+
         """
 
-        file_path = get_and_validate_file_path(file_path=file_path, write_to_file=write_to_csv, default_file_name=batch_id + ".csv")
+        file_path = get_and_validate_file_path(
+            file_path=file_path, write_to_file=write_to_csv, default_file_name=batch_id + ".csv")
 
         csv_text: str = await self._prov_api_client.regenerate_csv_from_model_run_batch(batch_id=batch_id)
 
         if csv_text is None:
             raise ValueError(f"No data returned for batch ID {batch_id}")
-        
+
         # Write to file if CSV content is returned and write_to_csv is True and file path is assigned.
         if write_to_csv:
             if file_path is None:
