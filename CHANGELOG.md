@@ -1,12 +1,31 @@
 # CHANGELOG
 
+
+## v0.15.0 (2024-11-03)
+
+### Documentation
+
+* docs: Creating Software Architecture Documentation and Added Sequence Diagram (#35)
+
+Co-authored-by: Ross <ross.petridis@csiro.au> ([`cc3aa83`](https://github.com/provena/provena-python-client/commit/cc3aa83da2291cfcd4896aec44e750eab1d697e9))
+
+* docs: Added a "how to contribute" section in contributing doc and updated a few other things. (#34) ([`47a7e6c`](https://github.com/provena/provena-python-client/commit/47a7e6c082c2ada78dab1fdd3871cc603f7baa4f))
+
+### Features
+
+* feat: adding model run update to prov client (#36)
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`b57cf71`](https://github.com/provena/provena-python-client/commit/b57cf71c126f58da76e4d2b59704374d782c7f60))
+
+
 ## v0.14.0 (2024-08-29)
 
-### Feature
+### Features
 
 * feat: Completed downloading specific files/directory from dataset. (#33)
 
-Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`d45906d`](https://github.com/provena/provena-python-client/commit/d45906dc5f703b6ff8474809725ff20bf89a84e8))
+Co-authored-by: Ross <ross.petridis@csiro.au> ([`d45906d`](https://github.com/provena/provena-python-client/commit/d45906dc5f703b6ff8474809725ff20bf89a84e8))
+
 
 ## v0.13.0 (2024-08-22)
 
@@ -18,13 +37,14 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`d45906d`](https://github.
 
 Completed Repo Root Level Documentation and created a new landing page for client documentation. 
 
-Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`d1f71ef`](https://github.com/provena/provena-python-client/commit/d1f71ef2c43a3e0492f8f418c4d16636897ba4e3))
+Co-authored-by: Ross <ross.petridis@csiro.au> ([`d1f71ef`](https://github.com/provena/provena-python-client/commit/d1f71ef2c43a3e0492f8f418c4d16636897ba4e3))
 
-### Feature
+### Features
 
 * feat: JIRA-1730 interactive dataset class in datastore module. (#32)
 
 Added interactive dataset session functionality within the datastore module. Allows users to contionusly perform operations on a specific dataset, without having to keep re-supplying the dataset ID. ([`efc8795`](https://github.com/provena/provena-python-client/commit/efc8795c03c9cdb02962c7806d7e0141acba4cc7))
+
 
 ## v0.12.0 (2024-08-08)
 
@@ -36,55 +56,67 @@ Setup documentation of client library in CI/CD Pipeline. CI builds docs, and CD 
 
 * docs: Docs 1708 setup client documentation (#24) ([`3b09394`](https://github.com/provena/provena-python-client/commit/3b09394ab79c76ac7733f858ab2314be8b56c0eb))
 
-### Feature
+### Features
 
-* feat: Forcing new release to access &#34;requests&#34; dependency. ([`3595042`](https://github.com/provena/provena-python-client/commit/35950424b51ee61db268ebc5c6e8faf825360187))
+* feat: Forcing new release to access "requests" dependency. ([`3595042`](https://github.com/provena/provena-python-client/commit/35950424b51ee61db268ebc5c6e8faf825360187))
 
-### Test
+### Testing
 
 * test: JIRA-1706: Tests 1706 integration tests (#23)
 
 Completed Integration Tests + Created a Guide for Client Library tests. 
 
-Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.com/provena/provena-python-client/commit/66d96faf6183be1e4236954fc62ea6be883cbf41))
+Co-authored-by: Ross <ross.petridis@csiro.au> ([`66d96fa`](https://github.com/provena/provena-python-client/commit/66d96faf6183be1e4236954fc62ea6be883cbf41))
 
 ### Unknown
 
 * Added secerts capture on push to main workflow for CI/CD. ([`2d3e8c9`](https://github.com/provena/provena-python-client/commit/2d3e8c99d5bb047db8deca012be19b14e6a86b1a))
 
+
 ## v0.11.2 (2024-07-21)
 
-### Fix
+### Bug Fixes
 
 * fix: Increasing httpx timeout to 30s global to mirror api gateway (#28) ([`98f325e`](https://github.com/provena/provena-python-client/commit/98f325efeb0b5e0586c7f5affcbd26978f3ee64b))
 
+
 ## v0.11.1 (2024-07-19)
 
-### Fix
+### Bug Fixes
 
 * fix: (auth-api client) user link look up - Issue #26 (#27) ([`271df3c`](https://github.com/provena/provena-python-client/commit/271df3c0a4fc2c9d36a780dd951e0d643bcee2dc))
 
+
 ## v0.11.0 (2024-07-12)
 
-### Feature
+### Features
 
 * feat: Implemented L3 general method to get count of all items in registry. (#25) ([`096e037`](https://github.com/provena/provena-python-client/commit/096e03729aebceb2556cf139b99c12472fbd785e))
 
+
 ## v0.10.3 (2024-07-04)
 
-### Fix
+### Bug Fixes
 
 * fix: forcing rebuild due to trusted publisher issue ([`3575b29`](https://github.com/provena/provena-python-client/commit/3575b2949fecb412e7f3c52060f0509a61ea0b6f))
+
 
 ## v0.10.2 (2024-07-04)
 
 ### Unknown
 
-* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`bda5606`](https://github.com/provena/provena-python-client/commit/bda5606d3a6d083c2d31e1f6e7e06d5095c0a3db))
+* Merge branch 'main' of github.com:provena/provena-python-client into main ([`bda5606`](https://github.com/provena/provena-python-client/commit/bda5606d3a6d083c2d31e1f6e7e06d5095c0a3db))
+
 
 ## v0.10.1 (2024-07-04)
 
-### Ci
+### Bug Fixes
+
+* fix: forcing rebuild due to trusted publisher issue ([`7136675`](https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f))
+
+* fix: Adding more py.typed markers ([`ff3e029`](https://github.com/provena/provena-python-client/commit/ff3e02983637ba2c2343c039412b0347b1523e02))
+
+### Continuous Integration
 
 * ci: Fixing missing fetch depth = 0 and documenting ([`2302b7a`](https://github.com/provena/provena-python-client/commit/2302b7a7370fbcbdc1d72ac9164286dc2d5cb5f3))
 
@@ -92,19 +124,13 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.
 
 * ci: Modularisation of CI/CD into actions to clearly separate trigger files (#21) ([`e1f4664`](https://github.com/provena/provena-python-client/commit/e1f46640b600d8388fcba6be6b6d42ab886ea0bd))
 
-### Fix
-
-* fix: forcing rebuild due to trusted publisher issue ([`7136675`](https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f))
-
-* fix: Adding more py.typed markers ([`ff3e029`](https://github.com/provena/provena-python-client/commit/ff3e02983637ba2c2343c039412b0347b1523e02))
-
 ### Unknown
 
-* Merge branches &#39;modular-actions-setup&#39; and &#39;main&#39; of github.com:provena/provena-python-client into main ([`fee9615`](https://github.com/provena/provena-python-client/commit/fee96152cc82198c6934387d6f86fcf8a665c511))
+* Merge branches 'modular-actions-setup' and 'main' of github.com:provena/provena-python-client into main ([`fee9615`](https://github.com/provena/provena-python-client/commit/fee96152cc82198c6934387d6f86fcf8a665c511))
 
 * Fixing not using new input ([`45cc98c`](https://github.com/provena/provena-python-client/commit/45cc98c7c436dc7e0d10cdd540ae5f1ee74eec54))
 
-* Merge branch &#39;main&#39; into modular-actions-setup ([`36bfd12`](https://github.com/provena/provena-python-client/commit/36bfd128d936a77961008e16da106598845951ae))
+* Merge branch 'main' into modular-actions-setup ([`36bfd12`](https://github.com/provena/provena-python-client/commit/36bfd128d936a77961008e16da106598845951ae))
 
 * Pass through GITHUB_TOKEN from parent workflow ([`296eba3`](https://github.com/provena/provena-python-client/commit/296eba3e0c5d1cdbe9ffd22d439992aba501ba14))
 
@@ -116,13 +142,15 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.
 
 * Update including test ([`e16f672`](https://github.com/provena/provena-python-client/commit/e16f6728171520dd9e73a231bebcb332e1c58a95))
 
-* fix:Update auth&#39;s __init__.py (#20) ([`b555bd1`](https://github.com/provena/provena-python-client/commit/b555bd1bfea9a48eb302ab4c839950dc0feac9be))
+* fix:Update auth's __init__.py (#20) ([`b555bd1`](https://github.com/provena/provena-python-client/commit/b555bd1bfea9a48eb302ab4c839950dc0feac9be))
+
 
 ## v0.10.0 (2024-07-02)
 
-### Feature
+### Features
 
 * feat: improving dependency resolution and adding interfaces (#19) ([`d941a8c`](https://github.com/provena/provena-python-client/commit/d941a8cdb5031bbb9d634ec9ee8d58a6681660b2))
+
 
 ## v0.9.0 (2024-06-28)
 
@@ -130,23 +158,25 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.
 
 * docs: Completed Release Process Documentation. (#17) ([`2c8f20f`](https://github.com/provena/provena-python-client/commit/2c8f20fd45137be6f1b483a72a5e18ff542e0429))
 
-### Feature
+### Features
 
 * feat: JIRA-1710 (minor) completing registry api L2 and L3 interfaces with support for admin, general and other endpoints.  (#18) ([`cd2b4e9`](https://github.com/provena/provena-python-client/commit/cd2b4e9b37f1c1359694014854cde47121ee5ff8))
 
+
 ## v0.8.0 (2024-06-21)
 
-### Feature
+### Features
 
 * feat: Updated pyproject.toml settings to increment project versioning. ([`b61fe49`](https://github.com/provena/provena-python-client/commit/b61fe49c598052863a6ea6f7ab472301b6d04035))
 
 ### Unknown
 
-* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`cd6ad90`](https://github.com/provena/provena-python-client/commit/cd6ad90cafdc39242540e5a55b1bfdffa40332e8))
+* Merge branch 'main' of github.com:provena/provena-python-client into main ([`cd6ad90`](https://github.com/provena/provena-python-client/commit/cd6ad90cafdc39242540e5a55b1bfdffa40332e8))
+
 
 ## v0.7.0 (2024-06-21)
 
-### Feature
+### Features
 
 * feat: changed semantic release settings to increment project version. ([`1899df9`](https://github.com/provena/provena-python-client/commit/1899df90d798765ec4082e1eccf93c24960ce23a))
 
@@ -156,7 +186,7 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.
 
 * Included pytest-asycnio missing dependency. ([`8d4442a`](https://github.com/provena/provena-python-client/commit/8d4442a46a358efe1bc01eebdbcda00ed297b51f))
 
-* Completed Unit Testing for L1 &amp; L2 Layers.
+* Completed Unit Testing for L1 & L2 Layers.
 
 * Completed L1 layer testing mocked with various http methods and status codes.
 
@@ -184,9 +214,10 @@ Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`66d96fa`](https://github.
 
 Small refactor of config instantiation ([`7d6dea5`](https://github.com/provena/provena-python-client/commit/7d6dea55a6a80bff49774f0e7bd9e967d36d4dc7))
 
+
 ## v0.6.0 (2024-06-18)
 
-### Feature
+### Features
 
 * feat: forcing update to 0.6.0 ([`91e2879`](https://github.com/provena/provena-python-client/commit/91e2879c45dc35fcb6c97e467de8133f6dfee4cc))
 
@@ -206,15 +237,17 @@ Small refactor of config instantiation ([`7d6dea5`](https://github.com/provena/p
 
 * Adding list all files ([`b7a4388`](https://github.com/provena/provena-python-client/commit/b7a438839a7f2987f8fa3ce79ae89b29154bc66c))
 
+
 ## v0.5.0 (2024-06-18)
 
-### Feature
+### Features
 
 * feat: forcing another attempt ([`5bb0e49`](https://github.com/provena/provena-python-client/commit/5bb0e49235992bbe8d46d48c4b58dd7c99564826))
 
+
 ## v0.4.0 (2024-06-18)
 
-### Feature
+### Features
 
 * feat: Updating pyproject to promote new release ([`34b71da`](https://github.com/provena/provena-python-client/commit/34b71dad6235781294787b4325c9c10891c62b8b))
 
@@ -222,9 +255,10 @@ Small refactor of config instantiation ([`7d6dea5`](https://github.com/provena/p
 
 * Trigger another build ([`12205b4`](https://github.com/provena/provena-python-client/commit/12205b47ca15b6ed266dab5d63e6ed0d90aa8b0b))
 
+
 ## v0.3.0 (2024-06-17)
 
-### Feature
+### Features
 
 * feat(major): First major release ([`30ac329`](https://github.com/provena/provena-python-client/commit/30ac329ed30a88c397ff98b31b4d24198ddee585))
 
@@ -258,19 +292,19 @@ Implements offline token authentication method ([`0a6f0b3`](https://github.com/p
 
 * Made writing file logic more robust by having more checks and throwing exceptions accordingly. Updated L2 method to encode string to bytes internally. ([`ccdcdaa`](https://github.com/provena/provena-python-client/commit/ccdcdaaee2ef64381ec66125ac65b7d421d8813b))
 
-* Revert &#34;refactoring&#34;
+* Revert "refactoring"
 
 This reverts commit b4f13026a3a93ef22843fc52487c10cbaacb4812. ([`0c39cee`](https://github.com/provena/provena-python-client/commit/0c39cee8f414c6d95ce2e1a03f6f9f7959a6e536))
 
-* Revert &#34;added read offline token from file. Need to consolidate offline and refreh token mishaps&#34;
+* Revert "added read offline token from file. Need to consolidate offline and refreh token mishaps"
 
 This reverts commit 0eb280a96a2f2935751cfa1a3be02d35a79879ec. ([`999a812`](https://github.com/provena/provena-python-client/commit/999a8124b8a3b06395c03ad8545b598b48c7362b))
 
-* Revert &#34;improved error handling and tidying&#34;
+* Revert "improved error handling and tidying"
 
 This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https://github.com/provena/provena-python-client/commit/186ec49201efb527477b2285e2caade9ca9bfece))
 
-* git pushMerge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`e333078`](https://github.com/provena/provena-python-client/commit/e333078e9f86d7bddf067b4537fb121f6ca5595e))
+* git pushMerge branch 'main' of github.com:provena/provena-python-client into main ([`e333078`](https://github.com/provena/provena-python-client/commit/e333078e9f86d7bddf067b4537fb121f6ca5595e))
 
 * Implements Job API L2 and L3 + additional L3 helper methods (#10)
 
@@ -286,7 +320,7 @@ This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https
 
 * Completion of Datastore Functionality (Need Review on Pagination Implementation)  (#8)
 
-* In progressing completing of the datastore api&#39;s.
+* In progressing completing of the datastore api's.
 
 * (In progress) Completing the datastore client library functionality.
 
@@ -302,9 +336,9 @@ This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https
 
 * Adding documentation and mvp for registry implementation - not complete ([`7da100e`](https://github.com/provena/provena-python-client/commit/7da100ee6772bfe4b876112521316a187753c436))
 
-* JIRA 1687 - Fleshing out base structure of Prov, Registry, Job and Handle ID API&#39;s (#6)
+* JIRA 1687 - Fleshing out base structure of Prov, Registry, Job and Handle ID API's (#6)
 
-* Completed a base setup for the remaining API&#39;s (registry,prov) in respect to L2 and L3 and included all endpoints.
+* Completed a base setup for the remaining API's (registry,prov) in respect to L2 and L3 and included all endpoints.
 
 * Completion of missing API implementation and used a more robust approach suggested by Ross for Registry Endpoint collection.
 
@@ -314,9 +348,9 @@ This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. ([`186ec49`](https
 
 ---------
 
-Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https://github.com/provena/provena-python-client/commit/831e80be517154dfa239e773c41c73f4813264ad))
+Co-authored-by: Peter Baker <peter.baker122@csiro.au> ([`831e80b`](https://github.com/provena/provena-python-client/commit/831e80be517154dfa239e773c41c73f4813264ad))
 
-* Complete L2 &amp; L3 for Auth API (#5)
+* Complete L2 & L3 for Auth API (#5)
 
 * Implementing remaining L2 methods for auth api client
 
@@ -328,19 +362,21 @@ Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https:/
 
 * Minor corrections ([`26afd0a`](https://github.com/provena/provena-python-client/commit/26afd0a066dd66b2362687e5ce4e22ae473143a1))
 
+
 ## v0.2.0 (2024-05-30)
 
-### Feature
+### Features
 
 * feat: Updated the project version to not clash with pypi. ([`e67d002`](https://github.com/provena/provena-python-client/commit/e67d002b00003f9a4be402ec7a5fd461fb0c2a48))
 
 ### Unknown
 
-* Merge branch &#39;main&#39; of github.com:provena/provena-python-client into main ([`293cf17`](https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882))
+* Merge branch 'main' of github.com:provena/provena-python-client into main ([`293cf17`](https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882))
+
 
 ## v0.1.0 (2024-05-30)
 
-### Feature
+### Features
 
 * feat: Updated project version to not clash with pypi. ([`a02a0b1`](https://github.com/provena/provena-python-client/commit/a02a0b181e744ff877e113e3fa9954b5e31cc2fe))
 
@@ -352,7 +388,7 @@ Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https:/
 
 * Updating sphinx-autoapi dependency version due to CI failure. ([`d464c31`](https://github.com/provena/provena-python-client/commit/d464c316ecb0abc07f5ba602844585133bb38af1))
 
-* JIRA 1669 &amp; 1677 Major: Implementing datastore interface &amp; functionality of fetch and create dataset.   (#3)
+* JIRA 1669 & 1677 Major: Implementing datastore interface & functionality of fetch and create dataset.   (#3)
 
 * Created directory structure.
 
@@ -362,7 +398,7 @@ Co-authored-by: Peter Baker &lt;peter.baker122@csiro.au&gt; ([`831e80b`](https:/
 
 * Config Inteface, still needs to be reviewed. Furthermore, a decision needs to be made on how the endpoints are exposed to the user.
 
-Co-authored-by: Ross (Laz) Petridis &lt;Rosspet@users.noreply.github.com&gt;
+Co-authored-by: Ross (Laz) Petridis <Rosspet@users.noreply.github.com>
 
 * Pushing latest changes so Ross can branch off my branch for his offline flow development.
 
@@ -422,19 +458,20 @@ Applies formatting changes and other minor changes.
 
 * Ignoring openapi.json
 
-Co-authored-by: Peter Baker &lt;87056634+PeterBaker0@users.noreply.github.com&gt;
+Co-authored-by: Peter Baker <87056634+PeterBaker0@users.noreply.github.com>
 
 ---------
 
-Co-authored-by: Ross (Laz) Petridis &lt;Rosspet@users.noreply.github.com&gt;
-Co-authored-by: Ross &lt;ross.petridis@csiro.au&gt;
-Co-authored-by: Peter Baker &lt;87056634+PeterBaker0@users.noreply.github.com&gt; ([`897569c`](https://github.com/provena/provena-python-client/commit/897569c87ea786ed001d1a1869f5a865a7432a42))
+Co-authored-by: Ross (Laz) Petridis <Rosspet@users.noreply.github.com>
+Co-authored-by: Ross <ross.petridis@csiro.au>
+Co-authored-by: Peter Baker <87056634+PeterBaker0@users.noreply.github.com> ([`897569c`](https://github.com/provena/provena-python-client/commit/897569c87ea786ed001d1a1869f5a865a7432a42))
 
-* JIRA-1665 &amp; 1667 Major: Implement Auth Flow &amp; Implement Config Interface #2 (#2)
+* JIRA-1665 & 1667 Major: Implement Auth Flow & Implement Config Interface #2 (#2)
 
 Completed base auth interface + device flow, provided more type safety to the auth device flow methods, completed config interface file with docstrings, and updated CI-CD script to only run on main.
 
-co-authored-by: Ross &lt;ross.petridis@csiro.au&gt; ([`cb5b19b`](https://github.com/provena/provena-python-client/commit/cb5b19b5ac2fd4de6a0383d2592c29201ec6c464))
+co-authored-by: Ross <ross.petridis@csiro.au> ([`cb5b19b`](https://github.com/provena/provena-python-client/commit/cb5b19b5ac2fd4de6a0383d2592c29201ec6c464))
+
 
 ## v0.0.0 (2024-04-05)
 
