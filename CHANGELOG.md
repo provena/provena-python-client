@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.16.0 (2024-11-03)
+
+### Features
+
+* feat: forcing release ([`6ff78c8`](https://github.com/provena/provena-python-client/commit/6ff78c8f3ce677aaa5eb52466f45d2cc05d35df3))
+
+### Unknown
+
+* Update action.yml
+
+Testing incremented version of semantic release ([`4c4f462`](https://github.com/provena/provena-python-client/commit/4c4f462ef9565d8434de111b13b52f94c3a1ad01))
+
+
 ## v0.15.0 (2024-11-03)
 
 ### Documentation
