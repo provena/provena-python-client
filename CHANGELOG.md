@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.21.0 (2024-11-07)
+
+### Features
+
+* feat: forced release - attestations false this is causing failure in CD job as well. ([`01ff4a4`](https://github.com/provena/provena-python-client/commit/01ff4a4732c4273eaebb165d8a9d580f9e5455bf))
+
+
 ## v0.20.0 (2024-11-07)
 
 ### Features
