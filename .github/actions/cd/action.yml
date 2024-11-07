@@ -45,6 +45,7 @@ runs:
       if: steps.release.outputs.released == 'true'
       with:
         repository-url: https://test.pypi.org/legacy/
+        attestations: false
 
     - name: Test install from TestPyPI
       shell: bash
@@ -58,6 +59,8 @@ runs:
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1.11
       if: steps.release.outputs.released == 'true'
+      with:
+        attestations: false
 
     - name: Publish package distributions to GitHub Releases
       uses: python-semantic-release/publish-action@v9.8.9
