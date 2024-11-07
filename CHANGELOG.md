@@ -1,9 +1,22 @@
 # CHANGELOG
 
 
+## v0.20.0 (2024-11-07)
+
+### Features
+
+* feat: forced release due to issue with github pypi action package from development team. ([`dfeac9e`](https://github.com/provena/provena-python-client/commit/dfeac9e3fbf9235411593b60f87038113124afad))
+
+### Unknown
+
+* Merge branch 'main' of github.com:provena/provena-python-client into main ([`8ed7615`](https://github.com/provena/provena-python-client/commit/8ed761589e2087e384bd816c87694f00ac63d80b))
+
+
 ## v0.19.0 (2024-11-07)
 
 ### Features
+
+* feat: forced release - downgrading to pypi action 1.11 due to known issue caused by action development team. ([`2412ae5`](https://github.com/provena/provena-python-client/commit/2412ae53bc73643ebfd946a44fc0c2fb70d36fe5))
 
 * feat: Forced release - Updating CD job with correct PyPI tag. ([`5b2ca79`](https://github.com/provena/provena-python-client/commit/5b2ca79f5c2acb707d956544dfd7512857b397f4))
 
