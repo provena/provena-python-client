@@ -1,9 +1,24 @@
 # CHANGELOG
 
 
+## v0.19.0 (2024-11-07)
+
+### Features
+
+* feat: Forced release - Updating CD job with correct PyPI tag. ([`5b2ca79`](https://github.com/provena/provena-python-client/commit/5b2ca79f5c2acb707d956544dfd7512857b397f4))
+
+* feat: forced release. ([`e36d124`](https://github.com/provena/provena-python-client/commit/e36d124df70335f0f5bf7a913237af7d59c1dbc4))
+
+### Unknown
+
+* Merge branch 'main' of github.com:provena/provena-python-client into main ([`d6beab4`](https://github.com/provena/provena-python-client/commit/d6beab41707ab2589da80bf0534cd6e16bb9a841))
+
+
 ## v0.18.0 (2024-11-07)
 
 ### Features
+
+* feat: Force updating - Update to latest semantic versioning and github release gh action. ([`9a4f842`](https://github.com/provena/provena-python-client/commit/9a4f84266ca944169cbb79ccc70d75b59f223262))
 
 * feat: Forced push - Reverting back to 8.3.0 ([`bc178ea`](https://github.com/provena/provena-python-client/commit/bc178eaedff12fb776d3995e3abadcbcd7972883))
 
