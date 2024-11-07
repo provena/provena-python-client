@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.17.0 (2024-11-07)
+
+### Features
+
+* feat: Forcing release with stable gh action version tag. ([`4f30d67`](https://github.com/provena/provena-python-client/commit/4f30d677bf46674e3e3c34467f459ea8737564e6))
+
+* feat: trying newer publish ([`6c2cd03`](https://github.com/provena/provena-python-client/commit/6c2cd03d1dbf207bf874a873725c55802c65ccde))
+
+### Unknown
+
+* Changing tag to use the most stable version. ([`18f197b`](https://github.com/provena/provena-python-client/commit/18f197b951e918ed7b510e476b91a1412c7ba3e3))
+
+
 ## v0.16.0 (2024-11-03)
 
 ### Features
