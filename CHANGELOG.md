@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.18.0 (2024-11-07)
+
+### Features
+
+* feat: Forced push - Reverting back to 8.3.0 ([`bc178ea`](https://github.com/provena/provena-python-client/commit/bc178eaedff12fb776d3995e3abadcbcd7972883))
+
+
 ## v0.17.0 (2024-11-07)
 
 ### Features
