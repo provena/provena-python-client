@@ -1,0 +1,149 @@
+provenaclient.models
+====================
+
+.. py:module:: provenaclient.models
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/provenaclient/models/datastore/index
+   /autoapi/provenaclient/models/general/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.models.DEFAULT_AWAIT_SETTINGS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.models.SearchItem
+   provenaclient.models.LoadedSearchItem
+   provenaclient.models.UnauthorisedSearchItem
+   provenaclient.models.FailedSearchItem
+   provenaclient.models.RevertMetadata
+   provenaclient.models.LoadedSearchResponse
+   provenaclient.models.HealthCheckResponse
+   provenaclient.models.AsyncAwaitSettings
+
+
+Package Contents
+----------------
+
+.. py:class:: SearchItem
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: score
+      :type:  float
+
+
+.. py:class:: LoadedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+   .. py:attribute:: item
+      :type:  ProvenaInterfaces.RegistryModels.ItemDataset
+
+
+.. py:class:: UnauthorisedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+.. py:class:: FailedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+   .. py:attribute:: error_info
+      :type:  str
+
+
+.. py:class:: RevertMetadata
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: history_id
+      :type:  int
+
+
+   .. py:attribute:: reason
+      :type:  str
+
+
+.. py:class:: LoadedSearchResponse
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: items
+      :type:  List[LoadedSearchItem]
+
+
+   .. py:attribute:: auth_errors
+      :type:  List[UnauthorisedSearchItem]
+
+
+   .. py:attribute:: misc_errors
+      :type:  List[FailedSearchItem]
+
+
+.. py:class:: HealthCheckResponse
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: message
+      :type:  str
+
+
+.. py:class:: AsyncAwaitSettings
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: job_polling_interval
+      :type:  int
+      :value: 2
+
+
+
+   .. py:attribute:: job_async_queue_delay_polling_timeout
+      :value: 20
+
+
+
+   .. py:attribute:: job_async_pending_polling_timeout
+      :value: 120
+
+
+
+   .. py:attribute:: job_async_in_progress_polling_timeout
+      :value: 180
+
+
+
+.. py:data:: DEFAULT_AWAIT_SETTINGS
+

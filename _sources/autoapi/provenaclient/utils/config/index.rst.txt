@@ -1,0 +1,242 @@
+provenaclient.utils.config
+==========================
+
+.. py:module:: provenaclient.utils.config
+
+.. autoapi-nested-parse::
+
+   Created Date: Tuesday May 28th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Tuesday May 28th 2024 11:18:32 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Defines the primary config object for the Provena Client - notably the endpoints.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.utils.config.APIOverrides
+   provenaclient.utils.config.EndpointConfig
+   provenaclient.utils.config.Config
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.utils.config.optional_override_prefixor
+
+
+Module Contents
+---------------
+
+.. py:function:: optional_override_prefixor(domain: str, prefix: str, override: Optional[str]) -> str
+
+   Helper function which performs the API prefixing while being override aware.
+
+   If override supplied - uses it directly.
+
+   If not, prefixes with protocol and prefix suitably.
+
+   :param domain: The domain base
+   :type domain: str
+   :param prefix: The API prefix
+   :type prefix: str
+   :param override: The optional override
+   :type override: Optional[str]
+
+   :returns: The URL
+   :rtype: str
+
+
+.. py:class:: APIOverrides
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: datastore_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: auth_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: registry_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: prov_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: search_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: search_service_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: handle_service_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: jobs_service_api_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: keycloak_endpoint_override
+      :type:  Optional[str]
+      :value: None
+
+
+
+.. py:class:: EndpointConfig
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: realm_name
+      :type:  str
+
+
+   .. py:attribute:: api_overrides
+      :type:  APIOverrides
+
+
+.. py:class:: Config(domain: str, realm_name: str, api_overrides: APIOverrides = APIOverrides())
+
+   .. py:attribute:: _api_config
+      :type:  EndpointConfig
+
+
+   .. py:property:: search_api_endpoint
+      :type: str
+
+
+      Generate the search api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the search api endpoint.
+      :rtype: str
+
+
+   .. py:property:: jobs_service_api_endpoint
+      :type: str
+
+
+      Generate the job api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the job api endpoint.
+      :rtype: str
+
+
+   .. py:property:: handle_service_api_endpoint
+      :type: str
+
+
+      Generate the handle_service api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the handle_service api endpoint.
+      :rtype: str
+
+
+   .. py:property:: search_service_endpoint
+      :type: str
+
+
+      Generate the search_service api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the search_service api endpoint.
+      :rtype: str
+
+
+   .. py:property:: auth_api_endpoint
+      :type: str
+
+
+      Generate the auth api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the auth api endpoint.
+      :rtype: str
+
+
+   .. py:property:: prov_api_endpoint
+      :type: str
+
+
+      Generate the prov api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the prov api endpoint.
+      :rtype: str
+
+
+   .. py:property:: datastore_api_endpoint
+      :type: str
+
+
+      Generate the datastore api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the datastore api endpoint.
+      :rtype: str
+
+
+   .. py:property:: registry_api_endpoint
+      :type: str
+
+
+      Generate the registry api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the registry api endpoint.
+      :rtype: str
+
+
+   .. py:property:: keycloak_endpoint
+      :type: str
+
+
+      Generate the keycloak realm endpoint using domain, realm_name and possible
+      override value.
+
+      :returns: A string containing the keycloak realm endpoint.
+      :rtype: str
+
+
