@@ -11,11 +11,27 @@ from typing import List
 import os
 import random
 
+from provenaclient.models.general import GenerateReportRequest
+from provenaclient.utils.config import APIOverrides
+
 
 async def main() -> None:
+
+    api_overrides = APIOverrides(
+        datastore_api_endpoint_override="https://f1512-data-api.dev.rrap-is.com",
+        registry_api_endpoint_override="https://f1512-registry-api.dev.rrap-is.com",
+        prov_api_endpoint_override="https://f1512-prov-api.dev.rrap-is.com",
+        search_api_endpoint_override="https://f1512-search-api.dev.rrap-is.com",
+        search_service_endpoint_override="https://f1512-search.dev.rrap-is.com",
+        handle_service_api_endpoint_override="https://f1512-handle.dev.rrap-is.com",
+        jobs_service_api_endpoint_override="https://f1512-job-api.dev.rrap-is.com",
+    )
+
+
     config = Config(
         domain="dev.rrap-is.com",
-        realm_name="rrap"
+        realm_name="rrap", 
+        api_overrides= api_overrides
     )
 
     auth = DeviceFlow(config=config,
@@ -257,7 +273,7 @@ async def main() -> None:
 
     # print(item_counts)
 
-    """Example for downloading specific files..."""
+    """Example for downloading specific files...
 
     # Downloading a file at root level
     await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="metadata.json",  destination_directory="./")
@@ -277,6 +293,14 @@ async def main() -> None:
     # await client.datastore.io.download_all_files(destination_directory="./", dataset_id="10378.1/1876000")
     # my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
     # await my_dataset.download_all_files(destination_directory="./")
+
+    """
+
+    await client.prov_api.generate_report(report_request = GenerateReportRequest(
+        id = "10378.1/1967166", 
+        item_subtype=ItemSubType.MODEL_RUN,
+        depth=1
+    ))
 
 
 
