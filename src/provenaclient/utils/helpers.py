@@ -157,9 +157,10 @@ def write_file_helper(file_path: str, content: Union[str, bytes]) -> None:
     
     try:
 
-        # Sanitize the file path to avoid file system errors.
-        file_path = file_path.replace("/", "_")
-
+        if not os.path.exists(path=file_path): 
+            # Make the path, before writing to a file. 
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
         if isinstance(content, str):
             # Write to file
             with open(file_path, 'w') as file:

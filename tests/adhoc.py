@@ -11,20 +11,19 @@ from typing import List
 import os
 import random
 
-from provenaclient.models.general import GenerateReportRequest
 from provenaclient.utils.config import APIOverrides
 
 
 async def main() -> None:
 
     api_overrides = APIOverrides(
-        datastore_api_endpoint_override="https://f1512-data-api.dev.rrap-is.com",
-        registry_api_endpoint_override="https://f1512-registry-api.dev.rrap-is.com",
-        prov_api_endpoint_override="https://f1512-prov-api.dev.rrap-is.com",
-        search_api_endpoint_override="https://f1512-search-api.dev.rrap-is.com",
-        search_service_endpoint_override="https://f1512-search.dev.rrap-is.com",
-        handle_service_api_endpoint_override="https://f1512-handle.dev.rrap-is.com",
-        jobs_service_api_endpoint_override="https://f1512-job-api.dev.rrap-is.com",
+        datastore_api_endpoint_override="https://f1835-data-api.dev.rrap-is.com",
+        registry_api_endpoint_override="https://f1835-registry-api.dev.rrap-is.com",
+        prov_api_endpoint_override="https://f1835-prov-api.dev.rrap-is.com",
+        search_api_endpoint_override="https://f1835-search-api.dev.rrap-is.com",
+        search_service_endpoint_override="https://f1835-search.dev.rrap-is.com",
+        handle_service_api_endpoint_override="https://f1835-handle.dev.rrap-is.com",
+        jobs_service_api_endpoint_override="https://f1835-job-api.dev.rrap-is.com",
     )
 
 
@@ -297,10 +296,17 @@ async def main() -> None:
     """
 
     await client.prov_api.generate_report(report_request = GenerateReportRequest(
-        id = "10378.1/1967166", 
-        item_subtype=ItemSubType.MODEL_RUN,
+        id = "10378.1/1968661", 
+        item_subtype=ItemSubType.STUDY,
         depth=1
     ))
+
+    await client.prov_api.generate_report(report_request = GenerateReportRequest(
+        id = "10378.1/1968661", 
+        item_subtype=ItemSubType.STUDY,
+        depth=1
+    ), file_path="./idontexistpath/butinhere/")
+
 
 
 

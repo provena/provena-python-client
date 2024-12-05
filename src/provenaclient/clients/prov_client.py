@@ -21,9 +21,8 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput, GenerateReportRequest
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
-from provenaclient.models.general import GenerateReportRequest
 
 
 class ProvAPIEndpoints(str, Enum):

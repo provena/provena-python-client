@@ -22,8 +22,8 @@ from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
 from typing import List
-from provenaclient.models.general import HealthCheckResponse, GenerateReportRequest
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse
+from provenaclient.models.general import HealthCheckResponse
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse, GenerateReportRequest
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
 
@@ -31,7 +31,7 @@ from ProvenaInterfaces.SharedTypes import StatusResponse
 
 PROV_API_DEFAULT_SEARCH_DEPTH = 3
 DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
-
+DEFAULT_RELATIVE_FILE_PATH = "./"
 
 class ProvAPIAdminSubModule(ModuleService):
     _prov_api_client: ProvClient
@@ -498,11 +498,11 @@ class Prov(ModuleService):
 
         return csv_text
     
-    async def generate_report(self, report_request:GenerateReportRequest) -> None:
+    async def generate_report(self, report_request:GenerateReportRequest, file_path: str = DEFAULT_RELATIVE_FILE_PATH) -> None:
         """Generates a provenance report from a Study or Model Run Entity containing the
         associated inputs, model runs and outputs involved. 
         
-        The report is generated in `.docx` and saved at root level.
+        The report is generated in `.docx` and saved at relative directory level.
 
         Parameters
         ----------
@@ -515,9 +515,14 @@ class Prov(ModuleService):
             report_request=report_request
         )
 
+        # Sanitize the id to avoid file system errors
+        sanitized_filename = report_request.id.replace("/", "_") + " - Study Close Out Report.docx"
+
+        # Append file path and file-name together 
+        file_path = file_path + sanitized_filename
+
         # Writes content into word docx file.
-        write_file_helper(file_path=f"{report_request.id} - Study Close Out Report.docx",
-                        content = generated_word_file)
+        write_file_helper(file_path=file_path,content = generated_word_file)
 
 
 

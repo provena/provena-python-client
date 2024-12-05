@@ -33,8 +33,3 @@ class AsyncAwaitSettings(BaseModel):
     job_async_in_progress_polling_timeout = 180  # 3 minutes
    
 DEFAULT_AWAIT_SETTINGS = AsyncAwaitSettings()
-
-class GenerateReportRequest(BaseModel):
-    id: str 
-    item_subtype: ItemSubType 
-    depth: int = Field(ge=1, le=3)
