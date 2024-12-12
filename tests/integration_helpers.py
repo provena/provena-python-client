@@ -14,6 +14,7 @@ from ProvenaInterfaces.AsyncJobModels import *
 from ProvenaInterfaces.TestConfig import RouteParameters, route_params, non_test_route_params
 from ProvenaInterfaces.AsyncJobModels import RegistryRegisterCreateActivityResult
 
+from provenaclient.models.general import CustomGraph, CustomLineageResponse, GraphProperty
 from provenaclient.modules.provena_client import ProvenaClient
 from provenaclient.modules.registry import ModelClient, OrganisationClient, PersonClient, StudyClient, DatasetTemplateClient
 from provenaclient.utils.registry_endpoints import *
@@ -344,14 +345,7 @@ def get_item_subtype_domain_info_example(item_subtype: ItemSubType) -> DomainInf
     return get_item_subtype_route_params(item_subtype=item_subtype).model_examples.domain_info[0]
 
 
-Graph = Dict[str, Any]
-
-
-@dataclass
-class GraphProperty():
-    type: str
-    source: str
-    target: str
+Graph = CustomGraph
 
 
 def assert_graph_property(prop: GraphProperty, graph: Graph) -> None:
@@ -368,18 +362,17 @@ def assert_graph_property(prop: GraphProperty, graph: Graph) -> None:
         graph (Graph): The graph to analyse
     """
 
-    links = graph['links']
+    links = graph.links
     found = False
     for l in links:
-        actual_prop = GraphProperty(**l)
-        if actual_prop == prop:
+        actual_prop = GraphProperty(type=l.type, source=l.source, target=l.target)
+        if actual_prop == prop: 
             found = True
             break
-
+    
     assert found, f"Could not find relation specified {prop}."
 
-
-def assert_non_empty_graph_property(prop: GraphProperty, lineage_response: LineageResponse) -> None:
+def assert_non_empty_graph_property(prop: GraphProperty, lineage_response: CustomLineageResponse) -> None:
     """
     Determines if the desired graph property exists in the networkX JSON graph
     lineage response in the graph object.

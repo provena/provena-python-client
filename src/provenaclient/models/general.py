@@ -35,12 +35,17 @@ class AsyncAwaitSettings(BaseModel):
    
 DEFAULT_AWAIT_SETTINGS = AsyncAwaitSettings()
 
+class GraphProperty(BaseModel):
+    type: str 
+    source: str
+    target: str
 
 class CustomGraph(BaseModel): 
     directed: bool
     multigraph: bool
     graph: Dict[str, Any]
     nodes: List[Node] 
+    links: List[GraphProperty]
     
 class CustomLineageResponse(LineageResponse): 
     """A Custom Lineage Response Pydantic Model 
