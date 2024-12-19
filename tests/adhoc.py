@@ -291,7 +291,9 @@ async def main() -> None:
 
     print(response.graph.nodes)
 
+    print("Listing all datasets")
     for node in response.graph.nodes:
-        print(node.id, node.item_subtype)
+        if node.item_subtype == ItemSubType.DATASET:
+            print(node.id, node.item_subtype) 
 
 asyncio.run(main())
