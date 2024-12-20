@@ -257,7 +257,7 @@ async def main() -> None:
 
     # print(item_counts)
 
-    """Example for downloading specific files..."""
+    """Example for downloading specific files...
 
     # Downloading a file at root level
     await client.datastore.io.download_specific_file(dataset_id="10378.1/1876000", s3_path="metadata.json",  destination_directory="./")
@@ -278,8 +278,22 @@ async def main() -> None:
     # my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
     # await my_dataset.download_all_files(destination_directory="./")
 
+   """
+    
+    response = await client.prov_api.explore_upstream(
+        starting_id="10378.1/1965416", 
+        depth=2
+    )
 
+    print(response.record_count)
 
+    assert response.graph
 
+    print(response.graph.nodes)
+
+    print("Listing all datasets")
+    for node in response.graph.nodes:
+        if node.item_subtype == ItemSubType.DATASET:
+            print(node.id, node.item_subtype) 
 
 asyncio.run(main())

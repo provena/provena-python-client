@@ -706,6 +706,10 @@ async def test_provenance_workflow(client: ProvenaClient, org_person_fixture: Tu
         depth=1,
     )
 
+    # Adding tests for the "custom lineage response override"
+    assert activity_upstream_query.graph, f"The graph field is missing from upstream response with CustomLineageResponse override."
+    assert activity_upstream_query.graph.nodes, f"The nodes field is missing from upstream response with CustomLineageResponse override."
+
     # model run -wasInformedBy-> study
     assert_non_empty_graph_property(
         prop=GraphProperty(
