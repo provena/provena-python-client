@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.22.0 (2024-12-20)
+
+### Features
+
+* feat: JIRA 1818 - Adding Types to Lineage Response for Special Queries in Prov-API. (#38) ([`926154b`](https://github.com/provena/provena-python-client/commit/926154b2f0dd86241a85e7bf9491f4695ef5ac9e))
+
+
 ## v0.21.0 (2024-11-07)
 
 ### Features
