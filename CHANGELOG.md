@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.23.0 (2024-12-20)
+
+### Features
+
+* feat: Jira-1883- Implementing Generate Report Functionality (#37)
+
+Co-authored-by: Jonathan Yu <jonathan.yu@csiro.au> ([`9f6207c`](https://github.com/provena/provena-python-client/commit/9f6207c39b40dcedc9d5102ec7c684d9f1ab7e38))
+
+
 ## v0.22.0 (2024-12-20)
 
 ### Features
