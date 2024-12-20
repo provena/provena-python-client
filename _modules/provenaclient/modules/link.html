@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules.link &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules.link</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.modules.link</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Friday May 31st 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Friday May 31st 2024 9:50:26 am +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: A L3 module which is setup to interact more nicely with the Username Person Link service.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+
+<span class="sd">18-06-2024 | Peter Baker | Initial ideas included but is not finished/ready. Blocked by Registry API functionality.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">provenaclient.auth.manager</span> <span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span> <span class="nn">provenaclient.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">provenaclient.modules.module_helpers</span> <span class="kn">import</span> <span class="n">ModuleService</span>
+<span class="kn">from</span> <span class="nn">provenaclient.clients</span> <span class="kn">import</span> <span class="n">AuthClient</span>
+
+<span class="c1"># L3 interface.</span>
+
+<div class="viewcode-block" id="Link">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/link/index.html#provenaclient.modules.Link">[docs]</a>
+<span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_auth_client</span><span class="p">:</span> <span class="n">AuthClient</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">auth_client</span><span class="p">:</span> <span class="n">AuthClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The link service L3 is a set of helper functions to interact more intuitively with the link service. </span>
+
+<span class="sd">        For example, combining looking up user link details with resolving the person. </span>
+
+<span class="sd">        Or could help to create and link person in one action.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow</span>
+<span class="sd">            method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena</span>
+<span class="sd">            instance.</span>
+<span class="sd">        auth_client: AuthClient </span>
+<span class="sd">            L2 auth client used to help with link service</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Module service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the datastore scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth_client</span> <span class="o">=</span> <span class="n">auth_client</span>
+
+<div class="viewcode-block" id="Link.get_linked_person">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/link/index.html#provenaclient.modules.Link.get_linked_person">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_linked_person</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># fetches current user link then loads person</span>
+        <span class="c1"># TODO pseudocode below to complete once registry is implemented</span>
+        <span class="c1"># get link</span>
+        <span class="n">link_result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth_client</span><span class="o">.</span><span class="n">get_link_lookup_username</span><span class="p">()</span>
+
+        <span class="c1"># then load person with resulting id</span>
+        <span class="n">person_id</span> <span class="o">=</span> <span class="n">link_result</span><span class="o">.</span><span class="n">person_id</span>
+        <span class="k">if</span> <span class="n">person_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO</span>
+            <span class="c1"># return await self._registry_client.person.fetch(id=person_id)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Link.create_and_link_person">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/link/index.html#provenaclient.modules.Link.create_and_link_person">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_and_link_person</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># TODO</span>
+        <span class="c1"># check user is not already linked</span>
+        <span class="c1"># check there is not already a person in registry which matches first/last name or which has matching username</span>
+        <span class="c1"># then create person with specified details</span>
+        <span class="c1"># then link person</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
