@@ -22,7 +22,7 @@ from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
 from typing import List
-from provenaclient.models.general import HealthCheckResponse
+from provenaclient.models.general import CustomLineageResponse, HealthCheckResponse
 from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse, GenerateReportRequest
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
@@ -217,7 +217,7 @@ class Prov(ModuleService):
             record=record
         )
 
-    async def explore_upstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def explore_upstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Explores in the upstream direction (inputs/associations) 
         starting at the specified node handle ID. 
         The search depth is bounded by the depth parameter which has a default maximum of 100.
@@ -231,13 +231,15 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth)
+        upstream_response = await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth)
+        typed_upstream_response = CustomLineageResponse.parse_obj(upstream_response.dict())
+        return typed_upstream_response
 
-    async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Explores in the downstream direction (inputs/associations) 
         starting at the specified node handle ID. 
         The search depth is bounded by the depth parameter which has a default maximum of 100.
@@ -251,13 +253,15 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
+        typed_downstream_response = await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
+        typed_downstream_response = CustomLineageResponse.parse_obj(typed_downstream_response.dict())
+        return typed_downstream_response
 
-    async def get_contributing_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_contributing_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches datasets (inputs) which involved in a model run
         naturally in the upstream direction.
 
@@ -270,13 +274,15 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
+        contributing_datasets = await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
+        typed_contributing_datasets = CustomLineageResponse.parse_obj(contributing_datasets.dict())
+        return typed_contributing_datasets
 
-    async def get_effected_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_effected_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches datasets (outputs) which are derived from the model run
         naturally in the downstream direction.
 
@@ -289,13 +295,15 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
+        effected_datasets_response = await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
+        typed_effected_datasets = CustomLineageResponse.parse_obj(effected_datasets_response.dict())
+        return typed_effected_datasets
 
-    async def get_contributing_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_contributing_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
         naturally in the upstream direction.
 
@@ -308,13 +316,15 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
+        contributing_agents_response = await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
+        typed_contributing_agents = CustomLineageResponse.parse_obj(contributing_agents_response.dict())
+        return typed_contributing_agents
 
-    async def get_effected_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> LineageResponse:
+    async def get_effected_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
         naturally in the downstream direction.
 
@@ -327,11 +337,13 @@ class Prov(ModuleService):
 
         Returns
         -------
-        LineageResponse
-            A response containing the status, node count, and networkx serialised graph response.
+        CustomLineageResponse
+            A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        return await self._prov_api_client.get_effected_agents(starting_id=starting_id, depth=depth)
+        effected_agents_response = await self._prov_api_client.get_effected_agents(starting_id=starting_id, depth=depth)
+        typed_effected_agents = CustomLineageResponse.parse_obj(effected_agents_response.dict())
+        return typed_effected_agents
 
     async def register_batch_model_runs(self, batch_model_run_payload: RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
         """This function allows you to register multiple model runs in one go (batch) asynchronously.

@@ -12,8 +12,10 @@ Date      	By	Comments
 ----------	---	---------------------------------------------------------
 '''
 
-from pydantic import BaseModel, Field
-from ProvenaInterfaces.RegistryAPI import ItemSubType
+from typing import Any, Dict, Optional, Type, TypedDict, List
+from pydantic import BaseModel, Field,  ValidationError, validator
+from ProvenaInterfaces.RegistryAPI import ItemSubType, Node
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse
 
 
 class HealthCheckResponse(BaseModel):
@@ -33,3 +35,31 @@ class AsyncAwaitSettings(BaseModel):
     job_async_in_progress_polling_timeout = 180  # 3 minutes
    
 DEFAULT_AWAIT_SETTINGS = AsyncAwaitSettings()
+
+class GraphProperty(BaseModel):
+    type: str 
+    source: str
+    target: str
+
+class CustomGraph(BaseModel): 
+    directed: bool
+    multigraph: bool
+    graph: Dict[str, Any]
+    nodes: List[Node] 
+    links: List[GraphProperty]
+    
+class CustomLineageResponse(LineageResponse): 
+    """A Custom Lineage Response Pydantic Model 
+    that inherits from its parent (LineageResponse). 
+
+    This model overrides the "graph" field within the 
+    Lineage Response, and converts it from an untyped 
+    dictionary into a pydantic object/ typed datatype. 
+
+    The custom validator function is called, and has custom 
+    parsing logic to parse the nodes as well.
+
+    """
+
+    graph: Optional[CustomGraph] #type:ignore
+   

@@ -307,9 +307,21 @@ async def main() -> None:
         depth=1
     ), file_path="./idontexistpath/butinhere/")
 
+ 
+    response = await client.prov_api.explore_upstream(
+        starting_id="10378.1/1965416", 
+        depth=2
+    )
 
+    print(response.record_count)
 
+    assert response.graph
 
+    print(response.graph.nodes)
 
+    print("Listing all datasets")
+    for node in response.graph.nodes:
+        if node.item_subtype == ItemSubType.DATASET:
+            print(node.id, node.item_subtype) 
 
 asyncio.run(main())
