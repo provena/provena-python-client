@@ -21,7 +21,7 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput, GenerateReportRequest
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 
 
@@ -32,6 +32,7 @@ class ProvAPIEndpoints(str, Enum):
     POST_MODEL_RUN_REGISTER = "/model_run/register"
     POST_MODEL_RUN_UPDATE = "/model_run/update"
     POST_MODEL_RUN_REGISTER_BATCH = "/model_run/register_batch"
+    POST_GENERATE_REPORT = "/explore/generate/report"
     GET_EXPLORE_UPSTREAM = "/explore/upstream"
     GET_EXPLORE_DOWNSTREAM = "/explore/downstream"
     GET_EXPLORE_SPECIAL_CONTRIBUTING_DATASETS = "/explore/special/contributing_datasets"
@@ -539,3 +540,45 @@ class ProvClient(ClientService):
         )
 
         return response.text
+    
+    async def generate_report(self, report_request: GenerateReportRequest) -> ByteString:
+        """Generates a provenance report from a Study or Model Run Entity containing the
+        associated inputs, model runs and outputs involved. 
+        
+        The report is generated in `.docx` format by making a POST request to the API.
+
+        Parameters
+        ----------
+        report_request : GenerateReportRequest
+            The request object containing the parameters for generating the report, including the `id`, 
+            `item_subtype`, and `depth`.
+
+        Returns
+        -------
+        ByteString
+            The raw byte content of the generated `.docx` file. The type of the returned content will be either 
+            `bytes` or `bytearray`, which can be directly saved to a file.
+        
+        Raises
+        ------
+        AssertionError
+            If the response content is not found or is not in the expected `bytes` or `bytearray` format.
+        """
+         
+        response = await validated_post_request(
+            client=self, 
+            url=self._build_endpoint(ProvAPIEndpoints.POST_GENERATE_REPORT), 
+            error_message=f"Something has gone wrong during report generation for node with id {report_request.id}", 
+            json_body=py_to_dict(report_request),
+            params=None, 
+            headers = {
+                "Content-Type": "application/json",  # Indicates the body is JSON
+                "Accept": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  # Indicates the response type
+            }
+        )
+
+        # Validate that byte content is present, before returning to the user. 
+        assert response.content, f"Failed to generate report for node with id {report_request.id} - Response content not found!"
+        assert isinstance(response.content, (bytes, bytearray)), "Unexpected content type from server. Expected bytes or bytearray!"
+        
+        return response.content

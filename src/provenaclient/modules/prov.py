@@ -2,14 +2,17 @@
 Created Date: Monday June 17th 2024 +1000
 Author: Peter Baker
 -----
-Last Modified: Monday June 17th 2024 4:45:39 pm +1000
-Modified By: Peter Baker
+Last Modified: Friday November 29th 2024 4:21:39 pm +1000
+Modified By: Parth Kulkarni
 -----
 Description: Provenance API L3 module. Includes the ProvAPI sub module. Contains IO helper functions for writing/reading files.
 -----
 HISTORY:
 Date      	By	Comments
 ----------	---	---------------------------------------------------------
+
+29-11-2024 | Parth Kulkarni | Added generate-report functionality. 
+
 '''
 
 from provenaclient.auth.manager import AuthManager
@@ -20,7 +23,7 @@ from provenaclient.modules.module_helpers import *
 from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
 from typing import List
 from provenaclient.models.general import CustomLineageResponse, HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse, GenerateReportRequest
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 from ProvenaInterfaces.SharedTypes import StatusResponse
 
@@ -28,7 +31,7 @@ from ProvenaInterfaces.SharedTypes import StatusResponse
 
 PROV_API_DEFAULT_SEARCH_DEPTH = 3
 DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
-
+DEFAULT_RELATIVE_FILE_PATH = "./"
 
 class ProvAPIAdminSubModule(ModuleService):
     _prov_api_client: ProvClient
@@ -506,3 +509,33 @@ class Prov(ModuleService):
             write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text
+    
+    async def generate_report(self, report_request:GenerateReportRequest, file_path: str = DEFAULT_RELATIVE_FILE_PATH) -> None:
+        """Generates a provenance report from a Study or Model Run Entity containing the
+        associated inputs, model runs and outputs involved. 
+        
+        The report is generated in `.docx` and saved at relative directory level.
+
+        Parameters
+        ----------
+        report_request : GenerateReportRequest
+            The request object containing the parameters for generating the report, including the `id`, 
+            `item_subtype`, and `depth`.
+        """
+        # Calls API endpoint to generate report document.
+        generated_word_file = await self._prov_api_client.generate_report(
+            report_request=report_request
+        )
+
+        # Sanitize the id to avoid file system errors
+        sanitized_filename = report_request.id.replace("/", "_") + " - Study Close Out Report.docx"
+
+        # Append file path and file-name together 
+        file_path = file_path + sanitized_filename
+
+        # Writes content into word docx file.
+        write_file_helper(file_path=file_path,content = generated_word_file)
+
+
+
+

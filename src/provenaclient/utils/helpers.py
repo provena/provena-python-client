@@ -134,16 +134,18 @@ def validate_existing_path(file_path: str) -> None :
         raise Exception(f"Path validation failed. Exception {e}")
 
 
-def write_file_helper(file_path: str, content: str) -> None:
+def write_file_helper(file_path: str, content: Union[str, bytes]) -> None:
     """
-    Writes provided content to a file.
+    Writes the provided content (string or bytes) to a file at the specified file path.
 
     Parameters
     ----------
     file_name : str
         The name of the file to write content into.
-    content : str
-        The content to be written into the file.
+    content : Union[str, bytes]
+        The content to be written to the file. It can be either:
+            - A `str`, which will be written in text mode.
+            - A `bytes` object, which will be written in binary mode.
 
     Raises
     ------
@@ -152,11 +154,22 @@ def write_file_helper(file_path: str, content: str) -> None:
     Exception
         For non-I/O related exceptions that may occur during file writing.
     """
-
+    
     try:
-        # Write to file
-        with open(file_path, 'w') as file:
-            file.write(content)
+
+        if not os.path.exists(path=file_path): 
+            # Make the path, before writing to a file. 
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+        if isinstance(content, str):
+            # Write to file
+            with open(file_path, 'w') as file:
+                file.write(content)
+
+        if isinstance(content, bytes):
+            # Write to file in byte mode
+            with open(file_path, 'wb') as file: 
+                file.write(content)
 
     except IOError as e:
         raise IOError(f"Failed to file {file_path} due to I/O error: {e}")
@@ -193,7 +206,7 @@ def read_file_helper(file_path: str) -> str:
             return file_content
 
     except Exception as e:
-        raise Exception(f"Error with file. Exception {e}")
+        raise Exception(f"Error with file. Exception {e}") 
 
 def build_params_exclude_none(params: Mapping[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]:
     """

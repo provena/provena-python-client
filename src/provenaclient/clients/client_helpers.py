@@ -462,6 +462,53 @@ async def validated_get_request(client: ClientService, params: Optional[Mapping[
         raise Exception(
             f"{error_message} Exception: {e}") from e
 
+async def validated_post_request(
+    client: ClientService,
+    params: Optional[Mapping[str, Optional[ParamTypes]]],
+    json_body: Optional[JsonData],
+    url: str,
+    error_message: str, 
+    headers: Optional[Dict[str,Any]] = None
+) -> Response: 
+    
+    """
+    A generic POST request method for endpoints where the response
+    does not parse into a Pydantic model. This method handles cases
+    like file downloads or when raw data is expected.
+
+    Args:
+        client (ClientService): The client being used. Relies on client interface.
+        params (Optional[Mapping[str, Optional[ParamTypes]]]): The params if any.
+        json_body (Optional[JsonData]): JSON data to send with the request, if any.
+        url (str): The URL to make the POST request to.
+        error_message (str): The error message to embed in other exceptions.
+        headers: The headers to include in hte POST request, if any.
+
+    Raises:
+        e: Exception depending on the error.
+
+    Returns:
+        Response: The raw HTTP response object for further processing.
+    """
+
+    # Prepare and setup the API request.
+    get_auth = client._auth.get_auth  # Get bearer auth
+    filtered_params = build_params_exclude_none(params if params else {})
+
+    try:
+        response = await HttpClient.make_post_request(url=url, data=json_body, params=filtered_params, auth=get_auth(), headers = headers)
+
+        handle_err_codes(
+            response=response,
+            error_message=error_message
+        )
+        return response
+    
+    except BaseException as e:
+        raise e
+    except Exception as e:
+        raise Exception(
+            f"{error_message} Exception: {e}") from e
 
 async def parsed_post_request_none_return(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], json_body: Optional[JsonData], url: str, error_message: str) -> None:
     """
@@ -505,7 +552,7 @@ async def parsed_post_request_none_return(client: ClientService, params: Optiona
     except Exception as e:
         raise Exception(
             f"{error_message} Exception: {e}") from e
-    
+
 
 async def parsed_delete_request_non_return(client: ClientService, params: Optional[Mapping[str, Optional[ParamTypes]]], url: str, error_message: str) -> None:
     """

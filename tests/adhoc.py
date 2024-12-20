@@ -11,11 +11,26 @@ from typing import List
 import os
 import random
 
+from provenaclient.utils.config import APIOverrides
+
 
 async def main() -> None:
+
+    api_overrides = APIOverrides(
+        datastore_api_endpoint_override="https://f1835-data-api.dev.rrap-is.com",
+        registry_api_endpoint_override="https://f1835-registry-api.dev.rrap-is.com",
+        prov_api_endpoint_override="https://f1835-prov-api.dev.rrap-is.com",
+        search_api_endpoint_override="https://f1835-search-api.dev.rrap-is.com",
+        search_service_endpoint_override="https://f1835-search.dev.rrap-is.com",
+        handle_service_api_endpoint_override="https://f1835-handle.dev.rrap-is.com",
+        jobs_service_api_endpoint_override="https://f1835-job-api.dev.rrap-is.com",
+    )
+
+
     config = Config(
         domain="dev.rrap-is.com",
-        realm_name="rrap"
+        realm_name="rrap", 
+        api_overrides= api_overrides
     )
 
     auth = DeviceFlow(config=config,
@@ -278,8 +293,21 @@ async def main() -> None:
     # my_dataset = await client.datastore.interactive_dataset(dataset_id="10378.1/1948400")
     # await my_dataset.download_all_files(destination_directory="./")
 
-   """
-    
+    """
+
+    await client.prov_api.generate_report(report_request = GenerateReportRequest(
+        id = "10378.1/1968661", 
+        item_subtype=ItemSubType.STUDY,
+        depth=1
+    ))
+
+    await client.prov_api.generate_report(report_request = GenerateReportRequest(
+        id = "10378.1/1968661", 
+        item_subtype=ItemSubType.STUDY,
+        depth=1
+    ), file_path="./idontexistpath/butinhere/")
+
+ 
     response = await client.prov_api.explore_upstream(
         starting_id="10378.1/1965416", 
         depth=2
