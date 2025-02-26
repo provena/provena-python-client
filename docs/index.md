@@ -2,9 +2,10 @@
 ```
 
 ```{toctree}
-:maxdepth: 1
-:hidden:
-
+:maxdepth: 2
+:caption: Table of Contents
+home.md
+quickstart.md
 example-client-workflow.ipynb
 changelog.md
 contributing.md

@@ -7,7 +7,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u"provenaclient"
-copyright = u"2024, Provena Development Team (CSIRO)"
+copyright = u"2025, Provena Development Team (CSIRO)"
 author = u"Provena Development Team (CSIRO)"
 
 # -- General configuration ---------------------------------------------------
@@ -34,5 +34,12 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+
+# Enable TOC navigation depth
+html_theme_options = {
+    "navigation_depth": 3,  # Allows deeper nesting in the sidebar
+    "collapse_navigation": False
+
+}
 # Jupyter notebook setting.
 jupyter_execute_notebooks = "off"

@@ -1,5 +1,11 @@
-# Welcome to Provena Python Client Documentation ![Provena Logo](https://docs.provena.io/assets/images/provena-logo.png)
+# Home
 
+![Provena Logo](https://docs.provena.io/assets/images/provena-logo.png)
+
+```{toctree}
+:maxdepth: 0
+:hidden:
+```
 
 Welcome to the official documentation for the Provena Python Client. This guide will help you get started with installing and using the client, and provide links to additional resources and sections of the documentation.
 
@@ -16,16 +22,6 @@ pip install provenaclient
 ```
 
 Once you have installed, check out the following reference examples [Example Notebook](./example-client-workflow.ipynb) on how to correctly start using the Provena Python Client.
-
-# Documentation Sections
-
-For more detailed information on how to use the Provena Python Client, check out the following sections in the documentation:
-
-- [Example Notebook](./example-client-workflow.ipynb)
-- [Changelog](./changelog.md)
-- [Contributing Guidelines](./contributing.md)
-- [API Documentation](/autoapi/index)
-
 
 
 ## Additional Resources
