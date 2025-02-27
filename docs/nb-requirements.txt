@@ -1,0 +1,4 @@
+provena-interfaces
+provenaclient
+ipykernel
+prov[dot]
