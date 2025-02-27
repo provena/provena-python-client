@@ -7,6 +7,7 @@
 home.md
 quickstart.md
 example-client-workflow.ipynb
+provenance-visualisation.ipynb
 changelog.md
 contributing.md
 conduct.md
