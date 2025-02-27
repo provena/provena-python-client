@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.24.0 (2025-02-27)
+
+### Features
+
+* feat: Jira-RRAPIS-1874 (Minor): Updating the client lib docs with a how-to quickstart  (#40) ([`c292c3a`](https://github.com/provena/provena-python-client/commit/c292c3af8f1d2371f24659d3e168d97dcc0fec32))
+
+
 ## v0.23.0 (2024-12-20)
 
 ### Features
