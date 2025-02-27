@@ -1,0 +1,144 @@
+provenaclient.models.general
+============================
+
+.. py:module:: provenaclient.models.general
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: General interfaces defined to help with typing the client library/configuring
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.models.general.DEFAULT_AWAIT_SETTINGS
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.models.general.HealthCheckResponse
+   provenaclient.models.general.AsyncAwaitSettings
+   provenaclient.models.general.GraphProperty
+   provenaclient.models.general.CustomGraph
+   provenaclient.models.general.CustomLineageResponse
+
+
+Module Contents
+---------------
+
+.. py:class:: HealthCheckResponse
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: message
+      :type:  str
+
+
+.. py:class:: AsyncAwaitSettings
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: job_polling_interval
+      :type:  int
+      :value: 2
+
+
+
+   .. py:attribute:: job_async_queue_delay_polling_timeout
+      :value: 20
+
+
+
+   .. py:attribute:: job_async_pending_polling_timeout
+      :value: 120
+
+
+
+   .. py:attribute:: job_async_in_progress_polling_timeout
+      :value: 180
+
+
+
+.. py:data:: DEFAULT_AWAIT_SETTINGS
+
+.. py:class:: GraphProperty
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: type
+      :type:  str
+
+
+   .. py:attribute:: source
+      :type:  str
+
+
+   .. py:attribute:: target
+      :type:  str
+
+
+.. py:class:: CustomGraph
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: directed
+      :type:  bool
+
+
+   .. py:attribute:: multigraph
+      :type:  bool
+
+
+   .. py:attribute:: graph
+      :type:  Dict[str, Any]
+
+
+   .. py:attribute:: nodes
+      :type:  List[ProvenaInterfaces.RegistryAPI.Node]
+
+
+   .. py:attribute:: links
+      :type:  List[GraphProperty]
+
+
+.. py:class:: CustomLineageResponse
+
+   Bases: :py:obj:`ProvenaInterfaces.ProvenanceAPI.LineageResponse`
+
+
+   A Custom Lineage Response Pydantic Model
+   that inherits from its parent (LineageResponse).
+
+   This model overrides the "graph" field within the
+   Lineage Response, and converts it from an untyped
+   dictionary into a pydantic object/ typed datatype.
+
+   The custom validator function is called, and has custom
+   parsing logic to parse the nodes as well.
+
+
+
+   .. py:attribute:: graph
+      :type:  Optional[CustomGraph]
+
+

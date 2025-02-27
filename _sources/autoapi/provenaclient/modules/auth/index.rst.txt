@@ -1,0 +1,545 @@
+provenaclient.modules.auth
+==========================
+
+.. py:module:: provenaclient.modules.auth
+
+.. autoapi-nested-parse::
+
+   Created Date: Friday May 31st 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday May 31st 2024 9:50:26 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Auth API L3 Module.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.auth.AdminAuthSubModule
+   provenaclient.modules.auth.Auth
+
+
+Module Contents
+---------------
+
+.. py:class:: AdminAuthSubModule(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, auth_client: provenaclient.clients.AuthClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _auth_client
+      :type:  provenaclient.clients.AuthClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: get_all_pending_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets all requests with pending status
+
+      :returns: The response object
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: get_all_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets all requests
+
+      :returns: The response object
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: get_user_pending_request_history(username: str) -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets pending requests for specified user
+
+      :param username: Username to query
+      :type username: str
+
+      :returns: The response list
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: get_user_request_history(username: str) -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets all requests for specified user
+
+      :param username: Username to query
+      :type username: str
+
+      :returns: The response list
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: post_add_note(note: ProvenaInterfaces.AuthAPI.RequestAddNote) -> None
+      :async:
+
+
+      Adds a note to an existing request
+
+      :param note: Payload incl note info
+      :type note: RequestAddNote
+
+
+
+   .. py:method:: post_change_request_state(send_email_alert: bool, change: ProvenaInterfaces.AuthAPI.AccessRequestStatusChange) -> ProvenaInterfaces.AuthAPI.ChangeStateStatus
+      :async:
+
+
+      Change state of a request.
+
+      :param send_email_alert: Should trigger email alert?
+      :type send_email_alert: bool
+      :param change: The details of change
+      :type change: AccessRequestStatusChange
+
+      :returns: The response object
+      :rtype: ChangeStateStatus
+
+
+
+   .. py:method:: get_list_groups() -> ProvenaInterfaces.AuthAPI.ListGroupsResponse
+      :async:
+
+
+      Gets a list of groups
+
+      :returns: List of groups
+      :rtype: ListGroupsResponse
+
+
+
+   .. py:method:: get_describe_group(group_id: str) -> ProvenaInterfaces.AuthAPI.DescribeGroupResponse
+      :async:
+
+
+      Describes a group by ID
+
+      :param group_id: The group
+      :type group_id: str
+
+      :returns: Description
+      :rtype: DescribeGroupResponse
+
+
+
+   .. py:method:: get_list_members(group_id: str) -> ProvenaInterfaces.AuthAPI.ListMembersResponse
+      :async:
+
+
+      Lists members of group
+
+      :param group_id: The gruop
+      :type group_id: str
+
+      :returns: The list of members
+      :rtype: ListMembersResponse
+
+
+
+   .. py:method:: get_list_group_membership(username: str) -> ProvenaInterfaces.AuthAPI.ListUserMembershipResponse
+      :async:
+
+
+      Gets list of groups a user is in
+
+      :param username: The username
+      :type username: str
+
+      :returns: The list of groups
+      :rtype: ListUserMembershipResponse
+
+
+
+   .. py:method:: get_check_user_membership(username: str, group_id: str) -> ProvenaInterfaces.AuthAPI.CheckMembershipResponse
+      :async:
+
+
+      Checks user membership within a group
+
+      :param username: The username to target
+      :type username: str
+      :param group_id: The group to check
+      :type group_id: str
+
+      :returns: Response
+      :rtype: CheckMembershipResponse
+
+
+
+   .. py:method:: post_groups_add_member(group_id: str, user: ProvenaInterfaces.AuthAPI.GroupUser) -> ProvenaInterfaces.AuthAPI.AddMemberResponse
+      :async:
+
+
+      Adds a member to a group
+
+      :param group_id: Id of group
+      :type group_id: str
+      :param user: The user to add
+      :type user: GroupUser
+
+      :returns: The response
+      :rtype: AddMemberResponse
+
+
+
+   .. py:method:: delete_remove_member(group_id: str, username: str) -> ProvenaInterfaces.AuthAPI.RemoveMemberResponse
+      :async:
+
+
+      Removes member from group
+
+      :param group_id: The id of group
+      :type group_id: str
+      :param username: The user to remove
+      :type username: str
+
+      :returns: The response
+      :rtype: RemoveMemberResponse
+
+
+
+   .. py:method:: post_add_group(group: ProvenaInterfaces.AuthAPI.UserGroupMetadata) -> ProvenaInterfaces.AuthAPI.AddGroupResponse
+      :async:
+
+
+      Adds a group/creates group
+
+      :param group: The group details
+      :type group: UserGroupMetadata
+
+      :returns: The response
+      :rtype: AddGroupResponse
+
+
+
+   .. py:method:: put_update_group(group: ProvenaInterfaces.AuthAPI.UserGroupMetadata) -> ProvenaInterfaces.AuthAPI.UpdateGroupResponse
+      :async:
+
+
+      Updates group details
+
+      :param group: The group metadata
+      :type group: UserGroupMetadata
+
+      :returns: The response
+      :rtype: UpdateGroupResponse
+
+
+
+   .. py:method:: get_export_groups() -> ProvenaInterfaces.AuthAPI.GroupsExportResponse
+      :async:
+
+
+      Exports all group details in specified format.
+
+      :returns: The data dump
+      :rtype: GroupsExportResponse
+
+
+
+   .. py:method:: post_import_groups(body: ProvenaInterfaces.AuthAPI.GroupsImportRequest) -> ProvenaInterfaces.AuthAPI.GroupsImportResponse
+      :async:
+
+
+      Imports groups from data dump back in
+
+      :param body: The import request incl. dump
+      :type body: GroupsImportRequest
+
+      :returns: The response
+      :rtype: GroupsImportResponse
+
+
+
+   .. py:method:: post_restore_groups_from_table(table_name: str, body: ProvenaInterfaces.AuthAPI.GroupsRestoreRequest) -> ProvenaInterfaces.AuthAPI.GroupsImportResponse
+      :async:
+
+
+      Restores groups by first dumping from valid group table.
+      Needs permissions to table.
+
+      :param table_name: The table name
+      :type table_name: str
+      :param body: The request
+      :type body: GroupsRestoreRequest
+
+      :returns: The response details
+      :rtype: GroupsImportResponse
+
+
+
+   .. py:method:: get_link_lookup_username(username: str) -> ProvenaInterfaces.AuthAPI.AdminLinkUserLookupResponse
+      :async:
+
+
+      Gets the linked person for user
+
+      :param username: User to lookup
+      :type username: str
+
+      :returns: Response
+      :rtype: AdminLinkUserLookupResponse
+
+
+
+   .. py:method:: get_link_reverse_lookup_username(person_id: str) -> ProvenaInterfaces.AuthAPI.UserLinkReverseLookupResponse
+      :async:
+
+
+      Looks up reverse by person ID
+
+      :param person_id: The person to lookup
+      :type person_id: str
+
+      :returns: The response
+      :rtype: UserLinkReverseLookupResponse
+
+
+
+   .. py:method:: post_link_assign(body: ProvenaInterfaces.AuthAPI.AdminLinkUserAssignRequest) -> ProvenaInterfaces.AuthAPI.AdminLinkUserAssignResponse
+      :async:
+
+
+      Assigns a person to a given user
+
+      :param body: The request
+      :type body: AdminLinkUserAssignRequest
+
+      :returns: The response
+      :rtype: AdminLinkUserAssignResponse
+
+
+
+   .. py:method:: delete_clear_link(username: str) -> ProvenaInterfaces.AuthAPI.AdminLinkUserClearResponse
+      :async:
+
+
+      Deletes an existing link
+
+      :param username: The user to unlink
+      :type username: str
+
+      :returns: The response
+      :rtype: AdminLinkUserClearResponse
+
+
+
+.. py:class:: Auth(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, auth_client: provenaclient.clients.AuthClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _auth_client
+      :type:  provenaclient.clients.AuthClient
+
+
+   .. py:attribute:: admin
+      :type:  AdminAuthSubModule
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: get_user_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets the users access request history
+
+      :returns: The list of requests
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: post_user_request_change(body: ProvenaInterfaces.AuthAPI.AccessReport, send_email: bool) -> ProvenaInterfaces.AuthAPI.StatusResponse
+      :async:
+
+
+      Requests a change by diffing access models
+
+      :param body: The new access desired
+      :type body: AccessReport
+      :param send_email: Email alert
+      :type send_email: bool
+
+      :returns: Ok?
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_user_pending_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets only pending requests from history
+
+      :returns: The list
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: get_user_generate_access_report() -> ProvenaInterfaces.AuthAPI.AccessReportResponse
+      :async:
+
+
+      Generates an access report detailing system access.
+
+      :returns: The response
+      :rtype: AccessReportResponse
+
+
+
+   .. py:method:: get_list_groups() -> ProvenaInterfaces.AuthAPI.ListGroupsResponse
+      :async:
+
+
+      Lists all groups
+
+      :returns: List of groups
+      :rtype: ListGroupsResponse
+
+
+
+   .. py:method:: get_describe_group(group_id: str) -> ProvenaInterfaces.AuthAPI.DescribeGroupResponse
+      :async:
+
+
+      Describes a specific gruop
+
+      :param group_id: The id of group
+      :type group_id: str
+
+      :returns: Response with details
+      :rtype: DescribeGroupResponse
+
+
+
+   .. py:method:: get_list_membership() -> ProvenaInterfaces.AuthAPI.ListUserMembershipResponse
+      :async:
+
+
+      Gets the list of groups user is member of
+
+      :returns: List and details
+      :rtype: ListUserMembershipResponse
+
+
+
+   .. py:method:: get_list_group_members(group_id: str) -> ProvenaInterfaces.AuthAPI.ListMembersResponse
+      :async:
+
+
+      Lists the members of a given group
+
+      :param group_id: The group to lookup
+      :type group_id: str
+
+      :returns: Members
+      :rtype: ListMembersResponse
+
+
+
+   .. py:method:: get_check_membership(group_id: str) -> ProvenaInterfaces.AuthAPI.CheckMembershipResponse
+      :async:
+
+
+      Checks if user is in specific group
+
+      :param group_id: The group to check
+      :type group_id: str
+
+      :returns: In group?
+      :rtype: CheckMembershipResponse
+
+
+
+   .. py:method:: get_link_lookup_username(username: ProvenaInterfaces.AuthAPI.Optional[str] = None) -> ProvenaInterfaces.AuthAPI.UserLinkUserLookupResponse
+      :async:
+
+
+      Looks up either current user or specified user
+
+      :param username: The username if not current user. Defaults to None.
+      :type username: Optional[str], optional
+
+      :returns: The response indicating link
+      :rtype: UserLinkUserLookupResponse
+
+
+
+   .. py:method:: post_link_assign(body: ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest) -> ProvenaInterfaces.AuthAPI.UserLinkUserAssignResponse
+      :async:
+
+
+      Assigns link to current user.
+
+      :param body: The link to assign
+      :type body: UserLinkUserAssignRequest
+
+      :returns: The response indicating success
+      :rtype: UserLinkUserAssignResponse
+
+
+
+   .. py:method:: post_link_validate(body: ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest) -> ProvenaInterfaces.AuthAPI.UserLinkUserValidateResponse
+      :async:
+
+
+      Validates link before making it.
+
+      :param body: The link to assign
+      :type body: UserLinkUserAssignRequest
+
+      :returns: Valid?
+      :rtype: UserLinkUserValidateResponse
+
+
+
