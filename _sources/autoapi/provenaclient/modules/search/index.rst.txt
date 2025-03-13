@@ -1,0 +1,81 @@
+provenaclient.modules.search
+============================
+
+.. py:module:: provenaclient.modules.search
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday May 30th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Search API L3 Module.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.modules.search.DEFAULT_SEARCH_LIMIT
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.search.Search
+
+
+Module Contents
+---------------
+
+.. py:data:: DEFAULT_SEARCH_LIMIT
+   :value: 25
+
+
+.. py:class:: Search(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config, search_client: provenaclient.clients.SearchClient)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _search_client
+      :type:  provenaclient.clients.SearchClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: search_registry(query: str, limit: Optional[int], subtype_filter: Optional[ProvenaInterfaces.RegistryModels.ItemSubType]) -> ProvenaInterfaces.SearchAPI.QueryResults
+      :async:
+
+
+      Searches the registry for given query, limit and subtype.
+
+      :param query: The query to make
+      :type query: str
+      :param limit: The query limit
+      :type limit: Optional[int]
+      :param subtype_filter: The subtype to filter by if any
+      :type subtype_filter: Optional[ItemSubType]
+
+      :returns: Results - ids and scores
+      :rtype: QueryResults
+
+
+

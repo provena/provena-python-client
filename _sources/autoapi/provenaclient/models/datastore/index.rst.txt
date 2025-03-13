@@ -1,0 +1,107 @@
+provenaclient.models.datastore
+==============================
+
+.. py:module:: provenaclient.models.datastore
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday June 6th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Set of Pydantic models used to define client interfaces which are missing.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.models.datastore.SearchItem
+   provenaclient.models.datastore.LoadedSearchItem
+   provenaclient.models.datastore.UnauthorisedSearchItem
+   provenaclient.models.datastore.FailedSearchItem
+   provenaclient.models.datastore.RevertMetadata
+   provenaclient.models.datastore.LoadedSearchResponse
+
+
+Module Contents
+---------------
+
+.. py:class:: SearchItem
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: score
+      :type:  float
+
+
+.. py:class:: LoadedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+   .. py:attribute:: item
+      :type:  ProvenaInterfaces.RegistryModels.ItemDataset
+
+
+.. py:class:: UnauthorisedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+.. py:class:: FailedSearchItem
+
+   Bases: :py:obj:`SearchItem`
+
+
+   .. py:attribute:: error_info
+      :type:  str
+
+
+.. py:class:: RevertMetadata
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: id
+      :type:  str
+
+
+   .. py:attribute:: history_id
+      :type:  int
+
+
+   .. py:attribute:: reason
+      :type:  str
+
+
+.. py:class:: LoadedSearchResponse
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: items
+      :type:  List[LoadedSearchItem]
+
+
+   .. py:attribute:: auth_errors
+      :type:  List[UnauthorisedSearchItem]
+
+
+   .. py:attribute:: misc_errors
+      :type:  List[FailedSearchItem]
+
+

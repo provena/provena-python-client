@@ -1,0 +1,194 @@
+provenaclient.utils.async_job_helpers
+=====================================
+
+.. py:module:: provenaclient.utils.async_job_helpers
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Set of helpers for running polling tasks against the job API until completion etc.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.async_job_helpers.JOB_FINISHED_STATES
+   provenaclient.utils.async_job_helpers.Payload
+   provenaclient.utils.async_job_helpers.PollCallbackData
+   provenaclient.utils.async_job_helpers.PollCallbackResponse
+   provenaclient.utils.async_job_helpers.PollCallbackFunction
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.async_job_helpers.PollTimeoutException
+   provenaclient.utils.async_job_helpers.PollFunctionErrorException
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.utils.async_job_helpers.timestamp
+   provenaclient.utils.async_job_helpers.poll_callback
+   provenaclient.utils.async_job_helpers.wait_for_in_progress
+   provenaclient.utils.async_job_helpers.wait_for_entry_in_queue
+   provenaclient.utils.async_job_helpers.wait_for_completion
+   provenaclient.utils.async_job_helpers.wait_for_full_lifecycle
+   provenaclient.utils.async_job_helpers.wait_for_full_successful_lifecycle
+
+
+Module Contents
+---------------
+
+.. py:data:: JOB_FINISHED_STATES
+
+.. py:data:: Payload
+
+.. py:function:: timestamp() -> int
+
+.. py:data:: PollCallbackData
+
+.. py:data:: PollCallbackResponse
+
+.. py:data:: PollCallbackFunction
+
+.. py:exception:: PollTimeoutException
+
+   Bases: :py:obj:`Exception`
+
+
+   Raised when poll operation exceeds timeout
+
+
+.. py:exception:: PollFunctionErrorException
+
+   Bases: :py:obj:`Exception`
+
+
+   Raised when poll operation callback errors
+
+
+.. py:function:: poll_callback(poll_interval_seconds: int, timeout_seconds: int, callback: PollCallbackFunction) -> PollCallbackData
+   :async:
+
+
+   The poll callback function which repeatedly polls given func according to spec
+
+   :param poll_interval_seconds: The polling interval
+   :type poll_interval_seconds: int
+   :param timeout_seconds: The timeout to adhere to
+   :type timeout_seconds: int
+   :param callback: The call back function itself
+   :type callback: PollCallbackFunction
+
+   :raises PollFunctionErrorException: Unexpected error
+   :raises PollTimeoutException: Timeout
+
+   :returns: The resulting data (job status table probably)
+   :rtype: PollCallbackData
+
+
+.. py:function:: wait_for_in_progress(session_id: str, client: provenaclient.clients.JobAPIClient, settings: provenaclient.models.AsyncAwaitSettings) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+   :async:
+
+
+   Waits for the entry to be in in progress status
+
+   :param session_id: The session ID
+   :type session_id: str
+   :param client: The L2 job client
+   :type client: JobAPIClient
+   :param settings: The settings
+   :type settings: AsyncAwaitSettings
+
+   :returns: The resulting entry
+   :rtype: JobStatusTable
+
+
+.. py:function:: wait_for_entry_in_queue(session_id: str, client: provenaclient.clients.JobAPIClient, settings: provenaclient.models.AsyncAwaitSettings) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+   :async:
+
+
+   Waits for the entry to appear in the queue
+
+   :param session_id: The session ID
+   :type session_id: str
+   :param client: The L2 job client
+   :type client: JobAPIClient
+   :param settings: The settings
+   :type settings: AsyncAwaitSettings
+
+   :raises Exception: If non 400 error
+
+   :returns: The resulting entry
+   :rtype: JobStatusTable
+
+
+.. py:function:: wait_for_completion(session_id: str, client: provenaclient.clients.JobAPIClient, settings: provenaclient.models.AsyncAwaitSettings) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+   :async:
+
+
+   Waits for completion.
+
+   :param session_id: The session ID
+   :type session_id: str
+   :param client: The L2 job client
+   :type client: JobAPIClient
+   :param settings: The settings
+   :type settings: AsyncAwaitSettings
+
+   :returns: The resulting entry
+   :rtype: JobStatusTable
+
+
+.. py:function:: wait_for_full_lifecycle(session_id: str, client: provenaclient.clients.JobAPIClient, settings: provenaclient.models.AsyncAwaitSettings) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+   :async:
+
+
+   Waits for the entire lifecycle of a job, adhering to settings. Uses L2 client.
+
+   :param session_id: The session ID to await
+   :type session_id: str
+   :param client: The client to utilise
+   :type client: JobAPIClient
+   :param settings: The settings including timeouts
+   :type settings: AsyncAwaitSettings
+
+   :returns: The resulting entry
+   :rtype: JobStatusTable
+
+
+.. py:function:: wait_for_full_successful_lifecycle(session_id: str, client: provenaclient.clients.JobAPIClient, settings: provenaclient.models.AsyncAwaitSettings) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+   :async:
+
+
+   Waits for the full lifecycle of an async job and asserts that it is successful at the end.
+
+   :param session_id: The session ID to await
+   :type session_id: str
+   :param client: The client
+   :type client: JobAPIClient
+   :param settings: The settings
+   :type settings: AsyncAwaitSettings
+
+   :returns: The resulting successful job
+   :rtype: JobStatusTable
+
+

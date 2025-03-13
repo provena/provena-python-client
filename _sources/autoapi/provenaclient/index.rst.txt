@@ -1,0 +1,235 @@
+provenaclient
+=============
+
+.. py:module:: provenaclient
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/provenaclient/auth/index
+   /autoapi/provenaclient/clients/index
+   /autoapi/provenaclient/models/index
+   /autoapi/provenaclient/modules/index
+   /autoapi/provenaclient/utils/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.__version__
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.ProvenaClient
+   provenaclient.Config
+   provenaclient.EndpointConfig
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+
+.. py:class:: ProvenaClient(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: datastore
+      :type:  provenaclient.modules.Datastore
+
+
+   .. py:attribute:: _search_client
+      :type:  provenaclient.clients.SearchClient
+
+
+   .. py:attribute:: search
+      :type:  provenaclient.modules.Search
+
+
+   .. py:attribute:: _auth_client
+      :type:  provenaclient.clients.AuthClient
+
+
+   .. py:attribute:: auth_api
+      :type:  provenaclient.modules.Auth
+
+
+   .. py:attribute:: _registry_client
+      :type:  provenaclient.clients.RegistryClient
+
+
+   .. py:attribute:: registry
+      :type:  provenaclient.modules.Registry
+
+
+   .. py:attribute:: _prov_client
+      :type:  provenaclient.clients.ProvClient
+
+
+   .. py:attribute:: prov_api
+      :type:  provenaclient.modules.Prov
+
+
+   .. py:attribute:: _job_client
+      :type:  provenaclient.clients.JobAPIClient
+
+
+   .. py:attribute:: job_api
+      :type:  provenaclient.modules.JobService
+
+
+   .. py:attribute:: _id_client
+      :type:  provenaclient.clients.IdServiceClient
+
+
+   .. py:attribute:: id_api
+      :type:  provenaclient.modules.IDService
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+.. py:class:: Config(domain: str, realm_name: str, api_overrides: APIOverrides = APIOverrides())
+
+   .. py:attribute:: _api_config
+      :type:  EndpointConfig
+
+
+   .. py:property:: search_api_endpoint
+      :type: str
+
+
+      Generate the search api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the search api endpoint.
+      :rtype: str
+
+
+   .. py:property:: jobs_service_api_endpoint
+      :type: str
+
+
+      Generate the job api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the job api endpoint.
+      :rtype: str
+
+
+   .. py:property:: handle_service_api_endpoint
+      :type: str
+
+
+      Generate the handle_service api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the handle_service api endpoint.
+      :rtype: str
+
+
+   .. py:property:: search_service_endpoint
+      :type: str
+
+
+      Generate the search_service api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the search_service api endpoint.
+      :rtype: str
+
+
+   .. py:property:: auth_api_endpoint
+      :type: str
+
+
+      Generate the auth api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the auth api endpoint.
+      :rtype: str
+
+
+   .. py:property:: prov_api_endpoint
+      :type: str
+
+
+      Generate the prov api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the prov api endpoint.
+      :rtype: str
+
+
+   .. py:property:: datastore_api_endpoint
+      :type: str
+
+
+      Generate the datastore api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the datastore api endpoint.
+      :rtype: str
+
+
+   .. py:property:: registry_api_endpoint
+      :type: str
+
+
+      Generate the registry api endpoint based on the
+      provided domain, prefix and possible override value.
+
+      :returns: A string containing the registry api endpoint.
+      :rtype: str
+
+
+   .. py:property:: keycloak_endpoint
+      :type: str
+
+
+      Generate the keycloak realm endpoint using domain, realm_name and possible
+      override value.
+
+      :returns: A string containing the keycloak realm endpoint.
+      :rtype: str
+
+
+.. py:class:: EndpointConfig
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   .. py:attribute:: domain
+      :type:  str
+
+
+   .. py:attribute:: realm_name
+      :type:  str
+
+
+   .. py:attribute:: api_overrides
+      :type:  APIOverrides
+
+
