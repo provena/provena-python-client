@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.25.0 (2025-03-13)
+
+### Features
+
+* feat: Jira-RRAPIS-1875 (Minor) Adding advanced provenance usage docs (#41) ([`00ac780`](https://github.com/provena/provena-python-client/commit/00ac780146550ba16b62aa86560bcefa38c1a1a4))
+
+
 ## v0.24.0 (2025-02-27)
 
 ### Features
