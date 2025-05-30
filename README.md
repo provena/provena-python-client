@@ -49,6 +49,15 @@ Contact Provena Developers via https://www.csiro.au/en/contact
 ## Contributing:
  Refer to the following doc [Contributing Guidelines](./CONTRIBUTING.md) 
 
+## Citation
+Cite as:
+```
+Baker, Peter; Kulkarni, Parth; Petridis, Ross; & Yu, Jonathan (2024): Provena Python Client v0.13.0. CSIRO. v1. Software. https://doi.org/10.25919/j8s8-tf97
+```
+
+Refer to this link for details of the software collection and other versions:
+https://data.csiro.au/collection/csiro%3A63257v1
+
 ## License
 
 `provenaclient` was created by Provena Development Team (CSIRO). Provena Development Team (CSIRO) retains all rights to the source and it may not be reproduced, distributed, or used to create derivative works.
