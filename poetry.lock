@@ -1817,7 +1817,7 @@ pydantic = ">=2.0"
 type = "git"
 url = "https://github.com/provena/provena-interfaces-v2.git"
 reference = "main"
-resolved_reference = "37195aafbddae5b8b503aac63b387c758cbdbfee"
+resolved_reference = "328566b6745bb40a32486bf09bbdc037a2fc834d"
 
 [[package]]
 name = "psutil"
