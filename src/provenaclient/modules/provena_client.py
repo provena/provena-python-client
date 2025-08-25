@@ -29,34 +29,34 @@ class ProvenaClient(ModuleService):
     # Data store
     _datastore_client: DatastoreClient
     datastore: Datastore
-    
-    # Search 
+
+    # Search
     _search_client: SearchClient
     search: Search
-    
-    # Auth 
+
+    # Auth
     _auth_client: AuthClient
     auth_api: Auth
-    
-    # Registry 
+
+    # Registry
     _registry_client: RegistryClient
     registry: Registry
-    
-    # Prov 
+
+    # Prov
     _prov_client: ProvClient
     prov_api: Prov
-    
-    # Jobs 
+
+    # Jobs
     _job_client: JobAPIClient
     job_api: JobService
-    
-    # ID service 
+
+    # ID service
     _id_client: IdServiceClient
     id_api: IDService
 
     def __init__(self, auth: AuthManager, config: Config) -> None:
         """
-        
+
         Build an instance of the Provena Client.
 
         Args:
@@ -73,8 +73,8 @@ class ProvenaClient(ModuleService):
         self._auth_client = AuthClient(auth, config)
         self._registry_client = RegistryClient(auth, config)
         self._prov_client = ProvClient(auth, config)
-        self._job_client = JobAPIClient(auth,config)
-        self._id_client = IdServiceClient(auth,config)
+        self._job_client = JobAPIClient(auth, config)
+        self._id_client = IdServiceClient(auth, config)
 
         self.datastore = Datastore(
             auth=auth,
@@ -96,25 +96,26 @@ class ProvenaClient(ModuleService):
         )
 
         self.registry = Registry(
-            auth=auth, 
+            auth=auth,
             config=config,
             registry_client=self._registry_client
         )
 
         self.prov_api = Prov(
-            auth=auth, 
-            config=config, 
-            prov_client=self._prov_client
+            auth=auth,
+            config=config,
+            prov_client=self._prov_client,
+            registry_client=self._registry_client
         )
-        
+
         self.job_api = JobService(
-            auth=auth, 
-            config=config, 
+            auth=auth,
+            config=config,
             job_api_client=self._job_client
         )
-        
+
         self.id_api = IDService(
-            auth=auth, 
-            config=config, 
+            auth=auth,
+            config=config,
             id_service_client=self._id_client
         )

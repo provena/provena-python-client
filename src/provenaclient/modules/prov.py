@@ -12,19 +12,20 @@ Date      	By	Comments
 ----------	---	---------------------------------------------------------
 
 29-11-2024 | Parth Kulkarni | Added generate-report functionality. 
+22-08-2025 | Peter Baker | Added delete model run capability
 
 '''
 
 from provenaclient.auth.manager import AuthManager
 from provenaclient.utils.config import Config
-from provenaclient.clients import ProvClient
+from provenaclient.clients import ProvClient, RegistryClient
 from provenaclient.utils.exceptions import *
 from provenaclient.modules.module_helpers import *
 from provenaclient.utils.helpers import read_file_helper, write_file_helper, get_and_validate_file_path
 from typing import List
 from provenaclient.models.general import CustomLineageResponse, HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse, GenerateReportRequest
-from ProvenaInterfaces.RegistryAPI import ItemModelRun
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, ConvertModelRunsResponse, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, PostUpdateModelRunResponse, GenerateReportRequest, PostDeleteGraphResponse
+from ProvenaInterfaces.RegistryAPI import ItemModelRun, ItemSubType
 from ProvenaInterfaces.SharedTypes import StatusResponse
 
 # L3 interface.
@@ -33,10 +34,12 @@ PROV_API_DEFAULT_SEARCH_DEPTH = 3
 DEFAULT_CONFIG_FILE_NAME = "prov-api.env"
 DEFAULT_RELATIVE_FILE_PATH = "./"
 
+
 class ProvAPIAdminSubModule(ModuleService):
     _prov_api_client: ProvClient
+    _registry_api_client: RegistryClient
 
-    def __init__(self, auth: AuthManager, config: Config, prov_api_client: ProvClient) -> None:
+    def __init__(self, auth: AuthManager, config: Config, prov_api_client: ProvClient, registry_api_client: RegistryClient) -> None:
         """
         Admin sub module of the Prov API providing functionality
         for the admin endpoints.
@@ -57,6 +60,7 @@ class ProvAPIAdminSubModule(ModuleService):
 
         # Clients related to the prov_api scoped as private.
         self._prov_api_client = prov_api_client
+        self._registry_api_client = registry_api_client
 
     async def generate_config_file(self, required_only: bool = True, file_path: Optional[str] = None, write_to_file: bool = False) -> str:
         """Generates a nicely formatted .env file of the current required/non supplied properties 
@@ -150,11 +154,28 @@ class ProvAPIAdminSubModule(ModuleService):
 
         return await self._prov_api_client.admin.store_all_registry_records(validate_record=validate_record)
 
+    async def delete_model_run_provenance(self, model_run_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a model run by its ID - provenance store ONLY"""
+        return await self._prov_api_client.admin.delete_model_run_provenance(model_run_id=model_run_id, trial_mode=trial_mode)
+
+    async def delete_model_run_provenance_and_registry(self, model_run_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a model run by its ID in both the registry AND in the provenance store."""
+        # First, delete from provenance
+        diff = await self._prov_api_client.admin.delete_model_run_provenance(model_run_id=model_run_id, trial_mode=trial_mode)
+
+        if (trial_mode):
+            # done if we are in trial mode - do not execute action
+            return diff
+
+        else:
+            await self._registry_api_client.admin.delete_item(id=model_run_id, item_subtype=ItemSubType.MODEL_RUN)
+            return diff
+
 
 class Prov(ModuleService):
     _prov_client: ProvClient
 
-    def __init__(self, auth: AuthManager, config: Config, prov_client: ProvClient) -> None:
+    def __init__(self, auth: AuthManager, config: Config, prov_client: ProvClient, registry_client: RegistryClient) -> None:
         """Initialises a new datastore object, which sits between the user and the datastore api operations.
 
         Parameters
@@ -173,7 +194,8 @@ class Prov(ModuleService):
         self._prov_api_client = prov_client
 
         # Submodules
-        self.admin = ProvAPIAdminSubModule(auth, config, prov_client)
+        self.admin = ProvAPIAdminSubModule(
+            auth, config, prov_client, registry_client)
 
     async def get_health_check(self) -> HealthCheckResponse:
         """Checks the health status of the PROV-API.
@@ -236,7 +258,8 @@ class Prov(ModuleService):
         """
 
         upstream_response = await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth)
-        typed_upstream_response = CustomLineageResponse.parse_obj(upstream_response.dict())
+        typed_upstream_response = CustomLineageResponse.parse_obj(
+            upstream_response.dict())
         return typed_upstream_response
 
     async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
@@ -258,7 +281,8 @@ class Prov(ModuleService):
         """
 
         typed_downstream_response = await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
-        typed_downstream_response = CustomLineageResponse.parse_obj(typed_downstream_response.dict())
+        typed_downstream_response = CustomLineageResponse.parse_obj(
+            typed_downstream_response.dict())
         return typed_downstream_response
 
     async def get_contributing_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
@@ -279,7 +303,8 @@ class Prov(ModuleService):
         """
 
         contributing_datasets = await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
-        typed_contributing_datasets = CustomLineageResponse.parse_obj(contributing_datasets.dict())
+        typed_contributing_datasets = CustomLineageResponse.parse_obj(
+            contributing_datasets.dict())
         return typed_contributing_datasets
 
     async def get_effected_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
@@ -300,7 +325,8 @@ class Prov(ModuleService):
         """
 
         effected_datasets_response = await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
-        typed_effected_datasets = CustomLineageResponse.parse_obj(effected_datasets_response.dict())
+        typed_effected_datasets = CustomLineageResponse.parse_obj(
+            effected_datasets_response.dict())
         return typed_effected_datasets
 
     async def get_contributing_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
@@ -321,7 +347,8 @@ class Prov(ModuleService):
         """
 
         contributing_agents_response = await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
-        typed_contributing_agents = CustomLineageResponse.parse_obj(contributing_agents_response.dict())
+        typed_contributing_agents = CustomLineageResponse.parse_obj(
+            contributing_agents_response.dict())
         return typed_contributing_agents
 
     async def get_effected_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
@@ -342,7 +369,8 @@ class Prov(ModuleService):
         """
 
         effected_agents_response = await self._prov_api_client.get_effected_agents(starting_id=starting_id, depth=depth)
-        typed_effected_agents = CustomLineageResponse.parse_obj(effected_agents_response.dict())
+        typed_effected_agents = CustomLineageResponse.parse_obj(
+            effected_agents_response.dict())
         return typed_effected_agents
 
     async def register_batch_model_runs(self, batch_model_run_payload: RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
@@ -509,11 +537,11 @@ class Prov(ModuleService):
             write_file_helper(file_path=file_path, content=csv_text)
 
         return csv_text
-    
-    async def generate_report(self, report_request:GenerateReportRequest, file_path: str = DEFAULT_RELATIVE_FILE_PATH) -> None:
+
+    async def generate_report(self, report_request: GenerateReportRequest, file_path: str = DEFAULT_RELATIVE_FILE_PATH) -> None:
         """Generates a provenance report from a Study or Model Run Entity containing the
         associated inputs, model runs and outputs involved. 
-        
+
         The report is generated in `.docx` and saved at relative directory level.
 
         Parameters
@@ -528,14 +556,11 @@ class Prov(ModuleService):
         )
 
         # Sanitize the id to avoid file system errors
-        sanitized_filename = report_request.id.replace("/", "_") + " - Study Close Out Report.docx"
+        sanitized_filename = report_request.id.replace(
+            "/", "_") + " - Study Close Out Report.docx"
 
-        # Append file path and file-name together 
+        # Append file path and file-name together
         file_path = file_path + sanitized_filename
 
         # Writes content into word docx file.
-        write_file_helper(file_path=file_path,content = generated_word_file)
-
-
-
-
+        write_file_helper(file_path=file_path, content=generated_word_file)

@@ -11,7 +11,7 @@ python = "^3.9"
 httpx = "^0.27.0"
 pydantic = "<2.0"
 python-jose = "<3.3.0"
-provena-interfaces = "^2.9.1"
+provena-interfaces = "^2.10.3"
 boto3 = "1.27.1"
 cloudpathlib = { extras = ["s3"], version = "0.15.1" }
 requests = "^2.26.0"
