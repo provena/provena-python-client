@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.26.0 (2025-08-25)
+
+### Bug Fixes
+
+* fix: removing ci in pipeline due to handle intermittent errors
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`a7dec60`](https://github.com/provena/provena-python-client/commit/a7dec606af0b30343aeec5ef1f9fc002f0377507))
+
+### Features
+
+* feat: adding delete model run (prov only) and registry as well (#43) ([`057615d`](https://github.com/provena/provena-python-client/commit/057615d995aef2829485de86d295cb90a2751171))
+
+### Unknown
+
+* Update licence and readme to match DAP record (#42) ([`3fb410a`](https://github.com/provena/provena-python-client/commit/3fb410ae766883f21ff1614710011ec9c9509f02))
+
+
 ## v0.25.0 (2025-03-13)
 
 ### Features
