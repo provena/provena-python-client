@@ -1,7 +1,20 @@
 # CHANGELOG
 
 
+## v0.29.1 (2025-08-26)
+
+### Unknown
+
+* Merge branch 'main' of github.com:provena/provena-python-client ([`8789fb3`](https://github.com/provena/provena-python-client/commit/8789fb3b7eddcc52e31014281e6ecb19a0aa00ae))
+
+
 ## v0.29.0 (2025-08-26)
+
+### Bug Fixes
+
+* fix: client update
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`04c1ebe`](https://github.com/provena/provena-python-client/commit/04c1ebe2e856562a7ec875d02a448644be4ebe29))
 
 ### Features
 
