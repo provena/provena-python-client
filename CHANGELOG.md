@@ -1,6 +1,13 @@
 # CHANGELOG
 
 
+## v0.27.0 (2025-08-26)
+
+### Features
+
+* feat: pydantic v2 support through interim interfaces (#44) ([`4b478c2`](https://github.com/provena/provena-python-client/commit/4b478c21684aa9d4e55470bb2760043d2e65ecb1))
+
+
 ## v0.26.0 (2025-08-25)
 
 ### Bug Fixes
