@@ -21,34 +21,39 @@ from ProvenaInterfaces.ProvenanceAPI import LineageResponse
 class HealthCheckResponse(BaseModel):
     message: str
 
+
 class AsyncAwaitSettings(BaseModel):
     # polling interval in seconds (defaults to 2 seconds)
-    job_polling_interval : int = 2
-        
+    job_polling_interval: int = 2
+
     # how long do we wait for the entry to be present in table? (seconds)
-    job_async_queue_delay_polling_timeout = 20  # 20 seconds
+    job_async_queue_delay_polling_timeout: int = 20  # 20 seconds
 
     # how long do we wait for it to leave pending? (seconds)
-    job_async_pending_polling_timeout = 120  # 2 minutes
+    job_async_pending_polling_timeout: int = 120  # 2 minutes
 
     # how long do we wait for it to become in progress? (seconds)
-    job_async_in_progress_polling_timeout = 180  # 3 minutes
-   
+    job_async_in_progress_polling_timeout : int = 180  # 3 minutes
+
+
 DEFAULT_AWAIT_SETTINGS = AsyncAwaitSettings()
 
+
 class GraphProperty(BaseModel):
-    type: str 
+    type: str
     source: str
     target: str
 
-class CustomGraph(BaseModel): 
+
+class CustomGraph(BaseModel):
     directed: bool
     multigraph: bool
     graph: Dict[str, Any]
-    nodes: List[Node] 
+    nodes: List[Node]
     links: List[GraphProperty]
-    
-class CustomLineageResponse(LineageResponse): 
+
+
+class CustomLineageResponse(LineageResponse):
     """A Custom Lineage Response Pydantic Model 
     that inherits from its parent (LineageResponse). 
 
@@ -61,5 +66,4 @@ class CustomLineageResponse(LineageResponse):
 
     """
 
-    graph: Optional[CustomGraph] #type:ignore
-   
+    graph: Optional[CustomGraph]  # type:ignore
