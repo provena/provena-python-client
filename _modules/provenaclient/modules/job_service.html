@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules.job_service &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules.job_service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.modules.job_service</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Monday June 17th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Monday June 17th 2024 4:45:39 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: Job API L3 Module. Includes Job Admin sub module.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">JobAPIClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.modules.module_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheckResponse</span><span class="p">,</span> <span class="n">AsyncAwaitSettings</span><span class="p">,</span> <span class="n">DEFAULT_AWAIT_SETTINGS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.async_job_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">wait_for_full_lifecycle</span><span class="p">,</span> <span class="n">wait_for_full_successful_lifecycle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.AsyncJobAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">AsyncGenerator</span>
+
+<span class="c1"># L3 interface.</span>
+
+
+<div class="viewcode-block" id="JobAdminSubService">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JobAdminSubService</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_job_api_client</span><span class="p">:</span> <span class="n">JobAPIClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">job_api_client</span><span class="p">:</span> <span class="n">JobAPIClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises a new job admin sub-service object, which sits between the user and the job-service api operations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance. </span>
+<span class="sd">        job_api_client : JobAPIClient</span>
+<span class="sd">            This client interacts with the Job API</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the job-api scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span> <span class="o">=</span> <span class="n">job_api_client</span>
+
+<div class="viewcode-block" id="JobAdminSubService.launch_job">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.launch_job">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">launch_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">AdminLaunchJobRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminLaunchJobResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Launches a new job.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request (AdminLaunchJobRequest): Specified job parameters</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminLaunchJobResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">launch_job</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobAdminSubService.get_job">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.get_job">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminGetJobResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches a job (any job since admin)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            session_id (str): The session ID of job to fetch</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminGetJobResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">get_job</span><span class="p">(</span><span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobAdminSubService.list_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.list_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">AdminListJobsRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminListJobsResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (AdminListJobsRequest): The request including pagination information.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminListJobsResponse: The list of jobs response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="JobAdminSubService.list_all_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.list_all_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">AdminListJobsRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user.</span>
+
+<span class="sd">        Will automatically paginate until list is exhausted.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (AdminListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+            <span class="n">all_jobs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_jobs_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span>
+
+        <span class="k">return</span> <span class="n">all_jobs</span></div>
+
+
+<div class="viewcode-block" id="JobAdminSubService.for_all_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.for_all_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">for_all_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">AdminListJobsRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user.</span>
+
+<span class="sd">        Returns lazy generator for use in for loops.</span>
+
+<span class="sd">        Will automatically paginate until list is exhausted.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (AdminListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">job</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_jobs_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span></div>
+
+    
+
+<div class="viewcode-block" id="JobAdminSubService.list_job_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.list_job_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_job_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">AdminListByBatchRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminListByBatchResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List jobs by batch ID, returning a list of jobs in the batch.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_request (AdminListByBatchRequest): The request including batch ID</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminListByBatchResponse: The list of jobs in the batch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobAdminSubService.list_all_jobs_in_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.list_all_jobs_in_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_jobs_in_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">AdminListByBatchRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user. Will automatically paginate all</span>
+<span class="sd">        entries to exhaust list </span>
+
+<span class="sd">        NOTE this could return more than limit - but figure it may as well</span>
+<span class="sd">        return data fetched for efficiency reasons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (AdminListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+            <span class="n">all_jobs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span>
+
+        <span class="k">return</span> <span class="n">all_jobs</span></div>
+
+
+<div class="viewcode-block" id="JobAdminSubService.for_all_jobs_in_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobAdminSubService.for_all_jobs_in_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">for_all_jobs_in_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">AdminListByBatchRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user. Will automatically paginate all</span>
+<span class="sd">        entries to exhaust list</span>
+
+<span class="sd">        NOTE this could return more than limit - but figure it may as well</span>
+<span class="sd">        return data fetched for efficiency reasons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (AdminListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">job</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span></div>
+</div>
+
+
+<div class="viewcode-block" id="JobService">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JobService</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_job_api_client</span><span class="p">:</span> <span class="n">JobAPIClient</span>
+
+    <span class="n">admin</span><span class="p">:</span> <span class="n">JobAdminSubService</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">job_api_client</span><span class="p">:</span> <span class="n">JobAPIClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises a new job-service object, which sits between the user and the job-service api operations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance. </span>
+<span class="sd">        job_api_client : JobAPIClient</span>
+<span class="sd">            This client interacts with the Job API</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the job-api scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span> <span class="o">=</span> <span class="n">job_api_client</span>
+
+        <span class="c1"># Sub modules</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin</span> <span class="o">=</span> <span class="n">JobAdminSubService</span><span class="p">(</span>
+            <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">job_api_client</span><span class="o">=</span><span class="n">job_api_client</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="JobService.get_health_check">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.get_health_check">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HealthCheckResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Health check the API</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HealthCheckResponse: Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">get_health_check</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="JobService.fetch_job">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.fetch_job">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GetJobResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches a job by session id</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            session_id (str): The session ID</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GetJobResponse: The job fetched</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">fetch_job</span><span class="p">(</span><span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobService.list_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.list_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">ListJobsRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListJobsResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user</span>
+
+<span class="sd">        Can return pagination if page size exceeded</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (ListJobsRequest): The request including details</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobService.list_all_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.list_all_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">ListJobsRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user.</span>
+
+<span class="sd">        Will automatically paginate until list is exhausted.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (ListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+            <span class="n">all_jobs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_jobs_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span>
+
+        <span class="k">return</span> <span class="n">all_jobs</span></div>
+
+
+<div class="viewcode-block" id="JobService.for_all_jobs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.for_all_jobs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">for_all_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_jobs_request</span><span class="p">:</span> <span class="n">ListJobsRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user.</span>
+
+<span class="sd">        Returns lazy generator for use in for loops.</span>
+
+<span class="sd">        Will automatically paginate until list is exhausted.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (ListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">(</span><span class="n">list_jobs_request</span><span class="o">=</span><span class="n">list_jobs_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">job</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_jobs_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span></div>
+
+
+<div class="viewcode-block" id="JobService.list_jobs_in_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.list_jobs_in_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_jobs_in_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">ListByBatchRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListByBatchResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets all jobs within a batch.</span>
+
+<span class="sd">        Can return pagination if page size exceeded</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_request (ListByBatchRequest): The request including batch ID</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListByBatchResponse: The response including list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobService.list_all_jobs_in_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.list_all_jobs_in_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_jobs_in_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">ListByBatchRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user. Will automatically paginate all</span>
+<span class="sd">        entries to exhaust list </span>
+
+<span class="sd">        NOTE this could return more than limit - but figure it may as well</span>
+<span class="sd">        return data fetched for efficiency reasons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (ListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_jobs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+            <span class="n">all_jobs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span>
+
+        <span class="k">return</span> <span class="n">all_jobs</span></div>
+
+
+<div class="viewcode-block" id="JobService.for_all_jobs_in_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.for_all_jobs_in_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">for_all_jobs_in_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_request</span><span class="p">:</span> <span class="n">ListByBatchRequest</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">JobStatusTable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all jobs for the given user. Will automatically paginate all</span>
+<span class="sd">        entries to exhaust list</span>
+
+<span class="sd">        NOTE this could return more than limit - but figure it may as well</span>
+<span class="sd">        return data fetched for efficiency reasons</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            list_jobs_request (ListJobsRequest): The request including details</span>
+<span class="sd">            limit (Optional[int]): Total record limit to enforce, if any</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListJobsResponse: The list of jobs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># paginate until limit hit</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">new_list</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="o">.</span><span class="n">list_jobs_in_batch</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_request</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">new_list</span><span class="o">.</span><span class="n">jobs</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">job</span>
+
+            <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">list_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">new_list</span><span class="o">.</span><span class="n">pagination_key</span></div>
+
+
+<div class="viewcode-block" id="JobService.await_job_completion">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.await_job_completion">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">await_job_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">AsyncAwaitSettings</span> <span class="o">=</span> <span class="n">DEFAULT_AWAIT_SETTINGS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JobStatusTable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Awaits completion of a given job then provides the job info.</span>
+
+<span class="sd">        Completion is defined as a job status which is not pending or in progress.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            session_id (str): The ID of the job to monitor and await completion.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            JobStatusTable: The entry at the latest point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">wait_for_full_lifecycle</span><span class="p">(</span>
+            <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="n">settings</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="JobService.await_successful_job_completion">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/job_service/index.html#provenaclient.modules.JobService.await_successful_job_completion">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">await_successful_job_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">AsyncAwaitSettings</span> <span class="o">=</span> <span class="n">DEFAULT_AWAIT_SETTINGS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JobStatusTable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Awaits successful completion of a given job then provides the job info.</span>
+
+<span class="sd">        Completion is defined as a job status which is not pending or in progress.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            session_id (str): The ID of the job to monitor and await completion.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            JobStatusTable: The entry at the latest point.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">wait_for_full_successful_lifecycle</span><span class="p">(</span>
+            <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_job_api_client</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="n">settings</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

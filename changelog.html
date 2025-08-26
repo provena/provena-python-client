@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHANGELOG &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing Guidelines" href="contributing.html" />
+    <link rel="prev" title="Provenance integration with 3rd party libraries" href="provenance-visualisation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CHANGELOG</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/changelog.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changelog">
+<h1>CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="v0-29-1-2025-08-26">
+<h2>v0.29.1 (2025-08-26)<a class="headerlink" href="#v0-29-1-2025-08-26" title="Link to this heading"></a></h2>
+<section id="unknown">
+<h3>Unknown<a class="headerlink" href="#unknown" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/8789fb3b7eddcc52e31014281e6ecb19a0aa00ae"><code class="docutils literal notranslate"><span class="pre">8789fb3</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-29-0-2025-08-26">
+<h2>v0.29.0 (2025-08-26)<a class="headerlink" href="#v0-29-0-2025-08-26" title="Link to this heading"></a></h2>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: client update</p></li>
+</ul>
+<p>Signed-off-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/04c1ebe2e856562a7ec875d02a448644be4ebe29"><code class="docutils literal notranslate"><span class="pre">04c1ebe</span></code></a>)</p>
+</section>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: fixing poetry to target new lib</p></li>
+</ul>
+<p>Signed-off-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e1e72b28aa582bf42b54de4247a6889ac34ae61b"><code class="docutils literal notranslate"><span class="pre">e1e72b2</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-28-0-2025-08-26">
+<h2>v0.28.0 (2025-08-26)<a class="headerlink" href="#v0-28-0-2025-08-26" title="Link to this heading"></a></h2>
+<section id="chores">
+<h3>Chores<a class="headerlink" href="#chores" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>chore: simple README updates</p></li>
+</ul>
+<p>Signed-off-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e1855f1e01b61305a3af782787d9ca6fc440869e"><code class="docutils literal notranslate"><span class="pre">e1855f1</span></code></a>)</p>
+</section>
+<section id="id1">
+<h3>Features<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: force empty feature (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/4de17b965cf7a8f003cf9d5bd427a765d4a98926"><code class="docutils literal notranslate"><span class="pre">4de17b9</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-27-0-2025-08-26">
+<h2>v0.27.0 (2025-08-26)<a class="headerlink" href="#v0-27-0-2025-08-26" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Features<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: pydantic v2 support through interim interfaces (#44) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/4b478c21684aa9d4e55470bb2760043d2e65ecb1"><code class="docutils literal notranslate"><span class="pre">4b478c2</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-26-0-2025-08-25">
+<h2>v0.26.0 (2025-08-25)<a class="headerlink" href="#v0-26-0-2025-08-25" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Bug Fixes<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: removing ci in pipeline due to handle intermittent errors</p></li>
+</ul>
+<p>Signed-off-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/a7dec606af0b30343aeec5ef1f9fc002f0377507"><code class="docutils literal notranslate"><span class="pre">a7dec60</span></code></a>)</p>
+</section>
+<section id="id4">
+<h3>Features<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: adding delete model run (prov only) and registry as well (#43) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/057615d995aef2829485de86d295cb90a2751171"><code class="docutils literal notranslate"><span class="pre">057615d</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Unknown<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Update licence and readme to match DAP record (#42) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/3fb410ae766883f21ff1614710011ec9c9509f02"><code class="docutils literal notranslate"><span class="pre">3fb410a</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-25-0-2025-03-13">
+<h2>v0.25.0 (2025-03-13)<a class="headerlink" href="#v0-25-0-2025-03-13" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3>Features<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Jira-RRAPIS-1875 (Minor) Adding advanced provenance usage docs (#41) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/00ac780146550ba16b62aa86560bcefa38c1a1a4"><code class="docutils literal notranslate"><span class="pre">00ac780</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-24-0-2025-02-27">
+<h2>v0.24.0 (2025-02-27)<a class="headerlink" href="#v0-24-0-2025-02-27" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>Features<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Jira-RRAPIS-1874 (Minor): Updating the client lib docs with a how-to quickstart  (#40) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/c292c3af8f1d2371f24659d3e168d97dcc0fec32"><code class="docutils literal notranslate"><span class="pre">c292c3a</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-23-0-2024-12-20">
+<h2>v0.23.0 (2024-12-20)<a class="headerlink" href="#v0-23-0-2024-12-20" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3>Features<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Jira-1883- Implementing Generate Report Functionality (#37)</p></li>
+</ul>
+<p>Co-authored-by: Jonathan Yu <a class="reference external" href="mailto:jonathan&#46;yu&#37;&#52;&#48;csiro&#46;au">jonathan<span>&#46;</span>yu<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/9f6207c39b40dcedc9d5102ec7c684d9f1ab7e38"><code class="docutils literal notranslate"><span class="pre">9f6207c</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-22-0-2024-12-20">
+<h2>v0.22.0 (2024-12-20)<a class="headerlink" href="#v0-22-0-2024-12-20" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>Features<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: JIRA 1818 - Adding Types to Lineage Response for Special Queries in Prov-API. (#38) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/926154b2f0dd86241a85e7bf9491f4695ef5ac9e"><code class="docutils literal notranslate"><span class="pre">926154b</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-21-0-2024-11-07">
+<h2>v0.21.0 (2024-11-07)<a class="headerlink" href="#v0-21-0-2024-11-07" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3>Features<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forced release - attestations false this is causing failure in CD job as well. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/01ff4a4732c4273eaebb165d8a9d580f9e5455bf"><code class="docutils literal notranslate"><span class="pre">01ff4a4</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-20-0-2024-11-07">
+<h2>v0.20.0 (2024-11-07)<a class="headerlink" href="#v0-20-0-2024-11-07" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>Features<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forced release due to issue with github pypi action package from development team. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/dfeac9e3fbf9235411593b60f87038113124afad"><code class="docutils literal notranslate"><span class="pre">dfeac9e</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Unknown<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/8ed761589e2087e384bd816c87694f00ac63d80b"><code class="docutils literal notranslate"><span class="pre">8ed7615</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-19-0-2024-11-07">
+<h2>v0.19.0 (2024-11-07)<a class="headerlink" href="#v0-19-0-2024-11-07" title="Link to this heading"></a></h2>
+<section id="id13">
+<h3>Features<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forced release - downgrading to pypi action 1.11 due to known issue caused by action development team. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/2412ae53bc73643ebfd946a44fc0c2fb70d36fe5"><code class="docutils literal notranslate"><span class="pre">2412ae5</span></code></a>)</p></li>
+<li><p>feat: Forced release - Updating CD job with correct PyPI tag. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/5b2ca79f5c2acb707d956544dfd7512857b397f4"><code class="docutils literal notranslate"><span class="pre">5b2ca79</span></code></a>)</p></li>
+<li><p>feat: forced release. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e36d124df70335f0f5bf7a913237af7d59c1dbc4"><code class="docutils literal notranslate"><span class="pre">e36d124</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Unknown<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/d6beab41707ab2589da80bf0534cd6e16bb9a841"><code class="docutils literal notranslate"><span class="pre">d6beab4</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-18-0-2024-11-07">
+<h2>v0.18.0 (2024-11-07)<a class="headerlink" href="#v0-18-0-2024-11-07" title="Link to this heading"></a></h2>
+<section id="id15">
+<h3>Features<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Force updating - Update to latest semantic versioning and github release gh action. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/9a4f84266ca944169cbb79ccc70d75b59f223262"><code class="docutils literal notranslate"><span class="pre">9a4f842</span></code></a>)</p></li>
+<li><p>feat: Forced push - Reverting back to 8.3.0 (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/bc178eaedff12fb776d3995e3abadcbcd7972883"><code class="docutils literal notranslate"><span class="pre">bc178ea</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-17-0-2024-11-07">
+<h2>v0.17.0 (2024-11-07)<a class="headerlink" href="#v0-17-0-2024-11-07" title="Link to this heading"></a></h2>
+<section id="id16">
+<h3>Features<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Forcing release with stable gh action version tag. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/4f30d677bf46674e3e3c34467f459ea8737564e6"><code class="docutils literal notranslate"><span class="pre">4f30d67</span></code></a>)</p></li>
+<li><p>feat: trying newer publish (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/6c2cd03d1dbf207bf874a873725c55802c65ccde"><code class="docutils literal notranslate"><span class="pre">6c2cd03</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>Unknown<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Changing tag to use the most stable version. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/18f197b951e918ed7b510e476b91a1412c7ba3e3"><code class="docutils literal notranslate"><span class="pre">18f197b</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-16-0-2024-11-03">
+<h2>v0.16.0 (2024-11-03)<a class="headerlink" href="#v0-16-0-2024-11-03" title="Link to this heading"></a></h2>
+<section id="id18">
+<h3>Features<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forcing release (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/6ff78c8f3ce677aaa5eb52466f45d2cc05d35df3"><code class="docutils literal notranslate"><span class="pre">6ff78c8</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id19">
+<h3>Unknown<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Update action.yml</p></li>
+</ul>
+<p>Testing incremented version of semantic release (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/4c4f462ef9565d8434de111b13b52f94c3a1ad01"><code class="docutils literal notranslate"><span class="pre">4c4f462</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-15-0-2024-11-03">
+<h2>v0.15.0 (2024-11-03)<a class="headerlink" href="#v0-15-0-2024-11-03" title="Link to this heading"></a></h2>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>docs: Creating Software Architecture Documentation and Added Sequence Diagram (#35)</p></li>
+</ul>
+<p>Co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/cc3aa83da2291cfcd4896aec44e750eab1d697e9"><code class="docutils literal notranslate"><span class="pre">cc3aa83</span></code></a>)</p>
+<ul class="simple">
+<li><p>docs: Added a “how to contribute” section in contributing doc and updated a few other things. (#34) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/47a7e6c082c2ada78dab1fdd3871cc603f7baa4f"><code class="docutils literal notranslate"><span class="pre">47a7e6c</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>Features<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: adding model run update to prov client (#36)</p></li>
+</ul>
+<p>Signed-off-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b57cf71c126f58da76e4d2b59704374d782c7f60"><code class="docutils literal notranslate"><span class="pre">b57cf71</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-14-0-2024-08-29">
+<h2>v0.14.0 (2024-08-29)<a class="headerlink" href="#v0-14-0-2024-08-29" title="Link to this heading"></a></h2>
+<section id="id21">
+<h3>Features<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Completed downloading specific files/directory from dataset. (#33)</p></li>
+</ul>
+<p>Co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/d45906dc5f703b6ff8474809725ff20bf89a84e8"><code class="docutils literal notranslate"><span class="pre">d45906d</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-13-0-2024-08-22">
+<h2>v0.13.0 (2024-08-22)<a class="headerlink" href="#v0-13-0-2024-08-22" title="Link to this heading"></a></h2>
+<section id="id22">
+<h3>Documentation<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>docs: Fixed missing link on docs home page and corrected contributing guide… (#31) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/946729edef1b6ff0201e05288d3105e3c30c05f7"><code class="docutils literal notranslate"><span class="pre">946729e</span></code></a>)</p></li>
+<li><p>docs: Docs-1734 - Completed Repo Level Docs + Created new Landing Page for Client docs. (#30)</p></li>
+</ul>
+<p>Completed Repo Root Level Documentation and created a new landing page for client documentation.</p>
+<p>Co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/d1f71ef2c43a3e0492f8f418c4d16636897ba4e3"><code class="docutils literal notranslate"><span class="pre">d1f71ef</span></code></a>)</p>
+</section>
+<section id="id23">
+<h3>Features<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: JIRA-1730 interactive dataset class in datastore module. (#32)</p></li>
+</ul>
+<p>Added interactive dataset session functionality within the datastore module. Allows users to contionusly perform operations on a specific dataset, without having to keep re-supplying the dataset ID. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/efc8795c03c9cdb02962c7806d7e0141acba4cc7"><code class="docutils literal notranslate"><span class="pre">efc8795</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-12-0-2024-08-08">
+<h2>v0.12.0 (2024-08-08)<a class="headerlink" href="#v0-12-0-2024-08-08" title="Link to this heading"></a></h2>
+<section id="id24">
+<h3>Documentation<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>docs: Docs 1708 setup client documentation (#29)</p></li>
+</ul>
+<p>Setup documentation of client library in CI/CD Pipeline. CI builds docs, and CD publishes docs to github pages using ghp-import tool. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/673dc6a07d2ceddf75183a3755a682a0002e7162"><code class="docutils literal notranslate"><span class="pre">673dc6a</span></code></a>)</p>
+<ul class="simple">
+<li><p>docs: Docs 1708 setup client documentation (#24) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/3b09394ab79c76ac7733f858ab2314be8b56c0eb"><code class="docutils literal notranslate"><span class="pre">3b09394</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>Features<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Forcing new release to access “requests” dependency. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/35950424b51ee61db268ebc5c6e8faf825360187"><code class="docutils literal notranslate"><span class="pre">3595042</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>test: JIRA-1706: Tests 1706 integration tests (#23)</p></li>
+</ul>
+<p>Completed Integration Tests + Created a Guide for Client Library tests.</p>
+<p>Co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/66d96faf6183be1e4236954fc62ea6be883cbf41"><code class="docutils literal notranslate"><span class="pre">66d96fa</span></code></a>)</p>
+</section>
+<section id="id26">
+<h3>Unknown<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Added secerts capture on push to main workflow for CI/CD. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/2d3e8c99d5bb047db8deca012be19b14e6a86b1a"><code class="docutils literal notranslate"><span class="pre">2d3e8c9</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-11-2-2024-07-21">
+<h2>v0.11.2 (2024-07-21)<a class="headerlink" href="#v0-11-2-2024-07-21" title="Link to this heading"></a></h2>
+<section id="id27">
+<h3>Bug Fixes<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: Increasing httpx timeout to 30s global to mirror api gateway (#28) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/98f325efeb0b5e0586c7f5affcbd26978f3ee64b"><code class="docutils literal notranslate"><span class="pre">98f325e</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-11-1-2024-07-19">
+<h2>v0.11.1 (2024-07-19)<a class="headerlink" href="#v0-11-1-2024-07-19" title="Link to this heading"></a></h2>
+<section id="id28">
+<h3>Bug Fixes<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: (auth-api client) user link look up - Issue #26 (#27) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/271df3c0a4fc2c9d36a780dd951e0d643bcee2dc"><code class="docutils literal notranslate"><span class="pre">271df3c</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-11-0-2024-07-12">
+<h2>v0.11.0 (2024-07-12)<a class="headerlink" href="#v0-11-0-2024-07-12" title="Link to this heading"></a></h2>
+<section id="id29">
+<h3>Features<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Implemented L3 general method to get count of all items in registry. (#25) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/096e03729aebceb2556cf139b99c12472fbd785e"><code class="docutils literal notranslate"><span class="pre">096e037</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-10-3-2024-07-04">
+<h2>v0.10.3 (2024-07-04)<a class="headerlink" href="#v0-10-3-2024-07-04" title="Link to this heading"></a></h2>
+<section id="id30">
+<h3>Bug Fixes<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: forcing rebuild due to trusted publisher issue (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/3575b2949fecb412e7f3c52060f0509a61ea0b6f"><code class="docutils literal notranslate"><span class="pre">3575b29</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-10-2-2024-07-04">
+<h2>v0.10.2 (2024-07-04)<a class="headerlink" href="#v0-10-2-2024-07-04" title="Link to this heading"></a></h2>
+<section id="id31">
+<h3>Unknown<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/bda5606d3a6d083c2d31e1f6e7e06d5095c0a3db"><code class="docutils literal notranslate"><span class="pre">bda5606</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-10-1-2024-07-04">
+<h2>v0.10.1 (2024-07-04)<a class="headerlink" href="#v0-10-1-2024-07-04" title="Link to this heading"></a></h2>
+<section id="id32">
+<h3>Bug Fixes<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fix: forcing rebuild due to trusted publisher issue (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/7136675eab81168ba74f8bc7a1caeb847dd4911f"><code class="docutils literal notranslate"><span class="pre">7136675</span></code></a>)</p></li>
+<li><p>fix: Adding more py.typed markers (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/ff3e02983637ba2c2343c039412b0347b1523e02"><code class="docutils literal notranslate"><span class="pre">ff3e029</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="continuous-integration">
+<h3>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>ci: Fixing missing fetch depth = 0 and documenting (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/2302b7a7370fbcbdc1d72ac9164286dc2d5cb5f3"><code class="docutils literal notranslate"><span class="pre">2302b7a</span></code></a>)</p></li>
+<li><p>ci: Fixing missing pass through for CD action (#22) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/0896a3645f44634c53f340bbfc91387c35a29b5f"><code class="docutils literal notranslate"><span class="pre">0896a36</span></code></a>)</p></li>
+<li><p>ci: Modularisation of CI/CD into actions to clearly separate trigger files (#21) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e1f46640b600d8388fcba6be6b6d42ab886ea0bd"><code class="docutils literal notranslate"><span class="pre">e1f4664</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id33">
+<h3>Unknown<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branches ‘modular-actions-setup’ and ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/fee96152cc82198c6934387d6f86fcf8a665c511"><code class="docutils literal notranslate"><span class="pre">fee9615</span></code></a>)</p></li>
+<li><p>Fixing not using new input (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/45cc98c7c436dc7e0d10cdd540ae5f1ee74eec54"><code class="docutils literal notranslate"><span class="pre">45cc98c</span></code></a>)</p></li>
+<li><p>Merge branch ‘main’ into modular-actions-setup (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/36bfd128d936a77961008e16da106598845951ae"><code class="docutils literal notranslate"><span class="pre">36bfd12</span></code></a>)</p></li>
+<li><p>Pass through GITHUB_TOKEN from parent workflow (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/296eba3e0c5d1cdbe9ffd22d439992aba501ba14"><code class="docutils literal notranslate"><span class="pre">296eba3</span></code></a>)</p></li>
+<li><p>Removing test file (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/eae09bf37c19ee6bb6faeedc4d5acd7090497ba3"><code class="docutils literal notranslate"><span class="pre">eae09bf</span></code></a>)</p></li>
+<li><p>Removing fetch depth zero to be safe (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/88fcdbaf2f926941fed5425da9aa581e18f2f739"><code class="docutils literal notranslate"><span class="pre">88fcdba</span></code></a>)</p></li>
+<li><p>Cloning repo before all actions (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/69f23094a16afa960f2b5d4f5d90438923b43a90"><code class="docutils literal notranslate"><span class="pre">69f2309</span></code></a>)</p></li>
+<li><p>Update including test (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e16f6728171520dd9e73a231bebcb332e1c58a95"><code class="docutils literal notranslate"><span class="pre">e16f672</span></code></a>)</p></li>
+<li><p>fix:Update auth’s <strong>init</strong>.py (#20) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b555bd1bfea9a48eb302ab4c839950dc0feac9be"><code class="docutils literal notranslate"><span class="pre">b555bd1</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-10-0-2024-07-02">
+<h2>v0.10.0 (2024-07-02)<a class="headerlink" href="#v0-10-0-2024-07-02" title="Link to this heading"></a></h2>
+<section id="id34">
+<h3>Features<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: improving dependency resolution and adding interfaces (#19) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/d941a8cdb5031bbb9d634ec9ee8d58a6681660b2"><code class="docutils literal notranslate"><span class="pre">d941a8c</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-9-0-2024-06-28">
+<h2>v0.9.0 (2024-06-28)<a class="headerlink" href="#v0-9-0-2024-06-28" title="Link to this heading"></a></h2>
+<section id="id35">
+<h3>Documentation<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>docs: Completed Release Process Documentation. (#17) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/2c8f20fd45137be6f1b483a72a5e18ff542e0429"><code class="docutils literal notranslate"><span class="pre">2c8f20f</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id36">
+<h3>Features<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: JIRA-1710 (minor) completing registry api L2 and L3 interfaces with support for admin, general and other endpoints.  (#18) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/cd2b4e9b37f1c1359694014854cde47121ee5ff8"><code class="docutils literal notranslate"><span class="pre">cd2b4e9</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-8-0-2024-06-21">
+<h2>v0.8.0 (2024-06-21)<a class="headerlink" href="#v0-8-0-2024-06-21" title="Link to this heading"></a></h2>
+<section id="id37">
+<h3>Features<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Updated pyproject.toml settings to increment project versioning. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b61fe49c598052863a6ea6f7ab472301b6d04035"><code class="docutils literal notranslate"><span class="pre">b61fe49</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id38">
+<h3>Unknown<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/cd6ad90cafdc39242540e5a55b1bfdffa40332e8"><code class="docutils literal notranslate"><span class="pre">cd6ad90</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-7-0-2024-06-21">
+<h2>v0.7.0 (2024-06-21)<a class="headerlink" href="#v0-7-0-2024-06-21" title="Link to this heading"></a></h2>
+<section id="id39">
+<h3>Features<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: changed semantic release settings to increment project version. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/1899df90d798765ec4082e1eccf93c24960ce23a"><code class="docutils literal notranslate"><span class="pre">1899df9</span></code></a>)</p></li>
+<li><p>feat: Testing version increment. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/bff0daf3ceef3d7af025ba187cc96601942ce9eb"><code class="docutils literal notranslate"><span class="pre">bff0daf</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id40">
+<h3>Unknown<a class="headerlink" href="#id40" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Included pytest-asycnio missing dependency. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/8d4442a46a358efe1bc01eebdbcda00ed297b51f"><code class="docutils literal notranslate"><span class="pre">8d4442a</span></code></a>)</p></li>
+<li><p>Completed Unit Testing for L1 &amp; L2 Layers.</p></li>
+<li><p>Completed L1 layer testing mocked with various http methods and status codes.</p></li>
+<li><p>Completed L1 layer testing, created fixtures and also added small set of integration tests for L1 layer.</p></li>
+<li><p>Completed L2 Layer Testing, need further review on missing tests and what can be improved.</p></li>
+<li><p>Fixed some tests that were failing due to wrong HTTP type or incorrect use of final url.</p></li>
+<li><p>Completed unit tests with doc string and exception chain identification.</p></li>
+<li><p>Updated CI-CD script to run only once.</p></li>
+<li><p>Added header commenting to files.</p></li>
+<li><p>Updated lock file.</p></li>
+<li><p>mypy testing. Does not seem to be an issue on my end.</p></li>
+<li><p>Included pytest-httpx dependency.</p></li>
+<li><p>change mocked auth service to use  base class methods only and updated robustness of exception chaining function. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/8c52602482c15eb71f694a90172b5ac0c2538498"><code class="docutils literal notranslate"><span class="pre">8c52602</span></code></a>)</p></li>
+<li><p>Refactoring auth interface (#13)</p></li>
+</ul>
+<p>Small refactor of config instantiation (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/7d6dea55a6a80bff49774f0e7bd9e967d36d4dc7"><code class="docutils literal notranslate"><span class="pre">7d6dea5</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-6-0-2024-06-18">
+<h2>v0.6.0 (2024-06-18)<a class="headerlink" href="#v0-6-0-2024-06-18" title="Link to this heading"></a></h2>
+<section id="id41">
+<h3>Features<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forcing update to 0.6.0 (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/91e2879c45dc35fcb6c97e467de8133f6dfee4cc"><code class="docutils literal notranslate"><span class="pre">91e2879</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id42">
+<h3>Unknown<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Adding dataset L3 level IO functions + class header files (#14)</p></li>
+<li><p>Download method completed in sub module to isolate s3 functionality - added sub module sub folder</p></li>
+<li><p>Implementing the upload method and improving variable names</p></li>
+<li><p>Adding file header and configuration for the psioniq extensions</p></li>
+<li><p>Class header documentation and other clean up</p></li>
+<li><p>Fixing lock files</p></li>
+<li><p>Adding list all files (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b7a438839a7f2987f8fa3ce79ae89b29154bc66c"><code class="docutils literal notranslate"><span class="pre">b7a4388</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-5-0-2024-06-18">
+<h2>v0.5.0 (2024-06-18)<a class="headerlink" href="#v0-5-0-2024-06-18" title="Link to this heading"></a></h2>
+<section id="id43">
+<h3>Features<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: forcing another attempt (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/5bb0e49235992bbe8d46d48c4b58dd7c99564826"><code class="docutils literal notranslate"><span class="pre">5bb0e49</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-4-0-2024-06-18">
+<h2>v0.4.0 (2024-06-18)<a class="headerlink" href="#v0-4-0-2024-06-18" title="Link to this heading"></a></h2>
+<section id="id44">
+<h3>Features<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Updating pyproject to promote new release (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/34b71dad6235781294787b4325c9c10891c62b8b"><code class="docutils literal notranslate"><span class="pre">34b71da</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id45">
+<h3>Unknown<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Trigger another build (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/12205b47ca15b6ed266dab5d63e6ed0d90aa8b0b"><code class="docutils literal notranslate"><span class="pre">12205b4</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-3-0-2024-06-17">
+<h2>v0.3.0 (2024-06-17)<a class="headerlink" href="#v0-3-0-2024-06-17" title="Link to this heading"></a></h2>
+<section id="id46">
+<h3>Features<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat(major): First major release (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/30ac329ed30a88c397ff98b31b4d24198ddee585"><code class="docutils literal notranslate"><span class="pre">30ac329</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id47">
+<h3>Unknown<a class="headerlink" href="#id47" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Removing union pipes (#12) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/ea83080307a9a7c601670f56f67c7c4a3d3b202f"><code class="docutils literal notranslate"><span class="pre">ea83080</span></code></a>)</p></li>
+<li><p>Jira-1670(Minor): Offline token auth flow  (#11)</p></li>
+</ul>
+<p>Implements offline token authentication method (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/0a6f0b32709231dfa2c6a4e1741f9b4fea1807c3"><code class="docutils literal notranslate"><span class="pre">0a6f0b3</span></code></a>)</p>
+<ul class="simple">
+<li><p>JIRA 1692 - Completion of Prov API functionalities for Client Library.  (#9)</p></li>
+<li><p>completed explore endpoints as a concept, and now working on the model run endpoint.</p></li>
+<li><p>Completed prov-api L2 methods and setup of L3 methods.</p></li>
+<li><p>Completed documentation and working on building the Admin Client of Prov-API.</p></li>
+<li><p>commiting current changes, currently working on admin endpoints.</p></li>
+<li><p>Completion of Prov-API, completed all documentation and remaining admin and CSV related endpoints.</p></li>
+<li><p>Fixed missing parameters in two of the admin methods. One of the admin endpoints needs to be tested.</p></li>
+<li><p>Completed Prov API with testing and improved the L2 and L3 layer exchange of the csv to model run method.</p></li>
+<li><p>Completed pull request comments and updated open api endpoints fetch script through GPT.</p></li>
+<li><p>Updated file  writing functions according to pull request comments and created more flexibility between L2 and L3 for launching model runs endpoint.</p></li>
+<li><p>Made writing file logic more robust by having more checks and throwing exceptions accordingly. Updated L2 method to encode string to bytes internally. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/ccdcdaaee2ef64381ec66125ac65b7d421d8813b"><code class="docutils literal notranslate"><span class="pre">ccdcdaa</span></code></a>)</p></li>
+<li><p>Revert “refactoring”</p></li>
+</ul>
+<p>This reverts commit b4f13026a3a93ef22843fc52487c10cbaacb4812. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/0c39cee8f414c6d95ce2e1a03f6f9f7959a6e536"><code class="docutils literal notranslate"><span class="pre">0c39cee</span></code></a>)</p>
+<ul class="simple">
+<li><p>Revert “added read offline token from file. Need to consolidate offline and refreh token mishaps”</p></li>
+</ul>
+<p>This reverts commit 0eb280a96a2f2935751cfa1a3be02d35a79879ec. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/999a8124b8a3b06395c03ad8545b598b48c7362b"><code class="docutils literal notranslate"><span class="pre">999a812</span></code></a>)</p>
+<ul class="simple">
+<li><p>Revert “improved error handling and tidying”</p></li>
+</ul>
+<p>This reverts commit b5a679ab36a23dd9e1cb2c655775fbe234068c76. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/186ec49201efb527477b2285e2caade9ca9bfece"><code class="docutils literal notranslate"><span class="pre">186ec49</span></code></a>)</p>
+<ul class="simple">
+<li><p>git pushMerge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e333078e9f86d7bddf067b4537fb121f6ca5595e"><code class="docutils literal notranslate"><span class="pre">e333078</span></code></a>)</p></li>
+<li><p>Implements Job API L2 and L3 + additional L3 helper methods (#10)</p></li>
+<li><p>Basic L2/L3 complete</p></li>
+<li><p>Building out L3 functions to await completion of job lifecycle + list all + for all methods. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/0871e96944be0f9b26e9ab167e1a050a2c80bd65"><code class="docutils literal notranslate"><span class="pre">0871e96</span></code></a>)</p></li>
+<li><p>improved error handling and tidying (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b5a679ab36a23dd9e1cb2c655775fbe234068c76"><code class="docutils literal notranslate"><span class="pre">b5a679a</span></code></a>)</p></li>
+<li><p>added read offline token from file. Need to consolidate offline and refreh token mishaps (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/0eb280a96a2f2935751cfa1a3be02d35a79879ec"><code class="docutils literal notranslate"><span class="pre">0eb280a</span></code></a>)</p></li>
+<li><p>refactoring (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b4f13026a3a93ef22843fc52487c10cbaacb4812"><code class="docutils literal notranslate"><span class="pre">b4f1302</span></code></a>)</p></li>
+<li><p>Completion of Datastore Functionality (Need Review on Pagination Implementation)  (#8)</p></li>
+<li><p>In progressing completing of the datastore api’s.</p></li>
+<li><p>(In progress) Completing the datastore client library functionality.</p></li>
+<li><p>Completion of core datastore functionalities, and need a review on pagination implementation.</p></li>
+<li><p>Updated pull request comments, implemented new pagination methods and removed api_exceptions list as they all inherit from BaseException.</p></li>
+<li><p>Completion - Improved variable naming, changed structure of listing dataset methods to be flat and not nested and removed default sort options as this is handled by the API. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/b9e976dd61fcc934fa0c3945e67c24c0212e133a"><code class="docutils literal notranslate"><span class="pre">b9e976d</span></code></a>)</p></li>
+<li><p>Registry concept (#7)</p></li>
+<li><p>Proof of concept for registry implementation</p></li>
+<li><p>Adding documentation and mvp for registry implementation - not complete (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/7da100ee6772bfe4b876112521316a187753c436"><code class="docutils literal notranslate"><span class="pre">7da100e</span></code></a>)</p></li>
+<li><p>JIRA 1687 - Fleshing out base structure of Prov, Registry, Job and Handle ID API’s (#6)</p></li>
+<li><p>Completed a base setup for the remaining API’s (registry,prov) in respect to L2 and L3 and included all endpoints.</p></li>
+<li><p>Completion of missing API implementation and used a more robust approach suggested by Ross for Registry Endpoint collection.</p></li>
+<li><p>Changed handle to ID and implemented auto-generated routes for registry.</p></li>
+<li><p>Implementing L2 and L3 for ID service, renaming client file.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Co-authored-by: Peter Baker <a class="reference external" href="mailto:peter&#46;baker122&#37;&#52;&#48;csiro&#46;au">peter<span>&#46;</span>baker122<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/831e80be517154dfa239e773c41c73f4813264ad"><code class="docutils literal notranslate"><span class="pre">831e80b</span></code></a>)</p>
+<ul class="simple">
+<li><p>Complete L2 &amp; L3 for Auth API (#5)</p></li>
+<li><p>Implementing remaining L2 methods for auth api client</p></li>
+<li><p>Direct map L3 methods</p></li>
+<li><p>Adding placeholder L3 module for streamlining user links and adding doc strings for L2 auth API.</p></li>
+<li><p>Transferring doc strings from L2 to L3 to match - auto docs need to pick these up</p></li>
+<li><p>Minor corrections (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/26afd0a066dd66b2362687e5ce4e22ae473143a1"><code class="docutils literal notranslate"><span class="pre">26afd0a</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-2-0-2024-05-30">
+<h2>v0.2.0 (2024-05-30)<a class="headerlink" href="#v0-2-0-2024-05-30" title="Link to this heading"></a></h2>
+<section id="id48">
+<h3>Features<a class="headerlink" href="#id48" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Updated the project version to not clash with pypi. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/e67d002b00003f9a4be402ec7a5fd461fb0c2a48"><code class="docutils literal notranslate"><span class="pre">e67d002</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id49">
+<h3>Unknown<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Merge branch ‘main’ of github.com:provena/provena-python-client into main (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/293cf179aa50c39e5341b379c822672f913a6882"><code class="docutils literal notranslate"><span class="pre">293cf17</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-1-0-2024-05-30">
+<h2>v0.1.0 (2024-05-30)<a class="headerlink" href="#v0-1-0-2024-05-30" title="Link to this heading"></a></h2>
+<section id="id50">
+<h3>Features<a class="headerlink" href="#id50" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>feat: Updated project version to not clash with pypi. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/a02a0b181e744ff877e113e3fa9954b5e31cc2fe"><code class="docutils literal notranslate"><span class="pre">a02a0b1</span></code></a>)</p></li>
+<li><p>feat: implement datastore, search and auth client. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/f33d689622d5905c7a5f77b5c8b1e0b00f3b6b6e"><code class="docutils literal notranslate"><span class="pre">f33d689</span></code></a>)</p></li>
+</ul>
+</section>
+<section id="id51">
+<h3>Unknown<a class="headerlink" href="#id51" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Last attempt to make sphinx-auto-api work with CI job. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/20b08199bb0a2a2b33354dd957523eb9606dd8d7"><code class="docutils literal notranslate"><span class="pre">20b0819</span></code></a>)</p></li>
+<li><p>Updating sphinx-autoapi dependency version due to CI failure. (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/d464c316ecb0abc07f5ba602844585133bb38af1"><code class="docutils literal notranslate"><span class="pre">d464c31</span></code></a>)</p></li>
+<li><p>JIRA 1669 &amp; 1677 Major: Implementing datastore interface &amp; functionality of fetch and create dataset.   (#3)</p></li>
+<li><p>Created directory structure.</p></li>
+<li><p>Initial structure of everything so far. I have been working on fleshing out the Auth interface as suggested by Peter, and made some progress.</p></li>
+<li><p>Completion of Device Flow for Auth Class, and also created a separate. API client that wraps around request library for better testing of auth interface in the future.</p></li>
+<li><p>Config Inteface, still needs to be reviewed. Furthermore, a decision needs to be made on how the endpoints are exposed to the user.</p></li>
+</ul>
+<p>Co-authored-by: Ross (Laz) Petridis <a class="reference external" href="mailto:Rosspet&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">Rosspet<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a></p>
+<ul class="simple">
+<li><p>Pushing latest changes so Ross can branch off my branch for his offline flow development.</p></li>
+<li><p>requirements conflict resolution</p></li>
+<li><p>Completed base auth interface + device flow, and provided more type safety to the auth device flow methods.</p></li>
+</ul>
+<p>Completed config interface file with docstrings and updated CI-CD script to only run on main.</p>
+<ul class="simple">
+<li><p>feat(datastore): datastore fetch dataset functionality.</p></li>
+</ul>
+<p>Implemented datastore fetch using the designed layers. Remaning work to design the custom exceptions and require review from others.</p>
+<ul class="simple">
+<li><p>(Still In Progress ): Implementing custom Exceptions for various edge cases when recieving  a response.</p></li>
+<li><p>Merging main into datastore-interface branch for easier development.</p></li>
+<li><p>Deleted redundant files. Due to file name change  on main there were duplicate files that were not removed during merge.</p></li>
+<li><p>(In Progress): Worked on mint dataset and fetch dataset functionality with the client library.</p></li>
+</ul>
+<p>Facing some mypy issues and code needs to be reviewed for further enhancements.</p>
+<ul class="simple">
+<li><p>(FEAT): Completed datastore functionality with fetch and create dataset and also updated CI/CD scripts to push to pypi and made them separated.</p></li>
+<li><p>Reverted back to old ci-cd script setup as it would have ran in parallel instead of sequentially.</p></li>
+<li><p>Updated ci-cd script to only run on pull requests is  merged with base branch.</p></li>
+<li><p>Improved robustness of JSON parsing from response object and created a list of exceptions for better clarity.</p></li>
+<li><p>Removed requirements.txt</p></li>
+<li><p>Proposed changes and additional functionality (#4)</p></li>
+<li><p>Adding some additional poetry help in readme</p></li>
+<li><p>Implements streamlined helper functions which are stacked/modular.</p></li>
+</ul>
+<p>Simplifies error parsing in L2.</p>
+<p>Applies formatting changes and other minor changes.</p>
+<ul class="simple">
+<li><p>Improving file layout, adding convenience exports on key <strong>init</strong>.py files, moving testing out of import runway etc</p></li>
+<li><p>Adding search L1, L2, L3. Adding search datasets with item loading to the datastore L3 construct demonstrating cross module dependencies. (L2 of search being used in L3 of data store).</p></li>
+<li><p>Implementing auth api admin, introducing concept of sub clients and sub modules at L2 and L3 levels</p></li>
+<li><p>Making refactor consistently use helper functions and adding documentation to new components/API endpoints</p></li>
+<li><p>Adding endpoint gen from open api spec and using for auth APi</p></li>
+<li><p>Implementing additional L2 endpoints for auth API</p></li>
+<li><p>Adding comment for script</p></li>
+<li><p>Ignoring openapi.json</p></li>
+</ul>
+<p>Co-authored-by: Peter Baker <a class="reference external" href="mailto:87056634+PeterBaker0&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">87056634+PeterBaker0<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a></p>
+<hr class="docutils" />
+<p>Co-authored-by: Ross (Laz) Petridis <a class="reference external" href="mailto:Rosspet&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">Rosspet<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a>
+Co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a>
+Co-authored-by: Peter Baker <a class="reference external" href="mailto:87056634+PeterBaker0&#37;&#52;&#48;users&#46;noreply&#46;github&#46;com">87056634+PeterBaker0<span>&#64;</span>users<span>&#46;</span>noreply<span>&#46;</span>github<span>&#46;</span>com</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/897569c87ea786ed001d1a1869f5a865a7432a42"><code class="docutils literal notranslate"><span class="pre">897569c</span></code></a>)</p>
+<ul class="simple">
+<li><p>JIRA-1665 &amp; 1667 Major: Implement Auth Flow &amp; Implement Config Interface #2 (#2)</p></li>
+</ul>
+<p>Completed base auth interface + device flow, provided more type safety to the auth device flow methods, completed config interface file with docstrings, and updated CI-CD script to only run on main.</p>
+<p>co-authored-by: Ross <a class="reference external" href="mailto:ross&#46;petridis&#37;&#52;&#48;csiro&#46;au">ross<span>&#46;</span>petridis<span>&#64;</span>csiro<span>&#46;</span>au</a> (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/cb5b19b5ac2fd4de6a0383d2592c29201ec6c464"><code class="docutils literal notranslate"><span class="pre">cb5b19b</span></code></a>)</p>
+</section>
+</section>
+<section id="v0-0-0-2024-04-05">
+<h2>v0.0.0 (2024-04-05)<a class="headerlink" href="#v0-0-0-2024-04-05" title="Link to this heading"></a></h2>
+<section id="id52">
+<h3>Unknown<a class="headerlink" href="#id52" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated semantic release build command due to some issues with containers. Not sure if its the right fix. (https://github.com/python-semantic-release/python-semantic-release/issues/723) (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/6fec9720401a30d9f4ec0cd13b809fe293de37fd"><code class="docutils literal notranslate"><span class="pre">6fec972</span></code></a>)</p></li>
+<li><p>JIRA-1630 Minor: Initial Stub Development for Provena Client Tool. (#1)</p></li>
+<li><p>Created initial package setup with cookie-cutter template</p></li>
+<li><p>Updated CI/CD script to only run on main branch, fixed incorrect imports and deleted files that were not needed</p></li>
+<li><p>Integrated mypi in the package and was able to successfully build.</p></li>
+<li><p>Shifted from a class to a data-class for Settings, updated CI-CD script and README.md and removed CONDUCT.md files.</p></li>
+<li><p>Updated CI-CD script to use OCID instead of API tokens, and made it trigger on initial branch for testing purposes.</p></li>
+<li><p>Simplifying CI-CD file to ensure it runs without issues.</p></li>
+<li><p>Removed pull-request for now from CI/CD script.</p></li>
+<li><p>Updated dependencies for CI</p></li>
+<li><p>Updated poetry lock file for CI.</p></li>
+<li><p>Added dummy test for CI to pass.</p></li>
+<li><p>Updated CI to support pull request,  as I am gonna merge pull request to main to release package.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Co-authored-by: Parth-Kulkarni (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/cfab8c29ea5f483eeb7032cd6ddd182f3aeff320"><code class="docutils literal notranslate"><span class="pre">cfab8c2</span></code></a>)</p>
+<ul class="simple">
+<li><p>Update pull_request_template.md by removing RRAP references (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/3bd04b321088401e1ecd0d2840a8779f73d221ad"><code class="docutils literal notranslate"><span class="pre">3bd04b3</span></code></a>)</p></li>
+<li><p>Create pull_request_template.md (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/866626683943e8c8ba036ed933ab39c9c87b1fde"><code class="docutils literal notranslate"><span class="pre">8666266</span></code></a>)</p></li>
+<li><p>Initial commit (<a class="reference external" href="https://github.com/provena/provena-python-client/commit/5cc5d2d803cd83e9445d339982ebebb1908f18d4"><code class="docutils literal notranslate"><span class="pre">5cc5d2d</span></code></a>)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="provenance-visualisation.html" class="btn btn-neutral float-left" title="Provenance integration with 3rd party libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing Guidelines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,562 @@
+provenaclient.modules.datastore
+===============================
+
+.. py:module:: provenaclient.modules.datastore
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday June 6th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Datastore L3 module. Includes the Data store review sub module.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   29-08-2024 | Parth Kulkarni | Added Downloading Specific file/directory functionality to interactive class.
+   22-08-2024 | Parth Kulkarni | Completed Interactive Dataset class + Doc Strings.
+   15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.modules.datastore.DEFAULT_SEARCH_LIMIT
+   provenaclient.modules.datastore.DATASTORE_DEFAULT_SEARCH_LIMIT
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.datastore.ReviewSubModule
+   provenaclient.modules.datastore.InteractiveDataset
+   provenaclient.modules.datastore.Datastore
+
+
+Module Contents
+---------------
+
+.. py:data:: DEFAULT_SEARCH_LIMIT
+   :value: 25
+
+
+.. py:data:: DATASTORE_DEFAULT_SEARCH_LIMIT
+   :value: 20
+
+
+.. py:class:: ReviewSubModule(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, datastore_client: provenaclient.clients.DatastoreClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: delete_dataset_reviewer(reviewer_id: str) -> None
+      :async:
+
+
+      Delete a reviewer.
+
+      :param reviewer_id: Id of an existing reviewer within the system.
+      :type reviewer_id: str
+
+
+
+   .. py:method:: add_dataset_reviewer(reviewer_id: str) -> None
+      :async:
+
+
+      Add a reviewer.
+
+      :param reviewer_id: Id of a reviewer.
+      :type reviewer_id: str
+
+
+
+   .. py:method:: dataset_approval_request(approval_request: ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequest) -> ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequestResponse
+      :async:
+
+
+      Submit a request for approval of dataset.
+
+      :param approval_request: An object that requires the dataset id, approver id and notes
+      :type approval_request: ReleaseApprovalRequest
+
+      :returns: Contains details of the approval request.
+      :rtype: ReleaseApprovalRequestResponse
+
+
+
+   .. py:method:: action_approval_request(action_approval_request: ProvenaInterfaces.DataStoreAPI.ActionApprovalRequest) -> ProvenaInterfaces.DataStoreAPI.ActionApprovalRequestResponse
+      :async:
+
+
+      Action an approval request from a dataset approval request via the datastore.
+
+      :param action_approval_request: The dataset id, your decision of approval and any extra information
+                                      you want to add (notes).
+      :type action_approval_request: ActionApprovalRequest
+
+      :returns: The details of the approval action and the relevant dataset details.
+      :rtype: ActionApprovalRequestResponse
+
+
+
+.. py:class:: InteractiveDataset(dataset_id: str, auth: provenaclient.modules.module_helpers.AuthManager, datastore_client: provenaclient.clients.DatastoreClient, io: provenaclient.modules.submodules.IOSubModule)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: dataset_id
+      :type:  str
+
+
+   .. py:attribute:: auth
+      :type:  provenaclient.modules.module_helpers.AuthManager
+
+
+   .. py:attribute:: datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: io
+      :type:  provenaclient.modules.submodules.IOSubModule
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _datastore_client
+
+
+   .. py:method:: fetch_dataset() -> ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse
+      :async:
+
+
+      Fetches current dataset from the datastore.
+
+      :returns: A interactive python datatype of type RegistryFetchResponse
+                containing the dataset details.
+      :rtype: RegistryFetchResponse
+
+
+
+   .. py:method:: download_all_files(destination_directory: str) -> None
+      :async:
+
+
+      Downloads all files to the destination path for your current dataset.
+
+      - Fetches info
+      - Fetches creds
+      - Uses s3 cloud path lib to download all files to specified location
+
+      Parameters:
+      ---------
+      destination_directory (str):
+          The destination path to save files to - use a directory
+
+
+
+   .. py:method:: upload_all_files(source_directory: str) -> None
+      :async:
+
+
+      Uploads all files in the source path to the current dataset's storage location.
+
+      - Fetches info
+      - Fetches creds
+      - Uses s3 cloud path lib to upload all files to specified location
+
+      :param source_directory (str): The source path to upload files from - use a directory
+
+
+
+   .. py:method:: version(reason: str) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Versioning operation which creates a new version from the current dataset.
+
+      :param reason: The reason for versioning this dataset.
+      :type reason: str
+
+      :returns: Response of the versioning of the dataset, containing new version ID and
+                job session ID.
+      :rtype: VersionResponse
+
+
+
+   .. py:method:: revert_dataset_metadata(history_id: int, reason: str) -> ProvenaInterfaces.DataStoreAPI.StatusResponse
+      :async:
+
+
+      Reverts the metadata for the current dataset to a previous identified historical version.
+
+      :param history_id: The identifier of the historical version to revert to.
+      :type history_id: int
+      :param reason: The reason for reverting the dataset's metadata.
+      :type reason: str
+
+      :returns: Response indicating whether your dataset metadata revert request was successful.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: generate_read_access_credentials(console_session_required: bool) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Given an S3 location, will attempt to generate programmatic access keys for
+         the storage bucket at this particular subdirectory.
+
+      :param console_session_required: Specifies whether a console session URL is required.
+      :type console_session_required: bool
+
+      :returns: The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: generate_write_access_credentials(console_session_required: bool) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Given an S3 location, will attempt to generate programmatic access keys for
+         the storage bucket at this particular subdirectory.
+
+      :param console_session_required: Specifies whether a console session URL is required.
+      :type console_session_required: bool
+
+      :returns: The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: download_specific_file(s3_path: str, destination_directory: str) -> None
+      :async:
+
+
+      Downloads a specific file or folder for the current dataset
+      from an S3 bucket to a provided destination path.
+
+      This method handles various cases:
+      - If `s3_path` is a specific file, it downloads that file directly to `destination_directory`.
+      - If `s3_path` is a folder (without a trailing slash), it downloads the entire folder and its contents,
+      preserving the folder structure in `destination_directory`.
+      - If `s3_path` is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the
+      folder itself to `destination_directory`.
+
+      :param s3_path: The S3 path of the file or folder to download.
+                      - If this is a specific file, it will download just that file.
+                      - If this is a folder without a trailing slash (e.g., 'nested'), it will download the entire folder
+                      and all its contents, preserving the structure.
+                      - If this is a folder with a trailing slash (e.g., 'nested/'), it will download all contents within
+                      that folder but not the folder itself unless subfolders are present.
+      :type s3_path: str
+      :param destination_directory: The destination path to save files to - use a directory.
+      :type destination_directory: str
+
+
+
+.. py:class:: Datastore(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, datastore_client: provenaclient.clients.DatastoreClient, search_client: provenaclient.clients.SearchClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: _search_client
+      :type:  provenaclient.clients.SearchClient
+
+
+   .. py:attribute:: review
+      :type:  ReviewSubModule
+
+
+   .. py:attribute:: io
+      :type:  provenaclient.modules.submodules.IOSubModule
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_dataset(id: str) -> ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse
+      :async:
+
+
+      Fetches a dataset from the datastore based on the provided
+      ID.
+
+
+      :param id: The unique identifier of the dataset to be retrieved.
+                 For example: "10378.1/1451860"
+      :type id: str
+
+      :returns: A interactive python datatype of type RegistryFetchResponse
+                containing the dataset details.
+      :rtype: RegistryFetchResponse
+
+
+
+   .. py:method:: mint_dataset(dataset_mint_info: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.MintResponse
+      :async:
+
+
+      Creates a new dataset in the datastore with the provided dataset information.
+
+      :param dataset_mint_info: A structured format containing all necessary information to register a new dataset, including associations,
+                                approvals, and dataset-specific information.
+      :type dataset_mint_info: CollectionFormat
+
+      :returns: A interactive python datatype of type MintResponse
+                containing the newly created dataset details.
+      :rtype: MintResponse
+
+
+
+   .. py:method:: validate_dataset_metadata(metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.StatusResponse
+      :async:
+
+
+      Validates the dataset metadata creation for testing and does not publish.
+
+      :param metadata_payload: A structured format containing all necessary information to register a new dataset, including associations,
+                               approvals, and dataset-specific information.
+      :type metadata_payload: CollectionFormat
+
+      :returns: Response indicating whether your dataset metadata setup is valid and correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: update_dataset_metadata(handle_id: str, reason: str, metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.UpdateMetadataResponse
+      :async:
+
+
+      Updates an existing dataset's metadata.
+
+      :param handle_id: The id of the dataset.
+      :type handle_id: str
+      :param reason: The reason for changing metadata of the dataset.
+      :type reason: str
+      :param metadata_payload: A structured format containing all necessary information to register a new dataset, including associations,
+                               approvals, and dataset-specific information.
+      :type metadata_payload: CollectionFormat
+
+      :returns: The updated metadata response
+      :rtype: UpdateMetadataResponse
+
+
+
+   .. py:method:: revert_dataset_metadata(metadata_payload: provenaclient.models.RevertMetadata) -> ProvenaInterfaces.DataStoreAPI.StatusResponse
+      :async:
+
+
+      Reverts the metadata for a dataset to a previous identified historical version.
+
+      :param metadata_payload: The revert request, passed through to the registry API and requires
+                               dataset id, history id and reason for reverting.
+      :type metadata_payload: RevertMetadata
+
+      :returns: Response indicating whether your dataset revert metadata request was correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: version_dataset(version_request: ProvenaInterfaces.RegistryAPI.VersionRequest) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Versioning operation which creates a new version from the specified ID.
+
+      :param version_request: The request which includes the item ID and reason for versioning.
+      :type version_request: VersionRequest
+
+      :returns: Response of the versioning of the dataset, containing new version ID and
+                job session ID.
+      :rtype: VersionResponse
+
+
+
+   .. py:method:: for_all_datasets(list_dataset_request: ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest, total_limit: provenaclient.utils.exceptions.Optional[int] = None) -> AsyncGenerator[ProvenaInterfaces.DataStoreAPI.ItemDataset, None]
+      :async:
+
+
+      Fetches all datasets based on the provided datasets in datastore based on
+          the provided sorting criteria, pagination key and page size.
+
+      :param list_dataset_request: A request object configured with sorting options, pagination keys,
+                                   and page size that defines how datasets are queried from the datastore.
+      :type list_dataset_request: NoFilterSubtypeListRequest
+      :param total_limit: A maximum number of datasets to fetch. If specified, the generator will
+                          stop yielding datasets once this limit is reached.
+                          If None, it will fetch datasets until there are no more to fetch.
+      :type total_limit: Optional[int], optional
+
+      :returns: An asynchronous generator yielding "ItemDataset"
+                object which is an individual dataset from the datastore.
+      :rtype: AsyncGenerator[ItemDataset, None]
+
+      :Yields: *Iterator[AsyncGenerator[ItemDataset, None]]* -- Each yield provides a "ItemDataset" containing an individual dataset.
+
+
+
+   .. py:method:: list_datasets(list_dataset_request: ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest) -> ProvenaInterfaces.RegistryAPI.DatasetListResponse
+      :async:
+
+
+      Takes a specific dataset list request and returns the response.
+
+      :param list_dataset_request: A request object configured with sorting options, pagination keys,
+                                   and page size that defines how datasets are queried from the datastore.
+      :type list_dataset_request: NoFilterSubtypeListRequest
+
+      :returns: Response containing the requested datasets in the datastore
+                based on sort criteria and page size, and contains other attributes
+                such as total_item_counts and optional pagination key.
+      :rtype: DatasetListResponse
+
+
+
+   .. py:method:: list_all_datasets(sort_criteria: provenaclient.utils.exceptions.Optional[ProvenaInterfaces.RegistryAPI.SortOptions] = None) -> List[ProvenaInterfaces.DataStoreAPI.ItemDataset]
+      :async:
+
+
+      Fetches all datasets from the datastore and you may provide your own sort criteria.
+      By default uses display name sort criteria.
+
+      :param sort_criteria: An object configured with sorting options that you want
+                            when displaying all datasets within the datastore.
+      :type sort_criteria: Optional[SortOptions]
+
+      :returns: A list of all datasets in the datastore, sorted as requested.
+      :rtype: List[ItemDataset]
+
+
+
+   .. py:method:: generate_dataset_presigned_url(dataset_presigned_request: ProvenaInterfaces.DataStoreAPI.PresignedURLRequest) -> ProvenaInterfaces.DataStoreAPI.PresignedURLResponse
+      :async:
+
+
+      Generates a presigned url for an existing dataset.
+
+      :param dataset_presigned_request: Contains the dataset id + file path + length of expiry of URL.
+      :type dataset_presigned_request: PresignedURLRequest
+
+      :returns: A response with the presigned url.
+      :rtype: PresignedURLResponse
+
+
+
+   .. py:method:: generate_read_access_credentials(credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Given an S3 location, will attempt to generate programmatic access keys for
+         the storage bucket at this particular subdirectory.
+
+      :param credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: generate_write_access_credentials(credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Given an S3 location, will attempt to generate programmatic access keys for
+         the storage bucket at this particular subdirectory.
+
+      :param credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: search_datasets(query: str, limit: int = DEFAULT_SEARCH_LIMIT) -> provenaclient.models.LoadedSearchResponse
+      :async:
+
+
+      Utilises the L2 search client to search for datasets with the specified
+      query.
+
+      Loads all datasets in the result payload from the data store and sorts
+      based on auth, or other exceptions if not successful.
+
+      :param query: The query to make limit (int, optional): The result
+      :type query: str
+      :param count limit. Defaults to DEFAULT_SEARCH_LIMIT.:
+
+      :returns: The loaded items incl errors.
+      :rtype: LoadedSearchResponse
+
+
+
+   .. py:method:: interactive_dataset(dataset_id: str) -> InteractiveDataset
+      :async:
+
+
+      Creates an interactive "session" with a dataset that allows you
+      to perform further operations without re-supplying dataset id and
+      creating objects required for other methods.
+
+      :param dataset_id: The unique identifier of the dataset to be retrieved.
+                         For example: "10378.1/1451860"
+      :type dataset_id: str
+
+      :returns: An instance that allows you to perform various operations on the provided dataset.
+      :rtype: InteractiveDataset
+
+
+

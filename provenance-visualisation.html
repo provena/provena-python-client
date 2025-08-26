@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Provenance integration with 3rd party libraries &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CHANGELOG" href="changelog.html" />
+    <link rel="prev" title="Provena Client Library Workflow Guide and Example." href="example-client-workflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Provenance integration with 3rd party libraries</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/provenance-visualisation.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="provenance-integration-with-3rd-party-libraries">
+<h1>Provenance integration with 3rd party libraries<a class="headerlink" href="#provenance-integration-with-3rd-party-libraries" title="Link to this heading"></a></h1>
+<p>Provena facilitates the capture of provenance primarily using a specialisation of <a class="reference external" href="https://www.w3.org/TR/prov-o/">Prov-O</a>. We are able to interface with Provena provenance information using graph based tools. This guide provides some ideas for fetching provenance information from the Provena Registry and using <a class="reference external" href="https://prov.readthedocs.io/en/latest/">prov</a> and <a class="reference external" href="https://rdflib.readthedocs.io/en/stable/index.html">rdflib</a> python libraries.</p>
+<p>This guide will show how you can use <code class="docutils literal notranslate"><span class="pre">prov</span></code> and <code class="docutils literal notranslate"><span class="pre">rdflib</span></code> to serialise into PROV documents and RDF formats. This is useful if you would like to use those toolsets to query, integrate with other PROV/RDF data, or visualise using tools such as GraphViz.</p>
+<p>Pre-requisites will be:</p>
+<ul class="simple">
+<li><p>rdflib</p></li>
+<li><p>prov</p></li>
+<li><p>graphviz</p></li>
+</ul>
+<section id="using-prov-and-rdflib-python-libraries">
+<h2>Using Prov and rdflib python libraries<a class="headerlink" href="#using-prov-and-rdflib-python-libraries" title="Link to this heading"></a></h2>
+<p>First initialise the provena client.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProvenaClient</span><span class="p">,</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceFlow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.implementations</span><span class="w"> </span><span class="kn">import</span> <span class="n">OfflineFlow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryModels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="n">client_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+        <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;dev.rrap-is.com&quot;</span><span class="p">,</span>
+        <span class="n">realm_name</span><span class="o">=</span><span class="s2">&quot;rrap&quot;</span>
+    <span class="p">)</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">DeviceFlow</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">client_config</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=</span><span class="s2">&quot;client-tools&quot;</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ProvenaClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">client_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Query all model run records. Prov compatible data is currently available from Provena primarily from model run records as it specialises from <code class="docutils literal notranslate"><span class="pre">prov:Activity</span></code> and relates relevant <code class="docutils literal notranslate"><span class="pre">Entities</span></code> and <code class="docutils literal notranslate"><span class="pre">Agents</span></code> via that construct.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get model run record in the Provena registry</span>
+<span class="n">model_run_record_list</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run</span><span class="o">.</span><span class="n">list_items</span><span class="p">(</span><span class="n">GeneralListRequest</span><span class="p">(</span>
+    <span class="n">filter_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">sort_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pagination_key</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">))</span>
+
+<span class="n">model_run_record</span> <span class="o">=</span> <span class="n">model_run_record_list</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can instantiate the <code class="docutils literal notranslate"><span class="pre">PROV</span></code> compatible serialisation of the model run into a <code class="docutils literal notranslate"><span class="pre">ProvDocument</span></code> using the <code class="docutils literal notranslate"><span class="pre">Prov</span></code> python library. This will allow us to interact natively with the provenance document in Python.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">prov.model</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pm</span>
+
+<span class="c1"># Get a Prov document from the record</span>
+<span class="n">document</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">ProvDocument</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">model_run_record</span><span class="o">.</span><span class="n">prov_serialisation</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The prov representation of the model run record is quite minimal. The available attributes are: <code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">item_category</span></code>, <code class="docutils literal notranslate"><span class="pre">item_subtype</span></code>. However, from this information alone, we can enrich the prov document/graph with additional info by fetching it from the Registry.</p>
+<p>We show the use of <code class="docutils literal notranslate"><span class="pre">general_fetch_item()</span></code>, which returns general info such as the label. However, you can use the more specialised <code class="docutils literal notranslate"><span class="pre">fetch()</span></code> in the provena client that allows more specific info to be fetched from the item, e.g. <code class="docutils literal notranslate"><span class="pre">Model</span></code> details or <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> metadata.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Resolve labels by fetching items from the registry</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">document</span><span class="o">.</span><span class="n">get_records</span><span class="p">():</span>   
+    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span> <span class="c1">#only fetch labels if the record has an ID attribute</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)))</span>
+        <span class="n">item_category</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;item_category&#39;</span><span class="p">)))</span>
+        <span class="n">item_subtype</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;item_subtype&#39;</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">item_category</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">general_fetch_item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;item_subtype&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1">#Add the label to the prov doc for this record</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;prov:label&#39;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]}</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10378.1/1964491 prov:Activity ACTIVITY MODEL_RUN
+study example MODEL_RUN
+10378.1/1964490 prov:Activity ACTIVITY STUDY
+study 2 STUDY
+10378.1/1963761 prov:Entity ENTITY WORKFLOW_TEMPLATE
+test MODEL_RUN_WORKFLOW_TEMPLATE
+10378.1/1963759 prov:Entity ENTITY MODEL
+test MODEL
+10378.1/1963764 prov:Entity ENTITY DATASET
+output DATASET
+10378.1/1963760 prov:Entity ENTITY DATASET_TEMPLATE
+input DATASET_TEMPLATE
+10378.1/1963721 prov:Entity ENTITY DATASET
+FIRST dataset DATASET
+10378.1/1963718 prov:Agent AGENT PERSON
+Peter 0.1x-dev Baker PERSON
+10378.1/1963720 prov:Agent AGENT ORGANISATION
+CSIRO ORGANISATION
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Serialise this to RDF/Turtle using underlying rdflib </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;rdf&#39;</span><span class="p">,</span> <span class="n">rdf_format</span><span class="o">=</span><span class="s1">&#39;ttl&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>@prefix ns1: &lt;http://hdl.handle.net/&gt; .
+@prefix prov: &lt;http://www.w3.org/ns/prov#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+&lt;http://hdl.handle.net/10378.1/1963764&gt; a prov:Entity ;
+    rdfs:label &quot;output&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963764&quot;^^xsd:string ;
+    ns1:item_category &quot;ENTITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;DATASET&quot;^^xsd:string ;
+    prov:wasAttributedTo &lt;http://hdl.handle.net/10378.1/1963718&gt; ;
+    prov:wasGeneratedBy &lt;http://hdl.handle.net/10378.1/1964491&gt; ;
+    prov:wasInfluencedBy &lt;http://hdl.handle.net/10378.1/1963760&gt; .
+
+&lt;http://hdl.handle.net/10378.1/1963720&gt; a prov:Agent ;
+    rdfs:label &quot;CSIRO&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963720&quot;^^xsd:string ;
+    ns1:item_category &quot;AGENT&quot;^^xsd:string ;
+    ns1:item_subtype &quot;ORGANISATION&quot;^^xsd:string .
+
+&lt;http://hdl.handle.net/10378.1/1963721&gt; a prov:Entity ;
+    rdfs:label &quot;FIRST dataset&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963721&quot;^^xsd:string ;
+    ns1:item_category &quot;ENTITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;DATASET&quot;^^xsd:string ;
+    prov:wasInfluencedBy &lt;http://hdl.handle.net/10378.1/1963760&gt; .
+
+&lt;http://hdl.handle.net/10378.1/1963761&gt; a prov:Entity ;
+    rdfs:label &quot;test&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963761&quot;^^xsd:string ;
+    ns1:item_category &quot;ENTITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;WORKFLOW_TEMPLATE&quot;^^xsd:string ;
+    prov:hadMember &lt;http://hdl.handle.net/10378.1/1963759&gt;,
+        &lt;http://hdl.handle.net/10378.1/1963760&gt; .
+
+&lt;http://hdl.handle.net/10378.1/1964490&gt; a prov:Activity ;
+    rdfs:label &quot;study 2&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1964490&quot;^^xsd:string ;
+    ns1:item_category &quot;ACTIVITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;STUDY&quot;^^xsd:string .
+
+&lt;http://hdl.handle.net/10378.1/1964491&gt; a prov:Activity ;
+    rdfs:label &quot;study example&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1964491&quot;^^xsd:string ;
+    ns1:item_category &quot;ACTIVITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;MODEL_RUN&quot;^^xsd:string ;
+    prov:used &lt;http://hdl.handle.net/10378.1/1963721&gt;,
+        &lt;http://hdl.handle.net/10378.1/1963759&gt;,
+        &lt;http://hdl.handle.net/10378.1/1963761&gt; ;
+    prov:wasAssociatedWith &lt;http://hdl.handle.net/10378.1/1963718&gt;,
+        &lt;http://hdl.handle.net/10378.1/1963720&gt; ;
+    prov:wasInformedBy &lt;http://hdl.handle.net/10378.1/1964490&gt; .
+
+&lt;http://hdl.handle.net/10378.1/1963718&gt; a prov:Agent ;
+    rdfs:label &quot;Peter 0.1x-dev Baker&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963718&quot;^^xsd:string ;
+    ns1:item_category &quot;AGENT&quot;^^xsd:string ;
+    ns1:item_subtype &quot;PERSON&quot;^^xsd:string .
+
+&lt;http://hdl.handle.net/10378.1/1963759&gt; a prov:Entity ;
+    rdfs:label &quot;test&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963759&quot;^^xsd:string ;
+    ns1:item_category &quot;ENTITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;MODEL&quot;^^xsd:string .
+
+&lt;http://hdl.handle.net/10378.1/1963760&gt; a prov:Entity ;
+    rdfs:label &quot;input&quot;^^xsd:string ;
+    ns1:id &quot;10378.1/1963760&quot;^^xsd:string ;
+    ns1:item_category &quot;ENTITY&quot;^^xsd:string ;
+    ns1:item_subtype &quot;DATASET_TEMPLATE&quot;^^xsd:string .
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># other prov syntax</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">get_provn</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>document
+  default &lt;http://hdl.handle.net/&gt;
+  
+  activity(10378.1/1964491, -, -, [id=&quot;10378.1/1964491&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;study example&quot;])
+  activity(10378.1/1964490, -, -, [id=&quot;10378.1/1964490&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;study 2&quot;])
+  entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+  entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+  entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+  entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+  entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+  agent(10378.1/1963718, [id=&quot;10378.1/1963718&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Peter 0.1x-dev Baker&quot;])
+  agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+  wasInformedBy(10378.1/1964491, 10378.1/1964490)
+  used(10378.1/1964491, 10378.1/1963721, -)
+  used(10378.1/1964491, 10378.1/1963759, -)
+  used(10378.1/1964491, 10378.1/1963761, -)
+  wasGeneratedBy(10378.1/1963764, 10378.1/1964491, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963718, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963720, -)
+  wasAttributedTo(10378.1/1963764, 10378.1/1963718)
+  hadMember(10378.1/1963761, 10378.1/1963760)
+  hadMember(10378.1/1963761, 10378.1/1963759)
+  wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+  wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+endDocument
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualisation-using-graphviz">
+<h2>Visualisation using Graphviz<a class="headerlink" href="#visualisation-using-graphviz" title="Link to this heading"></a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prov.dot</span><span class="w"> </span><span class="kn">import</span> <span class="n">prov_to_dot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="c1"># render into file</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">prov_to_dot</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prov_graph&quot;</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8bde08526b47e49113fa905b46ae8528a45168090f6e549b4c82c9e7e16f5a89.png" src="_images/8bde08526b47e49113fa905b46ae8528a45168090f6e549b4c82c9e7e16f5a89.png" />
+</div>
+</div>
+</section>
+<section id="advanced-use-case-querying-and-joining-graphs">
+<h2>Advanced use case: Querying and joining graphs<a class="headerlink" href="#advanced-use-case-querying-and-joining-graphs" title="Link to this heading"></a></h2>
+<p>You may want to build out a graph from your starting point. The following shows how we can expand the provenance graph from a starting point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models.general</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomLineageResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prov.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProvDocument</span>
+<span class="c1">#let&#39;s use the previous model run graph as a starting point</span>
+
+<span class="c1">#fetch upstream nodes from </span>
+<span class="n">upstream_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">prov_api</span><span class="o">.</span><span class="n">explore_upstream</span><span class="p">(</span><span class="n">model_run_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">upstream_result</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">item_subtype</span> <span class="o">==</span> <span class="n">ItemSubType</span><span class="o">.</span><span class="n">MODEL_RUN</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#fetch and add prov doc to existing doc</span>
+        <span class="n">mr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">ProvDocument</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">mr</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">prov_serialisation</span><span class="p">)</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_records</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+            <span class="n">document</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)))</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">general_fetch_item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;prov:label&#39;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]}</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+        
+<span class="nb">print</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">get_provn</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>id=&#39;10378.1/1964491&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+activity(10378.1/1964491, -, -, [id=&quot;10378.1/1964491&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;study example&quot;])
+activity(10378.1/1964490, -, -, [id=&quot;10378.1/1964490&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;study 2&quot;])
+entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+agent(10378.1/1963718, [id=&quot;10378.1/1963718&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Peter 0.1x-dev Baker&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+wasInformedBy(10378.1/1964491, 10378.1/1964490)
+used(10378.1/1964491, 10378.1/1963721, -)
+used(10378.1/1964491, 10378.1/1963759, -)
+used(10378.1/1964491, 10378.1/1963761, -)
+wasGeneratedBy(10378.1/1963764, 10378.1/1964491, -)
+wasAssociatedWith(10378.1/1964491, 10378.1/1963718, -)
+wasAssociatedWith(10378.1/1964491, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1963764, 10378.1/1963718)
+hadMember(10378.1/1963761, 10378.1/1963760)
+hadMember(10378.1/1963761, 10378.1/1963759)
+wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+document
+  default &lt;http://hdl.handle.net/&gt;
+  
+  activity(10378.1/1964491, -, -, [id=&quot;10378.1/1964491&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;study example&quot;])
+  activity(10378.1/1964490, -, -, [id=&quot;10378.1/1964490&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;study 2&quot;])
+  entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+  entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+  entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+  entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+  entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+  agent(10378.1/1963718, [id=&quot;10378.1/1963718&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Peter 0.1x-dev Baker&quot;])
+  agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+  wasInformedBy(10378.1/1964491, 10378.1/1964490)
+  used(10378.1/1964491, 10378.1/1963721, -)
+  used(10378.1/1964491, 10378.1/1963759, -)
+  used(10378.1/1964491, 10378.1/1963761, -)
+  wasGeneratedBy(10378.1/1963764, 10378.1/1964491, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963718, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963720, -)
+  wasAttributedTo(10378.1/1963764, 10378.1/1963718)
+  hadMember(10378.1/1963761, 10378.1/1963760)
+  hadMember(10378.1/1963761, 10378.1/1963759)
+  wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+  wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+  activity(10378.1/1964491, -, -, [id=&quot;10378.1/1964491&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;])
+  activity(10378.1/1964490, -, -, [id=&quot;10378.1/1964490&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;])
+  entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;])
+  entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;])
+  entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;])
+  entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;])
+  entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;])
+  agent(10378.1/1963718, [id=&quot;10378.1/1963718&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;])
+  agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;])
+  wasInformedBy(10378.1/1964491, 10378.1/1964490)
+  used(10378.1/1964491, 10378.1/1963721, -)
+  used(10378.1/1964491, 10378.1/1963759, -)
+  used(10378.1/1964491, 10378.1/1963761, -)
+  wasGeneratedBy(10378.1/1963764, 10378.1/1964491, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963718, -)
+  wasAssociatedWith(10378.1/1964491, 10378.1/1963720, -)
+  wasAttributedTo(10378.1/1963764, 10378.1/1963718)
+  hadMember(10378.1/1963761, 10378.1/1963760)
+  hadMember(10378.1/1963761, 10378.1/1963759)
+  wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+  wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+endDocument
+</pre></div>
+</div>
+</div>
+</div>
+<p>Visualise the prov graph using GraphViz</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prov.dot</span><span class="w"> </span><span class="kn">import</span> <span class="n">prov_to_dot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="c1"># render into file</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">prov_to_dot</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prov_graph2&quot;</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/66c0765c8c19eebcd070ef612d6769fd63bb9f1e94b441cc712abbb403867055.png" src="_images/66c0765c8c19eebcd070ef612d6769fd63bb9f1e94b441cc712abbb403867055.png" />
+</div>
+</div>
+<p>Let’s look at one of the input datasets and get all upstream and downstream things from it</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_id</span> <span class="o">=</span> <span class="s2">&quot;10378.1/1963721&quot;</span> <span class="c1">#this will be different for your context</span>
+
+<span class="c1">#fetch upstream nodes from </span>
+<span class="n">upstream_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">prov_api</span><span class="o">.</span><span class="n">explore_upstream</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+<span class="n">downstream_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">prov_api</span><span class="o">.</span><span class="n">explore_downstream</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">upstream_result</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">item_subtype</span> <span class="o">==</span> <span class="n">ItemSubType</span><span class="o">.</span><span class="n">MODEL_RUN</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#fetch and add prov doc to existing doc</span>
+        <span class="n">mr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">ProvDocument</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">mr</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">prov_serialisation</span><span class="p">)</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_records</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+            <span class="n">document</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)))</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">general_fetch_item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;prov:label&#39;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]}</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">downstream_result</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">item_subtype</span> <span class="o">==</span> <span class="n">ItemSubType</span><span class="o">.</span><span class="n">MODEL_RUN</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">#fetch and add prov doc to existing doc</span>
+        <span class="n">mr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">ProvDocument</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">mr</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">prov_serialisation</span><span class="p">)</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_records</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+            <span class="n">document</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">):</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)))</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">general_fetch_item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+                <span class="n">r</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span> <span class="p">{</span><span class="s1">&#39;prov:label&#39;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]}</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>id=&#39;10378.1/1964491&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+activity(10378.1/1964491, -, -, [id=&quot;10378.1/1964491&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;study example&quot;])
+activity(10378.1/1964490, -, -, [id=&quot;10378.1/1964490&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;study 2&quot;])
+entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+agent(10378.1/1963718, [id=&quot;10378.1/1963718&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Peter 0.1x-dev Baker&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+wasInformedBy(10378.1/1964491, 10378.1/1964490)
+used(10378.1/1964491, 10378.1/1963721, -)
+used(10378.1/1964491, 10378.1/1963759, -)
+used(10378.1/1964491, 10378.1/1963761, -)
+wasGeneratedBy(10378.1/1963764, 10378.1/1964491, -)
+wasAssociatedWith(10378.1/1964491, 10378.1/1963718, -)
+wasAssociatedWith(10378.1/1964491, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1963764, 10378.1/1963718)
+hadMember(10378.1/1963761, 10378.1/1963760)
+hadMember(10378.1/1963761, 10378.1/1963759)
+wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+id=&#39;10378.1/1964549&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+agent(10378.1/1964548, [id=&quot;10378.1/1964548&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;The Breaking Person&quot;])
+activity(10378.1/1964549, -, -, [id=&quot;10378.1/1964549&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;Test Model Run to see if this works 😊&quot;])
+used(10378.1/1964549, 10378.1/1963721, -)
+used(10378.1/1964549, 10378.1/1963759, -)
+used(10378.1/1964549, 10378.1/1963761, -)
+wasGeneratedBy(10378.1/1963764, 10378.1/1964549, -)
+wasAssociatedWith(10378.1/1964549, 10378.1/1964548, -)
+wasAssociatedWith(10378.1/1964549, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1963764, 10378.1/1964548)
+hadMember(10378.1/1963761, 10378.1/1963760)
+hadMember(10378.1/1963761, 10378.1/1963759)
+wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+id=&#39;10378.1/1964550&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+activity(10378.1/1963758, -, -, [id=&quot;10378.1/1963758&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;test&quot;])
+activity(10378.1/1964550, -, -, [id=&quot;10378.1/1964550&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;Test Model Run to see if this works 😊&quot;])
+entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+agent(10378.1/1964548, [id=&quot;10378.1/1964548&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;The Breaking Person&quot;])
+wasInformedBy(10378.1/1964550, 10378.1/1963758)
+used(10378.1/1964550, 10378.1/1963721, -)
+used(10378.1/1964550, 10378.1/1963759, -)
+used(10378.1/1964550, 10378.1/1963761, -)
+wasGeneratedBy(10378.1/1963764, 10378.1/1964550, -)
+wasAssociatedWith(10378.1/1964550, 10378.1/1964548, -)
+wasAssociatedWith(10378.1/1964550, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1963764, 10378.1/1964548)
+hadMember(10378.1/1963761, 10378.1/1963760)
+hadMember(10378.1/1963761, 10378.1/1963759)
+wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+id=&#39;10378.1/1973180&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+entity(10378.1/1972856, [id=&quot;10378.1/1972856&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;Zarr - Test Dataset&quot;])
+entity(10378.1/1972891, [id=&quot;10378.1/1972891&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;Output dataset template&quot;])
+entity(10378.1/1972888, [id=&quot;10378.1/1972888&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;Fire model workflow template&quot;])
+entity(10378.1/1972876, [id=&quot;10378.1/1972876&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;Fire spread model&quot;])
+entity(10378.1/1972890, [id=&quot;10378.1/1972890&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;Input dataset template&quot;])
+activity(10378.1/1973180, -, -, [id=&quot;10378.1/1973180&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;Notebook Model Run Testing&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+agent(10378.1/1968384, [id=&quot;10378.1/1968384&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Jonathan Yu&quot;])
+used(10378.1/1973180, 10378.1/1963721, -)
+used(10378.1/1973180, 10378.1/1972876, -)
+used(10378.1/1973180, 10378.1/1972888, -)
+wasGeneratedBy(10378.1/1972856, 10378.1/1973180, -)
+wasAssociatedWith(10378.1/1973180, 10378.1/1968384, -)
+wasAssociatedWith(10378.1/1973180, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1972856, 10378.1/1968384)
+hadMember(10378.1/1972888, 10378.1/1972890)
+hadMember(10378.1/1972888, 10378.1/1972891)
+hadMember(10378.1/1972888, 10378.1/1972876)
+wasInfluencedBy(10378.1/1963721, 10378.1/1972890)
+wasInfluencedBy(10378.1/1972856, 10378.1/1972891)
+id=&#39;10378.1/1963767&#39; item_category=&lt;ItemCategory.ACTIVITY: &#39;ACTIVITY&#39;&gt; item_subtype=&lt;ItemSubType.MODEL_RUN: &#39;MODEL_RUN&#39;&gt;
+entity(10378.1/1963760, [id=&quot;10378.1/1963760&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET_TEMPLATE&quot;, prov:label=&quot;input&quot;])
+entity(10378.1/1963721, [id=&quot;10378.1/1963721&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;FIRST dataset&quot;])
+entity(10378.1/1963764, [id=&quot;10378.1/1963764&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;DATASET&quot;, prov:label=&quot;output&quot;])
+entity(10378.1/1963759, [id=&quot;10378.1/1963759&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;MODEL&quot;, prov:label=&quot;test&quot;])
+entity(10378.1/1963761, [id=&quot;10378.1/1963761&quot;, item_category=&quot;ENTITY&quot;, item_subtype=&quot;WORKFLOW_TEMPLATE&quot;, prov:label=&quot;test&quot;])
+activity(10378.1/1965693, -, -, [id=&quot;10378.1/1965693&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;STUDY&quot;, prov:label=&quot;Jordan&#39;s Study of All Things Provena&quot;])
+activity(10378.1/1963767, -, -, [id=&quot;10378.1/1963767&quot;, item_category=&quot;ACTIVITY&quot;, item_subtype=&quot;MODEL_RUN&quot;, prov:label=&quot;test&quot;])
+agent(10378.1/1963719, [id=&quot;10378.1/1963719&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;PERSON&quot;, prov:label=&quot;Ross 10x-dev Petridis&quot;])
+agent(10378.1/1963720, [id=&quot;10378.1/1963720&quot;, item_category=&quot;AGENT&quot;, item_subtype=&quot;ORGANISATION&quot;, prov:label=&quot;CSIRO&quot;])
+wasInformedBy(10378.1/1963767, 10378.1/1965693)
+used(10378.1/1963767, 10378.1/1963721, -)
+used(10378.1/1963767, 10378.1/1963759, -)
+used(10378.1/1963767, 10378.1/1963761, -)
+wasGeneratedBy(10378.1/1963764, 10378.1/1963767, -)
+wasAssociatedWith(10378.1/1963767, 10378.1/1963719, -)
+wasAssociatedWith(10378.1/1963767, 10378.1/1963720, -)
+wasAttributedTo(10378.1/1963764, 10378.1/1963719)
+hadMember(10378.1/1963761, 10378.1/1963760)
+hadMember(10378.1/1963761, 10378.1/1963759)
+wasInfluencedBy(10378.1/1963721, 10378.1/1963760)
+wasInfluencedBy(10378.1/1963764, 10378.1/1963760)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># render into file</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">prov_to_dot</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;prov_graph3&quot;</span>
+
+<span class="n">dot</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5c97ac423cfc92424e98390cb30df9db42ae5ef843c8286ed8cea5184c3a3729.png" src="_images/5c97ac423cfc92424e98390cb30df9db42ae5ef843c8286ed8cea5184c3a3729.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example-client-workflow.html" class="btn btn-neutral float-left" title="Provena Client Library Workflow Guide and Example." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="CHANGELOG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.clients.registry_client &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.clients.registry_client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.clients.registry_client</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Thursday June 6th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Thursday June 6th 2024 1:39:55 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: Incomplete Registry API L2 Client.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+
+<span class="sd">28-06-2024 | Parth Kulkarni | Completion of L2 Interface of Registry with General, Admin and Other endpoints. </span>
+<span class="sd">18-06-2024 | Peter Baker | Initial structure setup to help dispatch into the various sub types in the L3.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models.general</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheckResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients.client_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.registry_endpoints</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryModels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="GenericRegistryEndpoints">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.GenericRegistryEndpoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenericRegistryEndpoints</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">GET_HEALTH_CHECK</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-admin-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-general-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_READ_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-read-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_WRITE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-write-access&quot;</span>
+    <span class="n">GET_REGISTRY_GENERAL_ABOUT_VERSION</span> <span class="o">=</span> <span class="s2">&quot;/registry/general/about/version&quot;</span>
+    <span class="n">GET_REGISTRY_GENERAL_FETCH</span> <span class="o">=</span> <span class="s2">&quot;/registry/general/fetch&quot;</span>
+    <span class="n">POST_REGISTRY_GENERAL_LIST</span> <span class="o">=</span> <span class="s2">&quot;/registry/general/list&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="RegistryAdminEndpoints">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminEndpoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegistryAdminEndpoints</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">GET_ADMIN_CONFIG</span> <span class="o">=</span> <span class="s2">&quot;/admin/config&quot;</span>
+    <span class="n">GET_ADMIN_EXPORT</span> <span class="o">=</span> <span class="s2">&quot;/admin/export&quot;</span>
+    <span class="n">GET_ADMIN_SENTRY_DEBUG</span> <span class="o">=</span> <span class="s2">&quot;/admin/sentry-debug&quot;</span>
+    <span class="n">POST_ADMIN_IMPORT</span> <span class="o">=</span> <span class="s2">&quot;/admin/import&quot;</span>
+    <span class="n">POST_ADMIN_RESTORE_FROM_TABLE</span> <span class="o">=</span> <span class="s2">&quot;/admin/restore_from_table&quot;</span></div>
+
+
+<div class="viewcode-block" id="RegistryAdminClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegistryAdminClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the RegistryAdminClient with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth: AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config: Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="RegistryAdminClient._build_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient._build_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">RegistryAdminEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="si">}{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    
+<div class="viewcode-block" id="RegistryAdminClient._build_subtype_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient._build_subtype_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_subtype_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">RegistryAction</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subtype_action_to_endpoint</span><span class="p">(</span>
+            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span>
+            <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryAdminClient.export_items">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient.export_items">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">export_items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistryExportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exports all items from the registry.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegistryExportResponse</span>
+<span class="sd">            The response containing the exported items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">RegistryAdminEndpoints</span><span class="o">.</span><span class="n">GET_ADMIN_EXPORT</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to export all items from the registry!&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RegistryExportResponse</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RegistryAdminClient.import_items">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient.import_items">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">import_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry_import_request</span><span class="p">:</span> <span class="n">RegistryImportRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistryImportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Imports items into the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        registry_import_request : RegistryImportRequest</span>
+<span class="sd">            The import request containing the items to import.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegistryImportResponse</span>
+<span class="sd">            The response containing the result of the import operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">RegistryAdminEndpoints</span><span class="o">.</span><span class="n">POST_ADMIN_IMPORT</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">registry_import_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to import items into the registry!&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RegistryImportResponse</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RegistryAdminClient.restore_items_from_dynamo_table">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient.restore_items_from_dynamo_table">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">restore_items_from_dynamo_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">restore_request</span><span class="p">:</span> <span class="n">RegistryRestoreRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistryImportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Restores items from a DynamoDB table into the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        restore_request : RegistryRestoreRequest</span>
+<span class="sd">            The restore request containing the details for restoration.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegistryImportResponse</span>
+<span class="sd">            The response containing the result of the restore operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">RegistryAdminEndpoints</span><span class="o">.</span><span class="n">POST_ADMIN_RESTORE_FROM_TABLE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">restore_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to restore items from DynamoDB table into the registry!&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RegistryImportResponse</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RegistryAdminClient.generate_config_file">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient.generate_config_file">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_only</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a nicely formatted .env file of the current required/non-supplied properties.</span>
+
+<span class="sd">        Used to quickly bootstrap a local environment or to understand currently deployed API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        required_only : bool</span>
+<span class="sd">            Whether to include only required properties. By default True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The generated .env file content.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validated_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">RegistryAdminEndpoints</span><span class="o">.</span><span class="n">GET_ADMIN_CONFIG</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to generate config file&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;required_only&quot;</span><span class="p">:</span> <span class="n">required_only</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span></div>
+
+    
+<div class="viewcode-block" id="RegistryAdminClient.delete_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryAdminClient.delete_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an item from the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The ID of the item to delete.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to delete.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            The status response indicating the result of the deletion.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">DELETE</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_delete_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to delete item with id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> and subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+</div>
+
+    
+<div class="viewcode-block" id="RegistryGeneralClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegistryGeneralClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the RegistryGeneralClient with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth: AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config: Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="RegistryGeneralClient._build_subtype_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient._build_subtype_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_subtype_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">RegistryAction</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subtype_action_to_endpoint</span><span class="p">(</span>
+            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span>
+            <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryGeneralClient._build_general_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient._build_general_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_general_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">GenericRegistryEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="si">}{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+    
+<div class="viewcode-block" id="RegistryGeneralClient.list_general_registry_items">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient.list_general_registry_items">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_general_registry_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">general_list_request</span><span class="p">:</span> <span class="n">GeneralListRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PaginatedListResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists general registry items based on filter criteria.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        general_list_request : GeneralListRequest</span>
+<span class="sd">            The request containing filter and sort criteria.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PaginatedListResponse</span>
+<span class="sd">            The response containing the paginated list of registry items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_general_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">GenericRegistryEndpoints</span><span class="o">.</span><span class="n">POST_REGISTRY_GENERAL_LIST</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">general_list_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;General list fetch failed!&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">PaginatedListResponse</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RegistryGeneralClient.general_fetch_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient.general_fetch_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">general_fetch_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UntypedFetchResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches a general item from the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The ID of the item to fetch.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        UntypedFetchResponse</span>
+<span class="sd">            The fetch response containing the item details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_general_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">GenericRegistryEndpoints</span><span class="o">.</span><span class="n">GET_REGISTRY_GENERAL_FETCH</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to fetch item with id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> from general registry!&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UntypedFetchResponse</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RegistryGeneralClient.get_current_provena_version">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryGeneralClient.get_current_provena_version">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_current_provena_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the current Provena version.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        VersionResponse</span>
+<span class="sd">            The response containing the current Provena version.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_general_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">GenericRegistryEndpoints</span><span class="o">.</span><span class="n">GET_REGISTRY_GENERAL_ABOUT_VERSION</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to fetch the current Provena version of your instance.&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">VersionResponse</span>
+        <span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="RegistryClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegistryClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+    <span class="c1"># Sub clients</span>
+    <span class="n">admin</span><span class="p">:</span> <span class="n">RegistryAdminClient</span>
+    <span class="n">general</span><span class="p">:</span> <span class="n">RegistryGeneralClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the RegistryClient with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth: AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config: Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Sub clients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin</span> <span class="o">=</span> <span class="n">RegistryAdminClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">general</span> <span class="o">=</span> <span class="n">RegistryGeneralClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="c1"># Function to get the endpoint URL</span>
+<div class="viewcode-block" id="RegistryClient._build_subtype_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient._build_subtype_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_subtype_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">RegistryAction</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">subtype_action_to_endpoint</span><span class="p">(</span>
+            <span class="n">base</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span>
+            <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient._build_general_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient._build_general_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_general_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">GenericRegistryEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">registry_api_endpoint</span><span class="si">}{</span><span class="n">endpoint</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_health_check">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_health_check">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HealthCheckResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Health check the API</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        HealthCheckResponse</span>
+<span class="sd">            Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_general_endpoint</span><span class="p">(</span><span class="n">GenericRegistryEndpoints</span><span class="o">.</span><span class="n">GET_HEALTH_CHECK</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Health check failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">HealthCheckResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.fetch_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.fetch_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">,</span> <span class="n">fetch_response_model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">],</span> <span class="n">seed_allowed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ascertains the correct endpoint based on the subtype provided, then runs the fetch operation, parsing the data as the specified model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The id of the item to fetch.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to fetch.</span>
+<span class="sd">        fetch_response_model : Type[BaseModelType]</span>
+<span class="sd">            The response pydantic model to parse as e.g. OrganisationFetchResponse</span>
+<span class="sd">        seed_allowed : Optional[bool], optional</span>
+<span class="sd">            Should the endpoint throw an error if the item is a seed item?  Defaults to None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BaseModelType</span>
+<span class="sd">            The fetch response parsed as the specified model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">FETCH</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span><span class="p">)</span>
+
+        <span class="c1"># fetch the item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;seed_allowed&#39;</span><span class="p">:</span> <span class="n">seed_allowed</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to fetch item with id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> and subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">fetch_response_model</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.update_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.update_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">,</span> <span class="n">domain_info</span><span class="p">:</span> <span class="n">DomainInfoBase</span><span class="p">,</span> <span class="n">update_response_model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ascertains the correct endpoint then runs the update operation on an existing item by providing new domain info.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The id of item to update.</span>
+<span class="sd">        reason : Optional[str]</span>
+<span class="sd">            The reason for updating, if any</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype to update</span>
+<span class="sd">        domain_info : DomainInfoBase</span>
+<span class="sd">            The domain info to replace existing item with</span>
+<span class="sd">        update_response_model : Type[BaseModelType]</span>
+<span class="sd">            The response model to parse e.g. StatusResponse</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BaseModelType</span>
+<span class="sd">            The response model parsed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">UPDATE</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span><span class="p">)</span>
+
+        <span class="c1"># fetch the item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="n">reason</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">domain_info</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to update item with id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> and subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">update_response_model</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.list_items">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.list_items">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_items_payload</span><span class="p">:</span> <span class="n">GeneralListRequest</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">,</span> <span class="n">update_model_response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists items within the registry based on filter criteria.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        list_items_payload : GeneralListRequest</span>
+<span class="sd">            The request containing filter and sort criteria.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the items to list.</span>
+<span class="sd">        update_model_response : Type[BaseModelType]</span>
+<span class="sd">            The response model to parse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BaseModelType</span>
+<span class="sd">            The response containing the list of items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">LIST</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">list_items_payload</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to list items for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">update_model_response</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.seed_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.seed_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">seed_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">,</span> <span class="n">seed_model_response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Seeds an item in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to seed.</span>
+<span class="sd">        seed_model_response : Type[BaseModelType]</span>
+<span class="sd">            The response model to parse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BaseModelType</span>
+<span class="sd">            The response containing the details of the seeded item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">SEED</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to seed items for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">seed_model_response</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.revert_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.revert_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">revert_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">revert_request</span><span class="p">:</span> <span class="n">ItemRevertRequest</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ItemRevertResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reverts an item in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        revert_request : ItemRevertRequest</span>
+<span class="sd">            The revert request.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to revert.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ItemRevertResponse</span>
+<span class="sd">            The revert response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">REVERT</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">revert_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to revert items for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ItemRevertResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.create_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.create_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_item_request</span><span class="p">:</span> <span class="n">DomainInfoBase</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">,</span> <span class="n">create_response_model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an item in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        create_item_request : DomainInfoBase</span>
+<span class="sd">            The domain information required to create the item.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to create.</span>
+<span class="sd">        create_response_model : Type[BaseModelType]</span>
+<span class="sd">            The response model to parse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BaseModelType</span>
+<span class="sd">            The response containing the details of the created item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">CREATE</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">create_item_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to create items for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">create_response_model</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_schema">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_schema">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JsonSchemaResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the schema for the item subtype.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to get the schema for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        JsonSchemaResponse</span>
+<span class="sd">            The JSON schema response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">SCHEMA</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to get schema for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">JsonSchemaResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.validate_item">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.validate_item">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">validate_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate_request</span><span class="p">:</span> <span class="n">DomainInfoBase</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates an item in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        validate_request : DomainInfoBase</span>
+<span class="sd">            The domain information of the item to be validated.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to validate.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            The status response indicating the result of the validation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">VALIDATE</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">validate_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to validate item for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.evaluate_auth_access">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.evaluate_auth_access">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_auth_access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DescribeAccessResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the auth access for an item.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The ID of the item to evaluate auth access for.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to evaluate auth access for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DescribeAccessResponse</span>
+<span class="sd">            The describe access response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">AUTH_EVALUATE</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to evaluate auth access for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">DescribeAccessResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_auth_configuration">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_auth_configuration">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_auth_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessSettings</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the auth configuration for an item.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The ID of the item to get auth configuration for.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to get auth configuration for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        AccessSettings</span>
+<span class="sd">            The access settings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">AUTH_CONFIGURATION</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to get auth config for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessSettings</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.modify_auth_configuration">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.modify_auth_configuration">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">modify_auth_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">auth_change_request</span><span class="p">:</span> <span class="n">AccessSettings</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the auth configuration for an item.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The ID of the item to modify auth configuration for.</span>
+<span class="sd">        auth_change_request : AccessSettings</span>
+<span class="sd">            The auth change request.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to modify auth configuration for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            The status response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">AUTH_CONFIGURATION</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">auth_change_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to modify auth config for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_auth_roles">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_auth_roles">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_auth_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AuthRolesResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the auth roles for the item subtype.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to get auth roles for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        AuthRolesResponse</span>
+<span class="sd">            The auth roles response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">AUTH_ROLES</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to get auth roles for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AuthRolesResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.lock_resource">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.lock_resource">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lock_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock_resource_request</span><span class="p">:</span> <span class="n">LockChangeRequest</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Locks a resource in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lock_resource_request : LockChangeRequest</span>
+<span class="sd">            The lock resource request.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the resource to lock.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            The status response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">LOCK</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">lock_resource_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to lock resource for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.unlock_resource">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.unlock_resource">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">unlock_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unlock_resource_request</span><span class="p">:</span> <span class="n">LockChangeRequest</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unlocks a resource in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unlock_resource_request : LockChangeRequest</span>
+<span class="sd">            The unlock resource request.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the resource to unlock.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            The status response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">UNLOCK</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">unlock_resource_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to unlock resource for </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_lock_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_lock_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_lock_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LockHistoryResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the lock history for an item.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        handle_id : str</span>
+<span class="sd">            The handle ID of the item to get lock history for.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to get lock history for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LockHistoryResponse</span>
+<span class="sd">            The lock history response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">LOCK_HISTORY</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">handle_id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to get lock history for id </span><span class="si">{</span><span class="n">handle_id</span><span class="si">}</span><span class="s2"> for subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LockHistoryResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.get_lock_status">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.get_lock_status">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_lock_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LockStatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the lock status for an item.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The item ID.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to get lock status for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LockStatusResponse</span>
+<span class="sd">            The lock status response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">LOCK_HISTORY</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">},</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to get lock status for id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> with subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LockStatusResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RegistryClient.version">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/registry_client/index.html#provenaclient.clients.RegistryClient.version">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version_request</span><span class="p">:</span> <span class="n">VersionRequest</span><span class="p">,</span> <span class="n">item_subtype</span><span class="p">:</span> <span class="n">ItemSubType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Versions an item in the registry.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        version_request : VersionRequest</span>
+<span class="sd">            The version request containing the version details.</span>
+<span class="sd">        item_subtype : ItemSubType</span>
+<span class="sd">            The subtype of the item to version.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        VersionResponse</span>
+<span class="sd">            The version response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># determine endpoint</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_subtype_endpoint</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">RegistryAction</span><span class="o">.</span><span class="n">VERSION</span><span class="p">,</span> <span class="n">item_subtype</span><span class="o">=</span><span class="n">item_subtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># fetch item from the subtype specific endpoint</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">version_request</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to complete versioning for subtype </span><span class="si">{</span><span class="n">item_subtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">VersionResponse</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">endpoint</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

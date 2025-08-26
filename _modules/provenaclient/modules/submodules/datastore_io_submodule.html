@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules.submodules.datastore_io_submodule &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules.submodules.datastore_io_submodule</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.modules.submodules.datastore_io_submodule</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Tuesday June 18th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Tuesday June 18th 2024 12:56:41 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: Datastore file IO sub module, includes file upload and download helpers</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+<span class="sd">22-08-2024 | Parth Kulkarni | Implemented method to do download specific files/directory and helper function to create S3 path.</span>
+<span class="sd">18-06-2024 | Peter Baker | First implementation including download_all_files and upload_all_files methods</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Value</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cloudpathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">S3Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatastoreClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.DataStoreAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.modules.module_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cloudpathlib.s3</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">s3</span>  <span class="c1"># type: ignore</span>
+
+
+<div class="viewcode-block" id="AccessEnum">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/datastore_io_submodule/index.html#provenaclient.modules.submodules.datastore_io_submodule.AccessEnum">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AccessEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">READ</span> <span class="o">=</span> <span class="s2">&quot;read&quot;</span>
+    <span class="n">WRITE</span> <span class="o">=</span> <span class="s2">&quot;write&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="setup_s3_client">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/datastore_io_submodule/index.html#provenaclient.modules.submodules.datastore_io_submodule.setup_s3_client">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_s3_client</span><span class="p">(</span><span class="n">creds</span><span class="p">:</span> <span class="n">CredentialResponse</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">s3</span><span class="o">.</span><span class="n">S3Client</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uses the datastore creds response to generate an s3 cloud path lib client</span>
+<span class="sd">    with auth.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        creds (CredentialResponse): The data store credentials response</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        s3.S3Client: The s3 client ready to use</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># create dict of creds</span>
+    <span class="n">creds_dict</span> <span class="o">=</span> <span class="n">creds</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+    <span class="c1"># don&#39;t want to pass expiry through as it confused s3 cloud lib</span>
+    <span class="k">del</span> <span class="n">creds_dict</span><span class="p">[</span><span class="s1">&#39;expiry&#39;</span><span class="p">]</span>
+    <span class="c1"># create client</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">S3Client</span><span class="p">(</span>
+        <span class="o">**</span><span class="n">creds_dict</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">client</span></div>
+
+
+
+<div class="viewcode-block" id="print_file_info">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/datastore_io_submodule/index.html#provenaclient.modules.submodules.datastore_io_submodule.print_file_info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_file_info</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">s3</span><span class="o">.</span><span class="n">S3Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pretty prints a file specifying file/directory.</span>
+<span class="sd">    File := s3.S3Path from Cloudpathlib</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file (s3.S3Path): The file to print </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory: </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File: </span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="IOSubModule">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IOSubModule</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        File IO datastore sub module to assist with download and upload of data store files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow</span>
+<span class="sd">            method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena</span>
+<span class="sd">            instance. </span>
+<span class="sd">        auth_client: AuthClient</span>
+<span class="sd">            The instantiated auth client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the datastore scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span> <span class="o">=</span> <span class="n">datastore_client</span>
+
+<div class="viewcode-block" id="IOSubModule._create_s3_path">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule._create_s3_path">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_create_s3_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">access_type</span><span class="p">:</span> <span class="n">AccessEnum</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">S3Path</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This helper function creates an S3 URI in PATH format by ingesting </span>
+<span class="sd">        the dataset id and access type (read, write). </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_id : str</span>
+<span class="sd">            The ID of the dataset to download files for - ensure you have the right access.</span>
+<span class="sd">        access_type : AccessEnum</span>
+<span class="sd">            The access type required (Read or Write)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        S3Path</span>
+<span class="sd">            S3Path instance that represent a path in S3 with filesystem path semantics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Fetch the dataset information</span>
+        <span class="n">dataset_information</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">dataset_id</span>
+        <span class="p">)</span>
+        <span class="c1"># Get the S3 location</span>
+        <span class="k">assert</span> <span class="n">dataset_information</span><span class="o">.</span><span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected non None item from dataset fetch, details: </span><span class="si">{</span><span class="n">dataset_information</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">details</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="n">s3_location</span> <span class="o">=</span> <span class="n">dataset_information</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">s3</span>
+
+        <span class="n">credentials_request</span> <span class="o">=</span> <span class="n">CredentialsRequest</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">console_session_required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">access_type</span> <span class="o">==</span> <span class="n">AccessEnum</span><span class="o">.</span><span class="n">READ</span><span class="p">:</span>
+            <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_read_access_credentials</span><span class="p">(</span>
+                <span class="n">read_access_credentials</span><span class="o">=</span><span class="n">credentials_request</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">access_type</span> <span class="o">==</span> <span class="n">AccessEnum</span><span class="o">.</span><span class="n">WRITE</span><span class="p">:</span>
+            <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_write_access_credentials</span><span class="p">(</span>
+                <span class="n">write_access_credentials</span><span class="o">=</span><span class="n">credentials_request</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="c1"># This is highlighted as &quot;unreachable code&quot;, but this is for safe guarding/future-proofing. </span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;This access type is not implemented </span><span class="si">{</span><span class="n">access_type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">setup_s3_client</span><span class="p">(</span><span class="n">creds</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">s3</span><span class="o">.</span><span class="n">S3Path</span><span class="p">(</span><span class="n">cloud_path</span><span class="o">=</span><span class="n">s3_location</span><span class="o">.</span><span class="n">s3_uri</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IOSubModule.download_all_files">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule.download_all_files">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_all_files</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">destination_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads all files to the destination path for a given dataset id.</span>
+
+<span class="sd">        - Fetches info</span>
+<span class="sd">        - Fetches creds</span>
+<span class="sd">        - Uses s3 cloud path lib to download all files to specified location</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            destination_directory (str): The destination path to save files to - use a directory</span>
+<span class="sd">            dataset_id (str): The ID of the dataset to download files for - ensure you have read access</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_s3_path</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">access_type</span><span class="o">=</span><span class="n">AccessEnum</span><span class="o">.</span><span class="n">READ</span><span class="p">)</span>
+
+        <span class="c1"># download to specified path</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">download_to</span><span class="p">(</span><span class="n">destination_directory</span><span class="p">)</span>
+        <span class="c1"># Release file handles</span>
+        <span class="n">path</span><span class="o">.</span><span class="fm">__del__</span></div>
+
+
+<div class="viewcode-block" id="IOSubModule.list_all_files">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule.list_all_files">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_files</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">print_list</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">s3</span><span class="o">.</span><span class="n">S3Path</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all files stored in the given dataset by ID.</span>
+
+<span class="sd">        - Fetches info</span>
+<span class="sd">        - Fetches creds</span>
+<span class="sd">        - Uses s3 cloud path lib to list all files to specified location</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dataset_id (str): The ID of the dataset to download files for - ensure you have read access</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_s3_path</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">access_type</span><span class="o">=</span><span class="n">AccessEnum</span><span class="o">.</span><span class="n">READ</span><span class="p">)</span>
+
+        <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">):</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">print_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+                <span class="n">print_file_info</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="c1"># Release file handles</span>
+        <span class="n">path</span><span class="o">.</span><span class="fm">__del__</span>
+
+        <span class="k">return</span> <span class="n">paths</span></div>
+
+
+<div class="viewcode-block" id="IOSubModule.upload_all_files">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule.upload_all_files">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">upload_all_files</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">source_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uploads all files in the source path to the specified dataset id&#39;s storage location.</span>
+
+<span class="sd">        - Fetches info</span>
+<span class="sd">        - Fetches creds</span>
+<span class="sd">        - Uses s3 cloud path lib to upload all files to specified location</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            source_directory (str): The source path to upload files from - use a directory</span>
+<span class="sd">            dataset_id (str): The ID of the dataset to upload files for - ensure you have write access</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_s3_path</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">access_type</span><span class="o">=</span><span class="n">AccessEnum</span><span class="o">.</span><span class="n">WRITE</span><span class="p">)</span>
+        <span class="c1"># upload</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">upload_from</span><span class="p">(</span><span class="n">source_directory</span><span class="p">)</span>
+        <span class="c1"># Release file handles</span>
+        <span class="n">path</span><span class="o">.</span><span class="fm">__del__</span></div>
+
+
+<div class="viewcode-block" id="IOSubModule.download_specific_file">
+<a class="viewcode-back" href="../../../../autoapi/provenaclient/modules/submodules/index.html#provenaclient.modules.submodules.datastore_io_submodule.IOSubModule.download_specific_file">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_specific_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s3_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads a specific file or folder from an S3 bucket to a provided destination path.</span>
+
+<span class="sd">        This method handles various cases:</span>
+<span class="sd">        - If `s3_path` is a specific file, it downloads that file directly to `destination_directory`.</span>
+<span class="sd">        - If `s3_path` is a folder (without a trailing slash), it downloads the entire folder and its contents,</span>
+<span class="sd">        preserving the folder structure in `destination_directory`.</span>
+<span class="sd">        - If `s3_path` is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the</span>
+<span class="sd">        folder itself to `destination_directory`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_id : str</span>
+<span class="sd">            The ID of the dataset that contains the files or folders to download from S3.</span>
+<span class="sd">        s3_path : str</span>
+<span class="sd">            The S3 path of the file or folder to download. </span>
+<span class="sd">            - If this is a specific file, it will download just that file.</span>
+<span class="sd">            - If this is a folder without a trailing slash (e.g., &#39;nested&#39;), it will download the entire folder </span>
+<span class="sd">            and all its contents, preserving the structure.</span>
+<span class="sd">            - If this is a folder with a trailing slash (e.g., &#39;nested/&#39;), it will download all contents within </span>
+<span class="sd">            that folder but not the folder itself unless subfolders are present.</span>
+<span class="sd">        destination_directory : str</span>
+<span class="sd">            The destination path to save files to - use a directory.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Generate credentials access.</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_s3_path</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">access_type</span><span class="o">=</span><span class="n">AccessEnum</span><span class="o">.</span><span class="n">READ</span><span class="p">)</span>
+
+        <span class="c1"># build path to the object to download from the S3 bucket.</span>
+        <span class="n">object_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">s3_path</span>
+
+        <span class="c1"># Check if the object exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">object_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The specified object located at &#39;</span><span class="si">{</span><span class="n">s3_path</span><span class="si">}</span><span class="s2">&#39; does not exist in the S3 bucket.&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># ok, initiate download</span>
+
+        <span class="c1"># Check if the object is a file.</span>
+        <span class="k">if</span> <span class="n">object_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="c1"># Make the destination dir if it doesn&#39;t exist and download into it.</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">destination_directory</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">object_path</span><span class="o">.</span><span class="n">download_to</span><span class="p">(</span><span class="n">destination_directory</span><span class="p">)</span>
+
+        <span class="c1"># else, the object is not a file but a directory.</span>
+        <span class="k">elif</span> <span class="n">object_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            
+            <span class="c1"># Check if the s3_path has a trailing slash.</span>
+            <span class="k">if</span> <span class="n">s3_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+                <span class="c1"># path ends in slash. Download all contents within the object but not the folder itself.</span>
+                <span class="n">object_path</span><span class="o">.</span><span class="n">download_to</span><span class="p">(</span><span class="n">destination_directory</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># path does not end in slash. Download the directory with its contents and </span>
+                <span class="c1"># put directory in destination_directory.</span>
+
+                <span class="c1"># just use the last dir in s3_file_path for writing</span>
+                <span class="n">local_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">destination_directory</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span>
+                <span class="c1"># This pattern finds all files and folders in the specified directory in s3 bucket.</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">object_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">):</span>
+                    <span class="c1"># Ensure it&#39;s a file and not a &quot;directory&quot;</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                        <span class="n">local_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                            <span class="n">destination_directory</span><span class="p">)</span> <span class="o">/</span> <span class="n">s3_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="c1"># Provides permissions to create directory.</span>
+                        <span class="n">local_file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="c1"># item.download_to(local_file_path)</span>
+                        <span class="n">object_path</span><span class="o">.</span><span class="n">download_to</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The specified object located at &#39;</span><span class="si">{</span><span class="n">s3_path</span><span class="si">}</span><span class="s2">&#39; is not a file or directory. Unhandled object type for download operation.&quot;</span><span class="p">)</span></div>
+</div>
+
+                
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

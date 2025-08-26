@@ -1,0 +1,169 @@
+provenaclient.utils.exceptions
+==============================
+
+.. py:module:: provenaclient.utils.exceptions
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday May 30th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Defines a collection of exceptions produced by the Provena Client, extending a common base handled exception.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Exceptions
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.exceptions.BaseException
+   provenaclient.utils.exceptions.CustomTimeoutException
+   provenaclient.utils.exceptions.BadRequestException
+   provenaclient.utils.exceptions.NotFoundException
+   provenaclient.utils.exceptions.AuthException
+   provenaclient.utils.exceptions.HTTPValidationException
+   provenaclient.utils.exceptions.ServerException
+   provenaclient.utils.exceptions.ValidationException
+
+
+Module Contents
+---------------
+
+.. py:exception:: BaseException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`Exception`
+
+
+   A custom exception class that inherits from python's base exception.
+
+   :param Exception: Exception class provided by python.
+   :type Exception: Exception
+
+
+   .. py:attribute:: message
+      :type:  str
+
+
+   .. py:attribute:: error_code
+      :type:  Optional[int]
+
+
+   .. py:attribute:: payload
+      :type:  Optional[str]
+
+
+   .. py:method:: __str__() -> str
+
+      Creates a string of the BaseException
+
+      :returns: A string describing the exception, including the message, error code, and payload if present.
+      :rtype: str
+
+
+
+.. py:exception:: CustomTimeoutException(message: str, url: Optional[str])
+
+   Bases: :py:obj:`httpx.TimeoutException`
+
+
+   An exception raised when a timeout occurs during an HTTP request.
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+   .. py:attribute:: message
+
+
+   .. py:attribute:: url
+
+
+   .. py:method:: __str__() -> str
+
+      An exception raised when a timeout occurs during an HTTP request.
+
+
+      :returns: Returns a string that includes both the error message and the URL related to the timeout, if provided.
+      :rtype: str
+
+
+
+.. py:exception:: BadRequestException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception raised for HTTP 400 Bad Request errors.
+
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+.. py:exception:: NotFoundException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception raised for HTTP 404 Not found exceptions.
+
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+.. py:exception:: AuthException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception raised for HTTP 401 Unauthorized errors.
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+.. py:exception:: HTTPValidationException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception raised for HTTP 422 Unprocessable Entity errors.
+
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+.. py:exception:: ServerException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception raised for HTTP 500+ Server Error responses.
+
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+
+.. py:exception:: ValidationException(message: str, error_code: Optional[int] = None, payload: Optional[str] = None)
+
+   Bases: :py:obj:`BaseException`
+
+
+   An exception that is raised for validation/parsing
+   errors that occurs through the client library.
+
+   :param BaseException: A custom exception class that inherits from python's base exception
+                         and takes more parameters.
+
+

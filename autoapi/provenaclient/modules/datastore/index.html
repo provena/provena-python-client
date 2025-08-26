@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules.datastore &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="provenaclient.modules.id_service" href="../id_service/index.html" />
+    <link rel="prev" title="provenaclient.modules.auth" href="../auth/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">provenaclient</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">provenaclient</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">provenaclient.modules</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules.datastore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/provenaclient/modules/datastore/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-provenaclient.modules.datastore">
+<span id="provenaclient-modules-datastore"></span><h1>provenaclient.modules.datastore<a class="headerlink" href="#module-provenaclient.modules.datastore" title="Link to this heading"></a></h1>
+<p>Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+—–
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+—–
+Description: Datastore L3 module. Includes the Data store review sub module.
+—–
+HISTORY:
+Date            By      Comments
+———-      —     ———————————————————</p>
+<p>29-08-2024 | Parth Kulkarni | Added Downloading Specific file/directory functionality to interactive class.
+22-08-2024 | Parth Kulkarni | Completed Interactive Dataset class + Doc Strings.
+15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.datastore.DEFAULT_SEARCH_LIMIT" title="provenaclient.modules.datastore.DEFAULT_SEARCH_LIMIT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_SEARCH_LIMIT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.datastore.DATASTORE_DEFAULT_SEARCH_LIMIT" title="provenaclient.modules.datastore.DATASTORE_DEFAULT_SEARCH_LIMIT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASTORE_DEFAULT_SEARCH_LIMIT</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.datastore.ReviewSubModule" title="provenaclient.modules.datastore.ReviewSubModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ReviewSubModule</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.datastore.InteractiveDataset" title="provenaclient.modules.datastore.InteractiveDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InteractiveDataset</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.datastore.Datastore" title="provenaclient.modules.datastore.Datastore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Datastore</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.DEFAULT_SEARCH_LIMIT">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.modules.datastore.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_SEARCH_LIMIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">25</span></em><a class="headerlink" href="#provenaclient.modules.datastore.DEFAULT_SEARCH_LIMIT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.DATASTORE_DEFAULT_SEARCH_LIMIT">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.modules.datastore.</span></span><span class="sig-name descname"><span class="pre">DATASTORE_DEFAULT_SEARCH_LIMIT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#provenaclient.modules.datastore.DATASTORE_DEFAULT_SEARCH_LIMIT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.datastore.</span></span><span class="sig-name descname"><span class="pre">ReviewSubModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#ReviewSubModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule._datastore_client">
+<span class="sig-name descname"><span class="pre">_datastore_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule._datastore_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule.delete_dataset_reviewer">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete_dataset_reviewer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reviewer_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#ReviewSubModule.delete_dataset_reviewer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule.delete_dataset_reviewer" title="Link to this definition"></a></dt>
+<dd><p>Delete a reviewer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reviewer_id</strong> (<em>str</em>) – Id of an existing reviewer within the system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule.add_dataset_reviewer">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_dataset_reviewer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reviewer_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#ReviewSubModule.add_dataset_reviewer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule.add_dataset_reviewer" title="Link to this definition"></a></dt>
+<dd><p>Add a reviewer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reviewer_id</strong> (<em>str</em>) – Id of a reviewer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule.dataset_approval_request">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataset_approval_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">approval_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequestResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#ReviewSubModule.dataset_approval_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule.dataset_approval_request" title="Link to this definition"></a></dt>
+<dd><p>Submit a request for approval of dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>approval_request</strong> (<em>ReleaseApprovalRequest</em>) – An object that requires the dataset id, approver id and notes</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contains details of the approval request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ReleaseApprovalRequestResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.ReviewSubModule.action_approval_request">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action_approval_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_approval_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.ActionApprovalRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.ActionApprovalRequestResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#ReviewSubModule.action_approval_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.ReviewSubModule.action_approval_request" title="Link to this definition"></a></dt>
+<dd><p>Action an approval request from a dataset approval request via the datastore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_approval_request</strong> (<em>ActionApprovalRequest</em>) – The dataset id, your decision of approval and any extra information
+you want to add (notes).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The details of the approval action and the relevant dataset details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ActionApprovalRequestResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.datastore.</span></span><span class="sig-name descname"><span class="pre">InteractiveDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">io</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../submodules/index.html#provenaclient.modules.submodules.IOSubModule" title="provenaclient.modules.submodules.IOSubModule"><span class="pre">provenaclient.modules.submodules.IOSubModule</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.dataset_id">
+<span class="sig-name descname"><span class="pre">dataset_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.dataset_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.auth">
+<span class="sig-name descname"><span class="pre">auth</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></em><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.datastore_client">
+<span class="sig-name descname"><span class="pre">datastore_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.datastore_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.io">
+<span class="sig-name descname"><span class="pre">io</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../submodules/index.html#provenaclient.modules.submodules.IOSubModule" title="provenaclient.modules.submodules.IOSubModule"><span class="pre">provenaclient.modules.submodules.IOSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.io" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset._datastore_client">
+<span class="sig-name descname"><span class="pre">_datastore_client</span></span><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset._datastore_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.fetch_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_dataset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.fetch_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.fetch_dataset" title="Link to this definition"></a></dt>
+<dd><p>Fetches current dataset from the datastore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A interactive python datatype of type RegistryFetchResponse
+containing the dataset details.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>RegistryFetchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.download_all_files">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_all_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.download_all_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.download_all_files" title="Link to this definition"></a></dt>
+<dd><p>Downloads all files to the destination path for your current dataset.</p>
+<ul class="simple">
+<li><p>Fetches info</p></li>
+<li><p>Fetches creds</p></li>
+<li><p>Uses s3 cloud path lib to download all files to specified location</p></li>
+</ul>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>destination_directory (str):</dt><dd><p>The destination path to save files to - use a directory</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.upload_all_files">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upload_all_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.upload_all_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.upload_all_files" title="Link to this definition"></a></dt>
+<dd><p>Uploads all files in the source path to the current dataset’s storage location.</p>
+<ul class="simple">
+<li><p>Fetches info</p></li>
+<li><p>Fetches creds</p></li>
+<li><p>Uses s3 cloud path lib to upload all files to specified location</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>source_directory</em>) – The source path to upload files from - use a directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.version">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.version" title="Link to this definition"></a></dt>
+<dd><p>Versioning operation which creates a new version from the current dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reason</strong> (<em>str</em>) – The reason for versioning this dataset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response of the versioning of the dataset, containing new version ID and
+job session ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.revert_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">revert_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">history_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.revert_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.revert_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Reverts the metadata for the current dataset to a previous identified historical version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>history_id</strong> (<em>int</em>) – The identifier of the historical version to revert to.</p></li>
+<li><p><strong>reason</strong> (<em>str</em>) – The reason for reverting the dataset’s metadata.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response indicating whether your dataset metadata revert request was successful.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.generate_read_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_read_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console_session_required</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.generate_read_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.generate_read_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>console_session_required</strong> (<em>bool</em>) – Specifies whether a console session URL is required.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.generate_write_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_write_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">console_session_required</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.generate_write_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.generate_write_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>console_session_required</strong> (<em>bool</em>) – Specifies whether a console session URL is required.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.InteractiveDataset.download_specific_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_specific_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s3_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#InteractiveDataset.download_specific_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.InteractiveDataset.download_specific_file" title="Link to this definition"></a></dt>
+<dd><p>Downloads a specific file or folder for the current dataset
+from an S3 bucket to a provided destination path.</p>
+<p>This method handles various cases:
+- If <cite>s3_path</cite> is a specific file, it downloads that file directly to <cite>destination_directory</cite>.
+- If <cite>s3_path</cite> is a folder (without a trailing slash), it downloads the entire folder and its contents,
+preserving the folder structure in <cite>destination_directory</cite>.
+- If <cite>s3_path</cite> is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the
+folder itself to <cite>destination_directory</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s3_path</strong> (<em>str</em>) – The S3 path of the file or folder to download.
+- If this is a specific file, it will download just that file.
+- If this is a folder without a trailing slash (e.g., ‘nested’), it will download the entire folder
+and all its contents, preserving the structure.
+- If this is a folder with a trailing slash (e.g., ‘nested/’), it will download all contents within
+that folder but not the folder itself unless subfolders are present.</p></li>
+<li><p><strong>destination_directory</strong> (<em>str</em>) – The destination path to save files to - use a directory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.datastore.</span></span><span class="sig-name descname"><span class="pre">Datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore._datastore_client">
+<span class="sig-name descname"><span class="pre">_datastore_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.Datastore._datastore_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore._search_client">
+<span class="sig-name descname"><span class="pre">_search_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.Datastore._search_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.review">
+<span class="sig-name descname"><span class="pre">review</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#provenaclient.modules.datastore.ReviewSubModule" title="provenaclient.modules.datastore.ReviewSubModule"><span class="pre">ReviewSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.review" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.io">
+<span class="sig-name descname"><span class="pre">io</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../submodules/index.html#provenaclient.modules.submodules.IOSubModule" title="provenaclient.modules.submodules.IOSubModule"><span class="pre">provenaclient.modules.submodules.IOSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.io" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.datastore.Datastore._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.datastore.Datastore._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../models/index.html#provenaclient.models.HealthCheckResponse" title="provenaclient.models.HealthCheckResponse"><span class="pre">provenaclient.models.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.fetch_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.fetch_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.fetch_dataset" title="Link to this definition"></a></dt>
+<dd><p>Fetches a dataset from the datastore based on the provided
+ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – The unique identifier of the dataset to be retrieved.
+For example: “10378.1/1451860”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interactive python datatype of type RegistryFetchResponse
+containing the dataset details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegistryFetchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.mint_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mint_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_mint_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.MintResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.mint_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.mint_dataset" title="Link to this definition"></a></dt>
+<dd><p>Creates a new dataset in the datastore with the provided dataset information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_mint_info</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interactive python datatype of type MintResponse
+containing the newly created dataset details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MintResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.validate_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.validate_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.validate_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Validates the dataset metadata creation for testing and does not publish.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata_payload</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response indicating whether your dataset metadata setup is valid and correct.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.update_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.UpdateMetadataResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.update_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.update_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Updates an existing dataset’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle_id</strong> (<em>str</em>) – The id of the dataset.</p></li>
+<li><p><strong>reason</strong> (<em>str</em>) – The reason for changing metadata of the dataset.</p></li>
+<li><p><strong>metadata_payload</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated metadata response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UpdateMetadataResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.revert_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">revert_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../models/index.html#provenaclient.models.RevertMetadata" title="provenaclient.models.RevertMetadata"><span class="pre">provenaclient.models.RevertMetadata</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.revert_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.revert_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Reverts the metadata for a dataset to a previous identified historical version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata_payload</strong> (<a class="reference internal" href="../../models/datastore/index.html#provenaclient.models.datastore.RevertMetadata" title="provenaclient.models.datastore.RevertMetadata"><em>RevertMetadata</em></a>) – The revert request, passed through to the registry API and requires
+dataset id, history id and reason for reverting.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response indicating whether your dataset revert metadata request was correct.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.version_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.version_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.version_dataset" title="Link to this definition"></a></dt>
+<dd><p>Versioning operation which creates a new version from the specified ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_request</strong> (<em>VersionRequest</em>) – The request which includes the item ID and reason for versioning.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response of the versioning of the dataset, containing new version ID and
+job session ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.for_all_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">for_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_dataset_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncGenerator</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.DataStoreAPI.ItemDataset</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.for_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.for_all_datasets" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Fetches all datasets based on the provided datasets in datastore based on</dt><dd><p>the provided sorting criteria, pagination key and page size.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_dataset_request</strong> (<em>NoFilterSubtypeListRequest</em>) – A request object configured with sorting options, pagination keys,
+and page size that defines how datasets are queried from the datastore.</p></li>
+<li><p><strong>total_limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – A maximum number of datasets to fetch. If specified, the generator will
+stop yielding datasets once this limit is reached.
+If None, it will fetch datasets until there are no more to fetch.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An asynchronous generator yielding “ItemDataset”
+object which is an individual dataset from the datastore.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AsyncGenerator[ItemDataset, None]</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Iterator[AsyncGenerator[ItemDataset, None]]</em> – Each yield provides a “ItemDataset” containing an individual dataset.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.list_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_dataset_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.DatasetListResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.list_datasets" title="Link to this definition"></a></dt>
+<dd><p>Takes a specific dataset list request and returns the response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_dataset_request</strong> (<em>NoFilterSubtypeListRequest</em>) – A request object configured with sorting options, pagination keys,
+and page size that defines how datasets are queried from the datastore.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response containing the requested datasets in the datastore
+based on sort criteria and page size, and contains other attributes
+such as total_item_counts and optional pagination key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DatasetListResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.list_all_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sort_criteria</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.RegistryAPI.SortOptions</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.DataStoreAPI.ItemDataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.list_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.list_all_datasets" title="Link to this definition"></a></dt>
+<dd><p>Fetches all datasets from the datastore and you may provide your own sort criteria.
+By default uses display name sort criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sort_criteria</strong> (<em>Optional</em><em>[</em><em>SortOptions</em><em>]</em>) – An object configured with sorting options that you want
+when displaying all datasets within the datastore.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of all datasets in the datastore, sorted as requested.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[ItemDataset]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.generate_dataset_presigned_url">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_dataset_presigned_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_presigned_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.PresignedURLRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.PresignedURLResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_dataset_presigned_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.generate_dataset_presigned_url" title="Link to this definition"></a></dt>
+<dd><p>Generates a presigned url for an existing dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_presigned_request</strong> (<em>PresignedURLRequest</em>) – Contains the dataset id + file path + length of expiry of URL.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A response with the presigned url.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PresignedURLResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.generate_read_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_read_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialsRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_read_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.generate_read_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials</strong> (<em>CredentialsRequest</em>) – Contains the dataset id + console session URL required flag (boolean)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.generate_write_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_write_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialsRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_write_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.generate_write_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials</strong> (<em>CredentialsRequest</em>) – Contains the dataset id + console session URL required flag (boolean)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.search_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DEFAULT_SEARCH_LIMIT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../models/index.html#provenaclient.models.LoadedSearchResponse" title="provenaclient.models.LoadedSearchResponse"><span class="pre">provenaclient.models.LoadedSearchResponse</span></a></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.search_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.search_datasets" title="Link to this definition"></a></dt>
+<dd><p>Utilises the L2 search client to search for datasets with the specified
+query.</p>
+<p>Loads all datasets in the result payload from the data store and sorts
+based on auth, or other exceptions if not successful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – The query to make limit (int, optional): The result</p></li>
+<li><p><strong>DEFAULT_SEARCH_LIMIT.</strong> (<em>count limit. Defaults to</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded items incl errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../../models/datastore/index.html#provenaclient.models.datastore.LoadedSearchResponse" title="provenaclient.models.datastore.LoadedSearchResponse">LoadedSearchResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.datastore.Datastore.interactive_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interactive_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#provenaclient.modules.datastore.InteractiveDataset" title="provenaclient.modules.datastore.InteractiveDataset"><span class="pre">InteractiveDataset</span></a></span></span><a class="reference internal" href="../../../../_modules/provenaclient/modules/datastore.html#Datastore.interactive_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.datastore.Datastore.interactive_dataset" title="Link to this definition"></a></dt>
+<dd><p>Creates an interactive “session” with a dataset that allows you
+to perform further operations without re-supplying dataset id and
+creating objects required for other methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_id</strong> (<em>str</em>) – The unique identifier of the dataset to be retrieved.
+For example: “10378.1/1451860”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance that allows you to perform various operations on the provided dataset.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#provenaclient.modules.datastore.InteractiveDataset" title="provenaclient.modules.datastore.InteractiveDataset">InteractiveDataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../auth/index.html" class="btn btn-neutral float-left" title="provenaclient.modules.auth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../id_service/index.html" class="btn btn-neutral float-right" title="provenaclient.modules.id_service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

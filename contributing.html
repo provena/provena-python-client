@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing Guidelines &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="prev" title="CHANGELOG" href="changelog.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributing Guidelines</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contributing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contributing-guidelines">
+<h1>Contributing Guidelines<a class="headerlink" href="#contributing-guidelines" title="Link to this heading"></a></h1>
+<p>This document outlines the contributing guidelines for the Provena client library. Contributions are welcome for new features, bug fixes, and documentation updates.</p>
+<hr class="docutils" />
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<section id="how-to-get-started-with-poetry">
+<h3>How to get started with Poetry<a class="headerlink" href="#how-to-get-started-with-poetry" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Run the Command: <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-sSL</span> <span class="pre">https://install.python-poetry.org</span> <span class="pre">|</span> <span class="pre">python3</span> <span class="pre">-</span></code>.</p></li>
+<li><p>Check if poetry was successfully installed by running <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">--version</span></code>.</p></li>
+<li><p>You should now have be able to see your poetry version successfully.</p></li>
+<li><p>Now run the command <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">shell</span></code>. This  will activate the poetry virtual environment for you.</p></li>
+<li><p>Now finally run the command <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code>. This will install all dependencies defined within pyproject.toml.</p></li>
+</ol>
+</section>
+<section id="using-local-venv">
+<h3>Using local .venv<a class="headerlink" href="#using-local-venv" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Set poetry to use local <code class="docutils literal notranslate"><span class="pre">.venv</span></code> with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">config</span> <span class="pre">virtualenvs.in-project</span> <span class="pre">true</span></code></p></li>
+<li><p>List and remove any existing venvs with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">env</span> <span class="pre">list</span></code> and <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">env</span> <span class="pre">remove</span> <span class="pre">&lt;name&gt;</span></code></p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
+</ol>
+<p>You can then make vs code use this environment easily with <code class="docutils literal notranslate"><span class="pre">ctrl</span> <span class="pre">+</span> <span class="pre">shift</span> <span class="pre">+</span> <span class="pre">p</span></code> select python interpreter choosing <code class="docutils literal notranslate"><span class="pre">.venv/bin/python</span></code>.</p>
+</section>
+<section id="my-poetry-installation-is-not-being-detected">
+<h3>My Poetry Installation is not being detected?<a class="headerlink" href="#my-poetry-installation-is-not-being-detected" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>This means that your PATH variable does not include the Poetry directory.</p></li>
+<li><p>Open your .bashrc file, using the command <code class="docutils literal notranslate"><span class="pre">nano</span> <span class="pre">~/.bashrc</span></code>.</p></li>
+<li><p>Add the following line at the end of the file, <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=</span> <span class="pre">&quot;$HOME/.local/bin:$PATH&quot;</span></code>.</p></li>
+<li><p>Reload your .bashrc file, using the command <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code>.</p></li>
+<li><p>Verify that your poetry is now running, using the command <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">--version</span></code>.</p></li>
+</ol>
+</section>
+</section>
+<section id="how-to-contribute-to-the-provena-python-client">
+<h2>How to contribute to the Provena Python Client<a class="headerlink" href="#how-to-contribute-to-the-provena-python-client" title="Link to this heading"></a></h2>
+<section id="initial-setup">
+<h3>1) Initial Setup<a class="headerlink" href="#initial-setup" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Ensure You Have an IDE Installed</strong>: Start by setting up your preferred Integrated Development Environment (IDE) like VSCode, PyCharm, etc.</p></li>
+<li><p><strong>Clone the Repository</strong>: Use the following command to clone the Provena client repository locally: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/provena/provena-python-client.git</span> </code></p></li>
+<li><p><strong>Install Requirements</strong>: The Provena Python client uses Poetry for dependency management. Install Poetry if it’s not already installed, following the steps above.</p></li>
+<li><p><strong>Set Up Mypy for Static Type Checking</strong>: Ensure you have Mypy configured to check for type errors. You can run Mypy manually: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">mypy</span></code> or <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">run</span> <span class="pre">mypy</span></code> if using local .venv</p></li>
+</ol>
+</section>
+<section id="codebase-layout-and-contributing">
+<h3>2) Codebase Layout and Contributing<a class="headerlink" href="#codebase-layout-and-contributing" title="Link to this heading"></a></h3>
+<p>Before making any contributions, it’s important to understand the core structure of the Provena Python Client.</p>
+<ul class="simple">
+<li><p><strong>Core Directory Layout</strong>:</p>
+<ul>
+<li><p><strong>docs</strong>: All documentation is located here and should be updated if your contribution involves documentation changes or additions.</p></li>
+<li><p><strong>src/provenaclient</strong>: This directory contains the core functionality of the Provena client. Any new features, bug fixes, or changes to the core logic should be made here.</p></li>
+<li><p><strong>tests</strong>: All unit and integration tests are located in this directory. If your contribution involves code changes or new features, corresponding tests should be written or updated here.</p></li>
+</ul>
+</li>
+<li><p><strong>Where to Add New Features</strong>:</p>
+<ul>
+<li><p>Any new feature should be added within the <code class="docutils literal notranslate"><span class="pre">src/provenaclient/</span></code> directory, following the existing architecture structure and file organisation.</p></li>
+<li><p>If you are extending or updating an existing feature or API endpoint, locate the relevant module and update the code accordingly to ensure consistency with the existing architecture.</p></li>
+<li><p>See the README in <code class="docutils literal notranslate"><span class="pre">src/</span></code> for more information on how to contribute to adding new features to Provena Python Client!</p></li>
+</ul>
+</li>
+<li><p><strong>Adding Tests</strong>:</p>
+<ul>
+<li><p>All new features or bug fixes may include corresponding tests in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory if appropriate.</p></li>
+<li><p>Use Pytest for writing unit or integration tests to ensure that the new functionality is properly covered.</p></li>
+<li><p>If you’re adding new test cases, ensure they are comprehensive and maintain test coverage for the affected code.</p></li>
+</ul>
+</li>
+<li><p><strong>Code Style</strong>:</p>
+<ul>
+<li><p>Maintain consistency with the existing codebase in terms of structure, style, and naming conventions.</p></li>
+<li><p>Use docstrings to document functions, classes, and modules where necessary, ensuring the code is well-documented for future contributors.</p></li>
+<li><p>Ensure that all functions and methods are properly typed for static type checking, and use Mypy to validate the typing.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="create-a-new-branch">
+<h3>3) Create a New Branch<a class="headerlink" href="#create-a-new-branch" title="Link to this heading"></a></h3>
+<p>Name your branch descriptively, e.g., <code class="docutils literal notranslate"><span class="pre">&lt;change</span> <span class="pre">scope:feat|fix|docs&gt;-&lt;jira-ticket-name&gt;</span></code>.</p>
+</section>
+<section id="commit-message-conventions">
+<h3>4) Commit Message Conventions<a class="headerlink" href="#commit-message-conventions" title="Link to this heading"></a></h3>
+<p>We follow the <a class="reference external" href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> specification for commit messages. This helps automate the versioning and release process.</p>
+<ul class="simple">
+<li><p>Conventional Commits Examples:</p>
+<ul>
+<li><p><strong>feat:</strong> A new feature.</p></li>
+<li><p><strong>fix:</strong> A bug fix.</p></li>
+<li><p><strong>chore:</strong> Changes to the build process or auxiliary tools and libraries.</p></li>
+<li><p><strong>docs:</strong> Documentation only changes.</p></li>
+<li><p><strong>style:</strong> Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).</p></li>
+<li><p><strong>refactor:</strong> A code change that neither fixes a bug nor adds a feature.</p></li>
+<li><p><strong>perf:</strong> A code change that improves performance.</p></li>
+<li><p><strong>test:</strong> Adding missing tests or correcting existing tests.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Note:</strong> Commits with types of <code class="docutils literal notranslate"><span class="pre">docs</span></code>, <code class="docutils literal notranslate"><span class="pre">chore</span></code>, <code class="docutils literal notranslate"><span class="pre">style</span></code>, <code class="docutils literal notranslate"><span class="pre">refactor</span></code>, and <code class="docutils literal notranslate"><span class="pre">test</span></code> will not trigger a version change.</p>
+</section>
+<section id="develop-and-commit">
+<h3>5) Develop and Commit<a class="headerlink" href="#develop-and-commit" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Make your desired changes in your branch.</p></li>
+<li><p>Commit your changes to your upstream branch and use meaningful commit messages.</p></li>
+</ul>
+</section>
+<section id="open-a-pull-request-pr">
+<h3>6) Open a Pull Request (PR)<a class="headerlink" href="#open-a-pull-request-pr" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>When your feature is complete, open a PR to the main branch.</p></li>
+<li><p>Ensure that your PR title adheres and begins by one of the Conventional Commits specification keywords outlined above.</p></li>
+<li><p>Ensure your PR description is clear and outlines the changes made.</p></li>
+<li><p>Ensure that the CI (Continuous Integration) has successfully passed for your latest commit.</p></li>
+</ul>
+</section>
+<section id="review-and-squash-merge">
+<h3>7) Review and Squash Merge<a class="headerlink" href="#review-and-squash-merge" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Request reviews from at least one team member within the Provena organisation or part of the client library development.</p></li>
+<li><p>Once approved, squash merge the PR into main with a specific commit message that summarises the changes, e.g., <code class="docutils literal notranslate"><span class="pre">feat:</span> <span class="pre">added</span> <span class="pre">new</span> <span class="pre">endpoint</span> <span class="pre">in</span> <span class="pre">job-api</span></code> or re-use the PR title.</p></li>
+</ul>
+</section>
+<section id="ci-cd-flow">
+<h3>8) CI/CD Flow<a class="headerlink" href="#ci-cd-flow" title="Link to this heading"></a></h3>
+<p>After merging, the CI/CD pipeline will run automatically, deploying the changes and updating the version as needed.</p>
+</section>
+</section>
+<section id="provena-client-ci-cd-and-release-process">
+<h2>Provena Client CI/CD and Release Process<a class="headerlink" href="#provena-client-ci-cd-and-release-process" title="Link to this heading"></a></h2>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Provena client uses GitHub Actions for CI/CD, producing automated deployments to our <a class="reference external" href="https://pypi.org/project/provenaclient/">PyPI account</a>.</p>
+</section>
+<section id="continuous-integration-ci">
+<h2>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Link to this heading"></a></h2>
+<p><strong>Executed:</strong> Creation of pull requests and during merge of pull requests to the main branch.</p>
+<p><strong>Triggers:</strong> Push and pull requests to the main branch.</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p>Set up Python environment.</p></li>
+<li><p>Check out the repository.</p></li>
+<li><p>Install dependencies with Poetry.</p></li>
+<li><p>Run type checks with Mypy.</p></li>
+<li><p>Run tests with Pytest (unit tests, integration tests).</p></li>
+<li><p>Track coverage with Codecov.</p></li>
+<li><p>Build documentation.</p></li>
+</ol>
+</section>
+<section id="continuous-deployment-cd">
+<h2>Continuous Deployment (CD)<a class="headerlink" href="#continuous-deployment-cd" title="Link to this heading"></a></h2>
+<p><strong>Executed:</strong> Merge of pull requests to the main branch.</p>
+<p><strong>Triggers:</strong> Push to the main branch and merged pull requests to the main branch.</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p>Set up Python environment.</p></li>
+<li><p>Check out repository.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">python-semantic-release</span></code> to prepare release.</p></li>
+<li><p>Publish to TestPyPI and PyPI.</p></li>
+<li><p>Test install from TestPyPI.</p></li>
+<li><p>Upload distributions to GitHub Releases.</p></li>
+</ol>
+</section>
+<section id="semantic-versioning-and-release-automation">
+<h2>Semantic Versioning and Release Automation<a class="headerlink" href="#semantic-versioning-and-release-automation" title="Link to this heading"></a></h2>
+<p>The Provena Client uses <code class="docutils literal notranslate"><span class="pre">python-semantic-release</span></code> for automated versioning and releases.</p>
+<section id="configuration-in-pyproject-toml-tool-semantic-release">
+<h3>Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code><a class="headerlink" href="#configuration-in-pyproject-toml-tool-semantic-release" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Version Management:</strong> Package versions are managed through <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">src/provenaclient/__init__.py</span></code>.</p></li>
+<li><p><strong>Release Branch:</strong> Releases of the Provena Client are made from the main branch only.</p></li>
+<li><p><strong>Changelog:</strong> Release changelog and commit documentation/history is maintained in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>.</p></li>
+<li><p><strong>Upload to PyPI and GitHub Releases:</strong> Set to true.</p></li>
+<li><p><strong>Automatic Version Commit:</strong> <code class="docutils literal notranslate"><span class="pre">commit_version_number</span> <span class="pre">=</span> <span class="pre">true</span></code> ensures that the version number is automatically committed back to the repository after a release, keeping the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">src/provenaclient/__init__.py</span></code> files up to date.</p></li>
+</ul>
+</section>
+</section>
+<section id="release-process">
+<h2>Release Process<a class="headerlink" href="#release-process" title="Link to this heading"></a></h2>
+<p>On merging to the main branch, <code class="docutils literal notranslate"><span class="pre">python-semantic-release</span></code> automates the following steps:</p>
+<section id="bumps-the-version">
+<h3>Bumps the Version<a class="headerlink" href="#bumps-the-version" title="Link to this heading"></a></h3>
+<p>Based on commit messages, the version is incremented following semantic versioning rules:</p>
+<ul class="simple">
+<li><p><strong>feat:</strong> Increments the MINOR version.</p></li>
+<li><p><strong>fix:</strong> Increments the PATCH version.</p></li>
+<li><p><strong>BREAKING CHANGE:</strong> Increments the MAJOR version.</p></li>
+</ul>
+</section>
+<section id="creates-a-new-tag">
+<h3>Creates a New Tag<a class="headerlink" href="#creates-a-new-tag" title="Link to this heading"></a></h3>
+<p>A new Git tag is created for the version.</p>
+</section>
+<section id="publishes-to-pypi">
+<h3>Publishes to PyPI<a class="headerlink" href="#publishes-to-pypi" title="Link to this heading"></a></h3>
+<p>The new version is published to PyPI.</p>
+</section>
+<section id="uploads-to-github-releases">
+<h3>Uploads to GitHub Releases<a class="headerlink" href="#uploads-to-github-releases" title="Link to this heading"></a></h3>
+<p>The distribution files are uploaded to GitHub Releases.</p>
+</section>
+<section id="commits-the-new-version-number">
+<h3>Commits the New Version Number<a class="headerlink" href="#commits-the-new-version-number" title="Link to this heading"></a></h3>
+<p>The new version number is committed back to the repository, ensuring the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">src/provenaclient/__init__.py</span></code> files are up-to-date.</p>
+</section>
+</section>
+<section id="overall-summary">
+<h2>Overall Summary<a class="headerlink" href="#overall-summary" title="Link to this heading"></a></h2>
+<p>This setup ensures a streamlined and automated release process for the Provena Client, with CI/CD pipelines handling testing and deployment, and <code class="docutils literal notranslate"><span class="pre">python-semantic-release</span></code> managing semantic versioning and PyPI releases.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">provenaclient</span></code> was created by Provena Development Team (CSIRO). Provena Development Team (CSIRO) retains all rights to the source and it may not be reproduced, distributed, or used to create derivative works.</p>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">provenaclient</span></code> was created with <a class="reference external" href="https://cookiecutter.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">cookiecutter</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">py-pkgs-cookiecutter</span></code> <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter">template</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="changelog.html" class="btn btn-neutral float-left" title="CHANGELOG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="autoapi/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

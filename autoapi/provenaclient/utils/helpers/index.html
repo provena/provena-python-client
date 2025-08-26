@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.utils.helpers &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="provenaclient.utils.http_client" href="../http_client/index.html" />
+    <link rel="prev" title="provenaclient.utils.exceptions" href="../exceptions/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">provenaclient</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">provenaclient</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">provenaclient.utils</a></li>
+      <li class="breadcrumb-item active">provenaclient.utils.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/provenaclient/utils/helpers/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-provenaclient.utils.helpers">
+<span id="provenaclient-utils-helpers"></span><h1>provenaclient.utils.helpers<a class="headerlink" href="#module-provenaclient.utils.helpers" title="Link to this heading"></a></h1>
+<p>Created Date: Monday June 17th 2024 +1000
+Author: Peter Baker
+—–
+Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+Modified By: Peter Baker
+—–
+Description: General helper functions which are useful across the client library.
+—–
+HISTORY:
+Date            By      Comments
+———-      —     ———————————————————</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.BaseModelType" title="provenaclient.utils.helpers.BaseModelType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseModelType</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.ItemModelType" title="provenaclient.utils.helpers.ItemModelType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ItemModelType</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.JsonData" title="provenaclient.utils.helpers.JsonData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JsonData</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.HttpxFileUpload" title="provenaclient.utils.helpers.HttpxFileUpload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HttpxFileUpload</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.ParamTypes" title="provenaclient.utils.helpers.ParamTypes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParamTypes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.convert_to_item_subtype" title="provenaclient.utils.helpers.convert_to_item_subtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_item_subtype</span></code></a>(...)</p></td>
+<td><p>Converts a string into ItemSubType supported enum type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.get_and_validate_file_path" title="provenaclient.utils.helpers.get_and_validate_file_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_and_validate_file_path</span></code></a>(→ Optional[str])</p></td>
+<td><p>Determine and validate the file path for writing a file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.validate_existing_path" title="provenaclient.utils.helpers.validate_existing_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_existing_path</span></code></a>(→ None)</p></td>
+<td><p>Validates a provided file path, and checks if</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.write_file_helper" title="provenaclient.utils.helpers.write_file_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_file_helper</span></code></a>(→ None)</p></td>
+<td><p>Writes the provided content (string or bytes) to a file at the specified file path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.read_file_helper" title="provenaclient.utils.helpers.read_file_helper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_file_helper</span></code></a>(→ str)</p></td>
+<td><p>Reads a valid file and returns its content</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.build_params_exclude_none" title="provenaclient.utils.helpers.build_params_exclude_none"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_params_exclude_none</span></code></a>(→ Dict[str, ParamTypes])</p></td>
+<td><p>Takes a raw params dict with optional args and returns filtered.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.py_to_dict" title="provenaclient.utils.helpers.py_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">py_to_dict</span></code></a>(→ JsonData)</p></td>
+<td><p>This helper function converts a Pydantic model to a Python dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.handle_model_parsing" title="provenaclient.utils.helpers.handle_model_parsing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_model_parsing</span></code></a>(→ BaseModelType)</p></td>
+<td><p>This generic helper function parses a HTTP Response into a</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.parse_json_payload" title="provenaclient.utils.helpers.parse_json_payload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_json_payload</span></code></a>(→ JsonData)</p></td>
+<td><p>Parses a HTTPX response object into JSON handling the error if any occurs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.handle_err_codes" title="provenaclient.utils.helpers.handle_err_codes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_err_codes</span></code></a>(→ None)</p></td>
+<td><p>This helper function checks the status code of the HTTP response and raises</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.check_status_response" title="provenaclient.utils.helpers.check_status_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_status_response</span></code></a>(→ None)</p></td>
+<td><p>Parses JSON data as StatusResponse model, then asserts success is true,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.check_codes_and_parse_json" title="provenaclient.utils.helpers.check_codes_and_parse_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_codes_and_parse_json</span></code></a>(→ JsonData)</p></td>
+<td><p>Given raw response, validates codes and parses as JSON.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.handle_response_non_status" title="provenaclient.utils.helpers.handle_response_non_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_response_non_status</span></code></a>(→ BaseModelType)</p></td>
+<td><p>Given the raw response from http client, and the model, will validate</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.utils.helpers.handle_response_with_status" title="provenaclient.utils.helpers.handle_response_with_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_response_with_status</span></code></a>(→ BaseModelType)</p></td>
+<td><p>Given the raw response from http client, and the model, will validate</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.BaseModelType">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">BaseModelType</span></span><a class="headerlink" href="#provenaclient.utils.helpers.BaseModelType" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.ItemModelType">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">ItemModelType</span></span><a class="headerlink" href="#provenaclient.utils.helpers.ItemModelType" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.JsonData">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">JsonData</span></span><a class="headerlink" href="#provenaclient.utils.helpers.JsonData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.HttpxFileUpload">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">HttpxFileUpload</span></span><a class="headerlink" href="#provenaclient.utils.helpers.HttpxFileUpload" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.ParamTypes">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">ParamTypes</span></span><a class="headerlink" href="#provenaclient.utils.helpers.ParamTypes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.convert_to_item_subtype">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">convert_to_item_subtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_subtype_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryModels.ItemSubType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#convert_to_item_subtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.convert_to_item_subtype" title="Link to this definition"></a></dt>
+<dd><p>Converts a string into ItemSubType supported enum type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item_subtype_str</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Optional string containing similar enum text.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Enum type of ItemSubType.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ItemSubType</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Item subtype field was not present.</p></li>
+<li><p><strong>ValueError</strong> – Item subtype cannot be converted to ENUM.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.get_and_validate_file_path">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">get_and_validate_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#get_and_validate_file_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.get_and_validate_file_path" title="Link to this definition"></a></dt>
+<dd><p>Determine and validate the file path for writing a file.</p>
+<p>If file_path is not provided and write_to_file is True then will use a dynamic
+default file name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The path to save the file at.</p></li>
+<li><p><strong>write_to_file</strong> (<em>bool</em>) – A boolean flag  indicating whether writing to the file is enabled.</p></li>
+<li><p><strong>default_file_name</strong> (<em>str</em>) – The default file name to use if file_path is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The validated file path, or None if writing to file is not enabled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If a file path is provided but writing to the file is not enabled.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.validate_existing_path">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">validate_existing_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#validate_existing_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.validate_existing_path" title="Link to this definition"></a></dt>
+<dd><p>Validates a provided file path, and checks if
+the directory exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The file path to validate.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the directory part of the path does not exist.</p></li>
+<li><p><strong>IOError</strong> – If an I/O error occurs during file operations.</p></li>
+<li><p><strong>Exception</strong> – For any other exceptions that may occur.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.write_file_helper">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">write_file_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#write_file_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.write_file_helper" title="Link to this definition"></a></dt>
+<dd><p>Writes the provided content (string or bytes) to a file at the specified file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the file to write content into.</p></li>
+<li><p><strong>content</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>bytes</em><em>]</em>) – <dl class="simple">
+<dt>The content to be written to the file. It can be either:</dt><dd><ul>
+<li><p>A <cite>str</cite>, which will be written in text mode.</p></li>
+<li><p>A <cite>bytes</cite> object, which will be written in binary mode.</p></li>
+</ul>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>IOError</strong> – If an I/O error occurs during file operations.</p></li>
+<li><p><strong>Exception</strong> – For non-I/O related exceptions that may occur during file writing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.read_file_helper">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">read_file_helper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#read_file_helper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.read_file_helper" title="Link to this definition"></a></dt>
+<dd><p>Reads a valid file and returns its content</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path of an existing created file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representation of the file contents.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If there any error with reading the file
+this general exception is raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.build_params_exclude_none">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">build_params_exclude_none</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParamTypes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ParamTypes</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#build_params_exclude_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.build_params_exclude_none" title="Link to this definition"></a></dt>
+<dd><p>Takes a raw params dict with optional args and returns filtered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Optional</em><em>[</em><em>ParamTypes</em><em>]</em><em>]</em>) – The input raw dict</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered param list with no None values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, ParamTypes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.py_to_dict">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">py_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pydantic.BaseModel</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JsonData</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#py_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.py_to_dict" title="Link to this definition"></a></dt>
+<dd><p>This helper function converts a Pydantic model to a Python dictionary.</p>
+<p>Requires a pydantic dump into serialised JSON to be safe against all object
+types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>BaseModel</em>) – The instance of the model that needs to be converted to a dict.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A python dictionary object which contains the fields and values of the
+base model that are not none.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JsonData</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.handle_model_parsing">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">handle_model_parsing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JsonData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#handle_model_parsing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.handle_model_parsing" title="Link to this definition"></a></dt>
+<dd><p>This generic helper function parses a HTTP Response into a
+python datatype based on a pydantic defined model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_data</strong> (<em>JsonData</em>) – The response received after HTTP request.</p></li>
+<li><p><strong>model</strong> (<em>type</em><em>[</em><em>T</em><em>]</em>) – The type of the model being casted from HTTP response
+into python datatype. For example:
+MintResponse, RegistryFetchResponse.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a python datatype that conforms to the structure
+of the provided model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>T</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.parse_json_payload">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">parse_json_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Response</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JsonData</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#parse_json_payload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.parse_json_payload" title="Link to this definition"></a></dt>
+<dd><p>Parses a HTTPX response object into JSON handling the error if any occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>Response</em>) – The raw HTTP response.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../exceptions/index.html#provenaclient.utils.exceptions.ValidationException" title="provenaclient.utils.exceptions.ValidationException"><strong>ValidationException</strong></a> – If JSON decoding fails, handles and raises error.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The returned dictionary object representing JSON data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>JsonData</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.handle_err_codes">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">handle_err_codes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#handle_err_codes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.handle_err_codes" title="Link to this definition"></a></dt>
+<dd><p>This helper function checks the status code of the HTTP response and raises
+a custom exception accordingly.</p>
+<p>Also embeds error info from JSON or text result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>response</strong> (<em>Response</em>) – The httpx.response object.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="../exceptions/index.html#provenaclient.utils.exceptions.BadRequestException" title="provenaclient.utils.exceptions.BadRequestException"><strong>BadRequestException</strong></a> – Raised when the server returns a 400 status code.</p></li>
+<li><p><a class="reference internal" href="../exceptions/index.html#provenaclient.utils.exceptions.AuthException" title="provenaclient.utils.exceptions.AuthException"><strong>AuthException</strong></a> – Raised when the server returns a 401 status code.</p></li>
+<li><p><a class="reference internal" href="../exceptions/index.html#provenaclient.utils.exceptions.ValidationException" title="provenaclient.utils.exceptions.ValidationException"><strong>ValidationException</strong></a> – Raised when the server returns a 422 status code.</p></li>
+<li><p><a class="reference internal" href="../exceptions/index.html#provenaclient.utils.exceptions.ServerException" title="provenaclient.utils.exceptions.ServerException"><strong>ServerException</strong></a> – Raised when the server returns a status code of 500 or above.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.check_status_response">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">check_status_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JsonData</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#check_status_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.check_status_response" title="Link to this definition"></a></dt>
+<dd><p>Parses JSON data as StatusResponse model, then asserts success is true,
+throwing exception with embedded details if not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json_data</strong> (<em>Dict</em>) – The JSON data to parse</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Exception if status if False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.check_codes_and_parse_json">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">check_codes_and_parse_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">JsonData</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#check_codes_and_parse_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.check_codes_and_parse_json" title="Link to this definition"></a></dt>
+<dd><p>Given raw response, validates codes and parses as JSON.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>Response</em>) – The raw http client response</p></li>
+<li><p><strong>error_message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The error message to embed if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The json data post parse</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JsonData</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.handle_response_non_status">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">handle_response_non_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#handle_response_non_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.handle_response_non_status" title="Link to this definition"></a></dt>
+<dd><p>Given the raw response from http client, and the model, will validate</p>
+<ul class="simple">
+<li><p>200 OK code (with common errors handled)</p></li>
+<li><p>Parsed as JSON</p></li>
+<li><p>Parsed as desired final model</p></li>
+</ul>
+<p>Returns the parsed pydantic object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>Response</em>) – The raw response from http client</p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><em>T</em><em>]</em>) – The model type (not instance) to parse against</p></li>
+<li><p><strong>error_message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The error message to embed into exceptions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parsed model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>T</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="provenaclient.utils.helpers.handle_response_with_status">
+<span class="sig-prename descclassname"><span class="pre">provenaclient.utils.helpers.</span></span><span class="sig-name descname"><span class="pre">handle_response_with_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">httpx.Response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/utils/helpers.html#handle_response_with_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.utils.helpers.handle_response_with_status" title="Link to this definition"></a></dt>
+<dd><p>Given the raw response from http client, and the model, will validate</p>
+<ul class="simple">
+<li><p>200 OK code (with common errors handled)</p></li>
+<li><p>Parsed as JSON</p></li>
+<li><p>Parsed as StatusResponse and asserted for success=true, throwing with details if not</p></li>
+<li><p>Parsed as desired final model</p></li>
+</ul>
+<p>Returns the parsed pydantic object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>Response</em>) – The raw response from http client</p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><em>T</em><em>]</em>) – The model type (not instance) to parse against</p></li>
+<li><p><strong>error_message</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The error message to embed into exceptions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parsed model</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>T</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../exceptions/index.html" class="btn btn-neutral float-left" title="provenaclient.utils.exceptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../http_client/index.html" class="btn btn-neutral float-right" title="provenaclient.utils.http_client" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

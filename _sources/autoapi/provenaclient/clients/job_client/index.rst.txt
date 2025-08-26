@@ -1,0 +1,270 @@
+provenaclient.clients.job_client
+================================
+
+.. py:module:: provenaclient.clients.job_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Job API L2 Client.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.job_client.JobAPIAdminEndpoints
+   provenaclient.clients.job_client.JobAPIEndpoints
+   provenaclient.clients.job_client.JobAPIAdminSubClient
+   provenaclient.clients.job_client.JobAPIClient
+
+
+Module Contents
+---------------
+
+.. py:class:: JobAPIAdminEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.AsyncJobAPI.Enum`
+
+
+   An ENUM containing the job api endpoints.
+
+
+   .. py:attribute:: POST_JOBS_ADMIN_LAUNCH
+      :value: '/jobs/admin/launch'
+
+
+
+   .. py:attribute:: GET_JOBS_ADMIN_FETCH
+      :value: '/jobs/admin/fetch'
+
+
+
+   .. py:attribute:: POST_JOBS_ADMIN_LIST
+      :value: '/jobs/admin/list'
+
+
+
+   .. py:attribute:: POST_JOBS_ADMIN_LIST_BATCH
+      :value: '/jobs/admin/list_batch'
+
+
+
+   .. py:attribute:: GET_ADMIN_CONFIG
+      :value: '/admin/config'
+
+
+
+   .. py:attribute:: GET_ADMIN_SENTRY_DEBUG
+      :value: '/admin/sentry-debug'
+
+
+
+.. py:class:: JobAPIEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.AsyncJobAPI.Enum`
+
+
+   An ENUM containing the job api endpoints.
+
+
+   .. py:attribute:: GET_JOBS_USER_FETCH
+      :value: '/jobs/user/fetch'
+
+
+
+   .. py:attribute:: POST_JOBS_USER_LIST
+      :value: '/jobs/user/list'
+
+
+
+   .. py:attribute:: POST_JOBS_USER_LIST_BATCH
+      :value: '/jobs/user/list_batch'
+
+
+
+   .. py:attribute:: GET_HEALTH_CHECK
+      :value: '/'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS
+      :value: '/check-access/check-general-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS
+      :value: '/check-access/check-admin-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_READ_ACCESS
+      :value: '/check-access/check-read-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_WRITE_ACCESS
+      :value: '/check-access/check-write-access'
+
+
+
+.. py:class:: JobAPIAdminSubClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: JobAPIAdminEndpoints) -> str
+
+
+   .. py:method:: launch_job(request: ProvenaInterfaces.AsyncJobAPI.AdminLaunchJobRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminLaunchJobResponse
+      :async:
+
+
+      Launches a new job.
+
+      :param request: Specified job parameters
+      :type request: AdminLaunchJobRequest
+
+      :returns: The response
+      :rtype: AdminLaunchJobResponse
+
+
+
+   .. py:method:: get_job(session_id: str) -> ProvenaInterfaces.AsyncJobAPI.AdminGetJobResponse
+      :async:
+
+
+      Fetches a job (any job since admin)
+
+      :param session_id: The session ID of job to fetch
+      :type session_id: str
+
+      :returns: The response
+      :rtype: AdminGetJobResponse
+
+
+
+   .. py:method:: list_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.AdminListJobsRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminListJobsResponse
+      :async:
+
+
+      Lists all jobs.
+
+      :param list_jobs_request: The request including pagination information.
+      :type list_jobs_request: AdminListJobsRequest
+
+      :returns: The list of jobs response.
+      :rtype: AdminListJobsResponse
+
+
+
+   .. py:method:: list_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.AdminListByBatchRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminListByBatchResponse
+      :async:
+
+
+      List jobs by batch ID, returning a list of jobs in the batch.
+
+      :param list_request: The request including batch ID
+      :type list_request: AdminListByBatchRequest
+
+      :returns: The list of jobs in the batch
+      :rtype: AdminListByBatchResponse
+
+
+
+.. py:class:: JobAPIClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  JobAPIAdminSubClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: JobAPIEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_job(session_id: str) -> ProvenaInterfaces.AsyncJobAPI.GetJobResponse
+      :async:
+
+
+      Fetches a job by session id
+
+      :param session_id: The session ID
+      :type session_id: str
+
+      :returns: The job fetched
+      :rtype: GetJobResponse
+
+
+
+   .. py:method:: list_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.ListJobsRequest) -> ProvenaInterfaces.AsyncJobAPI.ListJobsResponse
+      :async:
+
+
+      Lists all jobs for the given user
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: list_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest) -> ProvenaInterfaces.AsyncJobAPI.ListByBatchResponse
+      :async:
+
+
+      Gets all jobs within a batch.
+
+      :param list_request: The request including batch ID
+      :type list_request: ListByBatchRequest
+
+      :returns: The response including list of jobs
+      :rtype: ListByBatchResponse
+
+
+

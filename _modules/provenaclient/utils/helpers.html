@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.utils.helpers &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.utils.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.utils.helpers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Monday June 17th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Monday June 17th 2024 5:00:47 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: General helper functions which are useful across the client library.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">ByteString</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">httpx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthException</span><span class="p">,</span> <span class="n">HTTPValidationException</span><span class="p">,</span> <span class="n">ServerException</span><span class="p">,</span> <span class="n">BadRequestException</span><span class="p">,</span> <span class="n">ValidationException</span><span class="p">,</span> <span class="n">NotFoundException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="ne">BaseException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.SharedTypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatusResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryModels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ItemBase</span><span class="p">,</span> <span class="n">ItemSubType</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Type var to refer to base models</span>
+<span class="n">BaseModelType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;BaseModelType&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="n">ItemModelType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;ItemModelType&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">ItemBase</span><span class="p">)</span>
+
+<span class="c1"># Type alias for json data</span>
+<span class="n">JsonData</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="c1"># Type alias for httpx file upload.</span>
+<span class="n">HttpxFileUpload</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ByteString</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+
+<span class="n">ParamTypes</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="convert_to_item_subtype">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.convert_to_item_subtype">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_to_item_subtype</span><span class="p">(</span><span class="n">item_subtype_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ItemSubType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a string into ItemSubType supported enum type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item_subtype_str : Optional[str]</span>
+<span class="sd">        Optional string containing similar enum text.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ItemSubType</span>
+<span class="sd">        Enum type of ItemSubType.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Item subtype field was not present.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Item subtype cannot be converted to ENUM.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">item_subtype_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Item subtype field not found!&quot;</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ItemSubType</span><span class="p">[</span><span class="n">item_subtype_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid item_subtype: </span><span class="si">{</span><span class="n">item_subtype_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
+
+
+<div class="viewcode-block" id="get_and_validate_file_path">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.get_and_validate_file_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_and_validate_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">write_to_file</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">default_file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine and validate the file path for writing a file.</span>
+
+<span class="sd">    If file_path is not provided and write_to_file is True then will use a dynamic </span>
+<span class="sd">    default file name. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_path : Optional[str]</span>
+<span class="sd">        The path to save the file at.</span>
+<span class="sd">    write_to_file : bool</span>
+<span class="sd">        A boolean flag  indicating whether writing to the file is enabled.</span>
+<span class="sd">    default_file_name : str</span>
+<span class="sd">        The default file name to use if file_path is not provided.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Optional[str]</span>
+<span class="sd">        The validated file path, or None if writing to file is not enabled.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a file path is provided but writing to the file is not enabled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">file_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">write_to_file</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Write to CSV must be enabled. Currently </span><span class="si">{</span><span class="n">write_to_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">file_path</span> <span class="ow">and</span> <span class="n">write_to_file</span><span class="p">:</span>
+        <span class="c1"># Validate provided file path directory.</span>
+        <span class="n">validate_existing_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">file_path</span> <span class="ow">and</span> <span class="n">write_to_file</span><span class="p">:</span>
+        <span class="c1"># Create default file path directory.</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">default_file_name</span>
+
+    <span class="k">return</span> <span class="n">file_path</span></div>
+
+
+<div class="viewcode-block" id="validate_existing_path">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.validate_existing_path">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_existing_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validates a provided file path, and checks if </span>
+<span class="sd">    the directory exists. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_path : str</span>
+<span class="sd">        The file path to validate.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the directory part of the path does not exist.</span>
+<span class="sd">    IOError</span>
+<span class="sd">        If an I/O error occurs during file operations.</span>
+<span class="sd">    Exception</span>
+<span class="sd">        For any other exceptions that may occur.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Validates if the provided directory part of the file path exists.</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The provided path </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> is incorrect. Please try again.&quot;</span><span class="p">)</span>
+        
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to validate </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> due to I/O error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path validation failed. Exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="write_file_helper">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.write_file_helper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_file_helper</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Writes the provided content (string or bytes) to a file at the specified file path.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_name : str</span>
+<span class="sd">        The name of the file to write content into.</span>
+<span class="sd">    content : Union[str, bytes]</span>
+<span class="sd">        The content to be written to the file. It can be either:</span>
+<span class="sd">            - A `str`, which will be written in text mode.</span>
+<span class="sd">            - A `bytes` object, which will be written in binary mode.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    IOError</span>
+<span class="sd">        If an I/O error occurs during file operations.</span>
+<span class="sd">    Exception</span>
+<span class="sd">        For non-I/O related exceptions that may occur during file writing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">):</span> 
+            <span class="c1"># Make the path, before writing to a file. </span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Write to file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+            <span class="c1"># Write to file in byte mode</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span> 
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to file </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> due to I/O error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File writing failed. Exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    
+<div class="viewcode-block" id="read_file_helper">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.read_file_helper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_file_helper</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads a valid file and returns its content</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_path : str</span>
+<span class="sd">        The path of an existing created file.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        A string representation of the file contents.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    Exception</span>
+<span class="sd">        If there any error with reading the file </span>
+<span class="sd">        this general exception is raised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>  <span class="c1"># Open the file in read mode</span>
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="c1"># Save the contents of the file.</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">file_content</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error with file. Exception </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> </div>
+
+
+<div class="viewcode-block" id="build_params_exclude_none">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.build_params_exclude_none">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_params_exclude_none</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamTypes</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParamTypes</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Takes a raw params dict with optional args and returns filtered.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        params (Dict[str, Optional[ParamTypes]]): The input raw dict</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, ParamTypes]: The filtered param list with no None values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="py_to_dict">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.py_to_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">py_to_dict</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JsonData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This helper function converts a Pydantic model to a Python dictionary.</span>
+
+<span class="sd">    Requires a pydantic dump into serialised JSON to be safe against all object</span>
+<span class="sd">    types</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : BaseModel</span>
+<span class="sd">        The instance of the model that needs to be converted to a dict. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    JsonData</span>
+<span class="sd">        A python dictionary object which contains the fields and values of the</span>
+<span class="sd">        base model that are not none.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="handle_model_parsing">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.handle_model_parsing">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_model_parsing</span><span class="p">(</span><span class="n">json_data</span><span class="p">:</span> <span class="n">JsonData</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This generic helper function parses a HTTP Response into a</span>
+<span class="sd">    python datatype based on a pydantic defined model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    json_data : JsonData</span>
+<span class="sd">        The response received after HTTP request. </span>
+<span class="sd">    model : type[T]</span>
+<span class="sd">        The type of the model being casted from HTTP response </span>
+<span class="sd">        into python datatype. For example:</span>
+<span class="sd">        MintResponse, RegistryFetchResponse.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    T</span>
+<span class="sd">        Returns a python datatype that conforms to the structure</span>
+<span class="sd">        of the provided model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parsed_model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parsed_model</span>
+    <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">e</span></div>
+
+
+
+<div class="viewcode-block" id="parse_json_payload">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.parse_json_payload">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_json_payload</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JsonData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parses a HTTPX response object into JSON handling the error if any occurs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        response (Response): The raw HTTP response.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValidationException: If JSON decoding fails, handles and raises error.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        JsonData: The returned dictionary object representing JSON data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parsed_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationException</span><span class="p">(</span><span class="s2">&quot;JSON parsing failed&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="k">return</span> <span class="n">parsed_response</span></div>
+
+
+
+<div class="viewcode-block" id="handle_err_codes">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.handle_err_codes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_err_codes</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="n">error_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    This helper function checks the status code of the HTTP response and raises</span>
+<span class="sd">    a custom exception accordingly.</span>
+
+<span class="sd">    Also embeds error info from JSON or text result.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : Response</span>
+<span class="sd">        The httpx.response object.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    BadRequestException</span>
+<span class="sd">        Raised when the server returns a 400 status code.</span>
+<span class="sd">    AuthException</span>
+<span class="sd">        Raised when the server returns a 401 status code.</span>
+<span class="sd">    ValidationException</span>
+<span class="sd">        Raised when the server returns a 422 status code.</span>
+<span class="sd">    ServerException</span>
+<span class="sd">        Raised when the server returns a status code of 500 or above.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">text</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">BadRequestException</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Bad Request. Details: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AuthException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Authentication failed. Details: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                            <span class="n">error_code</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NotFoundException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Url was not found at provided service endpoint. Details: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                                <span class="n">error_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">422</span><span class="p">:</span>
+        <span class="c1"># This is a specific status code of this URL.</span>
+        <span class="k">raise</span> <span class="n">HTTPValidationException</span><span class="p">(</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Validation error. Details: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">error_code</span><span class="o">=</span><span class="mi">422</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="c1"># Raise another exception here</span>
+        <span class="k">raise</span> <span class="n">ServerException</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Server error occurred. Details: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+                              <span class="n">error_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check_status_response">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.check_status_response">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_status_response</span><span class="p">(</span><span class="n">json_data</span><span class="p">:</span> <span class="n">JsonData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses JSON data as StatusResponse model, then asserts success is true,</span>
+<span class="sd">    throwing exception with embedded details if not.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        json_data (Dict): The JSON data to parse</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: Exception if status if False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check model parses</span>
+    <span class="n">status_obj</span> <span class="o">=</span> <span class="n">handle_model_parsing</span><span class="p">(</span>
+        <span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">)</span>
+
+    <span class="c1"># Check status is success</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">status_obj</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Status object from API indicated failure. Details: </span><span class="si">{</span><span class="n">status_obj</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">details</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check_codes_and_parse_json">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.check_codes_and_parse_json">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_codes_and_parse_json</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="n">error_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">JsonData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Given raw response, validates codes and parses as JSON.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        response (Response): The raw http client response</span>
+<span class="sd">        error_message (Optional[str]): The error message to embed if any</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        JsonData: The json data post parse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check codes</span>
+    <span class="n">handle_err_codes</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">error_message</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="c1"># Handle JSON parsing</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">parse_json_payload</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">json_data</span></div>
+
+
+
+<div class="viewcode-block" id="handle_response_non_status">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.handle_response_non_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_response_non_status</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">],</span> <span class="n">error_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given the raw response from http client, and the model, will validate</span>
+
+<span class="sd">    - 200 OK code (with common errors handled)</span>
+<span class="sd">    - Parsed as JSON</span>
+<span class="sd">    - Parsed as desired final model</span>
+
+<span class="sd">    Returns the parsed pydantic object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        response (Response): The raw response from http client</span>
+<span class="sd">        model (Type[T]): The model type (not instance) to parse against</span>
+<span class="sd">        error_message (Optional[str]): The error message to embed into exceptions.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: The parsed model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Handle JSON parsing and codes</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">check_codes_and_parse_json</span><span class="p">(</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">error_message</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="c1"># Check model parses</span>
+    <span class="n">parsed_obj</span> <span class="o">=</span> <span class="n">handle_model_parsing</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parsed_obj</span></div>
+
+
+
+
+<div class="viewcode-block" id="handle_response_with_status">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/utils/helpers/index.html#provenaclient.utils.helpers.handle_response_with_status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_response_with_status</span><span class="p">(</span><span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModelType</span><span class="p">],</span> <span class="n">error_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BaseModelType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given the raw response from http client, and the model, will validate</span>
+
+<span class="sd">    - 200 OK code (with common errors handled)</span>
+<span class="sd">    - Parsed as JSON</span>
+<span class="sd">    - Parsed as StatusResponse and asserted for success=true, throwing with details if not</span>
+<span class="sd">    - Parsed as desired final model</span>
+
+<span class="sd">    Returns the parsed pydantic object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        response (Response): The raw response from http client</span>
+<span class="sd">        model (Type[T]): The model type (not instance) to parse against</span>
+<span class="sd">        error_message (Optional[str]): The error message to embed into exceptions.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        T: The parsed model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle JSON parsing and codes</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">check_codes_and_parse_json</span><span class="p">(</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">error_message</span><span class="o">=</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="c1"># Check status result</span>
+    <span class="n">check_status_response</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">)</span>
+
+    <span class="c1"># Check model parses</span>
+    <span class="n">parsed_obj</span> <span class="o">=</span> <span class="n">handle_model_parsing</span><span class="p">(</span><span class="n">json_data</span><span class="o">=</span><span class="n">json_data</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parsed_obj</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+provenaclient.auth.manager
+==========================
+
+.. py:module:: provenaclient.auth.manager
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Auth Manager interface which defines key methods for authorising API requests in the provena client
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.auth.manager.LogType
+   provenaclient.auth.manager.DEFAULT_LOG_LEVEL
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.auth.manager.Log
+   provenaclient.auth.manager.AuthManager
+
+
+Module Contents
+---------------
+
+.. py:class:: Log
+
+   Bases: :py:obj:`enum.Enum`
+
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+   .. py:attribute:: DEBUG
+      :value: 10
+
+
+
+   .. py:attribute:: INFO
+      :value: 20
+
+
+
+   .. py:attribute:: WARNING
+      :value: 30
+
+
+
+   .. py:attribute:: ERROR
+      :value: 40
+
+
+
+.. py:data:: LogType
+
+.. py:data:: DEFAULT_LOG_LEVEL
+
+.. py:class:: AuthManager(log_level: Optional[LogType] = None)
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:attribute:: logger
+      :type:  logging.Logger
+
+
+   .. py:method:: get_token() -> str
+      :abstractmethod:
+
+
+      Get token information and other metadata.
+
+
+
+   .. py:method:: force_refresh() -> None
+      :abstractmethod:
+
+
+      Force refresh the current token
+
+
+
+   .. py:method:: get_auth() -> provenaclient.auth.helpers.HttpxBearerAuth
+
+      A helper function which produces a BearerAuth object for use
+      in the httpx library. For example:
+
+      manager = DeviceFlow(...)
+      auth = manager.get_auth
+      httpx.post(..., auth=auth)
+
+      :returns: The httpx auth object.
+      :rtype: BearerAuth
+
+      :raises Exception: Raises exception if tokens/public_key are not setup - make sure
+          that the object is instantiated properly before calling this function.
+      :raises Exception: If the token is invalid and cannot be refreshed.
+      :raises Exception: If the token validation still fails after re-conducting the device flow.
+
+
+

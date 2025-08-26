@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="provenaclient.modules.auth" href="auth/index.html" />
+    <link rel="prev" title="provenaclient.models.general" href="../models/general/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">provenaclient</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">provenaclient</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/provenaclient/modules/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-provenaclient.modules">
+<span id="provenaclient-modules"></span><h1>provenaclient.modules<a class="headerlink" href="#module-provenaclient.modules" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auth/index.html">provenaclient.modules.auth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore/index.html">provenaclient.modules.datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="id_service/index.html">provenaclient.modules.id_service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="job_service/index.html">provenaclient.modules.job_service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="link/index.html">provenaclient.modules.link</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_helpers/index.html">provenaclient.modules.module_helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prov/index.html">provenaclient.modules.prov</a></li>
+<li class="toctree-l1"><a class="reference internal" href="provena_client/index.html">provenaclient.modules.provena_client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry/index.html">provenaclient.modules.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search/index.html">provenaclient.modules.search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submodules/index.html">provenaclient.modules.submodules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="template_module/index.html">provenaclient.modules.template_module</a></li>
+</ul>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.Datastore" title="provenaclient.modules.Datastore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Datastore</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.Search" title="provenaclient.modules.Search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Search</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.Auth" title="provenaclient.modules.Auth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Auth</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.Link" title="provenaclient.modules.Link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Link</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.Prov" title="provenaclient.modules.Prov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prov</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.Registry" title="provenaclient.modules.Registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Registry</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.modules.IDService" title="provenaclient.modules.IDService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IDService</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.modules.JobService" title="provenaclient.modules.JobService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">JobService</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Datastore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datastore_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore._datastore_client">
+<span class="sig-name descname"><span class="pre">_datastore_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.DatastoreClient" title="provenaclient.clients.DatastoreClient"><span class="pre">provenaclient.clients.DatastoreClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Datastore._datastore_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore._search_client">
+<span class="sig-name descname"><span class="pre">_search_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Datastore._search_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.review">
+<span class="sig-name descname"><span class="pre">review</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="datastore/index.html#provenaclient.modules.datastore.ReviewSubModule" title="provenaclient.modules.datastore.ReviewSubModule"><span class="pre">ReviewSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.Datastore.review" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.io">
+<span class="sig-name descname"><span class="pre">io</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="submodules/index.html#provenaclient.modules.submodules.IOSubModule" title="provenaclient.modules.submodules.IOSubModule"><span class="pre">provenaclient.modules.submodules.IOSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.Datastore.io" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Datastore._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Datastore._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#provenaclient.models.HealthCheckResponse" title="provenaclient.models.HealthCheckResponse"><span class="pre">provenaclient.models.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.fetch_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.fetch_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.fetch_dataset" title="Link to this definition"></a></dt>
+<dd><p>Fetches a dataset from the datastore based on the provided
+ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – The unique identifier of the dataset to be retrieved.
+For example: “10378.1/1451860”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interactive python datatype of type RegistryFetchResponse
+containing the dataset details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegistryFetchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.mint_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mint_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_mint_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.MintResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.mint_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.mint_dataset" title="Link to this definition"></a></dt>
+<dd><p>Creates a new dataset in the datastore with the provided dataset information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_mint_info</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A interactive python datatype of type MintResponse
+containing the newly created dataset details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MintResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.validate_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.validate_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.validate_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Validates the dataset metadata creation for testing and does not publish.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata_payload</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response indicating whether your dataset metadata setup is valid and correct.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.update_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.CollectionFormat</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.UpdateMetadataResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.update_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.update_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Updates an existing dataset’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle_id</strong> (<em>str</em>) – The id of the dataset.</p></li>
+<li><p><strong>reason</strong> (<em>str</em>) – The reason for changing metadata of the dataset.</p></li>
+<li><p><strong>metadata_payload</strong> (<em>CollectionFormat</em>) – A structured format containing all necessary information to register a new dataset, including associations,
+approvals, and dataset-specific information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated metadata response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UpdateMetadataResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.revert_dataset_metadata">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">revert_dataset_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../models/index.html#provenaclient.models.RevertMetadata" title="provenaclient.models.RevertMetadata"><span class="pre">provenaclient.models.RevertMetadata</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.revert_dataset_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.revert_dataset_metadata" title="Link to this definition"></a></dt>
+<dd><p>Reverts the metadata for a dataset to a previous identified historical version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metadata_payload</strong> (<a class="reference internal" href="../models/datastore/index.html#provenaclient.models.datastore.RevertMetadata" title="provenaclient.models.datastore.RevertMetadata"><em>RevertMetadata</em></a>) – The revert request, passed through to the registry API and requires
+dataset id, history id and reason for reverting.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response indicating whether your dataset revert metadata request was correct.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.version_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.version_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.version_dataset" title="Link to this definition"></a></dt>
+<dd><p>Versioning operation which creates a new version from the specified ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version_request</strong> (<em>VersionRequest</em>) – The request which includes the item ID and reason for versioning.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response of the versioning of the dataset, containing new version ID and
+job session ID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.for_all_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">for_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_dataset_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncGenerator</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.DataStoreAPI.ItemDataset</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.for_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.for_all_datasets" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Fetches all datasets based on the provided datasets in datastore based on</dt><dd><p>the provided sorting criteria, pagination key and page size.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_dataset_request</strong> (<em>NoFilterSubtypeListRequest</em>) – A request object configured with sorting options, pagination keys,
+and page size that defines how datasets are queried from the datastore.</p></li>
+<li><p><strong>total_limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – A maximum number of datasets to fetch. If specified, the generator will
+stop yielding datasets once this limit is reached.
+If None, it will fetch datasets until there are no more to fetch.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An asynchronous generator yielding “ItemDataset”
+object which is an individual dataset from the datastore.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AsyncGenerator[ItemDataset, None]</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Iterator[AsyncGenerator[ItemDataset, None]]</em> – Each yield provides a “ItemDataset” containing an individual dataset.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.list_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_dataset_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.DatasetListResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.list_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.list_datasets" title="Link to this definition"></a></dt>
+<dd><p>Takes a specific dataset list request and returns the response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_dataset_request</strong> (<em>NoFilterSubtypeListRequest</em>) – A request object configured with sorting options, pagination keys,
+and page size that defines how datasets are queried from the datastore.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response containing the requested datasets in the datastore
+based on sort criteria and page size, and contains other attributes
+such as total_item_counts and optional pagination key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DatasetListResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.list_all_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_all_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sort_criteria</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.RegistryAPI.SortOptions</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.DataStoreAPI.ItemDataset</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.list_all_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.list_all_datasets" title="Link to this definition"></a></dt>
+<dd><p>Fetches all datasets from the datastore and you may provide your own sort criteria.
+By default uses display name sort criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sort_criteria</strong> (<em>Optional</em><em>[</em><em>SortOptions</em><em>]</em>) – An object configured with sorting options that you want
+when displaying all datasets within the datastore.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of all datasets in the datastore, sorted as requested.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[ItemDataset]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.generate_dataset_presigned_url">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_dataset_presigned_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_presigned_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.PresignedURLRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.PresignedURLResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_dataset_presigned_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.generate_dataset_presigned_url" title="Link to this definition"></a></dt>
+<dd><p>Generates a presigned url for an existing dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_presigned_request</strong> (<em>PresignedURLRequest</em>) – Contains the dataset id + file path + length of expiry of URL.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A response with the presigned url.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PresignedURLResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.generate_read_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_read_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialsRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_read_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.generate_read_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials</strong> (<em>CredentialsRequest</em>) – Contains the dataset id + console session URL required flag (boolean)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.generate_write_access_credentials">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_write_access_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialsRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.DataStoreAPI.CredentialResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.generate_write_access_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.generate_write_access_credentials" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Given an S3 location, will attempt to generate programmatic access keys for</dt><dd><p>the storage bucket at this particular subdirectory.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>credentials</strong> (<em>CredentialsRequest</em>) – Contains the dataset id + console session URL required flag (boolean)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CredentialResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.search_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DEFAULT_SEARCH_LIMIT</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#provenaclient.models.LoadedSearchResponse" title="provenaclient.models.LoadedSearchResponse"><span class="pre">provenaclient.models.LoadedSearchResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.search_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.search_datasets" title="Link to this definition"></a></dt>
+<dd><p>Utilises the L2 search client to search for datasets with the specified
+query.</p>
+<p>Loads all datasets in the result payload from the data store and sorts
+based on auth, or other exceptions if not successful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – The query to make limit (int, optional): The result</p></li>
+<li><p><strong>DEFAULT_SEARCH_LIMIT.</strong> (<em>count limit. Defaults to</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded items incl errors.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/datastore/index.html#provenaclient.models.datastore.LoadedSearchResponse" title="provenaclient.models.datastore.LoadedSearchResponse">LoadedSearchResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Datastore.interactive_dataset">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interactive_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="datastore/index.html#provenaclient.modules.datastore.InteractiveDataset" title="provenaclient.modules.datastore.InteractiveDataset"><span class="pre">InteractiveDataset</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/datastore.html#Datastore.interactive_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Datastore.interactive_dataset" title="Link to this definition"></a></dt>
+<dd><p>Creates an interactive “session” with a dataset that allows you
+to perform further operations without re-supplying dataset id and
+creating objects required for other methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dataset_id</strong> (<em>str</em>) – The unique identifier of the dataset to be retrieved.
+For example: “10378.1/1451860”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance that allows you to perform various operations on the provided dataset.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="datastore/index.html#provenaclient.modules.datastore.InteractiveDataset" title="provenaclient.modules.datastore.InteractiveDataset">InteractiveDataset</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Search">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/search.html#Search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Search" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../clients/client_helpers/index.html#provenaclient.clients.client_helpers.ClientService" title="provenaclient.clients.client_helpers.ClientService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.clients.client_helpers.ClientService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L2 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Search._search_client">
+<span class="sig-name descname"><span class="pre">_search_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.SearchClient" title="provenaclient.clients.SearchClient"><span class="pre">provenaclient.clients.SearchClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Search._search_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Search._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Search._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Search._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Search._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Search.search_registry">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search_registry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subtype_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryModels.ItemSubType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.SearchAPI.QueryResults</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/search.html#Search.search_registry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Search.search_registry" title="Link to this definition"></a></dt>
+<dd><p>Searches the registry for given query, limit and subtype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – The query to make</p></li>
+<li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The query limit</p></li>
+<li><p><strong>subtype_filter</strong> (<em>Optional</em><em>[</em><em>ItemSubType</em><em>]</em>) – The subtype to filter by if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results - ids and scores</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>QueryResults</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Auth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.AuthClient" title="provenaclient.clients.AuthClient"><span class="pre">provenaclient.clients.AuthClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth._auth_client">
+<span class="sig-name descname"><span class="pre">_auth_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.AuthClient" title="provenaclient.clients.AuthClient"><span class="pre">provenaclient.clients.AuthClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Auth._auth_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="auth/index.html#provenaclient.modules.auth.AdminAuthSubModule" title="provenaclient.modules.auth.AdminAuthSubModule"><span class="pre">AdminAuthSubModule</span></a></em><a class="headerlink" href="#provenaclient.modules.Auth.admin" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Auth._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Auth._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#provenaclient.models.HealthCheckResponse" title="provenaclient.models.HealthCheckResponse"><span class="pre">provenaclient.models.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_user_request_history">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_user_request_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.AccessRequestList</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_user_request_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_user_request_history" title="Link to this definition"></a></dt>
+<dd><p>Gets the users access request history</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list of requests</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>AccessRequestList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.post_user_request_change">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_user_request_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AuthAPI.AccessReport</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">send_email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.post_user_request_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.post_user_request_change" title="Link to this definition"></a></dt>
+<dd><p>Requests a change by diffing access models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>body</strong> (<em>AccessReport</em>) – The new access desired</p></li>
+<li><p><strong>send_email</strong> (<em>bool</em>) – Email alert</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Ok?</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_user_pending_request_history">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_user_pending_request_history</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.AccessRequestList</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_user_pending_request_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_user_pending_request_history" title="Link to this definition"></a></dt>
+<dd><p>Gets only pending requests from history</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>AccessRequestList</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_user_generate_access_report">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_user_generate_access_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.AccessReportResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_user_generate_access_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_user_generate_access_report" title="Link to this definition"></a></dt>
+<dd><p>Generates an access report detailing system access.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>AccessReportResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_list_groups">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_list_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.ListGroupsResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_list_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_list_groups" title="Link to this definition"></a></dt>
+<dd><p>Lists all groups</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of groups</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ListGroupsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_describe_group">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_describe_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.DescribeGroupResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_describe_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_describe_group" title="Link to this definition"></a></dt>
+<dd><p>Describes a specific gruop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_id</strong> (<em>str</em>) – The id of group</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response with details</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DescribeGroupResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_list_membership">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_list_membership</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.ListUserMembershipResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_list_membership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_list_membership" title="Link to this definition"></a></dt>
+<dd><p>Gets the list of groups user is member of</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List and details</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ListUserMembershipResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_list_group_members">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_list_group_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.ListMembersResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_list_group_members"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_list_group_members" title="Link to this definition"></a></dt>
+<dd><p>Lists the members of a given group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_id</strong> (<em>str</em>) – The group to lookup</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Members</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListMembersResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_check_membership">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_check_membership</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.CheckMembershipResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_check_membership"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_check_membership" title="Link to this definition"></a></dt>
+<dd><p>Checks if user is in specific group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>group_id</strong> (<em>str</em>) – The group to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>In group?</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CheckMembershipResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.get_link_lookup_username">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_link_lookup_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AuthAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.UserLinkUserLookupResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.get_link_lookup_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.get_link_lookup_username" title="Link to this definition"></a></dt>
+<dd><p>Looks up either current user or specified user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The username if not current user. Defaults to None.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response indicating link</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UserLinkUserLookupResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.post_link_assign">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_link_assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.UserLinkUserAssignResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.post_link_assign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.post_link_assign" title="Link to this definition"></a></dt>
+<dd><p>Assigns link to current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>UserLinkUserAssignRequest</em>) – The link to assign</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response indicating success</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UserLinkUserAssignResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Auth.post_link_validate">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">post_link_validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AuthAPI.UserLinkUserValidateResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/auth.html#Auth.post_link_validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Auth.post_link_validate" title="Link to this definition"></a></dt>
+<dd><p>Validates link before making it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>UserLinkUserAssignRequest</em>) – The link to assign</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Valid?</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UserLinkUserValidateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Link">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../auth/manager/index.html#provenaclient.auth.manager.AuthManager" title="provenaclient.auth.manager.AuthManager"><span class="pre">provenaclient.auth.manager.AuthManager</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../utils/config/index.html#provenaclient.utils.config.Config" title="provenaclient.utils.config.Config"><span class="pre">provenaclient.utils.config.Config</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.AuthClient" title="provenaclient.clients.AuthClient"><span class="pre">provenaclient.clients.AuthClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/link.html#Link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Link" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Link._auth_client">
+<span class="sig-name descname"><span class="pre">_auth_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.AuthClient" title="provenaclient.clients.AuthClient"><span class="pre">provenaclient.clients.AuthClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Link._auth_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Link._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Link._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Link._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Link._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Link.get_linked_person">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_linked_person</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/link.html#Link.get_linked_person"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Link.get_linked_person" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Link.create_and_link_person">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_and_link_person</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/link.html#Link.create_and_link_person"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Link.create_and_link_person" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Prov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prov_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.ProvClient" title="provenaclient.clients.ProvClient"><span class="pre">provenaclient.clients.ProvClient</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">registry_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.RegistryClient" title="provenaclient.clients.RegistryClient"><span class="pre">provenaclient.clients.RegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov._prov_client">
+<span class="sig-name descname"><span class="pre">_prov_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.ProvClient" title="provenaclient.clients.ProvClient"><span class="pre">provenaclient.clients.ProvClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Prov._prov_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Prov._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Prov._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov._prov_api_client">
+<span class="sig-name descname"><span class="pre">_prov_api_client</span></span><a class="headerlink" href="#provenaclient.modules.Prov._prov_api_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><a class="headerlink" href="#provenaclient.modules.Prov.admin" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse"><span class="pre">provenaclient.models.general.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Checks the health status of the PROV-API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response containing the PROV-API health information.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.update_model_run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_model_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.ProvenanceAPI.ModelRunRecord</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.ProvenanceAPI.PostUpdateModelRunResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.update_model_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.update_model_run" title="Link to this definition"></a></dt>
+<dd><p>Updates an existing model run with new information.</p>
+<p>This function triggers an asynchronous update of a model run. The update is processed as a job,
+and the job session ID is returned for tracking the update progress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_run_id</strong> (<em>str</em>) – The ID of the model run to update</p></li>
+<li><p><strong>reason</strong> (<em>str</em>) – The reason for updating the model run</p></li>
+<li><p><strong>record</strong> (<em>ModelRunRecord</em>) – The new model run record details</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response containing the job session ID tracking the update</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PostUpdateModelRunResponse</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+response = await prov_api.update_model_run(</p>
+<blockquote>
+<div><p>model_run_id=”10378.1/1234567”,
+reason=”Updating input dataset information”,
+record=updated_model_run_record</p>
+</div></blockquote>
+<p>)
+# Get the session ID to track progress
+session_id = response.session_id
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.explore_upstream">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">explore_upstream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.explore_upstream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.explore_upstream" title="Link to this definition"></a></dt>
+<dd><p>Explores in the upstream direction (inputs/associations)
+starting at the specified node handle ID.
+The search depth is bounded by the depth parameter which has a default maximum of 100.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the upstream direction, by default 100.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.explore_downstream">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">explore_downstream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.explore_downstream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.explore_downstream" title="Link to this definition"></a></dt>
+<dd><p>Explores in the downstream direction (inputs/associations)
+starting at the specified node handle ID.
+The search depth is bounded by the depth parameter which has a default maximum of 100.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the downstream direction, by default 100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.get_contributing_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_contributing_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.get_contributing_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.get_contributing_datasets" title="Link to this definition"></a></dt>
+<dd><p>Fetches datasets (inputs) which involved in a model run
+naturally in the upstream direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the upstream direction, by default 100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.get_effected_datasets">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_effected_datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.get_effected_datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.get_effected_datasets" title="Link to this definition"></a></dt>
+<dd><p>Fetches datasets (outputs) which are derived from the model run
+naturally in the downstream direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the downstream direction, by default 100.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.get_contributing_agents">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_contributing_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.get_contributing_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.get_contributing_agents" title="Link to this definition"></a></dt>
+<dd><p>Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+naturally in the upstream direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the upstream direction, by default 100.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.get_effected_agents">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_effected_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PROV_API_DEFAULT_SEARCH_DEPTH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse"><span class="pre">provenaclient.models.general.CustomLineageResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.get_effected_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.get_effected_agents" title="Link to this definition"></a></dt>
+<dd><p>Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+naturally in the downstream direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>starting_id</strong> (<em>str</em>) – The ID of the entity to start at.</p></li>
+<li><p><strong>depth</strong> (<em>int</em><em>, </em><em>optional</em>) – The depth to traverse in the downstream direction, by default 100.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A typed response containing the status, node count, and networkx serialised graph response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.CustomLineageResponse" title="provenaclient.models.general.CustomLineageResponse">CustomLineageResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.register_batch_model_runs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_batch_model_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_model_run_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.register_batch_model_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.register_batch_model_runs" title="Link to this definition"></a></dt>
+<dd><p>This function allows you to register multiple model runs in one go (batch) asynchronously.</p>
+<p>Note: You can utilise the returned session ID to poll on
+the JOB API to check status of the model run registration(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>batch_model_run_payload</strong> (<em>RegisterBatchModelRunRequest</em>) – A list of model runs (ModelRunRecord objects)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The job session id derived from job-api for the model-run batch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegisterBatchModelRunResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.register_model_run">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_model_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.ProvenanceAPI.ModelRunRecord</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.ProvenanceAPI.RegisterModelRunResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.register_model_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.register_model_run" title="Link to this definition"></a></dt>
+<dd><p>Asynchronously registers a single model run.</p>
+<p>Note: You can utilise the returned session ID to poll on
+the JOB API to check status of the model run registration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_run_payload</strong> (<em>ModelRunRecord</em>) – Contains information needed for the
+model run such as workflow template,
+inputs, outputs, description etc.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The job session id derived from job-api for the model-run.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegisterModelRunResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.generate_csv_template">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_csv_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_template_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_csv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.generate_csv_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.generate_csv_template" title="Link to this definition"></a></dt>
+<dd><p>Generates a model run csv template to be utilised
+for creating model runs through csv format..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>workflow_template_id</strong> (<em>str</em>) – An ID of a created and existing model run workflow template.</p></li>
+<li><p><strong>path_to_save_csv</strong> (<em>str</em><em>, </em><em>optional</em>) – The path you want to save the csv file at WITH csv file name. If you don’t specify a path
+this will be saved in a relative directory.</p></li>
+<li><p><strong>write_to_csv</strong> (<em>bool</em><em>, </em><em>By default False</em>) – A boolean flag to indicate whether you want to save the template to a csv file
+or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>str</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response containing the csv template text (encoded in a csv format).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.convert_model_runs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_model_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_run_content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.ProvenanceAPI.ConvertModelRunsResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.convert_model_runs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.convert_model_runs" title="Link to this definition"></a></dt>
+<dd><p>Converts model run with model_run_content provided as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_run_content</strong> (<em>str</em>) – The model run information containing
+the necessary parameters for model run lodge.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the model run information in an interactive python
+datatype.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConvertModelRunsResponse</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – Exception raised when converting string to bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.convert_model_runs_to_csv_with_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert_model_runs_to_csv_with_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.ProvenanceAPI.ConvertModelRunsResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.convert_model_runs_to_csv_with_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.convert_model_runs_to_csv_with_file" title="Link to this definition"></a></dt>
+<dd><p>Reads a CSV file, and it’s defined model run contents
+and lodges a model run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path of an existing created CSV file containing
+the necessary parameters for model run lodge.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the model run information in an interactive python
+datatype.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConvertModelRunsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.regenerate_csv_from_model_run_batch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">regenerate_csv_from_model_run_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.utils.exceptions.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_csv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.regenerate_csv_from_model_run_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.regenerate_csv_from_model_run_batch" title="Link to this definition"></a></dt>
+<dd><p>Regenerate/create a csv file containing model
+run information from a model run batch job.</p>
+<p>The batch id must exist in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_id</strong> (<em>str</em>) – Obtained from creating a batch model run.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path you want to save the csv file at WITH CSV file name. If you don’t specify a path
+this will be saved in a relative directory.</p></li>
+<li><p><strong>write_to_csv</strong> (<em>bool</em><em>, </em><em>By default False</em>) – A boolean flag to indicate whether you want to save the template to a csv file
+or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>str</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response containing the model run information (encoded in csv format).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Prov.generate_report">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.ProvenanceAPI.GenerateReportRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DEFAULT_RELATIVE_FILE_PATH</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/prov.html#Prov.generate_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Prov.generate_report" title="Link to this definition"></a></dt>
+<dd><p>Generates a provenance report from a Study or Model Run Entity containing the
+associated inputs, model runs and outputs involved.</p>
+<p>The report is generated in <cite>.docx</cite> and saved at relative directory level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>report_request</strong> (<em>GenerateReportRequest</em>) – The request object containing the parameters for generating the report, including the <cite>id</cite>,
+<cite>item_subtype</cite>, and <cite>depth</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">Registry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">registry_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.RegistryClient" title="provenaclient.clients.RegistryClient"><span class="pre">provenaclient.clients.RegistryClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry._registry_client">
+<span class="sig-name descname"><span class="pre">_registry_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.RegistryClient" title="provenaclient.clients.RegistryClient"><span class="pre">provenaclient.clients.RegistryClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry._registry_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/registry_client/index.html#provenaclient.clients.registry_client.RegistryAdminClient" title="provenaclient.clients.registry_client.RegistryAdminClient"><span class="pre">RegistryAdminClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.admin" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.organisation">
+<span class="sig-name descname"><span class="pre">organisation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.OrganisationClient" title="provenaclient.modules.registry.OrganisationClient"><span class="pre">OrganisationClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.organisation" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.person">
+<span class="sig-name descname"><span class="pre">person</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.PersonClient" title="provenaclient.modules.registry.PersonClient"><span class="pre">PersonClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.person" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.ModelClient" title="provenaclient.modules.registry.ModelClient"><span class="pre">ModelClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.model_run_workflow">
+<span class="sig-name descname"><span class="pre">model_run_workflow</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.ModelRunWorkFlowClient" title="provenaclient.modules.registry.ModelRunWorkFlowClient"><span class="pre">ModelRunWorkFlowClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.model_run_workflow" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.dataset_template">
+<span class="sig-name descname"><span class="pre">dataset_template</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.DatasetTemplateClient" title="provenaclient.modules.registry.DatasetTemplateClient"><span class="pre">DatasetTemplateClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.dataset_template" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.dataset">
+<span class="sig-name descname"><span class="pre">dataset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.DatasetClient" title="provenaclient.modules.registry.DatasetClient"><span class="pre">DatasetClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.dataset" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.study">
+<span class="sig-name descname"><span class="pre">study</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.StudyClient" title="provenaclient.modules.registry.StudyClient"><span class="pre">StudyClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.study" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.create_activity">
+<span class="sig-name descname"><span class="pre">create_activity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.CreateActivityClient" title="provenaclient.modules.registry.CreateActivityClient"><span class="pre">CreateActivityClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.create_activity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.version_acitvity">
+<span class="sig-name descname"><span class="pre">version_acitvity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.VersionActivityClient" title="provenaclient.modules.registry.VersionActivityClient"><span class="pre">VersionActivityClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.version_acitvity" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.model_run">
+<span class="sig-name descname"><span class="pre">model_run</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="registry/index.html#provenaclient.modules.registry.ModelRunActivityClient" title="provenaclient.modules.registry.ModelRunActivityClient"><span class="pre">ModelRunActivityClient</span></a></em><a class="headerlink" href="#provenaclient.modules.Registry.model_run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.Registry._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.Registry._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse"><span class="pre">provenaclient.models.general.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.list_general_registry_items">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_general_registry_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">general_list_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.GeneralListRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.PaginatedListResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry.list_general_registry_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry.list_general_registry_items" title="Link to this definition"></a></dt>
+<dd><p>Lists general registry items based on filter criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>general_list_request</strong> (<em>GeneralListRequest</em>) – The request containing filter and sort criteria.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the paginated list of registry items.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PaginatedListResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.list_registry_items_with_count">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_registry_items_with_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry.list_registry_items_with_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry.list_registry_items_with_count" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a count of items in the registry, grouped by their subtypes.</p>
+<p>This method sends requests to list items in the registry and counts the number of items for each subtype.
+It handles pagination to ensure all items are counted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary where the keys are item subtypes(string) and the values are the count of items for each subtype.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.general_fetch_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">general_fetch_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.UntypedFetchResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry.general_fetch_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry.general_fetch_item" title="Link to this definition"></a></dt>
+<dd><p>Fetches a general item from the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – The ID of the item to fetch.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fetch response containing the item details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UntypedFetchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.Registry.get_current_provena_version">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_current_provena_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/registry.html#Registry.get_current_provena_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.Registry.get_current_provena_version" title="Link to this definition"></a></dt>
+<dd><p>Gets the current Provena version deployed on your domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The response containing the current Provena version.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">IDService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_service_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.IdServiceClient" title="provenaclient.clients.IdServiceClient"><span class="pre">provenaclient.clients.IdServiceClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService._id_service_client">
+<span class="sig-name descname"><span class="pre">_id_service_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.IdServiceClient" title="provenaclient.clients.IdServiceClient"><span class="pre">provenaclient.clients.IdServiceClient</span></a></em><a class="headerlink" href="#provenaclient.modules.IDService._id_service_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.IDService._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.IDService._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.id_service_client">
+<span class="sig-name descname"><span class="pre">id_service_client</span></span><a class="headerlink" href="#provenaclient.modules.IDService.id_service_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.mint">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.HandleAPI.MintRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.Handle</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.mint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.mint" title="Link to this definition"></a></dt>
+<dd><p>Mints a new handle with given properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>MintRequest</em>) – The payload</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resulting handle object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.add_value">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.HandleAPI.AddValueRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.Handle</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.add_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.add_value" title="Link to this definition"></a></dt>
+<dd><p>Adds value to a handle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>AddValueRequest</em>) – The value to add</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The handle object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.add_value_by_index">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">add_value_by_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.HandleAPI.AddValueIndexRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.Handle</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.add_value_by_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.add_value_by_index" title="Link to this definition"></a></dt>
+<dd><p>Adds a value at specified index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>AddValueIndexRequest</em>) – The value to add</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The handle object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.list">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.ListResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.list" title="Link to this definition"></a></dt>
+<dd><p>Lists all handles under domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The response list</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ListResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.modify_by_index">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modify_by_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.HandleAPI.ModifyRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.Handle</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.modify_by_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.modify_by_index" title="Link to this definition"></a></dt>
+<dd><p>Modifies existing handle value at specified index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>ModifyRequest</em>) – The request to modify</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The handle object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.IDService.remove_by_index">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_by_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.HandleAPI.RemoveRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.HandleAPI.Handle</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/id_service.html#IDService.remove_by_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.IDService.remove_by_index" title="Link to this definition"></a></dt>
+<dd><p>Removes value at specified index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>body</strong> (<em>RemoveRequest</em>) – The removal request</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The handle object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Handle</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.modules.</span></span><span class="sig-name descname"><span class="pre">JobService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.modules.module_helpers.Config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job_api_client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../clients/index.html#provenaclient.clients.JobAPIClient" title="provenaclient.clients.JobAPIClient"><span class="pre">provenaclient.clients.JobAPIClient</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="module_helpers/index.html#provenaclient.modules.module_helpers.ModuleService" title="provenaclient.modules.module_helpers.ModuleService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.modules.module_helpers.ModuleService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L3 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService._job_api_client">
+<span class="sig-name descname"><span class="pre">_job_api_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../clients/index.html#provenaclient.clients.JobAPIClient" title="provenaclient.clients.JobAPIClient"><span class="pre">provenaclient.clients.JobAPIClient</span></a></em><a class="headerlink" href="#provenaclient.modules.JobService._job_api_client" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="job_service/index.html#provenaclient.modules.job_service.JobAdminSubService" title="provenaclient.modules.job_service.JobAdminSubService"><span class="pre">JobAdminSubService</span></a></em><a class="headerlink" href="#provenaclient.modules.JobService.admin" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.modules.JobService._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.modules.JobService._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#provenaclient.models.HealthCheckResponse" title="provenaclient.models.HealthCheckResponse"><span class="pre">provenaclient.models.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.fetch_job">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AsyncJobAPI.GetJobResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.fetch_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.fetch_job" title="Link to this definition"></a></dt>
+<dd><p>Fetches a job by session id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session_id</strong> (<em>str</em>) – The session ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The job fetched</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>GetJobResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.list_jobs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_jobs_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListJobsRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListJobsResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.list_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.list_jobs" title="Link to this definition"></a></dt>
+<dd><p>Lists all jobs for the given user</p>
+<p>Can return pagination if page size exceeded</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_jobs_request</strong> (<em>ListJobsRequest</em>) – The request including details</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListJobsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.list_all_jobs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_all_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_jobs_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListJobsRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.list_all_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.list_all_jobs" title="Link to this definition"></a></dt>
+<dd><p>Lists all jobs for the given user.</p>
+<p>Will automatically paginate until list is exhausted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_jobs_request</strong> (<em>ListJobsRequest</em>) – The request including details</p></li>
+<li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Total record limit to enforce, if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListJobsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.for_all_jobs">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">for_all_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_jobs_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListJobsRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncGenerator</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.for_all_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.for_all_jobs" title="Link to this definition"></a></dt>
+<dd><p>Lists all jobs for the given user.</p>
+<p>Returns lazy generator for use in for loops.</p>
+<p>Will automatically paginate until list is exhausted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_jobs_request</strong> (<em>ListJobsRequest</em>) – The request including details</p></li>
+<li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Total record limit to enforce, if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListJobsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.list_jobs_in_batch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_jobs_in_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListByBatchResponse</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.list_jobs_in_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.list_jobs_in_batch" title="Link to this definition"></a></dt>
+<dd><p>Gets all jobs within a batch.</p>
+<p>Can return pagination if page size exceeded</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list_request</strong> (<em>ListByBatchRequest</em>) – The request including batch ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response including list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListByBatchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.list_all_jobs_in_batch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_all_jobs_in_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.list_all_jobs_in_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.list_all_jobs_in_batch" title="Link to this definition"></a></dt>
+<dd><p>Lists all jobs for the given user. Will automatically paginate all
+entries to exhaust list</p>
+<p>NOTE this could return more than limit - but figure it may as well
+return data fetched for efficiency reasons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_jobs_request</strong> (<em>ListJobsRequest</em>) – The request including details</p></li>
+<li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Total record limit to enforce, if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListJobsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.for_all_jobs_in_batch">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">for_all_jobs_in_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.AsyncJobAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncGenerator</span><span class="p"><span class="pre">[</span></span><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.for_all_jobs_in_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.for_all_jobs_in_batch" title="Link to this definition"></a></dt>
+<dd><p>Lists all jobs for the given user. Will automatically paginate all
+entries to exhaust list</p>
+<p>NOTE this could return more than limit - but figure it may as well
+return data fetched for efficiency reasons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_jobs_request</strong> (<em>ListJobsRequest</em>) – The request including details</p></li>
+<li><p><strong>limit</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Total record limit to enforce, if any</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The list of jobs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListJobsResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.await_job_completion">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">await_job_completion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../models/index.html#provenaclient.models.AsyncAwaitSettings" title="provenaclient.models.AsyncAwaitSettings"><span class="pre">provenaclient.models.AsyncAwaitSettings</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DEFAULT_AWAIT_SETTINGS</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.await_job_completion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.await_job_completion" title="Link to this definition"></a></dt>
+<dd><p>Awaits completion of a given job then provides the job info.</p>
+<p>Completion is defined as a job status which is not pending or in progress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session_id</strong> (<em>str</em>) – The ID of the job to monitor and await completion.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The entry at the latest point.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JobStatusTable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.modules.JobService.await_successful_job_completion">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">await_successful_job_completion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../models/index.html#provenaclient.models.AsyncAwaitSettings" title="provenaclient.models.AsyncAwaitSettings"><span class="pre">provenaclient.models.AsyncAwaitSettings</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DEFAULT_AWAIT_SETTINGS</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.AsyncJobAPI.JobStatusTable</span></span></span><a class="reference internal" href="../../../_modules/provenaclient/modules/job_service.html#JobService.await_successful_job_completion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.modules.JobService.await_successful_job_completion" title="Link to this definition"></a></dt>
+<dd><p>Awaits successful completion of a given job then provides the job info.</p>
+<p>Completion is defined as a job status which is not pending or in progress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session_id</strong> (<em>str</em>) – The ID of the job to monitor and await completion.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The entry at the latest point.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JobStatusTable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../models/general/index.html" class="btn btn-neutral float-left" title="provenaclient.models.general" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="auth/index.html" class="btn btn-neutral float-right" title="provenaclient.modules.auth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

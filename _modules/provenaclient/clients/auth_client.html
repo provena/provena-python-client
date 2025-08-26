@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.clients.auth_client &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.clients.auth_client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.clients.auth_client</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Friday May 31st 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Friday May 31st 2024 9:50:26 am +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: The Auth API L2 Client</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+
+<span class="sd">18-06-2024 | Peter Baker | Some issues with admin remove members interfaces - blocked on this</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.AuthAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients.client_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheckResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="AuthEndpoints">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthEndpoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AuthEndpoints</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="c1"># Contains all AuthAPI endpoints - to regen use</span>
+    <span class="c1"># generate_open_api_endpoint_dump.py with openapi.json as auth-api open api</span>
+    <span class="c1"># spec (from /openapi.json)</span>
+
+    <span class="c1"># NOT IMPLEMENTED</span>
+    <span class="n">GET_CHECK_ACCESS_PUBLIC</span> <span class="o">=</span> <span class="s2">&quot;/check-access/public&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_GENERAL</span> <span class="o">=</span> <span class="s2">&quot;/check-access/general&quot;</span>
+    <span class="n">GET_ADMIN_CONFIG</span> <span class="o">=</span> <span class="s2">&quot;/admin/config&quot;</span>
+    <span class="n">GET_ADMIN_SENTRY_DEBUG</span> <span class="o">=</span> <span class="s2">&quot;/admin/sentry-debug&quot;</span>
+
+    <span class="c1"># DONE</span>
+    <span class="n">GET_ACCESS_CONTROL_ADMIN_ALL_PENDING_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/all-pending-request-history&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_ADMIN_ALL_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/all-request-history&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_ADMIN_USER_PENDING_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/user-pending-request-history&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_ADMIN_USER_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/user-request-history&quot;</span>
+    <span class="n">POST_ACCESS_CONTROL_ADMIN_ADD_NOTE</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/add-note&quot;</span>
+    <span class="n">POST_ACCESS_CONTROL_ADMIN_CHANGE_REQUEST_STATE</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/change-request-state&quot;</span>
+    <span class="n">POST_ACCESS_CONTROL_ADMIN_DELETE_REQUEST</span> <span class="o">=</span> <span class="s2">&quot;/access-control/admin/delete-request&quot;</span>
+    <span class="n">POST_ACCESS_CONTROL_USER_REQUEST_CHANGE</span> <span class="o">=</span> <span class="s2">&quot;/access-control/user/request-change&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_USER_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/user/request-history&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_USER_PENDING_REQUEST_HISTORY</span> <span class="o">=</span> <span class="s2">&quot;/access-control/user/pending-request-history&quot;</span>
+    <span class="n">GET_ACCESS_CONTROL_USER_GENERATE_ACCESS_REPORT</span> <span class="o">=</span> <span class="s2">&quot;/access-control/user/generate-access-report&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_LIST_GROUPS</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/list_groups&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_DESCRIBE_GROUP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/describe_group&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_LIST_MEMBERS</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/list_members&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_LIST_USER_MEMBERSHIP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/list_user_membership&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_CHECK_MEMBERSHIP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/check_membership&quot;</span>
+    <span class="n">POST_GROUPS_ADMIN_ADD_MEMBER</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/add_member&quot;</span>
+    <span class="n">DELETE_GROUPS_ADMIN_REMOVE_MEMBER</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/remove_member&quot;</span>
+    <span class="n">POST_GROUPS_ADMIN_ADD_GROUP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/add_group&quot;</span>
+    <span class="n">DELETE_GROUPS_ADMIN_REMOVE_GROUP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/remove_group&quot;</span>
+    <span class="n">PUT_GROUPS_ADMIN_UPDATE_GROUP</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/update_group&quot;</span>
+    <span class="n">GET_GROUPS_ADMIN_EXPORT</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/export&quot;</span>
+    <span class="n">POST_GROUPS_ADMIN_IMPORT</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/import&quot;</span>
+    <span class="n">POST_GROUPS_ADMIN_RESTORE_FROM_TABLE</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/restore_from_table&quot;</span>
+    <span class="n">GET_GROUPS_USER_LIST_GROUPS</span> <span class="o">=</span> <span class="s2">&quot;/groups/user/list_groups&quot;</span>
+    <span class="n">GET_GROUPS_USER_DESCRIBE_GROUP</span> <span class="o">=</span> <span class="s2">&quot;/groups/user/describe_group&quot;</span>
+    <span class="n">GET_GROUPS_USER_LIST_USER_MEMBERSHIP</span> <span class="o">=</span> <span class="s2">&quot;/groups/user/list_user_membership&quot;</span>
+    <span class="n">GET_GROUPS_USER_LIST_MEMBERS</span> <span class="o">=</span> <span class="s2">&quot;/groups/user/list_members&quot;</span>
+    <span class="n">GET_GROUPS_USER_CHECK_MEMBERSHIP</span> <span class="o">=</span> <span class="s2">&quot;/groups/user/check_membership&quot;</span>
+    <span class="n">GET_LINK_USER_LOOKUP</span> <span class="o">=</span> <span class="s2">&quot;/link/user/lookup&quot;</span>
+    <span class="n">POST_LINK_USER_ASSIGN</span> <span class="o">=</span> <span class="s2">&quot;/link/user/assign&quot;</span>
+    <span class="n">POST_LINK_USER_VALIDATE</span> <span class="o">=</span> <span class="s2">&quot;/link/user/validate&quot;</span>
+    <span class="n">GET_LINK_ADMIN_LOOKUP</span> <span class="o">=</span> <span class="s2">&quot;/link/admin/lookup&quot;</span>
+    <span class="n">POST_LINK_ADMIN_ASSIGN</span> <span class="o">=</span> <span class="s2">&quot;/link/admin/assign&quot;</span>
+    <span class="n">DELETE_LINK_ADMIN_CLEAR</span> <span class="o">=</span> <span class="s2">&quot;/link/admin/clear&quot;</span>
+    <span class="n">GET_LINK_ADMIN_REVERSE_LOOKUP</span> <span class="o">=</span> <span class="s2">&quot;/link/admin/reverse_lookup&quot;</span>
+    <span class="n">GET_HEALTH_CHECK</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+
+    <span class="c1"># TODO ISSUE</span>
+    <span class="c1"># Cannot have post body in delete - need to change implementation</span>
+    <span class="n">DELETE_GROUPS_ADMIN_REMOVE_MEMBERS</span> <span class="o">=</span> <span class="s2">&quot;/groups/admin/remove_members&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="AuthAdminSubClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AuthAdminSubClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the AuthClient admin sub client with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="AuthAdminSubClient._build_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient._build_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">AuthEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">auth_api_endpoint</span> <span class="o">+</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_all_pending_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_all_pending_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_pending_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gets all requests with pending status</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The response object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_ADMIN_ALL_PENDING_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve admin pending request history...&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_all_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_all_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gets all requests</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The response object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_ADMIN_ALL_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve admin request history...&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_user_pending_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_user_pending_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_user_pending_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gets pending requests for specified user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): Username to query</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The response list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_ADMIN_USER_PENDING_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve user pending request history...&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_user_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_user_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_user_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Gets all requests for specified user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): Username to query</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The response list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_ADMIN_USER_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve user request history...&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_add_note">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_add_note">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_add_note</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note</span><span class="p">:</span> <span class="n">RequestAddNote</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a note to an existing request</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            note (RequestAddNote): Payload incl note info</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_ACCESS_CONTROL_ADMIN_ADD_NOTE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to add note.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">note</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_change_request_state">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_change_request_state">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_change_request_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">send_email_alert</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">change</span><span class="p">:</span> <span class="n">AccessRequestStatusChange</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ChangeStateStatus</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Change state of a request. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            send_email_alert (bool): Should trigger email alert?</span>
+<span class="sd">            change (AccessRequestStatusChange): The details of change</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ChangeStateStatus: The response object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_ACCESS_CONTROL_ADMIN_CHANGE_REQUEST_STATE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to change request status.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;send_email_alert&quot;</span><span class="p">:</span> <span class="n">send_email_alert</span>
+            <span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">change</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ChangeStateStatus</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_list_groups">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_list_groups">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListGroupsResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Gets a list of groups</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListGroupsResponse: List of groups</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_LIST_GROUPS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list admin groups.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListGroupsResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_describe_group">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_describe_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_describe_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DescribeGroupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Describes a group by ID</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The group</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DescribeGroupResponse: Description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_DESCRIBE_GROUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to describe group.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">DescribeGroupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_list_members">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_list_members">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListMembersResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists members of group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The gruop</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListMembersResponse: The list of members</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_LIST_MEMBERS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list group members.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListMembersResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_list_group_membership">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_list_group_membership">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_group_membership</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListUserMembershipResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Gets list of groups a user is in</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): The username</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListUserMembershipResponse: The list of groups</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_LIST_MEMBERS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list user group membership.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListUserMembershipResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_check_user_membership">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_check_user_membership">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_check_user_membership</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckMembershipResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Checks user membership within a group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): The username to target</span>
+<span class="sd">            group_id (str): The group to check</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CheckMembershipResponse: Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_CHECK_MEMBERSHIP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list user group membership.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">CheckMembershipResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_groups_add_member">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_groups_add_member">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_groups_add_member</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">GroupUser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddMemberResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Adds a member to a group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): Id of group</span>
+<span class="sd">            user (GroupUser): The user to add</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AddMemberResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_GROUPS_ADMIN_ADD_MEMBER</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to add user to group&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AddMemberResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.delete_remove_member">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.delete_remove_member">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_remove_member</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RemoveMemberResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Removes member from group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The id of group</span>
+<span class="sd">            username (str): The user to remove</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            RemoveMemberResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_delete_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">DELETE_GROUPS_ADMIN_REMOVE_MEMBER</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to remove member from group.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;group_id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RemoveMemberResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_add_group">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_add_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">UserGroupMetadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AddGroupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Adds a group/creates group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group (UserGroupMetadata): The group details</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AddGroupResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_GROUPS_ADMIN_ADD_GROUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to add group.&quot;</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">group</span><span class="p">),</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AddGroupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.put_update_group">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.put_update_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">put_update_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">:</span> <span class="n">UserGroupMetadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpdateGroupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates group details</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group (UserGroupMetadata): The group metadata</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UpdateGroupResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_put_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">PUT_GROUPS_ADMIN_UPDATE_GROUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to update gruop.&quot;</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">group</span><span class="p">),</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UpdateGroupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_export_groups">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_export_groups">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_export_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupsExportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exports all group details in specified format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupsExportResponse: The data dump</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_ADMIN_EXPORT</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to export groups.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">GroupsExportResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_import_groups">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_import_groups">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_import_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">GroupsImportRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupsImportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Imports groups from data dump back in</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            body (GroupsImportRequest): The import request incl. dump</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupsImportResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_GROUPS_ADMIN_IMPORT</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Groups import failed.&quot;</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">GroupsImportResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_restore_groups_from_table">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_restore_groups_from_table">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_restore_groups_from_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">GroupsRestoreRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GroupsImportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Restores groups by first dumping from valid group table. </span>
+<span class="sd">        Needs permissions to table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            table_name (str): The table name</span>
+<span class="sd">            body (GroupsRestoreRequest): The request</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            GroupsImportResponse: The response details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_GROUPS_ADMIN_RESTORE_FROM_TABLE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Groups restore from table failed.&quot;</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;table_name&#39;</span><span class="p">:</span> <span class="n">table_name</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">GroupsImportResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_link_lookup_username">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_link_lookup_username">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_link_lookup_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminLinkUserLookupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the linked person for user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): User to lookup</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminLinkUserLookupResponse: Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_LINK_ADMIN_LOOKUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to lookup user in link service.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AdminLinkUserLookupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.get_link_reverse_lookup_username">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.get_link_reverse_lookup_username">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_link_reverse_lookup_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserLinkReverseLookupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Looks up reverse by person ID</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            person_id (str): The person to lookup</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UserLinkReverseLookupResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_LINK_ADMIN_REVERSE_LOOKUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to lookup reverse in link service.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;person_id&#39;</span><span class="p">:</span> <span class="n">person_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UserLinkReverseLookupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.post_link_assign">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.post_link_assign">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_link_assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">AdminLinkUserAssignRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminLinkUserAssignResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Assigns a person to a given user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            body (AdminLinkUserAssignRequest): The request</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminLinkUserAssignResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_LINK_ADMIN_ASSIGN</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to assign user link.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AdminLinkUserAssignResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthAdminSubClient.delete_clear_link">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/auth_client/index.html#provenaclient.clients.auth_client.AuthAdminSubClient.delete_clear_link">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_clear_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdminLinkUserClearResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing link</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (str): The user to unlink</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AdminLinkUserClearResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_delete_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">DELETE_LINK_ADMIN_CLEAR</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to clear link from user.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AdminLinkUserClearResponse</span>
+        <span class="p">)</span></div>
+</div>
+
+
+    <span class="c1"># TODO this is not currently possible because the DELETE method should not have JSON body according to HTTPX</span>
+    <span class="c1"># async def post_remove_members(self, group_id: str, username: str) -&gt; RemoveMemberResponse:</span>
+    <span class="c1">#    return await parsed_delete_request_with_status(</span>
+    <span class="c1">#        client=self,</span>
+    <span class="c1">#        url=self._build_endpoint(AuthEndpoints.DELETE_GROUPS_ADMIN_REMOVE_MEMBERS),</span>
+    <span class="c1">#        error_message=&quot;Failed to remove member from group.&quot;,</span>
+    <span class="c1">#        params={&#39;group_id&#39;: group_id, &#39;username&#39;: username},</span>
+    <span class="c1">#        model=RemoveMemberResponse</span>
+    <span class="c1">#    )</span>
+
+<span class="c1"># L2 interface.</span>
+
+
+<div class="viewcode-block" id="AuthClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AuthClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+    <span class="c1"># Sub clients</span>
+    <span class="n">admin</span><span class="p">:</span> <span class="n">AuthAdminSubClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the AuthClient with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin</span> <span class="o">=</span> <span class="n">AuthAdminSubClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AuthClient._build_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient._build_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">AuthEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">auth_api_endpoint</span> <span class="o">+</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_health_check">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_health_check">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HealthCheckResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Health check the API</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            HealthCheckResponse: Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_HEALTH_CHECK</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Health check failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">HealthCheckResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_user_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_user_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_user_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Gets the users access request history</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The list of requests</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_USER_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve access request history.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.post_user_request_change">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.post_user_request_change">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_user_request_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">AccessReport</span><span class="p">,</span> <span class="n">send_email</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Requests a change by diffing access models</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            body (AccessReport): The new access desired</span>
+<span class="sd">            send_email (bool): Email alert</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            StatusResponse: Ok?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_ACCESS_CONTROL_USER_REQUEST_CHANGE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to request access change.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;send_email&quot;</span><span class="p">:</span> <span class="n">send_email</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_user_pending_request_history">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_user_pending_request_history">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_user_pending_request_history</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessRequestList</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets only pending requests from history</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessRequestList: The list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_USER_PENDING_REQUEST_HISTORY</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to retrieve access pending request history.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessRequestList</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_user_generate_access_report">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_user_generate_access_report">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_user_generate_access_report</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessReportResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Generates an access report detailing system access.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AccessReportResponse: The response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_ACCESS_CONTROL_USER_GENERATE_ACCESS_REPORT</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to generate access report.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">AccessReportResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_list_groups">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_list_groups">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListGroupsResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists all groups</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListGroupsResponse: List of groups</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_USER_LIST_GROUPS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list groups&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListGroupsResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_describe_group">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_describe_group">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_describe_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DescribeGroupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Describes a specific gruop</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The id of group</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            DescribeGroupResponse: Response with details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_USER_DESCRIBE_GROUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to describe group&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">DescribeGroupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_list_membership">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_list_membership">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_membership</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListUserMembershipResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Gets the list of groups user is member of</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListUserMembershipResponse: List and details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_USER_LIST_USER_MEMBERSHIP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list group membership.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListUserMembershipResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_list_group_members">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_list_group_members">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_list_group_members</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListMembersResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Lists the members of a given group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The group to lookup</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ListMembersResponse: Members</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_USER_LIST_MEMBERS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to list group members&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ListMembersResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_check_membership">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_check_membership">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_check_membership</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckMembershipResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if user is in specific group</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_id (str): The group to check</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            CheckMembershipResponse: In group?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_GROUPS_USER_CHECK_MEMBERSHIP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to check membership.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">group_id</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">CheckMembershipResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.get_link_lookup_username">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.get_link_lookup_username">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_link_lookup_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserLinkUserLookupResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Looks up either current user or specified user</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            username (Optional[str], optional): The username if not current user. Defaults to None.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UserLinkUserLookupResponse: The response indicating link</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">GET_LINK_USER_LOOKUP</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to lookup user in link service.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">username</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UserLinkUserLookupResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.post_link_assign">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.post_link_assign">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_link_assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">UserLinkUserAssignRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserLinkUserAssignResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Assigns link to current user.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            body (UserLinkUserAssignRequest): The link to assign</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UserLinkUserAssignResponse: The response indicating success</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_LINK_USER_ASSIGN</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to assign user link.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UserLinkUserAssignResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AuthClient.post_link_validate">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/index.html#provenaclient.clients.auth_client.AuthClient.post_link_validate">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_link_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="n">UserLinkUserAssignRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserLinkUserValidateResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates link before making it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            body (UserLinkUserAssignRequest): The link to assign</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            UserLinkUserValidateResponse: Valid?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Doesn&#39;t assert status as we want the status response to fall through</span>
+        <span class="c1"># to user</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">AuthEndpoints</span><span class="o">.</span><span class="n">POST_LINK_USER_VALIDATE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to validate user link.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">body</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">UserLinkUserValidateResponse</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

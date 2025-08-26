@@ -1,0 +1,51 @@
+provenaclient.modules.module_helpers
+====================================
+
+.. py:module:: provenaclient.modules.module_helpers
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday May 30th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Defines L3 module level helpers, notably a common interface for the ModuleService.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   18-06-2024 | Peter Baker | Noting this might not be a great place to host this interface.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.module_helpers.ModuleService
+
+
+Module Contents
+---------------
+
+.. py:class:: ModuleService
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _auth
+      :type:  provenaclient.auth.AuthManager
+
+
+   .. py:attribute:: _config
+      :type:  provenaclient.utils.config.Config
+
+
