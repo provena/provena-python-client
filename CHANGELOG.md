@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.29.0 (2025-08-26)
+
+### Features
+
+* feat: fixing poetry to target new lib
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`e1e72b2`](https://github.com/provena/provena-python-client/commit/e1e72b28aa582bf42b54de4247a6889ac34ae61b))
+
+
 ## v0.28.0 (2025-08-26)
 
 ### Chores
