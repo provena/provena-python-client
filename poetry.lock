@@ -1798,26 +1798,22 @@ files = [
 wcwidth = "*"
 
 [[package]]
-name = "provena_interfaces"
-version = "0.1.0"
+name = "provena-interfaces-v2"
+version = "2.10.4"
 description = "Interfaces for Provena Application (see https://provena.io)"
 optional = false
 python-versions = "*"
 groups = ["main"]
-files = []
-develop = false
+files = [
+    {file = "provena_interfaces_v2-2.10.4-py3-none-any.whl", hash = "sha256:b33dde07c1e4c036195bcb40b656994ded59bbbdcc0be1f62f715844845f04e9"},
+    {file = "provena_interfaces_v2-2.10.4.tar.gz", hash = "sha256:333861e0edcde7dc734ee4c34296385e66c12f4035ff360b68e7d934bc6e0838"},
+]
 
 [package.dependencies]
 email-validator = "*"
-fastapi = "*"
+fastapi = ">=0.116.1"
 isodate = "*"
 pydantic = ">=2.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/provena/provena-interfaces-v2.git"
-reference = "main"
-resolved_reference = "e02840e8b4afd765f575b80d29aa5e4276f639bf"
 
 [[package]]
 name = "psutil"
@@ -3417,4 +3413,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "6470720ebc124f6c8cf6d273f13f012b5139c5f875dfc4a5572300c40c8932ab"
+content-hash = "1a145f8efeb8075b4c57b319e652f3a1817ee4eb96fae6b53ca328a6d020b6fd"
