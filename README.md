@@ -47,7 +47,7 @@ Find Provena Python Client documentation and API Reference at: ([Provena Client 
 
 Due to delays in migration from Pydantic v1 to v2 in upstream repositories ([provena-interfaces](https://pypi.org/project/provena-interfaces/) and [provena](https://github.com/provena/provena), this client library uses a specialised version of the interfaces which is a slightly stripped down view of the main interfaces packaged, migrated to v2.
 
-This repo is available [here - provena/pydantic-v2-interfaces](https://github.com/provena/provena-interfaces-v2).
+This repo is available [here - provena/pydantic-v2-interfaces](https://github.com/provena/provena-interfaces-v2). It is installed via pypi under the package `provena-interfaces-v2`.
 
 We will ensure that when Provena updates effect the interfaces, that this mirror repository reflect those changes, and prompt an updated version of this repo to target them.
 
