@@ -21,7 +21,7 @@ from enum import Enum
 from provenaclient.utils.helpers import *
 from provenaclient.clients.client_helpers import *
 from provenaclient.models.general import HealthCheckResponse
-from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput, GenerateReportRequest
+from ProvenaInterfaces.ProvenanceAPI import LineageResponse, ModelRunRecord, RegisterModelRunResponse, RegisterBatchModelRunRequest, RegisterBatchModelRunResponse, ConvertModelRunsResponse, PostUpdateModelRunResponse, PostUpdateModelRunInput, GenerateReportRequest, PostDeleteGraphRequest, PostDeleteGraphResponse
 from ProvenaInterfaces.RegistryAPI import ItemModelRun
 
 
@@ -59,6 +59,8 @@ class ProvAPIAdminEndpoints(str, Enum):
     POST_ADMIN_STORE_RECORD = "/admin/store_record"
     POST_ADMIN_STORE_RECORDS = "/admin/store_records"
     POST_ADMIN_STORE_ALL_REGISTRY_RECORDS = "/admin/store_all_registry_records"
+
+    POST_MODEL_RUN_DELETE = "/model_run/delete"
 
     # Not completed yet, TODO.
     GET_ADMIN_SENTRY_DEBUG = "/admin/sentry-debug"
@@ -172,6 +174,19 @@ class ProvAdminClient(ClientService):
             params={"validate_record": validate_record},
             json_body=None,
             model=StatusResponse
+        )
+
+    async def delete_model_run_provenance(self, model_run_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a model run by its ID."""
+        return await parsed_post_request(
+            client=self,
+            url=self._build_endpoint(
+                ProvAPIAdminEndpoints.POST_MODEL_RUN_DELETE),
+            error_message=f"Failed to delete model run with ID {model_run_id}",
+            params={},
+            json_body=py_to_dict(
+                PostDeleteGraphRequest(record_id=model_run_id, trial_mode=trial_mode)),
+            model=PostDeleteGraphResponse
         )
 
 
@@ -540,11 +555,11 @@ class ProvClient(ClientService):
         )
 
         return response.text
-    
+
     async def generate_report(self, report_request: GenerateReportRequest) -> ByteString:
         """Generates a provenance report from a Study or Model Run Entity containing the
         associated inputs, model runs and outputs involved. 
-        
+
         The report is generated in `.docx` format by making a POST request to the API.
 
         Parameters
@@ -558,27 +573,29 @@ class ProvClient(ClientService):
         ByteString
             The raw byte content of the generated `.docx` file. The type of the returned content will be either 
             `bytes` or `bytearray`, which can be directly saved to a file.
-        
+
         Raises
         ------
         AssertionError
             If the response content is not found or is not in the expected `bytes` or `bytearray` format.
         """
-         
+
         response = await validated_post_request(
-            client=self, 
-            url=self._build_endpoint(ProvAPIEndpoints.POST_GENERATE_REPORT), 
-            error_message=f"Something has gone wrong during report generation for node with id {report_request.id}", 
+            client=self,
+            url=self._build_endpoint(ProvAPIEndpoints.POST_GENERATE_REPORT),
+            error_message=f"Something has gone wrong during report generation for node with id {report_request.id}",
             json_body=py_to_dict(report_request),
-            params=None, 
-            headers = {
+            params=None,
+            headers={
                 "Content-Type": "application/json",  # Indicates the body is JSON
-                "Accept": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  # Indicates the response type
+                # Indicates the response type
+                "Accept": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             }
         )
 
-        # Validate that byte content is present, before returning to the user. 
+        # Validate that byte content is present, before returning to the user.
         assert response.content, f"Failed to generate report for node with id {report_request.id} - Response content not found!"
-        assert isinstance(response.content, (bytes, bytearray)), "Unexpected content type from server. Expected bytes or bytearray!"
-        
+        assert isinstance(response.content, (bytes, bytearray)
+                          ), "Unexpected content type from server. Expected bytes or bytearray!"
+
         return response.content
