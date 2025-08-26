@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.28.0 (2025-08-26)
+
+### Chores
+
+* chore: simple README updates
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`e1855f1`](https://github.com/provena/provena-python-client/commit/e1855f1e01b61305a3af782787d9ca6fc440869e))
+
+### Features
+
+* feat: force empty feature ([`4de17b9`](https://github.com/provena/provena-python-client/commit/4de17b965cf7a8f003cf9d5bd427a765d4a98926))
+
+
 ## v0.27.0 (2025-08-26)
 
 ### Features
