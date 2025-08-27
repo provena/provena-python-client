@@ -194,6 +194,8 @@ class JobAPIClient(ClientService):
         Returns:
             GetJobResponse: The job fetched
         """
+        print(
+            f"Requesting fetch for job with session ID {session_id}. at URL {self._build_endpoint(JobAPIEndpoints.GET_JOBS_USER_FETCH)}")
         return await parsed_get_request(
             client=self,
             params={'session_id': session_id},
