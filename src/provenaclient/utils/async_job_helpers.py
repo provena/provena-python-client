@@ -168,6 +168,8 @@ async def wait_for_entry_in_queue(session_id: str, client: JobAPIClient, setting
                 raise Exception(
                     f"Unexpected error state when waiting for job. Code: {be.error_code}. Error: {be.message}.") from be
             else:
+                print(
+                    f"400 response for user fetch of {session_id}. Not present yet presumably. {be.message}. {be}")
                 return False, None
 
         print(f"200OK response for user fetch of {session_id}.")
