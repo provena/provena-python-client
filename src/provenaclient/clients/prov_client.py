@@ -59,6 +59,7 @@ class ProvAPIAdminEndpoints(str, Enum):
     POST_ADMIN_STORE_RECORD = "/admin/store_record"
     POST_ADMIN_STORE_RECORDS = "/admin/store_records"
     POST_ADMIN_STORE_ALL_REGISTRY_RECORDS = "/admin/store_all_registry_records"
+    POST_GENERAL_PROV_DELETE = "/admin/delete-provenance-record"
 
     POST_MODEL_RUN_DELETE = "/model_run/delete"
 
@@ -186,6 +187,19 @@ class ProvAdminClient(ClientService):
             params={},
             json_body=py_to_dict(
                 PostDeleteGraphRequest(record_id=model_run_id, trial_mode=trial_mode)),
+            model=PostDeleteGraphResponse
+        )
+
+    async def delete_study_provenance(self, study_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a study by its ID."""
+        return await parsed_post_request(
+            client=self,
+            url=self._build_endpoint(
+                ProvAPIAdminEndpoints.POST_GENERAL_PROV_DELETE),
+            error_message=f"Failed to delete study with ID {study_id}",
+            params={},
+            json_body=py_to_dict(
+                PostDeleteGraphRequest(record_id=study_id, trial_mode=trial_mode)),
             model=PostDeleteGraphResponse
         )
 

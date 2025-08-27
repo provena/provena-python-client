@@ -148,3 +148,5 @@ openapi.json
 .offline_token.txt
 local_test
 out
+
+test.py

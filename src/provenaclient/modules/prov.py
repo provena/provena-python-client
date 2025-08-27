@@ -153,6 +153,25 @@ class ProvAPIAdminSubModule(ModuleService):
         """
 
         return await self._prov_api_client.admin.store_all_registry_records(validate_record=validate_record)
+    
+    
+    async def delete_study_provenance(self, study_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a study by its ID - provenance store ONLY"""
+        return await self._prov_api_client.admin.delete_study_provenance(study_id=study_id, trial_mode=trial_mode)
+
+    async def delete_study_provenance_and_registry(self, study_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
+        """Deletes a study by its ID in both the registry AND in the provenance store."""
+        # First, delete from provenance
+        diff = await self._prov_api_client.admin.delete_study_provenance(study_id=study_id, trial_mode=trial_mode)
+
+        if (trial_mode):
+            # done if we are in trial mode - do not execute action
+            return diff
+
+        else:
+            await self._registry_api_client.admin.delete_item(id=study_id, item_subtype=ItemSubType.STUDY)
+            return diff
+    
 
     async def delete_model_run_provenance(self, model_run_id: str, trial_mode: bool = False) -> PostDeleteGraphResponse:
         """Deletes a model run by its ID - provenance store ONLY"""
