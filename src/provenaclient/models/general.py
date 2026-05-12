@@ -13,7 +13,7 @@ Date      	By	Comments
 '''
 
 from typing import Any, Dict, Optional, Type, TypedDict, List
-from pydantic import BaseModel, Field,  ValidationError, validator
+from pydantic import AliasChoices, BaseModel, Field, ValidationError, validator
 from ProvenaInterfaces.RegistryAPI import ItemSubType, Node
 from ProvenaInterfaces.ProvenanceAPI import LineageResponse
 
@@ -46,11 +46,25 @@ class GraphProperty(BaseModel):
 
 
 class CustomGraph(BaseModel):
+    """NetworkX node-link style graph.
+
+    The provenance API returns ``graph`` as JSON. Edges are normally under ``links``
+    (NetworkX ``node_link_data``). If the service uses another key (e.g. ``edges``),
+    we still populate ``links`` so the client matches NetworkX conventions.
+
+    If ``links`` is missing and no alias matches, it defaults to ``[]`` — compare the
+    raw ``LineageResponse.graph`` keys using ``scripts/diagnose_lineage_graph.py``
+    to see whether the API omitted edges or used an unsupported key.
+    """
+
     directed: bool
     multigraph: bool
     graph: Dict[str, Any]
-    nodes: List[Node]
-    links: List[GraphProperty]
+    nodes: List[Node] = Field(default_factory=list)
+    links: List[GraphProperty] = Field(
+        default_factory=list,
+        validation_alias=AliasChoices("links", "edges"),
+    )
 
 
 class CustomLineageResponse(LineageResponse):
