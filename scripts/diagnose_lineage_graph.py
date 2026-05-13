@@ -77,6 +77,8 @@ async def _live(starting_id: str, depth: int) -> None:
     realm_name = os.getenv("REALM_NAME")
     offline_token = os.getenv("PROVENA_ADMIN_OFFLINE_TOKEN")
     client_id = os.getenv("CLIENT_ID")
+    
+    
     missing = [n for n, v in [
         ("DOMAIN", domain),
         ("REALM_NAME", realm_name),
@@ -86,6 +88,7 @@ async def _live(starting_id: str, depth: int) -> None:
     if missing:
         print("Missing env:", ", ".join(missing), file=sys.stderr)
         sys.exit(1)
+    assert domain and realm_name and offline_token and client_id  # for type checker
 
     auth = OfflineFlow(
         config=Config(domain=domain, realm_name=realm_name),
