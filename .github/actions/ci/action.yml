@@ -25,6 +25,14 @@ runs:
     - name: Install poetry
       uses: snok/install-poetry@v1
 
+    - name: Show Poetry installer logs
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        echo "Poetry installer logs (if any):"
+        ls -1 poetry-installer-error-*.log 2>/dev/null || true
+        cat poetry-installer-error-*.log 2>/dev/null || true
+
     - name: Install package
       shell: bash
       run: poetry install
