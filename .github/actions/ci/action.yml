@@ -20,10 +20,12 @@ runs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.12"
+        python-version: "3.9"
 
     - name: Install poetry
       uses: snok/install-poetry@v1
+      with:
+        version: "1.8.4"
 
     - name: Show Poetry installer logs
       if: ${{ failure() }}
