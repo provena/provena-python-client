@@ -509,8 +509,7 @@ class ProvClient(ClientService):
 
         # Convert string to bytes.
         try:
-            model_run_content_encoded: ByteString = csv_file_contents.encode(
-                "utf-8")
+            model_run_content_encoded: bytes = csv_file_contents.encode("utf-8")
         except Exception as e:
             raise Exception(
                 f"Exception has occurred while encoding model run content: {e}")

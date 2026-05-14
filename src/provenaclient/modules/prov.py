@@ -551,4 +551,5 @@ class Prov(ModuleService):
         file_path = file_path + sanitized_filename
 
         # Writes content into word docx file.
+        assert isinstance(generated_word_file, bytes | str), "Expected generated report content to be bytes or string."
         write_file_helper(file_path=file_path, content=generated_word_file)
