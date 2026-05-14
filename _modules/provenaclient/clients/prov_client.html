@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.clients.prov_client &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.clients.prov_client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.clients.prov_client</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Monday June 17th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Monday June 17th 2024 4:45:39 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: Prov API L2 Client.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+
+<span class="sd">18-06-2024 | Peter Baker | Note that this layer does not provide any file IO capabilities - see L3</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients.client_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models.general</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheckResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.ProvenanceAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineageResponse</span><span class="p">,</span> <span class="n">ModelRunRecord</span><span class="p">,</span> <span class="n">RegisterModelRunResponse</span><span class="p">,</span> <span class="n">RegisterBatchModelRunRequest</span><span class="p">,</span> <span class="n">RegisterBatchModelRunResponse</span><span class="p">,</span> <span class="n">ConvertModelRunsResponse</span><span class="p">,</span> <span class="n">PostUpdateModelRunResponse</span><span class="p">,</span> <span class="n">PostUpdateModelRunInput</span><span class="p">,</span> <span class="n">GenerateReportRequest</span><span class="p">,</span> <span class="n">PostDeleteGraphRequest</span><span class="p">,</span> <span class="n">PostDeleteGraphResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">ItemModelRun</span>
+
+
+<div class="viewcode-block" id="ProvAPIEndpoints">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAPIEndpoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProvAPIEndpoints</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An ENUM containing the prov api endpoints.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Completed</span>
+    <span class="n">POST_MODEL_RUN_REGISTER</span> <span class="o">=</span> <span class="s2">&quot;/model_run/register&quot;</span>
+    <span class="n">POST_MODEL_RUN_UPDATE</span> <span class="o">=</span> <span class="s2">&quot;/model_run/update&quot;</span>
+    <span class="n">POST_MODEL_RUN_REGISTER_BATCH</span> <span class="o">=</span> <span class="s2">&quot;/model_run/register_batch&quot;</span>
+    <span class="n">POST_GENERATE_REPORT</span> <span class="o">=</span> <span class="s2">&quot;/explore/generate/report&quot;</span>
+    <span class="n">GET_EXPLORE_UPSTREAM</span> <span class="o">=</span> <span class="s2">&quot;/explore/upstream&quot;</span>
+    <span class="n">GET_EXPLORE_DOWNSTREAM</span> <span class="o">=</span> <span class="s2">&quot;/explore/downstream&quot;</span>
+    <span class="n">GET_EXPLORE_SPECIAL_CONTRIBUTING_DATASETS</span> <span class="o">=</span> <span class="s2">&quot;/explore/special/contributing_datasets&quot;</span>
+    <span class="n">GET_EXPLORE_SPECIAL_EFFECTED_DATASETS</span> <span class="o">=</span> <span class="s2">&quot;/explore/special/effected_datasets&quot;</span>
+    <span class="n">GET_EXPLORE_SPECIAL_CONTRIBUTING_AGENTS</span> <span class="o">=</span> <span class="s2">&quot;/explore/special/contributing_agents&quot;</span>
+    <span class="n">GET_EXPLORE_SPECIAL_EFFECTED_AGENTS</span> <span class="o">=</span> <span class="s2">&quot;/explore/special/effected_agents&quot;</span>
+    <span class="n">GET_HEALTH_CHECK</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+    <span class="n">GET_BULK_GENERATE_TEMPLATE_CSV</span> <span class="o">=</span> <span class="s2">&quot;/bulk/generate_template/csv&quot;</span>
+    <span class="n">POST_BULK_CONVERT_MODEL_RUNS_CSV</span> <span class="o">=</span> <span class="s2">&quot;/bulk/convert_model_runs/csv&quot;</span>
+    <span class="n">GET_BULK_REGENERATE_FROM_BATCH_CSV</span> <span class="o">=</span> <span class="s2">&quot;/bulk/regenerate_from_batch/csv&quot;</span>
+
+    <span class="c1"># Not completed.</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-general-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-admin-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_READ_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-read-access&quot;</span>
+    <span class="n">GET_CHECK_ACCESS_CHECK_WRITE_ACCESS</span> <span class="o">=</span> <span class="s2">&quot;/check-access/check-write-access&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ProvAPIAdminEndpoints">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAPIAdminEndpoints">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProvAPIAdminEndpoints</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An ENUM containing the prov api admin endpoints.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Completed</span>
+    <span class="n">GET_ADMIN_CONFIG</span> <span class="o">=</span> <span class="s2">&quot;/admin/config&quot;</span>
+    <span class="n">POST_ADMIN_STORE_RECORD</span> <span class="o">=</span> <span class="s2">&quot;/admin/store_record&quot;</span>
+    <span class="n">POST_ADMIN_STORE_RECORDS</span> <span class="o">=</span> <span class="s2">&quot;/admin/store_records&quot;</span>
+    <span class="n">POST_ADMIN_STORE_ALL_REGISTRY_RECORDS</span> <span class="o">=</span> <span class="s2">&quot;/admin/store_all_registry_records&quot;</span>
+
+    <span class="n">POST_MODEL_RUN_DELETE</span> <span class="o">=</span> <span class="s2">&quot;/model_run/delete&quot;</span>
+
+    <span class="c1"># Not completed yet, TODO.</span>
+    <span class="n">GET_ADMIN_SENTRY_DEBUG</span> <span class="o">=</span> <span class="s2">&quot;/admin/sentry-debug&quot;</span></div>
+
+
+
+<span class="c1"># L2 interface.</span>
+
+
+<div class="viewcode-block" id="ProvAdminClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProvAdminClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="ProvAdminClient._build_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient._build_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">ProvAPIAdminEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">prov_api_endpoint</span> <span class="o">+</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="ProvAdminClient.generate_config_file">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient.generate_config_file">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_only</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a nicely formatted .env file of the current required/non supplied properties </span>
+<span class="sd">        Used to quickly bootstrap a local environment or to understand currently deployed API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        required_only : bool, optional</span>
+<span class="sd">            By default True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validated_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIAdminEndpoints</span><span class="o">.</span><span class="n">GET_ADMIN_CONFIG</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to generate config file&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;required_only&quot;</span><span class="p">:</span> <span class="n">required_only</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="ProvAdminClient.store_record">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient.store_record">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">store_record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry_record</span><span class="p">:</span> <span class="n">ItemModelRun</span><span class="p">,</span> <span class="n">validate_record</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An admin only endpoint which enables the reupload/storage of an existing completed provenance record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        registry_record : ItemModelRun</span>
+<span class="sd">            The completed registry record for the model run.</span>
+<span class="sd">        validate_record: bool</span>
+<span class="sd">            Optional Should the ids in the payload be validated?, by default True</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            A status response indicating the success of the request and any other details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIAdminEndpoints</span><span class="o">.</span><span class="n">POST_ADMIN_STORE_RECORD</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to store record with display name </span><span class="si">{</span><span class="n">registry_record</span><span class="o">.</span><span class="n">display_name</span><span class="si">}</span><span class="s2"> and id </span><span class="si">{</span><span class="n">registry_record</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;validate_record&quot;</span><span class="p">:</span> <span class="n">validate_record</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">registry_record</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvAdminClient.store_multiple_records">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient.store_multiple_records">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">store_multiple_records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry_record</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ItemModelRun</span><span class="p">],</span> <span class="n">validate_record</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        registry_record : List[ItemModelRun]</span>
+<span class="sd">            List of the completed registry record for the model run validate_record</span>
+<span class="sd">        validate_record: bool</span>
+<span class="sd">            Optional Should the ids in the payload be validated?, by default True</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            A status response indicating the success of the request and any other details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIAdminEndpoints</span><span class="o">.</span><span class="n">POST_ADMIN_STORE_RECORDS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to complete multiple store record request.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;validate_record&quot;</span><span class="p">:</span> <span class="n">validate_record</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="p">[</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">registry_record</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvAdminClient.store_all_registry_records">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient.store_all_registry_records">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">store_all_registry_records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validate_record</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Applies the store record endpoint action across a list of ItemModelRuns &#39;</span>
+<span class="sd">           which is found by querying the registry model run list endpoint directly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        validate_record : bool</span>
+<span class="sd">            Optional Should the ids in the payload be validated?, by default True</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            A status response indicating the success of the request and any other details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIAdminEndpoints</span><span class="o">.</span><span class="n">POST_ADMIN_STORE_ALL_REGISTRY_RECORDS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to validate records.&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;validate_record&quot;</span><span class="p">:</span> <span class="n">validate_record</span><span class="p">},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">StatusResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvAdminClient.delete_model_run_provenance">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvAdminClient.delete_model_run_provenance">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_model_run_provenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">trial_mode</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PostDeleteGraphResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deletes a model run by its ID.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIAdminEndpoints</span><span class="o">.</span><span class="n">POST_MODEL_RUN_DELETE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to delete model run with ID </span><span class="si">{</span><span class="n">model_run_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span>
+                <span class="n">PostDeleteGraphRequest</span><span class="p">(</span><span class="n">record_id</span><span class="o">=</span><span class="n">model_run_id</span><span class="p">,</span> <span class="n">trial_mode</span><span class="o">=</span><span class="n">trial_mode</span><span class="p">)),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">PostDeleteGraphResponse</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ProvClient">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProvClient</span><span class="p">(</span><span class="n">ClientService</span><span class="p">):</span>
+
+    <span class="n">admin</span><span class="p">:</span> <span class="n">ProvAdminClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialises the REPLACEClient with authentication and configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin</span> <span class="o">=</span> <span class="n">ProvAdminClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProvClient._build_endpoint">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient._build_endpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">ProvAPIEndpoints</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="o">.</span><span class="n">prov_api_endpoint</span> <span class="o">+</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.get_health_check">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.get_health_check">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HealthCheckResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks the health status of the PROV-API.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        HealthCheckResponse</span>
+<span class="sd">            Response containing the PROV-API health information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_HEALTH_CHECK</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Health check failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">HealthCheckResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.post_update_model_run">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.post_update_model_run">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">post_update_model_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">ModelRunRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PostUpdateModelRunResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates an existing model run in the system.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_run_id (str): The ID of the model run to update</span>
+<span class="sd">            reason (str): The reason for the update</span>
+<span class="sd">            record (ModelRunRecord): The updated model run record</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PostUpdateModelRunResponse: The response containing the job session ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">update_payload</span> <span class="o">=</span> <span class="n">PostUpdateModelRunInput</span><span class="p">(</span>
+            <span class="n">model_run_id</span><span class="o">=</span><span class="n">model_run_id</span><span class="p">,</span>
+            <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">,</span>
+            <span class="n">record</span><span class="o">=</span><span class="n">record</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">POST_MODEL_RUN_UPDATE</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Model run update failed for ID </span><span class="si">{</span><span class="n">model_run_id</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">update_payload</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">PostUpdateModelRunResponse</span>
+        <span class="p">)</span></div>
+
+
+    <span class="c1"># Explore Lineage endpoints</span>
+<div class="viewcode-block" id="ProvClient.explore_upstream">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.explore_upstream">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">explore_upstream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Explores in the upstream direction (inputs/associations) </span>
+<span class="sd">        starting at the specified node handle ID. </span>
+<span class="sd">        The search depth is bounded by the depth parameter which has a default maximum of 100.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the upstream direction, by default 100.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_UPSTREAM</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Upstream query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.explore_downstream">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.explore_downstream">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">explore_downstream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Explores in the downstream direction (inputs/associations) </span>
+<span class="sd">        starting at the specified node handle ID. </span>
+<span class="sd">        The search depth is bounded by the depth parameter which has a default maximum of 100.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the downstream direction, by default 100</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_DOWNSTREAM</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Downstream query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.get_contributing_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.get_contributing_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_contributing_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches datasets (inputs) which involved in a model run</span>
+<span class="sd">        naturally in the upstream direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the upstream direction, by default 100</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_SPECIAL_CONTRIBUTING_DATASETS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Contributing datasets query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.get_effected_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.get_effected_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_effected_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches datasets (outputs) which are derived from the model run</span>
+<span class="sd">        naturally in the downstream direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the downstream direction, by default 100.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_SPECIAL_EFFECTED_DATASETS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Effected datasets query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.get_contributing_agents">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.get_contributing_agents">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_contributing_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches agents (organisations or peoples) that are involved or impacted by the model run.</span>
+<span class="sd">        naturally in the upstream direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the upstream direction, by default 100.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_SPECIAL_CONTRIBUTING_AGENTS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Contributing agents query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.get_effected_agents">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.get_effected_agents">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_effected_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">starting_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LineageResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches agents (organisations or peoples) that are involved or impacted by the model run.</span>
+<span class="sd">        naturally in the downstream direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        starting_id : str</span>
+<span class="sd">            The ID of the entity to start at.</span>
+<span class="sd">        depth : int, optional</span>
+<span class="sd">            The depth to traverse in the downstream direction, by default 100.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        LineageResponse</span>
+<span class="sd">            A response containing the status, node count, and networkx serialised graph response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_get_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_EXPLORE_SPECIAL_EFFECTED_AGENTS</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Effected agents query with starting id </span><span class="si">{</span><span class="n">starting_id</span><span class="si">}</span><span class="s2"> and depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2"> failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;starting_id&quot;</span><span class="p">:</span> <span class="n">starting_id</span><span class="p">,</span> <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">LineageResponse</span>
+        <span class="p">)</span></div>
+
+
+    <span class="c1"># Model run endpoints.</span>
+
+<div class="viewcode-block" id="ProvClient.register_batch_model_runs">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.register_batch_model_runs">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">register_batch_model_runs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run_batch_payload</span><span class="p">:</span> <span class="n">RegisterBatchModelRunRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegisterBatchModelRunResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This function allows you to register multiple model runs in one go (batch) asynchronously.</span>
+
+<span class="sd">        Note: You can utilise the returned session ID to poll on </span>
+<span class="sd">        the JOB API to check status of the model run registration(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        batch_model_run_payload : RegisterBatchModelRunRequest</span>
+<span class="sd">            A list of model runs (ModelRunRecord objects)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegisterBatchModelRunResponse</span>
+<span class="sd">            The job session id derived from job-api for the model-run batch. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">POST_MODEL_RUN_REGISTER_BATCH</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Model run batch registration failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">model_run_batch_payload</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RegisterBatchModelRunResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.register_model_run">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.register_model_run">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">register_model_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_run_payload</span><span class="p">:</span> <span class="n">ModelRunRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegisterModelRunResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Asynchronously registers a single model run.</span>
+
+<span class="sd">        Note: You can utilise the returned session ID to poll on </span>
+<span class="sd">        the JOB API to check status of the model run registration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_run_payload : ModelRunRecord</span>
+<span class="sd">            Contains information needed for the </span>
+<span class="sd">            model run such as workflow template,</span>
+<span class="sd">            inputs, outputs, description etc. </span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegisterModelRunResponse</span>
+<span class="sd">            The job session id derived from job-api for the model-run. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">POST_MODEL_RUN_REGISTER</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Model run registration failed!&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">model_run_payload</span><span class="p">),</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RegisterModelRunResponse</span>
+        <span class="p">)</span></div>
+
+
+    <span class="c1"># CSV template tools endpoints</span>
+
+<div class="viewcode-block" id="ProvClient.generate_csv_template">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.generate_csv_template">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_csv_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_template_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a model run csv template to be utilised </span>
+<span class="sd">        for creating model runs through csv format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        workflow_template_id : str</span>
+<span class="sd">            An ID of a created and existing model run workflow template.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validated_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_BULK_GENERATE_TEMPLATE_CSV</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to generate CSV file&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;workflow_template_id&quot;</span><span class="p">:</span> <span class="n">workflow_template_id</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.convert_model_runs_to_csv">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.convert_model_runs_to_csv">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">convert_model_runs_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csv_file_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConvertModelRunsResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads a CSV file, and it&#39;s defined model run contents</span>
+<span class="sd">        and lodges a model run.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        csv_file_contents : str</span>
+<span class="sd">            Contains the model run contents.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvertModelRunsResponse</span>
+<span class="sd">            Returns the model run information in an interactive python</span>
+<span class="sd">            datatype.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Convert string to bytes.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">model_run_content_encoded</span><span class="p">:</span> <span class="n">ByteString</span> <span class="o">=</span> <span class="n">csv_file_contents</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Exception has occurred while encoding model run content: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># The csv file object to be used for httpx post requests</span>
+        <span class="c1"># A dictionary representing file(s) to be uploaded with the</span>
+        <span class="c1"># request. Each key in the dictionary is the name of the form field for the file according,</span>
+        <span class="c1"># to API specifications. For Provena it&#39;s &quot;csv_file&quot; and and the value</span>
+        <span class="c1"># is a tuple of (filename, filedata, MIME type / media type).</span>
+        <span class="n">csv_file</span><span class="p">:</span> <span class="n">HttpxFileUpload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;csv_file&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;upload.csv&quot;</span><span class="p">,</span> <span class="n">model_run_content_encoded</span><span class="p">,</span> <span class="s2">&quot;text/csv&quot;</span><span class="p">)}</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">parsed_post_request_with_status</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">POST_BULK_CONVERT_MODEL_RUNS_CSV</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Failed to generate CSV file&quot;</span><span class="p">,</span>
+            <span class="n">files</span><span class="o">=</span><span class="n">csv_file</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">ConvertModelRunsResponse</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.regenerate_csv_from_model_run_batch">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.regenerate_csv_from_model_run_batch">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">regenerate_csv_from_model_run_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Regenerate/create a csv file containing model </span>
+<span class="sd">        run information from a model run batch job.</span>
+
+<span class="sd">        The batch id must exist in the system.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        batch_id : str</span>
+<span class="sd">            Obtained from creating a batch model run.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validated_get_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span>
+                <span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">GET_BULK_REGENERATE_FROM_BATCH_CSV</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to generate CSV file from batch_id </span><span class="si">{</span><span class="n">batch_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;batch_id&quot;</span><span class="p">:</span> <span class="n">batch_id</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span></div>
+
+
+<div class="viewcode-block" id="ProvClient.generate_report">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/clients/prov_client/index.html#provenaclient.clients.ProvClient.generate_report">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_request</span><span class="p">:</span> <span class="n">GenerateReportRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ByteString</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a provenance report from a Study or Model Run Entity containing the</span>
+<span class="sd">        associated inputs, model runs and outputs involved. </span>
+
+<span class="sd">        The report is generated in `.docx` format by making a POST request to the API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        report_request : GenerateReportRequest</span>
+<span class="sd">            The request object containing the parameters for generating the report, including the `id`, </span>
+<span class="sd">            `item_subtype`, and `depth`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ByteString</span>
+<span class="sd">            The raw byte content of the generated `.docx` file. The type of the returned content will be either </span>
+<span class="sd">            `bytes` or `bytearray`, which can be directly saved to a file.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        AssertionError</span>
+<span class="sd">            If the response content is not found or is not in the expected `bytes` or `bytearray` format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validated_post_request</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_endpoint</span><span class="p">(</span><span class="n">ProvAPIEndpoints</span><span class="o">.</span><span class="n">POST_GENERATE_REPORT</span><span class="p">),</span>
+            <span class="n">error_message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Something has gone wrong during report generation for node with id </span><span class="si">{</span><span class="n">report_request</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">json_body</span><span class="o">=</span><span class="n">py_to_dict</span><span class="p">(</span><span class="n">report_request</span><span class="p">),</span>
+            <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>  <span class="c1"># Indicates the body is JSON</span>
+                <span class="c1"># Indicates the response type</span>
+                <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.openxmlformats-officedocument.wordprocessingml.document&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Validate that byte content is present, before returning to the user.</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Failed to generate report for node with id </span><span class="si">{</span><span class="n">report_request</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> - Response content not found!&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)</span>
+                          <span class="p">),</span> <span class="s2">&quot;Unexpected content type from server. Expected bytes or bytearray!&quot;</span>
+
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

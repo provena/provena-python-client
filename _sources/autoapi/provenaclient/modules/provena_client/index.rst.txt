@@ -1,0 +1,105 @@
+provenaclient.modules.provena_client
+====================================
+
+.. py:module:: provenaclient.modules.provena_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Friday May 31st 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday May 31st 2024 9:50:26 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: The main Provena L3 client class which collects sub L2 clients and L3 clients.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   18-06-2024 | Peter Baker | Cleaned up and added missing modules.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.provena_client.ProvenaClient
+
+
+Module Contents
+---------------
+
+.. py:class:: ProvenaClient(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: datastore
+      :type:  provenaclient.modules.Datastore
+
+
+   .. py:attribute:: _search_client
+      :type:  provenaclient.clients.SearchClient
+
+
+   .. py:attribute:: search
+      :type:  provenaclient.modules.Search
+
+
+   .. py:attribute:: _auth_client
+      :type:  provenaclient.clients.AuthClient
+
+
+   .. py:attribute:: auth_api
+      :type:  provenaclient.modules.Auth
+
+
+   .. py:attribute:: _registry_client
+      :type:  provenaclient.clients.RegistryClient
+
+
+   .. py:attribute:: registry
+      :type:  provenaclient.modules.Registry
+
+
+   .. py:attribute:: _prov_client
+      :type:  provenaclient.clients.ProvClient
+
+
+   .. py:attribute:: prov_api
+      :type:  provenaclient.modules.Prov
+
+
+   .. py:attribute:: _job_client
+      :type:  provenaclient.clients.JobAPIClient
+
+
+   .. py:attribute:: job_api
+      :type:  provenaclient.modules.JobService
+
+
+   .. py:attribute:: _id_client
+      :type:  provenaclient.clients.IdServiceClient
+
+
+   .. py:attribute:: id_api
+      :type:  provenaclient.modules.IDService
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+

@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.modules.datastore &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">provenaclient.modules.datastore</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for provenaclient.modules.datastore</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created Date: Thursday June 6th 2024 +1000</span>
+<span class="sd">Author: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Last Modified: Thursday June 6th 2024 1:39:55 pm +1000</span>
+<span class="sd">Modified By: Peter Baker</span>
+<span class="sd">-----</span>
+<span class="sd">Description: Datastore L3 module. Includes the Data store review sub module.</span>
+<span class="sd">-----</span>
+<span class="sd">HISTORY:</span>
+<span class="sd">Date      	By	Comments</span>
+<span class="sd">----------	---	---------------------------------------------------------</span>
+
+<span class="sd">29-08-2024 | Parth Kulkarni | Added Downloading Specific file/directory functionality to interactive class.</span>
+<span class="sd">22-08-2024 | Parth Kulkarni | Completed Interactive Dataset class + Doc Strings. </span>
+<span class="sd">15-08-2024 | Parth Kulkarni | Added a prototype/draft of the Interactive Dataset Class. </span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.auth.manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.clients</span><span class="w"> </span><span class="kn">import</span> <span class="n">DatastoreClient</span><span class="p">,</span> <span class="n">SearchClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.DataStoreAPI</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryModels</span><span class="w"> </span><span class="kn">import</span> <span class="n">CollectionFormat</span><span class="p">,</span> <span class="n">ItemSubType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealthCheckResponse</span><span class="p">,</span> <span class="n">LoadedSearchResponse</span><span class="p">,</span> <span class="n">LoadedSearchItem</span><span class="p">,</span> <span class="n">UnauthorisedSearchItem</span><span class="p">,</span> <span class="n">FailedSearchItem</span><span class="p">,</span> <span class="n">RevertMetadata</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.modules.module_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoFilterSubtypeListRequest</span><span class="p">,</span> <span class="n">VersionRequest</span><span class="p">,</span> <span class="n">VersionResponse</span><span class="p">,</span> <span class="n">SortOptions</span><span class="p">,</span> <span class="n">DatasetListResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">provenaclient.modules.submodules</span><span class="w"> </span><span class="kn">import</span> <span class="n">IOSubModule</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncGenerator</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="c1"># L3 interface.</span>
+
+<span class="n">DEFAULT_SEARCH_LIMIT</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">DATASTORE_DEFAULT_SEARCH_LIMIT</span> <span class="o">=</span> <span class="mi">20</span>
+
+
+<div class="viewcode-block" id="ReviewSubModule">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.ReviewSubModule">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReviewSubModule</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        System reviewer sub module of the Datastore API functionality</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow</span>
+<span class="sd">            method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena</span>
+<span class="sd">            instance. </span>
+<span class="sd">        auth_client: AuthClient</span>
+<span class="sd">            The instantiated auth client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the datastore scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span> <span class="o">=</span> <span class="n">datastore_client</span>
+
+<div class="viewcode-block" id="ReviewSubModule.delete_dataset_reviewer">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.ReviewSubModule.delete_dataset_reviewer">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_dataset_reviewer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reviewer_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a reviewer.  </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reviewer_id : str</span>
+<span class="sd">            Id of an existing reviewer within the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">review</span><span class="o">.</span><span class="n">delete_dataset_reviewer</span><span class="p">(</span><span class="n">reviewer_id</span><span class="o">=</span><span class="n">reviewer_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReviewSubModule.add_dataset_reviewer">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.ReviewSubModule.add_dataset_reviewer">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_dataset_reviewer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reviewer_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a reviewer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reviewer_id : str</span>
+<span class="sd">            Id of a reviewer.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">review</span><span class="o">.</span><span class="n">add_dataset_reviewer</span><span class="p">(</span><span class="n">reviewer_id</span><span class="o">=</span><span class="n">reviewer_id</span><span class="p">)</span></div>
+
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    async def list_reviewers(self) -&gt; TODO: </span>
+<span class="sd">        TODO</span>
+
+<span class="sd">    Leaving this for now,as the pydantic response model of this endpoint will be duly updated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ReviewSubModule.dataset_approval_request">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.ReviewSubModule.dataset_approval_request">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dataset_approval_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">approval_request</span><span class="p">:</span> <span class="n">ReleaseApprovalRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReleaseApprovalRequestResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Submit a request for approval of dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        approval_request : ReleaseApprovalRequest</span>
+<span class="sd">            An object that requires the dataset id, approver id and notes</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ReleaseApprovalRequestResponse:</span>
+<span class="sd">            Contains details of the approval request.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">review</span><span class="o">.</span><span class="n">approval_request</span><span class="p">(</span><span class="n">approval_request_payload</span><span class="o">=</span><span class="n">approval_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReviewSubModule.action_approval_request">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.ReviewSubModule.action_approval_request">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">action_approval_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action_approval_request</span><span class="p">:</span> <span class="n">ActionApprovalRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActionApprovalRequestResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Action an approval request from a dataset approval request via the datastore.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        action_approval_request : ActionApprovalRequest</span>
+<span class="sd">            The dataset id, your decision of approval and any extra information </span>
+<span class="sd">            you want to add (notes).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ActionApprovalRequestResponse</span>
+<span class="sd">            The details of the approval action and the relevant dataset details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">review</span><span class="o">.</span><span class="n">action_approval_request</span><span class="p">(</span><span class="n">action_approval_request_payload</span><span class="o">=</span><span class="n">action_approval_request</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="InteractiveDataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InteractiveDataset</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+
+    <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span>
+    <span class="n">datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span>
+    <span class="n">io</span><span class="p">:</span> <span class="n">IOSubModule</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span><span class="p">,</span> <span class="n">io</span><span class="p">:</span> <span class="n">IOSubModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an interactive dataset session. </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_id : str</span>
+<span class="sd">            The unique identifier of the dataset to interact with.</span>
+<span class="sd">        datastore_client : DatastoreClient</span>
+<span class="sd">            The client responsible for interacting with the datastore API.</span>
+<span class="sd">        io : IOSubModule</span>
+<span class="sd">            The input/output submodule for handling dataset IO operations.</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span> <span class="o">=</span> <span class="n">datastore_client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io</span> <span class="o">=</span> <span class="n">io</span>
+
+<div class="viewcode-block" id="InteractiveDataset.fetch_dataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.fetch_dataset">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistryFetchResponse</span> <span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches current dataset from the datastore.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegistryFetchResponse</span>
+<span class="sd">            A interactive python datatype of type RegistryFetchResponse</span>
+<span class="sd">            containing the dataset details.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.download_all_files">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.download_all_files">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_all_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads all files to the destination path for your current dataset.</span>
+
+<span class="sd">        - Fetches info</span>
+<span class="sd">        - Fetches creds</span>
+<span class="sd">        - Uses s3 cloud path lib to download all files to specified location</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        destination_directory (str): </span>
+<span class="sd">            The destination path to save files to - use a directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">download_all_files</span><span class="p">(</span><span class="n">destination_directory</span><span class="o">=</span><span class="n">destination_directory</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.upload_all_files">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.upload_all_files">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">upload_all_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uploads all files in the source path to the current dataset&#39;s storage location.</span>
+
+<span class="sd">        - Fetches info</span>
+<span class="sd">        - Fetches creds</span>
+<span class="sd">        - Uses s3 cloud path lib to upload all files to specified location</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        source_directory (str): </span>
+<span class="sd">            The source path to upload files from - use a directory</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">upload_all_files</span><span class="p">(</span><span class="n">source_directory</span><span class="o">=</span><span class="n">source_directory</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.version">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.version">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Versioning operation which creates a new version from the current dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reason : str</span>
+<span class="sd">            The reason for versioning this dataset.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        VersionResponse</span>
+<span class="sd">            Response of the versioning of the dataset, containing new version ID and </span>
+<span class="sd">            job session ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">version_request</span><span class="p">:</span> <span class="n">VersionRequest</span> <span class="o">=</span> <span class="n">VersionRequest</span><span class="p">(</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> 
+            <span class="n">reason</span> <span class="o">=</span> <span class="n">reason</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">version_dataset</span><span class="p">(</span><span class="n">version_dataset_payload</span><span class="o">=</span><span class="n">version_request</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.revert_dataset_metadata">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.revert_dataset_metadata">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">revert_dataset_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverts the metadata for the current dataset to a previous identified historical version.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        history_id : int</span>
+<span class="sd">            The identifier of the historical version to revert to.</span>
+<span class="sd">        reason : str</span>
+<span class="sd">            The reason for reverting the dataset&#39;s metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            Response indicating whether your dataset metadata revert request was successful.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">revert_request</span><span class="p">:</span> <span class="n">RevertMetadata</span> <span class="o">=</span> <span class="n">RevertMetadata</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> 
+            <span class="n">history_id</span><span class="o">=</span><span class="n">history_id</span><span class="p">,</span>
+            <span class="n">reason</span><span class="o">=</span><span class="n">reason</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">revert_metadata</span><span class="p">(</span><span class="n">metadata_payload</span><span class="o">=</span><span class="n">revert_request</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.generate_read_access_credentials">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.generate_read_access_credentials">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_read_access_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console_session_required</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an S3 location, will attempt to generate programmatic access keys for </span>
+<span class="sd">           the storage bucket at this particular subdirectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        console_session_required : bool</span>
+<span class="sd">            Specifies whether a console session URL is required.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CredentialResponse</span>
+<span class="sd">            The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">credentials_request</span> <span class="o">=</span> <span class="n">CredentialsRequest</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> 
+            <span class="n">console_session_required</span><span class="o">=</span><span class="n">console_session_required</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_read_access_credentials</span><span class="p">(</span><span class="n">read_access_credentials</span><span class="o">=</span><span class="n">credentials_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="InteractiveDataset.generate_write_access_credentials">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.generate_write_access_credentials">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_write_access_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">console_session_required</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an S3 location, will attempt to generate programmatic access keys for </span>
+<span class="sd">           the storage bucket at this particular subdirectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        console_session_required : bool</span>
+<span class="sd">            Specifies whether a console session URL is required.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CredentialResponse</span>
+<span class="sd">            The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">credentials_request</span> <span class="o">=</span> <span class="n">CredentialsRequest</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> 
+            <span class="n">console_session_required</span><span class="o">=</span><span class="n">console_session_required</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_write_access_credentials</span><span class="p">(</span><span class="n">write_access_credentials</span><span class="o">=</span><span class="n">credentials_request</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="InteractiveDataset.download_specific_file">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/datastore/index.html#provenaclient.modules.datastore.InteractiveDataset.download_specific_file">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">download_specific_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s3_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads a specific file or folder for the current dataset </span>
+<span class="sd">        from an S3 bucket to a provided destination path.</span>
+
+<span class="sd">        This method handles various cases:</span>
+<span class="sd">        - If `s3_path` is a specific file, it downloads that file directly to `destination_directory`.</span>
+<span class="sd">        - If `s3_path` is a folder (without a trailing slash), it downloads the entire folder and its contents,</span>
+<span class="sd">        preserving the folder structure in `destination_directory`.</span>
+<span class="sd">        - If `s3_path` is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the</span>
+<span class="sd">        folder itself to `destination_directory`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        s3_path : str</span>
+<span class="sd">            The S3 path of the file or folder to download. </span>
+<span class="sd">            - If this is a specific file, it will download just that file.</span>
+<span class="sd">            - If this is a folder without a trailing slash (e.g., &#39;nested&#39;), it will download the entire folder </span>
+<span class="sd">            and all its contents, preserving the structure.</span>
+<span class="sd">            - If this is a folder with a trailing slash (e.g., &#39;nested/&#39;), it will download all contents within </span>
+<span class="sd">            that folder but not the folder itself unless subfolders are present.</span>
+<span class="sd">        destination_directory : str</span>
+<span class="sd">            The destination path to save files to - use a directory.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Calls the function in IO sub module.</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">download_specific_file</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> 
+                                              <span class="n">s3_path</span><span class="o">=</span><span class="n">s3_path</span><span class="p">,</span> 
+                                              <span class="n">destination_directory</span><span class="o">=</span><span class="n">destination_directory</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Datastore">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Datastore</span><span class="p">(</span><span class="n">ModuleService</span><span class="p">):</span>
+    <span class="n">_datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span>
+    <span class="n">_search_client</span><span class="p">:</span> <span class="n">SearchClient</span>
+
+    <span class="c1"># sub modules</span>
+    <span class="n">review</span><span class="p">:</span> <span class="n">ReviewSubModule</span>
+    <span class="n">io</span><span class="p">:</span> <span class="n">IOSubModule</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthManager</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">datastore_client</span><span class="p">:</span> <span class="n">DatastoreClient</span><span class="p">,</span> <span class="n">search_client</span><span class="p">:</span> <span class="n">SearchClient</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a new datastore object, which sits between the user and the datastore api operations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        auth : AuthManager</span>
+<span class="sd">            An abstract interface containing the user&#39;s requested auth flow method.</span>
+<span class="sd">        config : Config</span>
+<span class="sd">            A config object which contains information related to the Provena instance. </span>
+<span class="sd">        datastore_client : DatastoreClient</span>
+<span class="sd">            This client interacts with the Datastore API&#39;s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1"># Clients related to the datastore scoped as private.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span> <span class="o">=</span> <span class="n">datastore_client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_search_client</span> <span class="o">=</span> <span class="n">search_client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">review</span> <span class="o">=</span> <span class="n">ReviewSubModule</span><span class="p">(</span>
+            <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">datastore_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">io</span> <span class="o">=</span> <span class="n">IOSubModule</span><span class="p">(</span>
+            <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">datastore_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Datastore.get_health_check">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.get_health_check">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_health_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HealthCheckResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Health check the API</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        HealthCheckResponse</span>
+<span class="sd">            Response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">get_health_check</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Datastore.fetch_dataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.fetch_dataset">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegistryFetchResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches a dataset from the datastore based on the provided</span>
+<span class="sd">        ID.</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : str</span>
+<span class="sd">            The unique identifier of the dataset to be retrieved.</span>
+<span class="sd">            For example: &quot;10378.1/1451860&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RegistryFetchResponse</span>
+<span class="sd">            A interactive python datatype of type RegistryFetchResponse</span>
+<span class="sd">            containing the dataset details.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.mint_dataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.mint_dataset">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">mint_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_mint_info</span><span class="p">:</span> <span class="n">CollectionFormat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MintResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a new dataset in the datastore with the provided dataset information.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_mint_info : CollectionFormat</span>
+<span class="sd">            A structured format containing all necessary information to register a new dataset, including associations, </span>
+<span class="sd">            approvals, and dataset-specific information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        MintResponse</span>
+<span class="sd">            A interactive python datatype of type MintResponse</span>
+<span class="sd">            containing the newly created dataset details.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">mint_dataset</span><span class="p">(</span><span class="n">dataset_mint_info</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.validate_dataset_metadata">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.validate_dataset_metadata">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">validate_dataset_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="p">:</span> <span class="n">CollectionFormat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates the dataset metadata creation for testing and does not publish.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metadata_payload : CollectionFormat</span>
+<span class="sd">            A structured format containing all necessary information to register a new dataset, including associations, </span>
+<span class="sd">            approvals, and dataset-specific information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            Response indicating whether your dataset metadata setup is valid and correct.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">validate_metadata</span><span class="p">(</span><span class="n">metadata_payload</span><span class="o">=</span><span class="n">metadata_payload</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.update_dataset_metadata">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.update_dataset_metadata">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_dataset_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="p">:</span> <span class="n">CollectionFormat</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpdateMetadataResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates an existing dataset&#39;s metadata.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        handle_id : str</span>
+<span class="sd">            The id of the dataset.</span>
+<span class="sd">        reason : str</span>
+<span class="sd">            The reason for changing metadata of the dataset.</span>
+<span class="sd">        metadata_payload : CollectionFormat</span>
+<span class="sd">            A structured format containing all necessary information to register a new dataset, including associations, </span>
+<span class="sd">            approvals, and dataset-specific information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        UpdateMetadataResponse</span>
+<span class="sd">            The updated metadata response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">update_metadata</span><span class="p">(</span><span class="n">handle_id</span><span class="o">=</span><span class="n">handle_id</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="o">=</span><span class="n">metadata_payload</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.revert_dataset_metadata">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.revert_dataset_metadata">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">revert_dataset_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata_payload</span><span class="p">:</span> <span class="n">RevertMetadata</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StatusResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverts the metadata for a dataset to a previous identified historical version.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        metadata_payload : RevertMetadata</span>
+<span class="sd">            The revert request, passed through to the registry API and requires</span>
+<span class="sd">            dataset id, history id and reason for reverting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        StatusResponse</span>
+<span class="sd">            Response indicating whether your dataset revert metadata request was correct.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">revert_metadata</span><span class="p">(</span><span class="n">metadata_payload</span><span class="o">=</span><span class="n">metadata_payload</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.version_dataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.version_dataset">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">version_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version_request</span><span class="p">:</span> <span class="n">VersionRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VersionResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Versioning operation which creates a new version from the specified ID.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        version_request : VersionRequest</span>
+<span class="sd">            The request which includes the item ID and reason for versioning.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        VersionResponse</span>
+<span class="sd">            Response of the versioning of the dataset, containing new version ID and </span>
+<span class="sd">            job session ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">version_dataset</span><span class="p">(</span><span class="n">version_dataset_payload</span><span class="o">=</span><span class="n">version_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.for_all_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.for_all_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">for_all_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_dataset_request</span><span class="p">:</span> <span class="n">NoFilterSubtypeListRequest</span><span class="p">,</span> <span class="n">total_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">ItemDataset</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches all datasets based on the provided datasets in datastore based on </span>
+<span class="sd">            the provided sorting criteria, pagination key and page size. </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        list_dataset_request : NoFilterSubtypeListRequest</span>
+<span class="sd">            A request object configured with sorting options, pagination keys, </span>
+<span class="sd">            and page size that defines how datasets are queried from the datastore. </span>
+<span class="sd">        total_limit : Optional[int], optional</span>
+<span class="sd">            A maximum number of datasets to fetch. If specified, the generator will </span>
+<span class="sd">            stop yielding datasets once this limit is reached. </span>
+<span class="sd">            If None, it will fetch datasets until there are no more to fetch.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        AsyncGenerator[ItemDataset, None]</span>
+<span class="sd">            An asynchronous generator yielding &quot;ItemDataset&quot;</span>
+<span class="sd">            object which is an individual dataset from the datastore.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        Iterator[AsyncGenerator[ItemDataset, None]]</span>
+<span class="sd">            Each yield provides a &quot;ItemDataset&quot; containing an individual dataset.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">total_fetched</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_dataset_request</span><span class="p">)</span>
+
+            <span class="c1"># We will keep track of the total numbers of items fetched in the request from the API itself.</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">total_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">total_fetched</span> <span class="o">&gt;=</span> <span class="n">total_limit</span><span class="p">:</span>
+                        <span class="k">return</span>
+                    <span class="k">yield</span> <span class="n">dataset</span>
+                    <span class="n">total_fetched</span> <span class="o">=</span> <span class="n">total_fetched</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If there are issues with gathering responses, we will increment based on the page size.</span>
+                <span class="n">total_fetched</span> <span class="o">=</span> <span class="n">total_fetched</span> <span class="o">+</span> <span class="n">list_dataset_request</span><span class="o">.</span><span class="n">page_size</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Update the pagination key for the next set of requests.</span>
+            <span class="n">list_dataset_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">pagination_key</span></div>
+
+
+<div class="viewcode-block" id="Datastore.list_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.list_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_dataset_request</span><span class="p">:</span> <span class="n">NoFilterSubtypeListRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DatasetListResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes a specific dataset list request and returns the response.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        list_dataset_request : NoFilterSubtypeListRequest</span>
+<span class="sd">            A request object configured with sorting options, pagination keys, </span>
+<span class="sd">            and page size that defines how datasets are queried from the datastore. </span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DatasetListResponse</span>
+<span class="sd">            Response containing the requested datasets in the datastore </span>
+<span class="sd">            based on sort criteria and page size, and contains other attributes</span>
+<span class="sd">            such as total_item_counts and optional pagination key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">datasets</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_dataset_request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">datasets</span></div>
+
+
+<div class="viewcode-block" id="Datastore.list_all_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.list_all_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_criteria</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SortOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ItemDataset</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetches all datasets from the datastore and you may provide your own sort criteria.</span>
+<span class="sd">        By default uses display name sort criteria. </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sort_criteria : Optional[SortOptions]</span>
+<span class="sd">            An object configured with sorting options that you want </span>
+<span class="sd">            when displaying all datasets within the datastore.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List[ItemDataset]</span>
+<span class="sd">            A list of all datasets in the datastore, sorted as requested.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">list_dataset_request</span><span class="p">:</span> <span class="n">NoFilterSubtypeListRequest</span> <span class="o">=</span> <span class="n">NoFilterSubtypeListRequest</span><span class="p">(</span>
+            <span class="n">sort_by</span><span class="o">=</span><span class="n">sort_criteria</span><span class="p">,</span>
+            <span class="n">pagination_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">DATASTORE_DEFAULT_SEARCH_LIMIT</span>
+        <span class="p">)</span>
+
+        <span class="n">combined_dataset_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ItemDataset</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">list_request</span><span class="o">=</span><span class="n">list_dataset_request</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                <span class="n">combined_dataset_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">pagination_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Update the pagination key for the next request</span>
+            <span class="n">list_dataset_request</span><span class="o">.</span><span class="n">pagination_key</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">pagination_key</span>
+
+        <span class="k">return</span> <span class="n">combined_dataset_list</span></div>
+
+
+<div class="viewcode-block" id="Datastore.generate_dataset_presigned_url">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.generate_dataset_presigned_url">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_dataset_presigned_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_presigned_request</span><span class="p">:</span> <span class="n">PresignedURLRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PresignedURLResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a presigned url for an existing dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_presigned_request : PresignedURLRequest</span>
+<span class="sd">            Contains the dataset id + file path + length of expiry of URL.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PresignedURLResponse</span>
+<span class="sd">            A response with the presigned url.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_presigned_url</span><span class="p">(</span><span class="n">presigned_url</span><span class="o">=</span><span class="n">dataset_presigned_request</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.generate_read_access_credentials">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.generate_read_access_credentials">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_read_access_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">:</span> <span class="n">CredentialsRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an S3 location, will attempt to generate programmatic access keys for </span>
+<span class="sd">           the storage bucket at this particular subdirectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        credentials : CredentialsRequest</span>
+<span class="sd">            Contains the dataset id + console session URL required flag (boolean)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CredentialResponse</span>
+<span class="sd">            The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_read_access_credentials</span><span class="p">(</span><span class="n">read_access_credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.generate_write_access_credentials">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.generate_write_access_credentials">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_write_access_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">:</span> <span class="n">CredentialsRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CredentialResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an S3 location, will attempt to generate programmatic access keys for </span>
+<span class="sd">           the storage bucket at this particular subdirectory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        credentials : CredentialsRequest</span>
+<span class="sd">            Contains the dataset id + console session URL required flag (boolean)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CredentialResponse</span>
+<span class="sd">            The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">generate_write_access_credentials</span><span class="p">(</span><span class="n">write_access_credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Datastore.search_datasets">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.search_datasets">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_SEARCH_LIMIT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LoadedSearchResponse</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Utilises the L2 search client to search for datasets with the specified</span>
+<span class="sd">        query.</span>
+
+<span class="sd">        Loads all datasets in the result payload from the data store and sorts</span>
+<span class="sd">        based on auth, or other exceptions if not successful.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): The query to make limit (int, optional): The result</span>
+<span class="sd">            count limit. Defaults to DEFAULT_SEARCH_LIMIT.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LoadedSearchResponse: The loaded items incl errors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># search with search client</span>
+        <span class="n">search_results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_client</span><span class="o">.</span><span class="n">search_registry</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+            <span class="n">subtype_filter</span><span class="o">=</span><span class="n">ItemSubType</span><span class="o">.</span><span class="n">DATASET</span>
+        <span class="p">)</span>
+
+        <span class="c1"># load each result checking 401 for auth errors or misc errors recorded</span>
+        <span class="n">success</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LoadedSearchItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">auth_err</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">UnauthorisedSearchItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">misc_err</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">FailedSearchItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">assert</span> <span class="n">search_results</span><span class="o">.</span><span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">search_results</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+            <span class="c1"># load item</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">loaded_dataset</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span>
+                <span class="p">)</span>
+                <span class="k">assert</span> <span class="n">loaded_dataset</span><span class="o">.</span><span class="n">item</span>
+                <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LoadedSearchItem</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">item</span><span class="o">=</span><span class="n">loaded_dataset</span><span class="o">.</span><span class="n">item</span><span class="p">,</span>
+                    <span class="n">score</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">score</span>
+                <span class="p">))</span>
+            <span class="k">except</span> <span class="n">AuthException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">auth_err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UnauthorisedSearchItem</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">score</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">score</span>
+                <span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">misc_err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FailedSearchItem</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">score</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                    <span class="n">error_info</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Failed to fetch item, error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">LoadedSearchResponse</span><span class="p">(</span>
+            <span class="n">items</span><span class="o">=</span><span class="n">success</span><span class="p">,</span>
+            <span class="n">auth_errors</span><span class="o">=</span><span class="n">auth_err</span><span class="p">,</span>
+            <span class="n">misc_errors</span><span class="o">=</span><span class="n">misc_err</span>
+        <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Datastore.interactive_dataset">
+<a class="viewcode-back" href="../../../autoapi/provenaclient/modules/index.html#provenaclient.modules.datastore.Datastore.interactive_dataset">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">interactive_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InteractiveDataset</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates an interactive &quot;session&quot; with a dataset that allows you </span>
+<span class="sd">        to perform further operations without re-supplying dataset id and </span>
+<span class="sd">        creating objects required for other methods.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dataset_id : str</span>
+<span class="sd">            The unique identifier of the dataset to be retrieved.</span>
+<span class="sd">            For example: &quot;10378.1/1451860&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        InteractiveDataset</span>
+<span class="sd">            An instance that allows you to perform various operations on the provided dataset. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">InteractiveDataset</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> 
+            <span class="n">datastore_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_datastore_client</span><span class="p">,</span> 
+            <span class="n">io</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="p">,</span>
+            <span class="n">auth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auth</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

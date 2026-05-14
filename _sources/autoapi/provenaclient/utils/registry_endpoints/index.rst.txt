@@ -1,0 +1,172 @@
+provenaclient.utils.registry_endpoints
+======================================
+
+.. py:module:: provenaclient.utils.registry_endpoints
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday June 6th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Set of route maps for the Registry API used to help generate routes from subtype + Action combinations.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.registry_endpoints.action_postfixes
+   provenaclient.utils.registry_endpoints.subtype_route_prefixes
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.utils.registry_endpoints.RegistryAction
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.utils.registry_endpoints.subtype_action_to_endpoint
+
+
+Module Contents
+---------------
+
+.. py:class:: RegistryAction
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   str(object='') -> str
+   str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+   Create a new string object from the given object. If encoding or
+   errors is specified, then the object must expose a data buffer
+   that will be decoded using the given encoding and error handler.
+   Otherwise, returns the result of object.__str__() (if defined)
+   or repr(object).
+   encoding defaults to sys.getdefaultencoding().
+   errors defaults to 'strict'.
+
+
+   .. py:attribute:: FETCH
+      :value: 'FETCH'
+
+
+
+   .. py:attribute:: UPDATE
+      :value: 'UPDATE'
+
+
+
+   .. py:attribute:: CREATE
+      :value: 'CREATE'
+
+
+
+   .. py:attribute:: LIST
+      :value: 'LIST'
+
+
+
+   .. py:attribute:: SEED
+      :value: 'SEED'
+
+
+
+   .. py:attribute:: VERSION
+      :value: 'VERSION'
+
+
+
+   .. py:attribute:: SCHEMA
+      :value: 'SCHEMA'
+
+
+
+   .. py:attribute:: UI_SCHEMA
+      :value: 'UI_SCHEMA'
+
+
+
+   .. py:attribute:: VALIDATE
+      :value: 'VALIDATE'
+
+
+
+   .. py:attribute:: AUTH_EVALUATE
+      :value: 'AUTH_EVALUATE'
+
+
+
+   .. py:attribute:: AUTH_CONFIGURATION
+      :value: 'AUTH_CONFIGURATION'
+
+
+
+   .. py:attribute:: AUTH_ROLES
+      :value: 'AUTH_ROLES'
+
+
+
+   .. py:attribute:: LOCK
+      :value: 'LOCK'
+
+
+
+   .. py:attribute:: UNLOCK
+      :value: 'UNLOCK'
+
+
+
+   .. py:attribute:: REVERT
+      :value: 'REVERT'
+
+
+
+   .. py:attribute:: LOCK_HISTORY
+      :value: 'LOCK_HISTORY'
+
+
+
+   .. py:attribute:: DELETE
+      :value: 'DELETE'
+
+
+
+.. py:data:: action_postfixes
+   :type:  Dict[RegistryAction, str]
+
+.. py:data:: subtype_route_prefixes
+   :type:  Dict[ProvenaInterfaces.RegistryModels.ItemSubType, str]
+
+.. py:function:: subtype_action_to_endpoint(base: str, action: RegistryAction, item_subtype: ProvenaInterfaces.RegistryModels.ItemSubType) -> str
+
+   Generates a fully formed registry URL given the below params
+
+   :param base: The URL base e.g. https://registry.provena.com
+   :type base: str
+   :param action: The action to be taken, see enum
+   :type action: RegistryAction
+   :param item_subtype: The subtype to get the route for
+   :type item_subtype: ItemSubType
+
+   :returns: The fully formed URL
+   :rtype: str
+
+

@@ -1,0 +1,86 @@
+provenaclient.clients.search_client
+===================================
+
+.. py:module:: provenaclient.clients.search_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday May 30th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday May 30th 2024 10:17:36 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: Search API L2 Client.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.search_client.SearchEndpoints
+   provenaclient.clients.search_client.SearchClient
+
+
+Module Contents
+---------------
+
+.. py:class:: SearchEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   An ENUM containing the datastore-api
+   endpoints.
+
+
+   .. py:attribute:: SEARCH_REGISTRY
+      :type:  str
+      :value: '/search/entity-registry'
+
+
+
+.. py:class:: SearchClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: SearchEndpoints) -> str
+
+
+   .. py:method:: search_registry(query: str, limit: provenaclient.clients.client_helpers.Optional[int], subtype_filter: provenaclient.clients.client_helpers.Optional[provenaclient.clients.client_helpers.ItemSubType]) -> ProvenaInterfaces.SearchAPI.QueryResults
+      :async:
+
+
+      Searches registry using search API for given query, limit and subtype.
+
+      :param query: The query
+      :type query: str
+      :param limit: The record result limit
+      :type limit: Optional[int]
+      :param subtype_filter: The subtype to filter if desired
+      :type subtype_filter: Optional[ItemSubType]
+
+      :raises e: Generic exceptions as usual
+
+      :returns: The results, not loaded.
+      :rtype: QueryResults
+
+
+

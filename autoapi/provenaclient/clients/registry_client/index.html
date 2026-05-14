@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>provenaclient.clients.registry_client &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="provenaclient.clients.search_client" href="../search_client/index.html" />
+    <link rel="prev" title="provenaclient.clients.prov_client" href="../prov_client/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quickstart.html#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../quickstart.html#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">provenaclient</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">provenaclient</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">provenaclient.clients</a></li>
+      <li class="breadcrumb-item active">provenaclient.clients.registry_client</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/autoapi/provenaclient/clients/registry_client/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-provenaclient.clients.registry_client">
+<span id="provenaclient-clients-registry-client"></span><h1>provenaclient.clients.registry_client<a class="headerlink" href="#module-provenaclient.clients.registry_client" title="Link to this heading"></a></h1>
+<p>Created Date: Thursday June 6th 2024 +1000
+Author: Peter Baker
+—–
+Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+Modified By: Peter Baker
+—–
+Description: Incomplete Registry API L2 Client.
+—–
+HISTORY:
+Date            By      Comments
+———-      —     ———————————————————</p>
+<p>28-06-2024 | Parth Kulkarni | Completion of L2 Interface of Registry with General, Admin and Other endpoints.
+18-06-2024 | Peter Baker | Initial structure setup to help dispatch into the various sub types in the L3.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints" title="provenaclient.clients.registry_client.GenericRegistryEndpoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenericRegistryEndpoints</span></code></a></p></td>
+<td><p>str(object='') -&gt; str</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints" title="provenaclient.clients.registry_client.RegistryAdminEndpoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegistryAdminEndpoints</span></code></a></p></td>
+<td><p>str(object='') -&gt; str</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryAdminClient" title="provenaclient.clients.registry_client.RegistryAdminClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegistryAdminClient</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryGeneralClient" title="provenaclient.clients.registry_client.RegistryGeneralClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegistryGeneralClient</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryClient" title="provenaclient.clients.registry_client.RegistryClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RegistryClient</span></code></a></p></td>
+<td><p>This class interface just captures that the client has an instantiated auth</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.clients.registry_client.</span></span><span class="sig-name descname"><span class="pre">GenericRegistryEndpoints</span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#GenericRegistryEndpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">ProvenaInterfaces.RegistryAPI.Enum</span></code></p>
+<p>str(object=’’) -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to ‘strict’.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_HEALTH_CHECK">
+<span class="sig-name descname"><span class="pre">GET_HEALTH_CHECK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_HEALTH_CHECK" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS">
+<span class="sig-name descname"><span class="pre">GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/check-access/check-admin-access'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS">
+<span class="sig-name descname"><span class="pre">GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/check-access/check-general-access'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_READ_ACCESS">
+<span class="sig-name descname"><span class="pre">GET_CHECK_ACCESS_CHECK_READ_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/check-access/check-read-access'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_READ_ACCESS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_WRITE_ACCESS">
+<span class="sig-name descname"><span class="pre">GET_CHECK_ACCESS_CHECK_WRITE_ACCESS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/check-access/check-write-access'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_CHECK_ACCESS_CHECK_WRITE_ACCESS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_REGISTRY_GENERAL_ABOUT_VERSION">
+<span class="sig-name descname"><span class="pre">GET_REGISTRY_GENERAL_ABOUT_VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/registry/general/about/version'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_REGISTRY_GENERAL_ABOUT_VERSION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_REGISTRY_GENERAL_FETCH">
+<span class="sig-name descname"><span class="pre">GET_REGISTRY_GENERAL_FETCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/registry/general/fetch'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.GET_REGISTRY_GENERAL_FETCH" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.GenericRegistryEndpoints.POST_REGISTRY_GENERAL_LIST">
+<span class="sig-name descname"><span class="pre">POST_REGISTRY_GENERAL_LIST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/registry/general/list'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints.POST_REGISTRY_GENERAL_LIST" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.clients.registry_client.</span></span><span class="sig-name descname"><span class="pre">RegistryAdminEndpoints</span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminEndpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">ProvenaInterfaces.RegistryAPI.Enum</span></code></p>
+<p>str(object=’’) -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.__str__() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to ‘strict’.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_CONFIG">
+<span class="sig-name descname"><span class="pre">GET_ADMIN_CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/admin/config'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_CONFIG" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_EXPORT">
+<span class="sig-name descname"><span class="pre">GET_ADMIN_EXPORT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/admin/export'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_EXPORT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_SENTRY_DEBUG">
+<span class="sig-name descname"><span class="pre">GET_ADMIN_SENTRY_DEBUG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/admin/sentry-debug'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints.GET_ADMIN_SENTRY_DEBUG" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints.POST_ADMIN_IMPORT">
+<span class="sig-name descname"><span class="pre">POST_ADMIN_IMPORT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/admin/import'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints.POST_ADMIN_IMPORT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminEndpoints.POST_ADMIN_RESTORE_FROM_TABLE">
+<span class="sig-name descname"><span class="pre">POST_ADMIN_RESTORE_FROM_TABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/admin/restore_from_table'</span></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints.POST_ADMIN_RESTORE_FROM_TABLE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.clients.registry_client.</span></span><span class="sig-name descname"><span class="pre">RegistryAdminClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.Config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../client_helpers/index.html#provenaclient.clients.client_helpers.ClientService" title="provenaclient.clients.client_helpers.ClientService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.clients.client_helpers.ClientService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L2 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient._build_endpoint">
+<span class="sig-name descname"><span class="pre">_build_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryAdminEndpoints" title="provenaclient.clients.registry_client.RegistryAdminEndpoints"><span class="pre">RegistryAdminEndpoints</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient._build_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient._build_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient._build_subtype_endpoint">
+<span class="sig-name descname"><span class="pre">_build_subtype_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../utils/registry_endpoints/index.html#provenaclient.utils.registry_endpoints.RegistryAction" title="provenaclient.utils.registry_endpoints.RegistryAction"><span class="pre">provenaclient.utils.registry_endpoints.RegistryAction</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient._build_subtype_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient._build_subtype_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient.export_items">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">export_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.RegistryExportResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient.export_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient.export_items" title="Link to this definition"></a></dt>
+<dd><p>Exports all items from the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The response containing the exported items.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>RegistryExportResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient.import_items">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">import_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registry_import_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.RegistryImportRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.RegistryImportResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient.import_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient.import_items" title="Link to this definition"></a></dt>
+<dd><p>Imports items into the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>registry_import_request</strong> (<em>RegistryImportRequest</em>) – The import request containing the items to import.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the result of the import operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegistryImportResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient.restore_items_from_dynamo_table">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">restore_items_from_dynamo_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">restore_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.RegistryRestoreRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.RegistryImportResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient.restore_items_from_dynamo_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient.restore_items_from_dynamo_table" title="Link to this definition"></a></dt>
+<dd><p>Restores items from a DynamoDB table into the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>restore_request</strong> (<em>RegistryRestoreRequest</em>) – The restore request containing the details for restoration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the result of the restore operation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RegistryImportResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient.generate_config_file">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_config_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient.generate_config_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient.generate_config_file" title="Link to this definition"></a></dt>
+<dd><p>Generates a nicely formatted .env file of the current required/non-supplied properties.</p>
+<p>Used to quickly bootstrap a local environment or to understand currently deployed API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>required_only</strong> (<em>bool</em>) – Whether to include only required properties. By default True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The generated .env file content.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryAdminClient.delete_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryAdminClient.delete_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryAdminClient.delete_item" title="Link to this definition"></a></dt>
+<dd><p>Deletes an item from the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The ID of the item to delete.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to delete.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status response indicating the result of the deletion.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.clients.registry_client.</span></span><span class="sig-name descname"><span class="pre">RegistryGeneralClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.Config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../client_helpers/index.html#provenaclient.clients.client_helpers.ClientService" title="provenaclient.clients.client_helpers.ClientService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.clients.client_helpers.ClientService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L2 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient._build_subtype_endpoint">
+<span class="sig-name descname"><span class="pre">_build_subtype_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../utils/registry_endpoints/index.html#provenaclient.utils.registry_endpoints.RegistryAction" title="provenaclient.utils.registry_endpoints.RegistryAction"><span class="pre">provenaclient.utils.registry_endpoints.RegistryAction</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient._build_subtype_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient._build_subtype_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient._build_general_endpoint">
+<span class="sig-name descname"><span class="pre">_build_general_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints" title="provenaclient.clients.registry_client.GenericRegistryEndpoints"><span class="pre">GenericRegistryEndpoints</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient._build_general_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient._build_general_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient.list_general_registry_items">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_general_registry_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">general_list_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.GeneralListRequest</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.PaginatedListResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient.list_general_registry_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient.list_general_registry_items" title="Link to this definition"></a></dt>
+<dd><p>Lists general registry items based on filter criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>general_list_request</strong> (<em>GeneralListRequest</em>) – The request containing filter and sort criteria.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the paginated list of registry items.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PaginatedListResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient.general_fetch_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">general_fetch_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.UntypedFetchResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient.general_fetch_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient.general_fetch_item" title="Link to this definition"></a></dt>
+<dd><p>Fetches a general item from the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>str</em>) – The ID of the item to fetch.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fetch response containing the item details.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UntypedFetchResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryGeneralClient.get_current_provena_version">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_current_provena_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryGeneralClient.get_current_provena_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryGeneralClient.get_current_provena_version" title="Link to this definition"></a></dt>
+<dd><p>Gets the current Provena version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The response containing the current Provena version.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">provenaclient.clients.registry_client.</span></span><span class="sig-name descname"><span class="pre">RegistryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.AuthManager</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">provenaclient.clients.client_helpers.Config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../client_helpers/index.html#provenaclient.clients.client_helpers.ClientService" title="provenaclient.clients.client_helpers.ClientService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenaclient.clients.client_helpers.ClientService</span></code></a></p>
+<p>This class interface just captures that the client has an instantiated auth
+manager which allows for helper functions abstracted for L2 clients.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.admin">
+<span class="sig-name descname"><span class="pre">admin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryAdminClient" title="provenaclient.clients.registry_client.RegistryAdminClient"><span class="pre">RegistryAdminClient</span></a></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.admin" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.general">
+<span class="sig-name descname"><span class="pre">general</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#provenaclient.clients.registry_client.RegistryGeneralClient" title="provenaclient.clients.registry_client.RegistryGeneralClient"><span class="pre">RegistryGeneralClient</span></a></em><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.general" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient._auth">
+<span class="sig-name descname"><span class="pre">_auth</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient._auth" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient._config">
+<span class="sig-name descname"><span class="pre">_config</span></span><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient._config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient._build_subtype_endpoint">
+<span class="sig-name descname"><span class="pre">_build_subtype_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../utils/registry_endpoints/index.html#provenaclient.utils.registry_endpoints.RegistryAction" title="provenaclient.utils.registry_endpoints.RegistryAction"><span class="pre">provenaclient.utils.registry_endpoints.RegistryAction</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient._build_subtype_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient._build_subtype_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient._build_general_endpoint">
+<span class="sig-name descname"><span class="pre">_build_general_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#provenaclient.clients.registry_client.GenericRegistryEndpoints" title="provenaclient.clients.registry_client.GenericRegistryEndpoints"><span class="pre">GenericRegistryEndpoints</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient._build_general_endpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient._build_general_endpoint" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_health_check">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_health_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse"><span class="pre">provenaclient.models.general.HealthCheckResponse</span></a></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_health_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_health_check" title="Link to this definition"></a></dt>
+<dd><p>Health check the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../../models/general/index.html#provenaclient.models.general.HealthCheckResponse" title="provenaclient.models.general.HealthCheckResponse">HealthCheckResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.fetch_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fetch_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fetch_response_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Type</span><span class="p"><span class="pre">[</span></span><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_allowed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.fetch_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.fetch_item" title="Link to this definition"></a></dt>
+<dd><p>Ascertains the correct endpoint based on the subtype provided, then runs the fetch operation, parsing the data as the specified model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The id of the item to fetch.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to fetch.</p></li>
+<li><p><strong>fetch_response_model</strong> (<em>Type</em><em>[</em><em>BaseModelType</em><em>]</em>) – The response pydantic model to parse as e.g. OrganisationFetchResponse</p></li>
+<li><p><strong>seed_allowed</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – Should the endpoint throw an error if the item is a seed item?  Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fetch response parsed as the specified model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModelType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.update_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.DomainInfoBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_response_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Type</span><span class="p"><span class="pre">[</span></span><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.update_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.update_item" title="Link to this definition"></a></dt>
+<dd><p>Ascertains the correct endpoint then runs the update operation on an existing item by providing new domain info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The id of item to update.</p></li>
+<li><p><strong>reason</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The reason for updating, if any</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype to update</p></li>
+<li><p><strong>domain_info</strong> (<em>DomainInfoBase</em>) – The domain info to replace existing item with</p></li>
+<li><p><strong>update_response_model</strong> (<em>Type</em><em>[</em><em>BaseModelType</em><em>]</em>) – The response model to parse e.g. StatusResponse</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response model parsed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModelType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.list_items">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_items_payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.GeneralListRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_model_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Type</span><span class="p"><span class="pre">[</span></span><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.list_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.list_items" title="Link to this definition"></a></dt>
+<dd><p>Lists items within the registry based on filter criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_items_payload</strong> (<em>GeneralListRequest</em>) – The request containing filter and sort criteria.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the items to list.</p></li>
+<li><p><strong>update_model_response</strong> (<em>Type</em><em>[</em><em>BaseModelType</em><em>]</em>) – The response model to parse.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the list of items.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModelType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.seed_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">seed_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_model_response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Type</span><span class="p"><span class="pre">[</span></span><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.seed_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.seed_item" title="Link to this definition"></a></dt>
+<dd><p>Seeds an item in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to seed.</p></li>
+<li><p><strong>seed_model_response</strong> (<em>Type</em><em>[</em><em>BaseModelType</em><em>]</em>) – The response model to parse.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the details of the seeded item.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModelType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.revert_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">revert_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">revert_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemRevertRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemRevertResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.revert_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.revert_item" title="Link to this definition"></a></dt>
+<dd><p>Reverts an item in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>revert_request</strong> (<em>ItemRevertRequest</em>) – The revert request.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to revert.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The revert response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ItemRevertResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.create_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">create_item_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.DomainInfoBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_response_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.Type</span><span class="p"><span class="pre">[</span></span><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">provenaclient.clients.client_helpers.BaseModelType</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.create_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.create_item" title="Link to this definition"></a></dt>
+<dd><p>Creates an item in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>create_item_request</strong> (<em>DomainInfoBase</em>) – The domain information required to create the item.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to create.</p></li>
+<li><p><strong>create_response_model</strong> (<em>Type</em><em>[</em><em>BaseModelType</em><em>]</em>) – The response model to parse.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The response containing the details of the created item.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BaseModelType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_schema">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.JsonSchemaResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_schema" title="Link to this definition"></a></dt>
+<dd><p>Gets the schema for the item subtype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to get the schema for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The JSON schema response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>JsonSchemaResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.validate_item">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validate_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.DomainInfoBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.validate_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.validate_item" title="Link to this definition"></a></dt>
+<dd><p>Validates an item in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>validate_request</strong> (<em>DomainInfoBase</em>) – The domain information of the item to be validated.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to validate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status response indicating the result of the validation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.evaluate_auth_access">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate_auth_access</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.DescribeAccessResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.evaluate_auth_access"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.evaluate_auth_access" title="Link to this definition"></a></dt>
+<dd><p>Evaluates the auth access for an item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The ID of the item to evaluate auth access for.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to evaluate auth access for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The describe access response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DescribeAccessResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_auth_configuration">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_auth_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.AccessSettings</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_auth_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_auth_configuration" title="Link to this definition"></a></dt>
+<dd><p>Gets the auth configuration for an item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The ID of the item to get auth configuration for.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to get auth configuration for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The access settings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AccessSettings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.modify_auth_configuration">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modify_auth_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_change_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.AccessSettings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.modify_auth_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.modify_auth_configuration" title="Link to this definition"></a></dt>
+<dd><p>Modifies the auth configuration for an item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The ID of the item to modify auth configuration for.</p></li>
+<li><p><strong>auth_change_request</strong> (<em>AccessSettings</em>) – The auth change request.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to modify auth configuration for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_auth_roles">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_auth_roles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.AuthRolesResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_auth_roles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_auth_roles" title="Link to this definition"></a></dt>
+<dd><p>Gets the auth roles for the item subtype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to get auth roles for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The auth roles response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AuthRolesResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.lock_resource">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lock_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lock_resource_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.LockChangeRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.lock_resource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.lock_resource" title="Link to this definition"></a></dt>
+<dd><p>Locks a resource in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lock_resource_request</strong> (<em>LockChangeRequest</em>) – The lock resource request.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the resource to lock.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.unlock_resource">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unlock_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unlock_resource_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.LockChangeRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.StatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.unlock_resource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.unlock_resource" title="Link to this definition"></a></dt>
+<dd><p>Unlocks a resource in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unlock_resource_request</strong> (<em>LockChangeRequest</em>) – The unlock resource request.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the resource to unlock.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_lock_history">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_lock_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.LockHistoryResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_lock_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_lock_history" title="Link to this definition"></a></dt>
+<dd><p>Gets the lock history for an item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle_id</strong> (<em>str</em>) – The handle ID of the item to get lock history for.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to get lock history for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The lock history response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LockHistoryResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.get_lock_status">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_lock_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.LockStatusResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.get_lock_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.get_lock_status" title="Link to this definition"></a></dt>
+<dd><p>Gets the lock status for an item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – The item ID.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to get lock status for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The lock status response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LockStatusResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="provenaclient.clients.registry_client.RegistryClient.version">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_request</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionRequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_subtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ProvenaInterfaces.RegistryAPI.ItemSubType</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ProvenaInterfaces.RegistryAPI.VersionResponse</span></span></span><a class="reference internal" href="../../../../_modules/provenaclient/clients/registry_client.html#RegistryClient.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#provenaclient.clients.registry_client.RegistryClient.version" title="Link to this definition"></a></dt>
+<dd><p>Versions an item in the registry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>version_request</strong> (<em>VersionRequest</em>) – The version request containing the version details.</p></li>
+<li><p><strong>item_subtype</strong> (<em>ItemSubType</em>) – The subtype of the item to version.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The version response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VersionResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../prov_client/index.html" class="btn btn-neutral float-left" title="provenaclient.clients.prov_client" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../search_client/index.html" class="btn btn-neutral float-right" title="provenaclient.clients.search_client" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

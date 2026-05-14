@@ -1,0 +1,468 @@
+provenaclient.modules.prov
+==========================
+
+.. py:module:: provenaclient.modules.prov
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday November 29th 2024 4:21:39 pm +1000
+   Modified By: Parth Kulkarni
+   -----
+   Description: Provenance API L3 module. Includes the ProvAPI sub module. Contains IO helper functions for writing/reading files.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   29-11-2024 | Parth Kulkarni | Added generate-report functionality.
+   22-08-2025 | Peter Baker | Added delete model run capability
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.modules.prov.PROV_API_DEFAULT_SEARCH_DEPTH
+   provenaclient.modules.prov.DEFAULT_CONFIG_FILE_NAME
+   provenaclient.modules.prov.DEFAULT_RELATIVE_FILE_PATH
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.prov.ProvAPIAdminSubModule
+   provenaclient.modules.prov.Prov
+
+
+Module Contents
+---------------
+
+.. py:data:: PROV_API_DEFAULT_SEARCH_DEPTH
+   :value: 3
+
+
+.. py:data:: DEFAULT_CONFIG_FILE_NAME
+   :value: 'prov-api.env'
+
+
+.. py:data:: DEFAULT_RELATIVE_FILE_PATH
+   :value: './'
+
+
+.. py:class:: ProvAPIAdminSubModule(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, prov_api_client: provenaclient.clients.ProvClient, registry_api_client: provenaclient.clients.RegistryClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _prov_api_client
+      :type:  provenaclient.clients.ProvClient
+
+
+   .. py:attribute:: _registry_api_client
+      :type:  provenaclient.clients.RegistryClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: generate_config_file(required_only: bool = True, file_path: provenaclient.utils.exceptions.Optional[str] = None, write_to_file: bool = False) -> str
+      :async:
+
+
+      Generates a nicely formatted .env file of the current required/non supplied properties
+      Used to quickly bootstrap a local environment or to understand currently deployed API.
+
+      :param required_only: By default True
+      :type required_only: bool, optional
+      :param file_path: The path you want to save the config file at WITH the file name. If you don't specify a path
+                        this will be saved in a relative directory.
+      :type file_path: str, optional
+      :param write_to_file: A boolean flag to indicate whether you want to save the config response to a file
+                            or not.
+      :type write_to_file: bool, By default False
+
+      :returns: **str**
+      :rtype: Response containing the config text.
+
+
+
+   .. py:method:: store_record(registry_record: ProvenaInterfaces.RegistryAPI.ItemModelRun, validate_record: bool = True) -> ProvenaInterfaces.SharedTypes.StatusResponse
+      :async:
+
+
+      An admin only endpoint which enables the reupload/storage of an existing completed provenance record.
+
+      :param registry_record: The completed registry record for the model run.
+      :type registry_record: ItemModelRun
+      :param validate_record: Optional Should the ids in the payload be validated?, by default True
+      :type validate_record: bool
+
+      :returns: A status response indicating the success of the request and any other details.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: store_multiple_records(registry_record: List[ProvenaInterfaces.RegistryAPI.ItemModelRun], validate_record: bool = True) -> ProvenaInterfaces.SharedTypes.StatusResponse
+      :async:
+
+
+      An admin only endpoint which enables the reupload/storage of an existing but multiple completed provenance record.
+
+      :param registry_record: List of the completed registry record for the model run validate_record
+      :type registry_record: List[ItemModelRun]
+      :param validate_record: Optional Should the ids in the payload be validated?, by default True
+      :type validate_record: bool
+
+      :returns: A status response indicating the success of the request and any other details.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: store_all_registry_records(validate_record: bool = True) -> ProvenaInterfaces.SharedTypes.StatusResponse
+      :async:
+
+
+      Applies the store record endpoint action across a list of ItemModelRuns '
+         which is found by querying the registry model run list endpoint directly.
+
+      :param validate_record: Optional Should the ids in the payload be validated?, by default True
+      :type validate_record: bool
+
+      :returns: A status response indicating the success of the request and any other details.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: delete_model_run_provenance(model_run_id: str, trial_mode: bool = False) -> ProvenaInterfaces.ProvenanceAPI.PostDeleteGraphResponse
+      :async:
+
+
+      Deletes a model run by its ID - provenance store ONLY
+
+
+
+   .. py:method:: delete_model_run_provenance_and_registry(model_run_id: str, trial_mode: bool = False) -> ProvenaInterfaces.ProvenanceAPI.PostDeleteGraphResponse
+      :async:
+
+
+      Deletes a model run by its ID in both the registry AND in the provenance store.
+
+
+
+.. py:class:: Prov(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, prov_client: provenaclient.clients.ProvClient, registry_client: provenaclient.clients.RegistryClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _prov_client
+      :type:  provenaclient.clients.ProvClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:attribute:: _prov_api_client
+
+
+   .. py:attribute:: admin
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.general.HealthCheckResponse
+      :async:
+
+
+      Checks the health status of the PROV-API.
+
+      :returns: Response containing the PROV-API health information.
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: update_model_run(model_run_id: str, reason: str, record: ProvenaInterfaces.ProvenanceAPI.ModelRunRecord) -> ProvenaInterfaces.ProvenanceAPI.PostUpdateModelRunResponse
+      :async:
+
+
+      Updates an existing model run with new information.
+
+      This function triggers an asynchronous update of a model run. The update is processed as a job,
+      and the job session ID is returned for tracking the update progress.
+
+      :param model_run_id: The ID of the model run to update
+      :type model_run_id: str
+      :param reason: The reason for updating the model run
+      :type reason: str
+      :param record: The new model run record details
+      :type record: ModelRunRecord
+
+      :returns: Response containing the job session ID tracking the update
+      :rtype: PostUpdateModelRunResponse
+
+      .. rubric:: Example
+
+      ```python
+      response = await prov_api.update_model_run(
+          model_run_id="10378.1/1234567",
+          reason="Updating input dataset information",
+          record=updated_model_run_record
+      )
+      # Get the session ID to track progress
+      session_id = response.session_id
+      ```
+
+
+
+   .. py:method:: explore_upstream(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Explores in the upstream direction (inputs/associations)
+      starting at the specified node handle ID.
+      The search depth is bounded by the depth parameter which has a default maximum of 100.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: explore_downstream(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Explores in the downstream direction (inputs/associations)
+      starting at the specified node handle ID.
+      The search depth is bounded by the depth parameter which has a default maximum of 100.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: get_contributing_datasets(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Fetches datasets (inputs) which involved in a model run
+      naturally in the upstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: get_effected_datasets(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Fetches datasets (outputs) which are derived from the model run
+      naturally in the downstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: get_contributing_agents(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+      naturally in the upstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: get_effected_agents(starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> provenaclient.models.general.CustomLineageResponse
+      :async:
+
+
+      Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+      naturally in the downstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A typed response containing the status, node count, and networkx serialised graph response.
+      :rtype: CustomLineageResponse
+
+
+
+   .. py:method:: register_batch_model_runs(batch_model_run_payload: ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunRequest) -> ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunResponse
+      :async:
+
+
+      This function allows you to register multiple model runs in one go (batch) asynchronously.
+
+      Note: You can utilise the returned session ID to poll on
+      the JOB API to check status of the model run registration(s).
+
+      :param batch_model_run_payload: A list of model runs (ModelRunRecord objects)
+      :type batch_model_run_payload: RegisterBatchModelRunRequest
+
+      :returns: The job session id derived from job-api for the model-run batch.
+      :rtype: RegisterBatchModelRunResponse
+
+
+
+   .. py:method:: register_model_run(model_run_payload: ProvenaInterfaces.ProvenanceAPI.ModelRunRecord) -> ProvenaInterfaces.ProvenanceAPI.RegisterModelRunResponse
+      :async:
+
+
+      Asynchronously registers a single model run.
+
+      Note: You can utilise the returned session ID to poll on
+      the JOB API to check status of the model run registration.
+
+      :param model_run_payload: Contains information needed for the
+                                model run such as workflow template,
+                                inputs, outputs, description etc.
+      :type model_run_payload: ModelRunRecord
+
+      :returns: The job session id derived from job-api for the model-run.
+      :rtype: RegisterModelRunResponse
+
+
+
+   .. py:method:: generate_csv_template(workflow_template_id: str, file_path: provenaclient.utils.exceptions.Optional[str] = None, write_to_csv: bool = False) -> str
+      :async:
+
+
+      Generates a model run csv template to be utilised
+      for creating model runs through csv format..
+
+      :param workflow_template_id: An ID of a created and existing model run workflow template.
+      :type workflow_template_id: str
+      :param path_to_save_csv: The path you want to save the csv file at WITH csv file name. If you don't specify a path
+                               this will be saved in a relative directory.
+      :type path_to_save_csv: str, optional
+      :param write_to_csv: A boolean flag to indicate whether you want to save the template to a csv file
+                           or not.
+      :type write_to_csv: bool, By default False
+
+      :returns: **str**
+      :rtype: Response containing the csv template text (encoded in a csv format).
+
+
+
+   .. py:method:: convert_model_runs(model_run_content: str) -> ProvenaInterfaces.ProvenanceAPI.ConvertModelRunsResponse
+      :async:
+
+
+      Converts model run with model_run_content provided as a string.
+
+      :param model_run_content: The model run information containing
+                                the necessary parameters for model run lodge.
+      :type model_run_content: str
+
+      :returns: Returns the model run information in an interactive python
+                datatype.
+      :rtype: ConvertModelRunsResponse
+
+      :raises Exception: Exception raised when converting string to bytes.
+
+
+
+   .. py:method:: convert_model_runs_to_csv_with_file(file_path: str) -> ProvenaInterfaces.ProvenanceAPI.ConvertModelRunsResponse
+      :async:
+
+
+      Reads a CSV file, and it's defined model run contents
+      and lodges a model run.
+
+      :param file_path: The path of an existing created CSV file containing
+                        the necessary parameters for model run lodge.
+      :type file_path: str
+
+      :returns: Returns the model run information in an interactive python
+                datatype.
+      :rtype: ConvertModelRunsResponse
+
+
+
+   .. py:method:: regenerate_csv_from_model_run_batch(batch_id: str, file_path: provenaclient.utils.exceptions.Optional[str] = None, write_to_csv: bool = False) -> str
+      :async:
+
+
+      Regenerate/create a csv file containing model
+      run information from a model run batch job.
+
+      The batch id must exist in the system.
+
+      :param batch_id: Obtained from creating a batch model run.
+      :type batch_id: str
+      :param file_path: The path you want to save the csv file at WITH CSV file name. If you don't specify a path
+                        this will be saved in a relative directory.
+      :type file_path: str, optional
+      :param write_to_csv: A boolean flag to indicate whether you want to save the template to a csv file
+                           or not.
+      :type write_to_csv: bool, By default False
+
+      :returns: **str**
+      :rtype: Response containing the model run information (encoded in csv format).
+
+
+
+   .. py:method:: generate_report(report_request: ProvenaInterfaces.ProvenanceAPI.GenerateReportRequest, file_path: str = DEFAULT_RELATIVE_FILE_PATH) -> None
+      :async:
+
+
+      Generates a provenance report from a Study or Model Run Entity containing the
+      associated inputs, model runs and outputs involved.
+
+      The report is generated in `.docx` and saved at relative directory level.
+
+      :param report_request: The request object containing the parameters for generating the report, including the `id`,
+                             `item_subtype`, and `depth`.
+      :type report_request: GenerateReportRequest
+
+
+

@@ -1,0 +1,63 @@
+provenaclient.modules.link
+==========================
+
+.. py:module:: provenaclient.modules.link
+
+.. autoapi-nested-parse::
+
+   Created Date: Friday May 31st 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday May 31st 2024 9:50:26 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: A L3 module which is setup to interact more nicely with the Username Person Link service.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   18-06-2024 | Peter Baker | Initial ideas included but is not finished/ready. Blocked by Registry API functionality.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.link.Link
+
+
+Module Contents
+---------------
+
+.. py:class:: Link(auth: provenaclient.auth.manager.AuthManager, config: provenaclient.utils.config.Config, auth_client: provenaclient.clients.AuthClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _auth_client
+      :type:  provenaclient.clients.AuthClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: get_linked_person() -> None
+      :async:
+
+
+
+   .. py:method:: create_and_link_person() -> None
+      :async:
+
+
+

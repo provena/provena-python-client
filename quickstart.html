@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart &mdash; provenaclient  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Provena Client Library Workflow Guide and Example." href="example-client-workflow.html" />
+    <link rel="prev" title="Home" href="home.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            provenaclient
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="home.html#what-is-provena-python-client">What is Provena Python Client?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#initialising-the-provena-client">Initialising the provena client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finding-and-searching-items-from-the-registry">Finding and searching items from the Registry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fetching-items-from-the-registry">Fetching items from the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#listing-items-in-the-registry">Listing items in the Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-for-items">Search for items</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#registering">Registering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#registering-datasets">Registering datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-a-model-run">Registering a model run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-other-items-via-the-registry">Registering other items via the Registry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-client-workflow.html">Provena Client Library Workflow Guide and Example.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#client-configuration-and-initialisation">Client Configuration and Initialisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-datastore-api">Querying Datastore API.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-provenance-api">Querying Provenance API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#exploring-lineage">Exploring Lineage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#lodging-model-runs-querying-with-job-api">Lodging Model Runs &amp; Querying with Job-API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#generating-reports">Generating Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-client-workflow.html#querying-registry-api">Querying Registry API.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example-client-workflow.html#general-registry-actions">General Registry Actions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="provenance-visualisation.html">Provenance integration with 3rd party libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#using-prov-and-rdflib-python-libraries">Using Prov and rdflib python libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#visualisation-using-graphviz">Visualisation using Graphviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="provenance-visualisation.html#advanced-use-case-querying-and-joining-graphs">Advanced use case: Querying and joining graphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">CHANGELOG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-1-2025-08-26">v0.29.1 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#unknown">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-29-0-2025-08-26">v0.29.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#features">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-28-0-2025-08-26">v0.28.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#chores">Chores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id1">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-27-0-2025-08-26">v0.27.0 (2025-08-26)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id2">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-26-0-2025-08-25">v0.26.0 (2025-08-25)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id3">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id4">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id5">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-25-0-2025-03-13">v0.25.0 (2025-03-13)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id6">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-24-0-2025-02-27">v0.24.0 (2025-02-27)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id7">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-23-0-2024-12-20">v0.23.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id8">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-22-0-2024-12-20">v0.22.0 (2024-12-20)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id9">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-21-0-2024-11-07">v0.21.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id10">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-20-0-2024-11-07">v0.20.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id11">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id12">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-19-0-2024-11-07">v0.19.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id13">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id14">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-18-0-2024-11-07">v0.18.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id15">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-17-0-2024-11-07">v0.17.0 (2024-11-07)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id17">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-16-0-2024-11-03">v0.16.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id18">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id19">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-15-0-2024-11-03">v0.15.0 (2024-11-03)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id20">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-14-0-2024-08-29">v0.14.0 (2024-08-29)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id21">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-13-0-2024-08-22">v0.13.0 (2024-08-22)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id22">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id23">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-12-0-2024-08-08">v0.12.0 (2024-08-08)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id24">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id25">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#testing">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id26">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-2-2024-07-21">v0.11.2 (2024-07-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id27">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-1-2024-07-19">v0.11.1 (2024-07-19)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id28">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-11-0-2024-07-12">v0.11.0 (2024-07-12)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id29">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-3-2024-07-04">v0.10.3 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id30">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-2-2024-07-04">v0.10.2 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id31">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-1-2024-07-04">v0.10.1 (2024-07-04)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id32">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#continuous-integration">Continuous Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id33">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-10-0-2024-07-02">v0.10.0 (2024-07-02)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id34">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-9-0-2024-06-28">v0.9.0 (2024-06-28)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id35">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id36">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-8-0-2024-06-21">v0.8.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id37">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id38">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-7-0-2024-06-21">v0.7.0 (2024-06-21)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id39">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id40">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-6-0-2024-06-18">v0.6.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id41">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id42">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-5-0-2024-06-18">v0.5.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id43">Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-4-0-2024-06-18">v0.4.0 (2024-06-18)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id44">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id45">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-3-0-2024-06-17">v0.3.0 (2024-06-17)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id46">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id47">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-2-0-2024-05-30">v0.2.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id48">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id49">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-1-0-2024-05-30">v0.1.0 (2024-05-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id51">Unknown</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#v0-0-0-2024-04-05">v0.0.0 (2024-04-05)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="changelog.html#id52">Unknown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#how-to-get-started-with-poetry">How to get started with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#using-local-venv">Using local .venv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#my-poetry-installation-is-not-being-detected">My Poetry Installation is not being detected?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute-to-the-provena-python-client">How to contribute to the Provena Python Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#initial-setup">1) Initial Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#codebase-layout-and-contributing">2) Codebase Layout and Contributing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#create-a-new-branch">3) Create a New Branch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commit-message-conventions">4) Commit Message Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#develop-and-commit">5) Develop and Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#open-a-pull-request-pr">6) Open a Pull Request (PR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#review-and-squash-merge">7) Review and Squash Merge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#ci-cd-flow">8) CI/CD Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#provena-client-ci-cd-and-release-process">Provena Client CI/CD and Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#continuous-deployment-cd">Continuous Deployment (CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#semantic-versioning-and-release-automation">Semantic Versioning and Release Automation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#configuration-in-pyproject-toml-tool-semantic-release">Configuration in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#release-process">Release Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#bumps-the-version">Bumps the Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#creates-a-new-tag">Creates a New Tag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#publishes-to-pypi">Publishes to PyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#uploads-to-github-releases">Uploads to GitHub Releases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributing.html#commits-the-new-version-number">Commits the New Version Number</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#overall-summary">Overall Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/provenaclient/index.html">provenaclient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/provenaclient/index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">provenaclient</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
+<section id="initialising-the-provena-client">
+<h2>Initialising the provena client<a class="headerlink" href="#initialising-the-provena-client" title="Link to this heading"></a></h2>
+<p>To use the provena client, you will need to provide both <code class="docutils literal notranslate"><span class="pre">auth</span></code> and <code class="docutils literal notranslate"><span class="pre">config</span></code> objects
+to select the authentication method, and configuration details for the
+Provena instance you would like to interface with.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">my-provena.cloud</span></code> with the URL of the Provena instance and change <code class="docutils literal notranslate"><span class="pre">realm_name</span></code> value
+to the appropriate Keycloak realm.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+        <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;my-provena.cloud&quot;</span><span class="p">,</span>
+        <span class="n">realm_name</span><span class="o">=</span><span class="s2">&quot;provena&quot;</span>
+    <span class="p">)</span>
+<span class="n">auth</span> <span class="o">=</span> <span class="n">DeviceFlow</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">client_config</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=</span><span class="s2">&quot;client-tools&quot;</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">ProvenaClient</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">client_config</span><span class="p">)</span>
+<span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_health_check</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="finding-and-searching-items-from-the-registry">
+<h2>Finding and searching items from the Registry<a class="headerlink" href="#finding-and-searching-items-from-the-registry" title="Link to this heading"></a></h2>
+<section id="fetching-items-from-the-registry">
+<h3>Fetching items from the Registry<a class="headerlink" href="#fetching-items-from-the-registry" title="Link to this heading"></a></h3>
+<p>You can fetch any item from the Registry using <code class="docutils literal notranslate"><span class="pre">general_fetch_item()</span></code> and the id of the item.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">general_fetch_item</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;item_subtype&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each sub-type has an associated <code class="docutils literal notranslate"><span class="pre">fetch()</span></code> too.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use the ID of an item if you know ahead of time, or you can list them.</p>
+</section>
+<section id="listing-items-in-the-registry">
+<h3>Listing items in the Registry<a class="headerlink" href="#listing-items-in-the-registry" title="Link to this heading"></a></h3>
+<section id="general-list-function">
+<h4>General list function<a class="headerlink" href="#general-list-function" title="Link to this heading"></a></h4>
+<p>You can list items from the Registry using <code class="docutils literal notranslate"><span class="pre">list_general_registry_items()</span></code>.
+This function expects an instance of <code class="docutils literal notranslate"><span class="pre">GeneralListRequest</span></code>
+and  returns a generic result list.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeneralListRequest</span>
+<span class="n">general_list_request</span> <span class="o">=</span> <span class="n">GeneralListRequest</span><span class="p">(</span>
+    <span class="n">filter_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">sort_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pagination_key</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">list_general_registry_items</span><span class="p">(</span><span class="n">general_list_request</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sub-type-list-function">
+<h4>Sub-type list function<a class="headerlink" href="#sub-type-list-function" title="Link to this heading"></a></h4>
+<p>You can also list item from the sub-type modules via <code class="docutils literal notranslate"><span class="pre">list_items()</span></code>. In this case, it will only return a list of
+registry items of that sub-type. You may need to cast the returned object into Responses using the
+pydantic <code class="docutils literal notranslate"><span class="pre">parse_obj_as()</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_obj_as</span>
+
+<span class="n">list_model_run_workflow</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model_run_workflow</span><span class="o">.</span><span class="n">list_items</span><span class="p">(</span><span class="n">list_items_payload</span><span class="o">=</span><span class="n">general_list_request</span><span class="p">)</span>
+<span class="n">model_run_workflow_templates</span> <span class="o">=</span> <span class="n">parse_obj_as</span><span class="p">(</span><span class="n">ModelRunWorkflowTemplateListResponse</span><span class="p">,</span> <span class="n">list_model_run_workflow</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="n">model_run_workflow_templates</span><span class="o">.</span><span class="n">total_item_count</span><span class="si">}</span><span class="s2"> model_run_workflow_templates&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Iterate over the list response like so.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">model_run_workflow_templates</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">parse_obj_as</span><span class="p">(</span><span class="n">ItemModelRunWorkflowTemplate</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-dataset-items">
+<h4>Listing dataset items<a class="headerlink" href="#listing-dataset-items" title="Link to this heading"></a></h4>
+<p>Datasets are special. List them this way from the client library’s <code class="docutils literal notranslate"><span class="pre">datastore</span></code> module.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">list_dataset</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">list_all_datasets</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">list_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> datasets&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_dataset</span><span class="p">:</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">parse_obj_as</span><span class="p">(</span><span class="n">ItemDataset</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="search-for-items">
+<h3>Search for items<a class="headerlink" href="#search-for-items" title="Link to this heading"></a></h3>
+<p>Provena provides a general search engine to search all items in the Registry.
+Currently the search results return a <code class="docutils literal notranslate"><span class="pre">QueryResult</span></code> object with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code> (Search result success or failure with <code class="docutils literal notranslate"><span class="pre">success</span></code> and <code class="docutils literal notranslate"><span class="pre">details</span></code> attributes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">results</span></code> (list of results of <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">score</span></code> attributes for each result)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">warnings</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qres</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">search_registry</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;fire&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">subtype_filter</span><span class="o">=</span><span class="n">ItemSubType</span><span class="o">.</span><span class="n">DATASET</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">qres</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">success</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">qres</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">subtype_filter</span></code> can be <code class="docutils literal notranslate"><span class="pre">None</span></code> if you want to search over all subtypes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code> can also be <code class="docutils literal notranslate"><span class="pre">None</span></code> to unrestrict the number of returned items</p></li>
+</ul>
+<p>Using the returned <code class="docutils literal notranslate"><span class="pre">id</span></code> for a result, you can issue a fetch request (see above).</p>
+</section>
+</section>
+<section id="registering">
+<h2>Registering<a class="headerlink" href="#registering" title="Link to this heading"></a></h2>
+<p>Registering items creates an object in the registry with required metadata/payload values and
+issues a unique ID (via Handle).</p>
+<p>See the following Provena docs section for more info on the Registry: <a class="reference external" href="https://docs.provena.io/registry/">https://docs.provena.io/registry/</a></p>
+<section id="registering-datasets">
+<h3>Registering datasets<a class="headerlink" href="#registering-datasets" title="Link to this heading"></a></h3>
+<p>Background information about registering a dataset in Provena is found here:
+<a class="reference external" href="https://docs.provena.io/data-store/registering-a-dataset.html">https://docs.provena.io/data-store/registering-a-dataset.html</a></p>
+<p>Minting a dataset.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">register_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">mint_dataset</span><span class="p">(</span><span class="n">dataset_mint_info</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">register_response</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">success</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Dataset Handle: </span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">handle</span><span class="si">}</span><span class="s2">. Access entity link: https://hdl.handle.net/</span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">handle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The dataset may already exists and instead of minting, you may want to version it. Find out more about
+versioning here: <a class="reference external" href="https://docs.provena.io/versioning/versioning-overview.html">https://docs.provena.io/versioning/versioning-overview.html</a></p>
+<p>First we must find the latest version of the dataset.
+One way to do this would be to use the following function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">latest_version_of_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">):</span>
+    <span class="n">fetch_resp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">fetch_dataset</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="c1">#assume this was the latest version</span>
+        <span class="k">return</span> <span class="n">dataset_id</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">latest_version</span> <span class="o">=</span> <span class="k">await</span> <span class="n">latest_version_of_dataset</span><span class="p">(</span><span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">latest_version</span>
+</pre></div>
+</div>
+<p>Then apply that function…</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Find the latest version of this dataset </span><span class="si">{</span><span class="n">dataset_item</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">latest_version</span> <span class="o">=</span> <span class="k">await</span> <span class="n">latest_version_of_dataset</span><span class="p">(</span><span class="n">dataset_item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>    
+<span class="c1">#use the latest_version id for the version request</span>
+<span class="n">version_request</span> <span class="o">=</span> <span class="n">VersionRequest</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">latest_version</span><span class="p">,</span>
+        <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Updating dataset&quot;</span>
+<span class="p">)</span>
+<span class="n">register_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">version_dataset</span><span class="p">(</span><span class="n">version_request</span><span class="o">=</span><span class="n">version_request</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New Version of Dataset Handle: </span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="si">}</span><span class="s2">. Access entity link: https://hdl.handle.net/</span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates a new dataset with its metadata copied over. We will then update the dataset metadata.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">register_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">update_dataset_metadata</span><span class="p">(</span><span class="n">handle_id</span><span class="o">=</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="p">,</span> 
+                                                                       <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Updating metadata for new version&quot;</span><span class="p">,</span> 
+                                                                       <span class="n">metadata_payload</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="registering-a-model-run">
+<h3>Registering a model run<a class="headerlink" href="#registering-a-model-run" title="Link to this heading"></a></h3>
+<p>Build the payload</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.ProvenanceAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelRunRecord</span><span class="p">,</span> <span class="n">TemplatedDataset</span><span class="p">,</span> <span class="n">DatasetType</span><span class="p">,</span> <span class="n">AssociationInfo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.AsyncJobAPI</span><span class="w"> </span><span class="kn">import</span> <span class="n">JobStatus</span>
+
+<span class="c1"># Building the Model Run Payload.</span>
+<span class="n">model_run_payload</span> <span class="o">=</span> <span class="n">ModelRunRecord</span><span class="p">(</span>
+    <span class="n">workflow_template_id</span><span class="o">=</span><span class="n">model_run_workflow_template_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">model_version</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">TemplatedDataset</span><span class="p">(</span>
+            <span class="n">dataset_template_id</span><span class="o">=</span><span class="n">input_dataset_template_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> 
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">input_dataset_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">dataset_type</span><span class="o">=</span><span class="n">DatasetType</span><span class="o">.</span><span class="n">DATA_STORE</span>
+        <span class="p">)</span>
+    <span class="p">],</span> 
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">TemplatedDataset</span><span class="p">(</span>
+            <span class="n">dataset_template_id</span><span class="o">=</span><span class="n">output_dataset_template_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> 
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">output_dataset_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">dataset_type</span><span class="o">=</span><span class="n">DatasetType</span><span class="o">.</span><span class="n">DATA_STORE</span>
+        <span class="p">)</span>
+    <span class="p">],</span> 
+    <span class="n">annotations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s2">&quot;Notebook Model Run Testing&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Standard Provena Model Run Example&quot;</span><span class="p">,</span>
+    <span class="n">study_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">associations</span><span class="o">=</span><span class="n">AssociationInfo</span><span class="p">(</span>
+        <span class="n">modeller_id</span><span class="o">=</span><span class="n">person_item</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">requesting_organisation_id</span><span class="o">=</span><span class="n">organisation_item</span><span class="o">.</span><span class="n">id</span>
+    <span class="p">),</span>
+    <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
+    <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Register the payload</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_run_register_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">prov_api</span><span class="o">.</span><span class="n">register_model_run</span><span class="p">(</span><span class="n">model_run_payload</span><span class="o">=</span><span class="n">model_run_payload</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the response of the model run registration</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Status of registration&quot;</span><span class="p">,</span> <span class="n">model_run_register_result</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Job Session ID&quot;</span><span class="p">,</span> <span class="n">model_run_register_result</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check the job to see if it&#39;s complete. We will do this by polling the job_api</span>
+<span class="n">job_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">job_api</span><span class="o">.</span><span class="n">await_successful_job_completion</span><span class="p">(</span><span class="n">session_id</span><span class="o">=</span><span class="n">model_run_register_result</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="n">job_result</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">JobStatus</span><span class="o">.</span><span class="n">SUCCEEDED</span><span class="p">:</span> <span class="c1"># Keep polling on this cell till this turns to &quot;SUCCEEDED&quot;</span>
+    
+    <span class="n">job_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">job_api</span><span class="o">.</span><span class="n">await_successful_job_completion</span><span class="p">(</span><span class="n">session_id</span><span class="o">=</span><span class="n">model_run_register_result</span><span class="o">.</span><span class="n">session_id</span><span class="p">)</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">job_result</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">job_result</span><span class="o">.</span><span class="n">job_type</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current job status:&quot;</span><span class="p">,</span> <span class="n">job_result</span><span class="o">.</span><span class="n">status</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>Inspect the result of a successful model run record registration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+<span class="n">model_run_record</span> <span class="o">=</span> <span class="n">job_result</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;record&quot;</span><span class="p">]</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">model_run_record</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To understand more about what it means to register a model run, see <a class="reference external" href="https://docs.provena.io/provenance/registering-model-runs/registration-process/overview.html">https://docs.provena.io/provenance/registering-model-runs/registration-process/overview.html</a>.</p>
+</section>
+<section id="registering-other-items-via-the-registry">
+<h3>Registering other items via the Registry<a class="headerlink" href="#registering-other-items-via-the-registry" title="Link to this heading"></a></h3>
+<p>Other than Dataset and Model Run, registering all other registry subtypes is straightforward.
+You will need to instantiate the relevant DomainInfo payload.
+Then use the sub-type module in the registry client module to create the item.</p>
+<p>We will show a workflow for a “Model” sub-type below, however, you can substitute this for other types,
+i.e. Dataset Template, Model Run Workflow Template, Organisation, Person, Study.</p>
+<p>First build the DomainInfo payload for the <code class="docutils literal notranslate"><span class="pre">Model</span></code> subtype using <code class="docutils literal notranslate"><span class="pre">ModelDomainInfo</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ProvenaInterfaces.RegistryModels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">model_payload</span> <span class="o">=</span> <span class="n">ModelDomainInfo</span><span class="p">(</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;display_name&#39;</span><span class="p">],</span> 
+    <span class="n">name</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="p">,</span> 
+    <span class="n">description</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">],</span>
+    <span class="n">documentation_url</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;documentation_url&#39;</span><span class="p">],</span> 
+    <span class="n">source_url</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;source_url&#39;</span><span class="p">],</span> 
+    <span class="n">user_metadata</span><span class="o">=</span><span class="n">model_item_payload</span><span class="p">[</span><span class="s1">&#39;user_metadata&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Register the <code class="docutils literal notranslate"><span class="pre">Model</span></code> subtype instance via <code class="docutils literal notranslate"><span class="pre">create_item()</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_register_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">create_item</span><span class="p">(</span><span class="n">create_item_request</span><span class="o">=</span><span class="n">model_payload</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">model_register_result</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">success</span>
+</pre></div>
+</div>
+<p>Just like a <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>, the item may already exists and instead of creating the item, you may want to version it. Find out more about
+versioning here: <a class="reference external" href="https://docs.provena.io/versioning/versioning-overview.html">https://docs.provena.io/versioning/versioning-overview.html</a></p>
+<p>First we must find the latest version of the item. One way to do this would be to use the following function.
+We will continue using the <code class="docutils literal notranslate"><span class="pre">Model</span></code> example.</p>
+<p>One way to find the latest version of the item for the <code class="docutils literal notranslate"><span class="pre">Model</span></code> subtype is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">latest_version_of_model</span><span class="p">(</span><span class="n">item_id</span><span class="p">):</span>
+    <span class="n">fetch_resp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="c1">#assume this was the latest version</span>
+        <span class="k">return</span> <span class="n">item_id</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">latest_version</span> <span class="o">=</span> <span class="k">await</span> <span class="n">latest_version_of_model</span><span class="p">(</span><span class="n">fetch_resp</span><span class="o">.</span><span class="n">item</span><span class="o">.</span><span class="n">versioning_info</span><span class="o">.</span><span class="n">next_version</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">latest_version</span>
+</pre></div>
+</div>
+<p>We can then apply <code class="docutils literal notranslate"><span class="pre">latest_version_of_model()</span></code> in the steps to register a new version of the <code class="docutils literal notranslate"><span class="pre">Model</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">latest_version</span> <span class="o">=</span> <span class="k">await</span> <span class="n">latest_version_of_model</span><span class="p">(</span><span class="n">model_item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Find the latest version of this  </span><span class="si">{</span><span class="n">model_item</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">latest_version</span> <span class="o">=</span> <span class="k">await</span> <span class="n">latest_version_of_model</span><span class="p">(</span><span class="n">model_item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>    
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Latest version: </span><span class="si">{</span><span class="n">latest_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1">#use the latest_version id for the version request</span>
+<span class="n">version_request</span> <span class="o">=</span> <span class="n">VersionRequest</span><span class="p">(</span>
+   <span class="nb">id</span><span class="o">=</span><span class="n">latest_version</span><span class="p">,</span>
+   <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Updating model&quot;</span>
+<span class="p">)</span>
+<span class="n">register_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">version_item</span><span class="p">(</span><span class="n">version_request</span><span class="o">=</span><span class="n">version_request</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New Version of Model Handle: </span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="si">}</span><span class="s2">. Access entity link: https://hdl.handle.net/</span><span class="si">{</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">#update the metadata</span>
+<span class="n">register_response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">register_response</span><span class="o">.</span><span class="n">new_version_id</span><span class="p">,</span> 
+                                                                       <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Updating metadata for new version&quot;</span><span class="p">,</span> 
+                                                                       <span class="n">domain_info</span><span class="o">=</span><span class="n">model_payload</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="home.html" class="btn btn-neutral float-left" title="Home" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="example-client-workflow.html" class="btn btn-neutral float-right" title="Provena Client Library Workflow Guide and Example." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Provena Development Team (CSIRO).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

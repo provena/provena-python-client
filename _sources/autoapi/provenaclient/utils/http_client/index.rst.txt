@@ -1,0 +1,142 @@
+provenaclient.utils.http_client
+===============================
+
+.. py:module:: provenaclient.utils.http_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: A HTTP client which wraps HTTPx async so that we can swap out a different http library later if needed.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.http_client.timeout
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.utils.http_client.HttpClient
+
+
+Module Contents
+---------------
+
+.. py:data:: timeout
+
+.. py:class:: HttpClient
+
+   This class only contains static methods as it acts as an HTTP client and provides a layer over these static methods
+   and makes them easily identifiable within the codebase.
+
+
+   .. py:method:: make_get_request(url: str, params: Optional[dict[str, Any]] = None, auth: Optional[provenaclient.auth.helpers.HttpxBearerAuth] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response
+      :staticmethod:
+
+      :async:
+
+
+      Makes an asynchronous HTTP GET request to the specified URL using the provided parameters, authentication, and headers.
+
+      :param url: The URL to which the GET request will be sent.
+      :type url: str
+      :param params: A dictionary of the query parameters to be included in the GET request, by default None.
+      :type params: Optional[dict[str, Any]], optional
+      :param auth: Authentication object (httpx bearer token only), to be included in the request headers, by default None.
+      :type auth: Optional[HttpxBearerAuth], optional
+      :param headers: A dictionary having additional HTTP headers to send with the GET request, by default None.
+      :type headers: Optional[dict[str,Any]], optional
+
+      :returns: The response from the server as an httpx.Response object.
+      :rtype: httpx.Response
+
+
+
+   .. py:method:: make_delete_request(url: str, auth: provenaclient.auth.helpers.HttpxBearerAuth, params: Optional[dict[str, Any]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response
+      :staticmethod:
+
+      :async:
+
+
+      Makes an asynchronous HTTP DELETE request to the specified URL using the provided parameters, authentication, and headers.
+
+      :param url: The URL to which the DELETE request will be sent.
+      :type url: str
+      :param params: A dictionary of the query parameters to be included in the GET request, by default None.
+      :type params: Optional[dict[str, Any]], optional
+      :param auth: Authentication object (httpx bearer token only), to be included in the request headers, by default None.
+      :type auth: Optional[HttpxBearerAuth], optional
+      :param headers: A dictionary having additional HTTP headers to send with the GET request, by default None.
+      :type headers: Optional[dict[str,Any]], optional
+
+      :returns: The response from the server as an httpx.Response object.
+      :rtype: httpx.Response
+
+
+
+   .. py:method:: make_post_request(url: str, auth: provenaclient.auth.helpers.HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Union[Optional[dict[str, Any]], Optional[List[dict[str, Any]]]] = None, files: Optional[dict[str, tuple[str, bytes, str]]] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response
+      :staticmethod:
+
+      :async:
+
+
+      Makes an asynchronous HTTP POST request to the specified URL with the provided data, authentication, and headers.
+
+      :param url: The URL to which the GET request will be sent.
+      :type url: str
+      :param params: A dictionary of the query parameters to be included in the GET request, by default None.
+      :type params: Optional[dict[str, Any]], optional
+      :param auth: Authentication object (e.g., bearer token), which is required for the POST request.
+      :type auth: HttpxBearerAuth
+      :param data: A dictionary of the data to be sent in the body of the POST request, by default None.
+      :type data: Optional[dict[str,Any]], optional
+      :param files: A files request object containing the file content and the media type.
+      :type files: Optional[dict[str, tuple[str, bytes, str]]], optional
+      :param headers: A dictionary representing additional HTTP headers to send with the POST request, by default None.
+      :type headers: Optional[dict[str, Any]], optional
+
+      :returns: The response from the server as an httpx.Response object.
+      :rtype: httpx.Response
+
+
+
+   .. py:method:: make_put_request(url: str, auth: provenaclient.auth.helpers.HttpxBearerAuth, params: Optional[dict[str, Any]] = None, data: Optional[provenaclient.utils.helpers.JsonData] = None, headers: Optional[dict[str, Any]] = None) -> httpx.Response
+      :staticmethod:
+
+      :async:
+
+
+      Makes an asynchronous HTTP put request to the specified URL with the provided data, authentication, and headers.
+
+      :param url: The URL to which the GET request will be sent.
+      :type url: str
+      :param params: A dictionary of the query parameters to be included in the GET request, by default None.
+      :type params: Optional[dict[str, Any]], optional
+      :param auth: Authentication object (e.g., bearer token), which is required for the put request.
+      :type auth: HttpxBearerAuth
+      :param data: A dictionary of the data to be sent in the body of the put request, by default None.
+      :type data: Optional[dict[str,Any]], optional
+      :param headers: A dictionary representing additional HTTP headers to send with the put request, by default None.
+      :type headers: Optional[dict[str, Any]], optional
+
+      :returns: The response from the server as an httpx.Response object.
+      :rtype: httpx.Response
+
+
+

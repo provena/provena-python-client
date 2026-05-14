@@ -1,0 +1,340 @@
+provenaclient.auth.helpers
+==========================
+
+.. py:module:: provenaclient.auth.helpers
+
+.. autoapi-nested-parse::
+
+   Created Date: Tuesday June 18th 2024 +1000
+   Author: peter
+   -----
+   Last Modified: Tuesday June 18th 2024 12:44:03 pm +1000
+   Modified By: peter
+   -----
+   Description: Miscellaneous helper functions assisting with implementation of auth flows
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.auth.helpers.JWT_DEFAULT_WINDOW
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.auth.helpers.AccessToken
+   provenaclient.auth.helpers.Tokens
+   provenaclient.auth.helpers.HttpxBearerAuth
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.auth.helpers.check_token_expiry_window
+   provenaclient.auth.helpers.retrieve_keycloak_public_key
+   provenaclient.auth.helpers.keycloak_refresh_token_request
+   provenaclient.auth.helpers.validate_access_token
+
+
+Module Contents
+---------------
+
+.. py:data:: JWT_DEFAULT_WINDOW
+   :value: 30
+
+
+.. py:class:: AccessToken(/, **data: Any)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   !!! abstract "Usage Documentation"
+       [Models](../concepts/models.md)
+
+   A base class for creating Pydantic models.
+
+   .. attribute:: __class_vars__
+
+      The names of the class variables defined on the model.
+
+   .. attribute:: __private_attributes__
+
+      Metadata about the private attributes of the model.
+
+   .. attribute:: __signature__
+
+      The synthesized `__init__` [`Signature`][inspect.Signature] of the model.
+
+   .. attribute:: __pydantic_complete__
+
+      Whether model building is completed, or if there are still undefined fields.
+
+   .. attribute:: __pydantic_core_schema__
+
+      The core schema of the model.
+
+   .. attribute:: __pydantic_custom_init__
+
+      Whether the model has a custom `__init__` function.
+
+   .. attribute:: __pydantic_decorators__
+
+      Metadata containing the decorators defined on the model.
+      This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.
+
+   .. attribute:: __pydantic_generic_metadata__
+
+      Metadata for generic models; contains data used for a similar purpose to
+      __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.
+
+   .. attribute:: __pydantic_parent_namespace__
+
+      Parent namespace of the model, used for automatic rebuilding of models.
+
+   .. attribute:: __pydantic_post_init__
+
+      The name of the post-init method for the model, if defined.
+
+   .. attribute:: __pydantic_root_model__
+
+      Whether the model is a [`RootModel`][pydantic.root_model.RootModel].
+
+   .. attribute:: __pydantic_serializer__
+
+      The `pydantic-core` `SchemaSerializer` used to dump instances of the model.
+
+   .. attribute:: __pydantic_validator__
+
+      The `pydantic-core` `SchemaValidator` used to validate instances of the model.
+
+   .. attribute:: __pydantic_fields__
+
+      A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.
+
+   .. attribute:: __pydantic_computed_fields__
+
+      A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.
+
+   .. attribute:: __pydantic_extra__
+
+      A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]
+      is set to `'allow'`.
+
+   .. attribute:: __pydantic_fields_set__
+
+      The names of fields explicitly set during instantiation.
+
+   .. attribute:: __pydantic_private__
+
+      Values of private attributes set on the model instance.
+
+
+   .. py:attribute:: access_token
+      :type:  str
+
+
+.. py:class:: Tokens(/, **data: Any)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   !!! abstract "Usage Documentation"
+       [Models](../concepts/models.md)
+
+   A base class for creating Pydantic models.
+
+   .. attribute:: __class_vars__
+
+      The names of the class variables defined on the model.
+
+   .. attribute:: __private_attributes__
+
+      Metadata about the private attributes of the model.
+
+   .. attribute:: __signature__
+
+      The synthesized `__init__` [`Signature`][inspect.Signature] of the model.
+
+   .. attribute:: __pydantic_complete__
+
+      Whether model building is completed, or if there are still undefined fields.
+
+   .. attribute:: __pydantic_core_schema__
+
+      The core schema of the model.
+
+   .. attribute:: __pydantic_custom_init__
+
+      Whether the model has a custom `__init__` function.
+
+   .. attribute:: __pydantic_decorators__
+
+      Metadata containing the decorators defined on the model.
+      This replaces `Model.__validators__` and `Model.__root_validators__` from Pydantic V1.
+
+   .. attribute:: __pydantic_generic_metadata__
+
+      Metadata for generic models; contains data used for a similar purpose to
+      __args__, __origin__, __parameters__ in typing-module generics. May eventually be replaced by these.
+
+   .. attribute:: __pydantic_parent_namespace__
+
+      Parent namespace of the model, used for automatic rebuilding of models.
+
+   .. attribute:: __pydantic_post_init__
+
+      The name of the post-init method for the model, if defined.
+
+   .. attribute:: __pydantic_root_model__
+
+      Whether the model is a [`RootModel`][pydantic.root_model.RootModel].
+
+   .. attribute:: __pydantic_serializer__
+
+      The `pydantic-core` `SchemaSerializer` used to dump instances of the model.
+
+   .. attribute:: __pydantic_validator__
+
+      The `pydantic-core` `SchemaValidator` used to validate instances of the model.
+
+   .. attribute:: __pydantic_fields__
+
+      A dictionary of field names and their corresponding [`FieldInfo`][pydantic.fields.FieldInfo] objects.
+
+   .. attribute:: __pydantic_computed_fields__
+
+      A dictionary of computed field names and their corresponding [`ComputedFieldInfo`][pydantic.fields.ComputedFieldInfo] objects.
+
+   .. attribute:: __pydantic_extra__
+
+      A dictionary containing extra values, if [`extra`][pydantic.config.ConfigDict.extra]
+      is set to `'allow'`.
+
+   .. attribute:: __pydantic_fields_set__
+
+      The names of fields explicitly set during instantiation.
+
+   .. attribute:: __pydantic_private__
+
+      Values of private attributes set on the model instance.
+
+
+   .. py:attribute:: access_token
+      :type:  str
+
+
+   .. py:attribute:: refresh_token
+      :type:  Optional[str]
+
+
+.. py:class:: HttpxBearerAuth(token: str)
+
+   Bases: :py:obj:`httpx.Auth`
+
+
+   Base class for all authentication schemes.
+
+   To implement a custom authentication scheme, subclass `Auth` and override
+   the `.auth_flow()` method.
+
+   If the authentication scheme does I/O such as disk access or network calls, or uses
+   synchronization primitives such as locks, you should override `.sync_auth_flow()`
+   and/or `.async_auth_flow()` instead of `.auth_flow()` to provide specialized
+   implementations that will be used by `Client` and `AsyncClient` respectively.
+
+
+   .. py:attribute:: token
+
+
+   .. py:method:: auth_flow(request: httpx.Request) -> Generator[httpx.Request, httpx.Response, None]
+
+      Execute the authentication flow.
+
+      To dispatch a request, `yield` it:
+
+      ```
+      yield request
+      ```
+
+      The client will `.send()` the response back into the flow generator. You can
+      access it like so:
+
+      ```
+      response = yield request
+      ```
+
+      A `return` (or reaching the end of the generator) will result in the
+      client returning the last response obtained from the server.
+
+      You can dispatch as many requests as is necessary.
+
+
+
+.. py:function:: check_token_expiry_window(jwt_data: dict[str, Any], logger: logging.Logger, jwt_token_expiry_window: int = JWT_DEFAULT_WINDOW) -> bool
+
+   This helper function checks if the current JWT token will
+   expire or not expire either within the provided or default (30sec)  window.
+   If the token is going to be expired in less than or within the provided or default (30sec).
+   expiry window they will be refreshed.
+
+   :param jwt_data: A dictionary containing the token validation results.
+   :type jwt_data: dict[str,Any]
+   :param jwt_token_expiry_window: A potential integer value containing your desired JWT expiry
+                                   window.
+   :type jwt_token_expiry_window: Optional[int]
+
+   :returns: True: The current token will not expire within 30 seconds
+             False: The current token will expire within 30 seconds.
+   :rtype: bool
+
+
+.. py:function:: retrieve_keycloak_public_key(keycloak_endpoint: str, logger: logging.Logger) -> str
+
+   Given the keycloak endpoint, retrieves the advertised
+   public key.
+   Based on https://github.com/nurgasemetey/fastapi-keycloak-oidc/blob/main/main.py
+
+
+.. py:function:: keycloak_refresh_token_request(token_endpoint: str, client_id: str, scopes: List[str], refresh_token: str, logger: logging.Logger) -> Dict[str, Any]
+
+   Performs the token refresh by making an HTTP post request to the token endpoint
+   to obtain new access and refresh tokens.
+
+   :param tokens: An optional Tokens object containing the refresh token. If not provided,
+                  the method will use the class variable stored tokens.
+
+                  By default this parameter is None.
+   :type tokens: Optional[Tokens], optional
+
+   :returns: A dictionary containing the new access and refresh tokens if the refresh is successful.
+   :rtype: Dict[str, Any]
+
+   :raises ValueError: If no refresh token is provided or found in the class token variable.
+   :raises Exception: If the HTTP request fails a message is displayed with the HTTP status code. Can occur
+       if the refresh token has expired.
+
+
+.. py:function:: validate_access_token(public_key: str, access_token: str, logger: logging.Logger) -> bool
+
+   Uses the python-jose library to validate current creds.
+
+   In this context, it is basically just checking signature
+   and expiry. The tokens are enforced at the API side
+   as well.
+
+   :param tokens: The tokens object to validate, by default None
+   :type tokens: Optional[Tokens], optional
+
+

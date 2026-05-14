@@ -1,0 +1,1208 @@
+provenaclient.clients
+=====================
+
+.. py:module:: provenaclient.clients
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/provenaclient/clients/auth_client/index
+   /autoapi/provenaclient/clients/client_helpers/index
+   /autoapi/provenaclient/clients/datastore_client/index
+   /autoapi/provenaclient/clients/id_service_client/index
+   /autoapi/provenaclient/clients/job_client/index
+   /autoapi/provenaclient/clients/prov_client/index
+   /autoapi/provenaclient/clients/registry_client/index
+   /autoapi/provenaclient/clients/search_client/index
+   /autoapi/provenaclient/clients/template_client/index
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.DatastoreClient
+   provenaclient.clients.SearchClient
+   provenaclient.clients.AuthClient
+   provenaclient.clients.ProvClient
+   provenaclient.clients.RegistryClient
+   provenaclient.clients.JobAPIClient
+   provenaclient.clients.IdServiceClient
+
+
+Package Contents
+----------------
+
+.. py:class:: DatastoreClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: review
+      :type:  DatasetReviewSubClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: DatastoreEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: validate_metadata(metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> provenaclient.utils.helpers.StatusResponse
+      :async:
+
+
+      Validates provided dataset info with the datastore API.
+
+      :param metadata_payload: A structured format containing all necessary information to register a new dataset, including associations,
+                               approvals, and dataset-specific information.
+      :type metadata_payload: CollectionFormat
+
+      :returns: Response indicating whether your dataset metadata setup is valid and correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: update_metadata(handle_id: str, reason: str, metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.UpdateMetadataResponse
+      :async:
+
+
+      Updates existing dataset metadata through datastore API.
+
+      :returns: The updated metadata response from datastore.
+      :rtype: UpdateMetadataResponse
+
+
+
+   .. py:method:: revert_metadata(metadata_payload: provenaclient.models.RevertMetadata) -> provenaclient.utils.helpers.StatusResponse
+      :async:
+
+
+      Reverts the metadata for a dataset to a previous identified historical version.
+
+      :param metadata_payload: The revert request, passed through to the registry API and requires
+                               dataset id, history id and reason for reverting.
+      :type metadata_payload: RevertMetadata
+
+      :returns: Response indicating whether your dataset metadata setup is valid and correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: version_dataset(version_dataset_payload: ProvenaInterfaces.RegistryAPI.VersionRequest) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Creates a new versioning of an existing dataset within Provena
+         through the Datastore.
+
+      :param version_dataset_payload: The request which includes the item ID and reason for versioning.
+      :type version_dataset_payload: VersionRequest
+
+      :returns: Response of the versioning of the dataset, containing new version ID and
+                job session ID.
+      :rtype: VersionResponse
+
+
+
+   .. py:method:: list_datasets(list_request: ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest) -> ProvenaInterfaces.RegistryAPI.DatasetListResponse
+      :async:
+
+
+      Gets datasets within the datastore in a paginated fashion.
+
+      :param list_request: Contains parameters for the specified sorting criteria,
+                           optional pagination key and amount of records
+                           to fetch.
+      :type list_request: NoFilterSubtypeListRequest
+
+      :returns: Response of fetching datasets from datastore API.
+      :rtype: ListRegistryResponse
+
+
+
+   .. py:method:: generate_presigned_url(presigned_url: ProvenaInterfaces.DataStoreAPI.PresignedURLRequest) -> ProvenaInterfaces.DataStoreAPI.PresignedURLResponse
+      :async:
+
+
+      Generates a presigned url for an existing dataset within the datastore.
+
+      :param presigned_url: Contains the dataset id + file path + length of expiry of URL.
+      :type presigned_url: PresignedURLRequest
+
+      :returns: A response containing the presigned url.
+      :rtype: PresignedURLResponse
+
+
+
+   .. py:method:: generate_read_access_credentials(read_access_credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Creates a read-access for a certain subdirectory of the S3 bucket.
+
+      :param read_access_credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type read_access_credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: generate_write_access_credentials(write_access_credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Creates a write-access for a certain subdirectory of the S3 bucket.
+
+      :param write_access_credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type write_access_credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: fetch_dataset(id: str) -> ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse
+      :async:
+
+
+      Fetches a dataset from the datastore based on the provided
+      ID.
+
+      :param id: The unique identifier of the dataset to be retrieved.
+                 For example: "10378.1/1451860"
+      :type id: str
+
+      :returns: A interactive python datatype of type RegistryFetchResponse
+                containing the dataset details.
+      :rtype: RegistryFetchResponse
+
+      :raises CustomTimeoutException: Raised if the request times out.
+      :raises Exception: General exception for handling unexpected errors.
+      :raises ValueError: Raised if there is an issue in parsing the response into the expected model.
+
+
+
+   .. py:method:: mint_dataset(dataset_info: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.MintResponse
+      :async:
+
+
+      Creates a new dataset in the datastore with the provided dataset information.
+
+      :param dataset_info: A structured format containing all necessary information to register a new dataset, including associations,
+                           approvals, and dataset-specific information.
+      :type dataset_info: CollectionFormat
+
+      :returns: A interactive python datatype of type MintResponse
+                containing the newly created dataset details.
+      :rtype: MintResponse
+
+      :raises BadRequestException: Raised if the server returns a 400 status code, indicating a bad request.
+      :raises CustomTimeoutException: Raised if the request times out.
+      :raises Exception: General exception for handling unexpected errors.
+      :raises ValueError: Raised if there is an issue in parsing the response into the expected model.
+
+
+
+.. py:class:: SearchClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: SearchEndpoints) -> str
+
+
+   .. py:method:: search_registry(query: str, limit: provenaclient.clients.client_helpers.Optional[int], subtype_filter: provenaclient.clients.client_helpers.Optional[provenaclient.clients.client_helpers.ItemSubType]) -> ProvenaInterfaces.SearchAPI.QueryResults
+      :async:
+
+
+      Searches registry using search API for given query, limit and subtype.
+
+      :param query: The query
+      :type query: str
+      :param limit: The record result limit
+      :type limit: Optional[int]
+      :param subtype_filter: The subtype to filter if desired
+      :type subtype_filter: Optional[ItemSubType]
+
+      :raises e: Generic exceptions as usual
+
+      :returns: The results, not loaded.
+      :rtype: QueryResults
+
+
+
+.. py:class:: AuthClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  AuthAdminSubClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: AuthEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: get_user_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets the users access request history
+
+      :returns: The list of requests
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: post_user_request_change(body: ProvenaInterfaces.AuthAPI.AccessReport, send_email: bool) -> provenaclient.utils.helpers.StatusResponse
+      :async:
+
+
+      Requests a change by diffing access models
+
+      :param body: The new access desired
+      :type body: AccessReport
+      :param send_email: Email alert
+      :type send_email: bool
+
+      :returns: Ok?
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_user_pending_request_history() -> ProvenaInterfaces.AuthAPI.AccessRequestList
+      :async:
+
+
+      Gets only pending requests from history
+
+      :returns: The list
+      :rtype: AccessRequestList
+
+
+
+   .. py:method:: get_user_generate_access_report() -> ProvenaInterfaces.AuthAPI.AccessReportResponse
+      :async:
+
+
+      Generates an access report detailing system access.
+
+      :returns: The response
+      :rtype: AccessReportResponse
+
+
+
+   .. py:method:: get_list_groups() -> ProvenaInterfaces.AuthAPI.ListGroupsResponse
+      :async:
+
+
+      Lists all groups
+
+      :returns: List of groups
+      :rtype: ListGroupsResponse
+
+
+
+   .. py:method:: get_describe_group(group_id: str) -> ProvenaInterfaces.AuthAPI.DescribeGroupResponse
+      :async:
+
+
+      Describes a specific gruop
+
+      :param group_id: The id of group
+      :type group_id: str
+
+      :returns: Response with details
+      :rtype: DescribeGroupResponse
+
+
+
+   .. py:method:: get_list_membership() -> ProvenaInterfaces.AuthAPI.ListUserMembershipResponse
+      :async:
+
+
+      Gets the list of groups user is member of
+
+      :returns: List and details
+      :rtype: ListUserMembershipResponse
+
+
+
+   .. py:method:: get_list_group_members(group_id: str) -> ProvenaInterfaces.AuthAPI.ListMembersResponse
+      :async:
+
+
+      Lists the members of a given group
+
+      :param group_id: The group to lookup
+      :type group_id: str
+
+      :returns: Members
+      :rtype: ListMembersResponse
+
+
+
+   .. py:method:: get_check_membership(group_id: str) -> ProvenaInterfaces.AuthAPI.CheckMembershipResponse
+      :async:
+
+
+      Checks if user is in specific group
+
+      :param group_id: The group to check
+      :type group_id: str
+
+      :returns: In group?
+      :rtype: CheckMembershipResponse
+
+
+
+   .. py:method:: get_link_lookup_username(username: provenaclient.utils.helpers.Optional[str] = None) -> ProvenaInterfaces.AuthAPI.UserLinkUserLookupResponse
+      :async:
+
+
+      Looks up either current user or specified user
+
+      :param username: The username if not current user. Defaults to None.
+      :type username: Optional[str], optional
+
+      :returns: The response indicating link
+      :rtype: UserLinkUserLookupResponse
+
+
+
+   .. py:method:: post_link_assign(body: ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest) -> ProvenaInterfaces.AuthAPI.UserLinkUserAssignResponse
+      :async:
+
+
+      Assigns link to current user.
+
+      :param body: The link to assign
+      :type body: UserLinkUserAssignRequest
+
+      :returns: The response indicating success
+      :rtype: UserLinkUserAssignResponse
+
+
+
+   .. py:method:: post_link_validate(body: ProvenaInterfaces.AuthAPI.UserLinkUserAssignRequest) -> ProvenaInterfaces.AuthAPI.UserLinkUserValidateResponse
+      :async:
+
+
+      Validates link before making it.
+
+      :param body: The link to assign
+      :type body: UserLinkUserAssignRequest
+
+      :returns: Valid?
+      :rtype: UserLinkUserValidateResponse
+
+
+
+.. py:class:: ProvClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  ProvAdminClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: ProvAPIEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.general.HealthCheckResponse
+      :async:
+
+
+      Checks the health status of the PROV-API.
+
+      :returns: Response containing the PROV-API health information.
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: post_update_model_run(model_run_id: str, reason: str, record: ProvenaInterfaces.ProvenanceAPI.ModelRunRecord) -> ProvenaInterfaces.ProvenanceAPI.PostUpdateModelRunResponse
+      :async:
+
+
+      Updates an existing model run in the system.
+
+      :param model_run_id: The ID of the model run to update
+      :type model_run_id: str
+      :param reason: The reason for the update
+      :type reason: str
+      :param record: The updated model run record
+      :type record: ModelRunRecord
+
+      :returns: The response containing the job session ID
+      :rtype: PostUpdateModelRunResponse
+
+
+
+   .. py:method:: explore_upstream(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Explores in the upstream direction (inputs/associations)
+      starting at the specified node handle ID.
+      The search depth is bounded by the depth parameter which has a default maximum of 100.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: explore_downstream(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Explores in the downstream direction (inputs/associations)
+      starting at the specified node handle ID.
+      The search depth is bounded by the depth parameter which has a default maximum of 100.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: get_contributing_datasets(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Fetches datasets (inputs) which involved in a model run
+      naturally in the upstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: get_effected_datasets(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Fetches datasets (outputs) which are derived from the model run
+      naturally in the downstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: get_contributing_agents(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+      naturally in the upstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the upstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: get_effected_agents(starting_id: str, depth: int) -> ProvenaInterfaces.ProvenanceAPI.LineageResponse
+      :async:
+
+
+      Fetches agents (organisations or peoples) that are involved or impacted by the model run.
+      naturally in the downstream direction.
+
+      :param starting_id: The ID of the entity to start at.
+      :type starting_id: str
+      :param depth: The depth to traverse in the downstream direction, by default 100.
+      :type depth: int, optional
+
+      :returns: A response containing the status, node count, and networkx serialised graph response.
+      :rtype: LineageResponse
+
+
+
+   .. py:method:: register_batch_model_runs(model_run_batch_payload: ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunRequest) -> ProvenaInterfaces.ProvenanceAPI.RegisterBatchModelRunResponse
+      :async:
+
+
+      This function allows you to register multiple model runs in one go (batch) asynchronously.
+
+      Note: You can utilise the returned session ID to poll on
+      the JOB API to check status of the model run registration(s).
+
+      :param batch_model_run_payload: A list of model runs (ModelRunRecord objects)
+      :type batch_model_run_payload: RegisterBatchModelRunRequest
+
+      :returns: The job session id derived from job-api for the model-run batch.
+      :rtype: RegisterBatchModelRunResponse
+
+
+
+   .. py:method:: register_model_run(model_run_payload: ProvenaInterfaces.ProvenanceAPI.ModelRunRecord) -> ProvenaInterfaces.ProvenanceAPI.RegisterModelRunResponse
+      :async:
+
+
+      Asynchronously registers a single model run.
+
+      Note: You can utilise the returned session ID to poll on
+      the JOB API to check status of the model run registration.
+
+      :param model_run_payload: Contains information needed for the
+                                model run such as workflow template,
+                                inputs, outputs, description etc.
+      :type model_run_payload: ModelRunRecord
+
+      :returns: The job session id derived from job-api for the model-run.
+      :rtype: RegisterModelRunResponse
+
+
+
+   .. py:method:: generate_csv_template(workflow_template_id: str) -> str
+      :async:
+
+
+      Generates a model run csv template to be utilised
+      for creating model runs through csv format.
+
+      :param workflow_template_id: An ID of a created and existing model run workflow template.
+      :type workflow_template_id: str
+
+
+
+   .. py:method:: convert_model_runs_to_csv(csv_file_contents: str) -> ProvenaInterfaces.ProvenanceAPI.ConvertModelRunsResponse
+      :async:
+
+
+      Reads a CSV file, and it's defined model run contents
+      and lodges a model run.
+
+      :param csv_file_contents: Contains the model run contents.
+      :type csv_file_contents: str
+
+      :returns: Returns the model run information in an interactive python
+                datatype.
+      :rtype: ConvertModelRunsResponse
+
+
+
+   .. py:method:: regenerate_csv_from_model_run_batch(batch_id: str) -> str
+      :async:
+
+
+      Regenerate/create a csv file containing model
+      run information from a model run batch job.
+
+      The batch id must exist in the system.
+
+      :param batch_id: Obtained from creating a batch model run.
+      :type batch_id: str
+
+
+
+   .. py:method:: generate_report(report_request: ProvenaInterfaces.ProvenanceAPI.GenerateReportRequest) -> provenaclient.clients.client_helpers.ByteString
+      :async:
+
+
+      Generates a provenance report from a Study or Model Run Entity containing the
+      associated inputs, model runs and outputs involved.
+
+      The report is generated in `.docx` format by making a POST request to the API.
+
+      :param report_request: The request object containing the parameters for generating the report, including the `id`,
+                             `item_subtype`, and `depth`.
+      :type report_request: GenerateReportRequest
+
+      :returns: The raw byte content of the generated `.docx` file. The type of the returned content will be either
+                `bytes` or `bytearray`, which can be directly saved to a file.
+      :rtype: ByteString
+
+      :raises AssertionError: If the response content is not found or is not in the expected `bytes` or `bytearray` format.
+
+
+
+.. py:class:: RegistryClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  RegistryAdminClient
+
+
+   .. py:attribute:: general
+      :type:  RegistryGeneralClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_subtype_endpoint(action: provenaclient.utils.registry_endpoints.RegistryAction, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> str
+
+
+   .. py:method:: _build_general_endpoint(endpoint: GenericRegistryEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.general.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_item(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, fetch_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType], seed_allowed: ProvenaInterfaces.RegistryAPI.Optional[bool] = None) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Ascertains the correct endpoint based on the subtype provided, then runs the fetch operation, parsing the data as the specified model.
+
+      :param id: The id of the item to fetch.
+      :type id: str
+      :param item_subtype: The subtype of the item to fetch.
+      :type item_subtype: ItemSubType
+      :param fetch_response_model: The response pydantic model to parse as e.g. OrganisationFetchResponse
+      :type fetch_response_model: Type[BaseModelType]
+      :param seed_allowed: Should the endpoint throw an error if the item is a seed item?  Defaults to None.
+      :type seed_allowed: Optional[bool], optional
+
+      :returns: The fetch response parsed as the specified model.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: update_item(id: str, reason: ProvenaInterfaces.RegistryAPI.Optional[str], item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, domain_info: ProvenaInterfaces.RegistryAPI.DomainInfoBase, update_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Ascertains the correct endpoint then runs the update operation on an existing item by providing new domain info.
+
+      :param id: The id of item to update.
+      :type id: str
+      :param reason: The reason for updating, if any
+      :type reason: Optional[str]
+      :param item_subtype: The subtype to update
+      :type item_subtype: ItemSubType
+      :param domain_info: The domain info to replace existing item with
+      :type domain_info: DomainInfoBase
+      :param update_response_model: The response model to parse e.g. StatusResponse
+      :type update_response_model: Type[BaseModelType]
+
+      :returns: The response model parsed
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: list_items(list_items_payload: ProvenaInterfaces.RegistryAPI.GeneralListRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, update_model_response: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Lists items within the registry based on filter criteria.
+
+      :param list_items_payload: The request containing filter and sort criteria.
+      :type list_items_payload: GeneralListRequest
+      :param item_subtype: The subtype of the items to list.
+      :type item_subtype: ItemSubType
+      :param update_model_response: The response model to parse.
+      :type update_model_response: Type[BaseModelType]
+
+      :returns: The response containing the list of items.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: seed_item(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, seed_model_response: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Seeds an item in the registry.
+
+      :param item_subtype: The subtype of the item to seed.
+      :type item_subtype: ItemSubType
+      :param seed_model_response: The response model to parse.
+      :type seed_model_response: Type[BaseModelType]
+
+      :returns: The response containing the details of the seeded item.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: revert_item(revert_request: ProvenaInterfaces.RegistryAPI.ItemRevertRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.ItemRevertResponse
+      :async:
+
+
+      Reverts an item in the registry.
+
+      :param revert_request: The revert request.
+      :type revert_request: ItemRevertRequest
+      :param item_subtype: The subtype of the item to revert.
+      :type item_subtype: ItemSubType
+
+      :returns: The revert response.
+      :rtype: ItemRevertResponse
+
+
+
+   .. py:method:: create_item(create_item_request: ProvenaInterfaces.RegistryAPI.DomainInfoBase, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, create_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Creates an item in the registry.
+
+      :param create_item_request: The domain information required to create the item.
+      :type create_item_request: DomainInfoBase
+      :param item_subtype: The subtype of the item to create.
+      :type item_subtype: ItemSubType
+      :param create_response_model: The response model to parse.
+      :type create_response_model: Type[BaseModelType]
+
+      :returns: The response containing the details of the created item.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: get_schema(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.JsonSchemaResponse
+      :async:
+
+
+      Gets the schema for the item subtype.
+
+      :param item_subtype: The subtype of the item to get the schema for.
+      :type item_subtype: ItemSubType
+
+      :returns: The JSON schema response.
+      :rtype: JsonSchemaResponse
+
+
+
+   .. py:method:: validate_item(validate_request: ProvenaInterfaces.RegistryAPI.DomainInfoBase, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Validates an item in the registry.
+
+      :param validate_request: The domain information of the item to be validated.
+      :type validate_request: DomainInfoBase
+      :param item_subtype: The subtype of the item to validate.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response indicating the result of the validation.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: evaluate_auth_access(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.DescribeAccessResponse
+      :async:
+
+
+      Evaluates the auth access for an item.
+
+      :param id: The ID of the item to evaluate auth access for.
+      :type id: str
+      :param item_subtype: The subtype of the item to evaluate auth access for.
+      :type item_subtype: ItemSubType
+
+      :returns: The describe access response.
+      :rtype: DescribeAccessResponse
+
+
+
+   .. py:method:: get_auth_configuration(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.AccessSettings
+      :async:
+
+
+      Gets the auth configuration for an item.
+
+      :param id: The ID of the item to get auth configuration for.
+      :type id: str
+      :param item_subtype: The subtype of the item to get auth configuration for.
+      :type item_subtype: ItemSubType
+
+      :returns: The access settings.
+      :rtype: AccessSettings
+
+
+
+   .. py:method:: modify_auth_configuration(id: str, auth_change_request: ProvenaInterfaces.RegistryAPI.AccessSettings, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Modifies the auth configuration for an item.
+
+      :param id: The ID of the item to modify auth configuration for.
+      :type id: str
+      :param auth_change_request: The auth change request.
+      :type auth_change_request: AccessSettings
+      :param item_subtype: The subtype of the item to modify auth configuration for.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_auth_roles(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.AuthRolesResponse
+      :async:
+
+
+      Gets the auth roles for the item subtype.
+
+      :param item_subtype: The subtype of the item to get auth roles for.
+      :type item_subtype: ItemSubType
+
+      :returns: The auth roles response.
+      :rtype: AuthRolesResponse
+
+
+
+   .. py:method:: lock_resource(lock_resource_request: ProvenaInterfaces.RegistryAPI.LockChangeRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Locks a resource in the registry.
+
+      :param lock_resource_request: The lock resource request.
+      :type lock_resource_request: LockChangeRequest
+      :param item_subtype: The subtype of the resource to lock.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: unlock_resource(unlock_resource_request: ProvenaInterfaces.RegistryAPI.LockChangeRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Unlocks a resource in the registry.
+
+      :param unlock_resource_request: The unlock resource request.
+      :type unlock_resource_request: LockChangeRequest
+      :param item_subtype: The subtype of the resource to unlock.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_lock_history(handle_id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.LockHistoryResponse
+      :async:
+
+
+      Gets the lock history for an item.
+
+      :param handle_id: The handle ID of the item to get lock history for.
+      :type handle_id: str
+      :param item_subtype: The subtype of the item to get lock history for.
+      :type item_subtype: ItemSubType
+
+      :returns: The lock history response.
+      :rtype: LockHistoryResponse
+
+
+
+   .. py:method:: get_lock_status(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.LockStatusResponse
+      :async:
+
+
+      Gets the lock status for an item.
+
+      :param id: The item ID.
+      :type id: str
+      :param item_subtype: The subtype of the item to get lock status for.
+      :type item_subtype: ItemSubType
+
+      :returns: The lock status response.
+      :rtype: LockStatusResponse
+
+
+
+   .. py:method:: version(version_request: ProvenaInterfaces.RegistryAPI.VersionRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Versions an item in the registry.
+
+      :param version_request: The version request containing the version details.
+      :type version_request: VersionRequest
+      :param item_subtype: The subtype of the item to version.
+      :type item_subtype: ItemSubType
+
+      :returns: The version response.
+      :rtype: VersionResponse
+
+
+
+.. py:class:: JobAPIClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  JobAPIAdminSubClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: JobAPIEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_job(session_id: str) -> ProvenaInterfaces.AsyncJobAPI.GetJobResponse
+      :async:
+
+
+      Fetches a job by session id
+
+      :param session_id: The session ID
+      :type session_id: str
+
+      :returns: The job fetched
+      :rtype: GetJobResponse
+
+
+
+   .. py:method:: list_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.ListJobsRequest) -> ProvenaInterfaces.AsyncJobAPI.ListJobsResponse
+      :async:
+
+
+      Lists all jobs for the given user
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: list_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest) -> ProvenaInterfaces.AsyncJobAPI.ListByBatchResponse
+      :async:
+
+
+      Gets all jobs within a batch.
+
+      :param list_request: The request including batch ID
+      :type list_request: ListByBatchRequest
+
+      :returns: The response including list of jobs
+      :rtype: ListByBatchResponse
+
+
+
+.. py:class:: IdServiceClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: IdServiceEndpoints) -> str
+
+
+   .. py:method:: mint(body: ProvenaInterfaces.HandleAPI.MintRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Mints a new handle with given properties.
+
+      :param body: The payload
+      :type body: MintRequest
+
+      :returns: The resulting handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value(body: ProvenaInterfaces.HandleAPI.AddValueRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds value to a handle.
+
+      :param body: The value to add
+      :type body: AddValueRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value_by_index(body: ProvenaInterfaces.HandleAPI.AddValueIndexRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds a value at specified index
+
+      :param body: The value to add
+      :type body: AddValueIndexRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: list() -> ProvenaInterfaces.HandleAPI.ListResponse
+      :async:
+
+
+      Lists all handles under domain.
+
+      :returns: The response list
+      :rtype: ListResponse
+
+
+
+   .. py:method:: modify_by_index(body: ProvenaInterfaces.HandleAPI.ModifyRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Modifies existing handle value at specified index
+
+      :param body: The request to modify
+      :type body: ModifyRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: remove_by_index(body: ProvenaInterfaces.HandleAPI.RemoveRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Removes value at specified index
+
+      :param body: The removal request
+      :type body: RemoveRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
