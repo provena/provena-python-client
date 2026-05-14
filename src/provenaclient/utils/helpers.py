@@ -13,9 +13,10 @@ Date      	By	Comments
 '''
 
 from pydantic import BaseModel, ValidationError
-from typing import Dict, Any, List, Mapping, Optional, Tuple, TypeVar, Type, Union, ByteString
+from typing import Any, Dict, List, Mapping, Optional, Tuple, TypeVar, Type, Union, ByteString
 import json
 from httpx import Response
+from httpx._types import RequestFiles
 from provenaclient.utils.exceptions import AuthException, HTTPValidationException, ServerException, BadRequestException, ValidationException, NotFoundException
 from provenaclient.utils.exceptions import BaseException
 from ProvenaInterfaces.SharedTypes import StatusResponse
@@ -29,7 +30,7 @@ ItemModelType = TypeVar("ItemModelType", bound=ItemBase)
 # Type alias for json data
 JsonData = Union[List[Dict[str, Any]],Dict[str, Any]]
 # Type alias for httpx file upload.
-HttpxFileUpload = Dict[str, Tuple[str, ByteString, str]]
+HttpxFileUpload = RequestFiles
 
 ParamTypes = Union[str, int, bool]
 
