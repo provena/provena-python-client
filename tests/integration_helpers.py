@@ -1,5 +1,6 @@
 
 from dataclasses import dataclass
+import json
 from pathlib import Path
 import time
 import os
@@ -371,6 +372,112 @@ def assert_graph_property(prop: GraphProperty, graph: Graph) -> None:
             break
     
     assert found, f"Could not find relation specified {prop}."
+
+
+_MAX_LINEAGE_DEBUG_JSON_CHARS = 12000
+
+
+def _json_debug_trunc(obj: object, max_len: int = _MAX_LINEAGE_DEBUG_JSON_CHARS) -> str:
+    try:
+        s = json.dumps(obj, indent=2, default=str)
+    except TypeError:
+        s = repr(obj)
+    if len(s) > max_len:
+        return s[:max_len] + f"\n... [truncated, full length {len(s)}]"
+    return s
+
+
+def format_lineage_response_debug(
+    lineage: CustomLineageResponse, node_a: str, node_b: str
+) -> str:
+    """Human-readable dump of explore-lineage style responses (for failed assertions)."""
+    lines = [
+        "--- lineage graph debug (model run vs study) ---",
+        f"endpoint A (e.g. model run): {node_a!r}",
+        f"endpoint B (e.g. study):      {node_b!r}",
+        "",
+        "[lineage response fields]",
+    ]
+    for key in ("status", "success", "record_count", "details", "message"):
+        if hasattr(lineage, key):
+            lines.append(f"  {key}: {getattr(lineage, key, None)!r}")
+    g = lineage.graph
+    lines.append("")
+    if g is None:
+        lines.append("[graph] None")
+    else:
+        lines.append("[parsed graph]")
+        lines.append(f"  directed={g.directed!r} multigraph={g.multigraph!r}")
+        lines.append(f"  nodes: {len(g.nodes)}  links: {len(g.links)}")
+        lines.append("")
+        lines.append("[networkx inner `graph` attribute (metadata / stray keys)]")
+        lines.append(_json_debug_trunc(g.graph, max_len=4000))
+        lines.append("[nodes]")
+        if not g.nodes:
+            lines.append("  (none)")
+        else:
+            for n in g.nodes:
+                lines.append(
+                    f"  id={n.id!r} item_subtype={getattr(n, 'item_subtype', None)!r}"
+                )
+        lines.append("")
+        lines.append("[links]")
+        if not g.links:
+            lines.append("  (none — parser may have defaulted missing API key to [])")
+        else:
+            for link in g.links:
+                lines.append(
+                    f"  type={link.type!r} source={link.source!r} target={link.target!r}"
+                )
+        lines.append("")
+        lines.append("[links touching either endpoint]")
+        touching = [
+            link
+            for link in g.links
+            if node_a in (link.source, link.target)
+            or node_b in (link.source, link.target)
+        ]
+        if not touching:
+            lines.append("  (none)")
+        else:
+            for link in touching:
+                lines.append(
+                    f"  type={link.type!r} source={link.source!r} target={link.target!r}"
+                )
+    lines.append("")
+    lines.append("[full lineage model_dump JSON, truncated]")
+    try:
+        lines.append(_json_debug_trunc(lineage.model_dump(mode="python")))
+    except Exception as exc:  # pragma: no cover - debug path
+        lines.append(f"  <model_dump failed: {exc}>")
+        lines.append(_json_debug_trunc(repr(lineage)))
+    lines.append("--- end lineage graph debug ---")
+    return "\n".join(lines)
+
+
+def assert_graph_relation_either_direction(
+    lineage: CustomLineageResponse,
+    relation_type: str,
+    node_a: str,
+    node_b: str,
+) -> None:
+    """Assert an edge with ``relation_type`` exists between the two nodes (either orientation).
+
+    On failure, raises AssertionError whose message includes a full debug dump of ``lineage``
+    (nodes, links, and truncated JSON) so ``pytest`` output shows it without ``-s``.
+    """
+    graph = lineage.graph
+    assert graph is not None, format_lineage_response_debug(lineage, node_a, node_b)
+    for link in graph.links:
+        if link.type != relation_type:
+            continue
+        if {link.source, link.target} == {node_a, node_b}:
+            return
+    assert False, (
+        f"Could not find {relation_type!r} between {node_a!r} and {node_b!r}.\n"
+        + format_lineage_response_debug(lineage, node_a, node_b)
+    )
+
 
 def assert_non_empty_graph_property(prop: GraphProperty, lineage_response: CustomLineageResponse) -> None:
     """

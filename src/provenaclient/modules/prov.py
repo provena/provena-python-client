@@ -258,9 +258,7 @@ class Prov(ModuleService):
         """
 
         upstream_response = await self._prov_api_client.explore_upstream(starting_id=starting_id, depth=depth)
-        typed_upstream_response = CustomLineageResponse.parse_obj(
-            upstream_response.dict())
-        return typed_upstream_response
+        return CustomLineageResponse.model_validate(upstream_response.model_dump())
 
     async def explore_downstream(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Explores in the downstream direction (inputs/associations) 
@@ -280,10 +278,8 @@ class Prov(ModuleService):
             A typed response containing the status, node count, and networkx serialised graph response.
         """
 
-        typed_downstream_response = await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
-        typed_downstream_response = CustomLineageResponse.parse_obj(
-            typed_downstream_response.dict())
-        return typed_downstream_response
+        downstream_response = await self._prov_api_client.explore_downstream(starting_id=starting_id, depth=depth)
+        return CustomLineageResponse.model_validate(downstream_response.model_dump())
 
     async def get_contributing_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches datasets (inputs) which involved in a model run
@@ -303,9 +299,7 @@ class Prov(ModuleService):
         """
 
         contributing_datasets = await self._prov_api_client.get_contributing_datasets(starting_id=starting_id, depth=depth)
-        typed_contributing_datasets = CustomLineageResponse.parse_obj(
-            contributing_datasets.dict())
-        return typed_contributing_datasets
+        return CustomLineageResponse.model_validate(contributing_datasets.model_dump())
 
     async def get_effected_datasets(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches datasets (outputs) which are derived from the model run
@@ -325,9 +319,7 @@ class Prov(ModuleService):
         """
 
         effected_datasets_response = await self._prov_api_client.get_effected_datasets(starting_id=starting_id, depth=depth)
-        typed_effected_datasets = CustomLineageResponse.parse_obj(
-            effected_datasets_response.dict())
-        return typed_effected_datasets
+        return CustomLineageResponse.model_validate(effected_datasets_response.model_dump())
 
     async def get_contributing_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
@@ -347,9 +339,7 @@ class Prov(ModuleService):
         """
 
         contributing_agents_response = await self._prov_api_client.get_contributing_agents(starting_id=starting_id, depth=depth)
-        typed_contributing_agents = CustomLineageResponse.parse_obj(
-            contributing_agents_response.dict())
-        return typed_contributing_agents
+        return CustomLineageResponse.model_validate(contributing_agents_response.model_dump())
 
     async def get_effected_agents(self, starting_id: str, depth: int = PROV_API_DEFAULT_SEARCH_DEPTH) -> CustomLineageResponse:
         """Fetches agents (organisations or peoples) that are involved or impacted by the model run.
@@ -369,9 +359,7 @@ class Prov(ModuleService):
         """
 
         effected_agents_response = await self._prov_api_client.get_effected_agents(starting_id=starting_id, depth=depth)
-        typed_effected_agents = CustomLineageResponse.parse_obj(
-            effected_agents_response.dict())
-        return typed_effected_agents
+        return CustomLineageResponse.model_validate(effected_agents_response.model_dump())
 
     async def register_batch_model_runs(self, batch_model_run_payload: RegisterBatchModelRunRequest) -> RegisterBatchModelRunResponse:
         """This function allows you to register multiple model runs in one go (batch) asynchronously.

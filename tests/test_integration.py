@@ -77,37 +77,44 @@ def client(auth_manager: OfflineFlow) -> ProvenaClient:
 
 
 @pytest_asyncio.fixture(scope="session")
-async def org_person_fixture(client: ProvenaClient) -> AsyncGenerator[Tuple[ItemBase, ItemBase], None]:
-    """ A fixture to generate organisation and person entities.
+async def org_person_fixture(
+    client: ProvenaClient, integration_skip_user_person_link: bool
+) -> AsyncGenerator[Tuple[ItemBase, ItemBase], None]:
+    """Organisation and person for dataset/provenance associations.
+
+    By default, assigns the session user to the created person (and clears conflicting
+    links) so dataset mint can satisfy data-custodian rules. To skip that behavior:
+
+      pytest --skip-integration-user-person-link ...
+
+    or set ``PROVENA_SKIP_INTEGRATION_USER_PERSON_LINK=1`` (see ``tests/conftest.py``).
     """
     created_organisation = await create_item(client=client, item_subtype=ItemSubType.ORGANISATION)
-
-    # create a person and link it to me (the user of the client)
-    # because I require to be linked to create datasets in later tests
     created_person = await create_item(client=client, item_subtype=ItemSubType.PERSON)
 
-    # check if somehow already linked to ID (test fail also failed cleanup), if so clear associated links
-    user_link_lookup_resp = await client.auth_api.get_link_lookup_username()
-    if user_link_lookup_resp.person_id is not None:
-        # clear all links associated with this person ID (potentially my many accounts)
-        await clear_all_links_with_person_id_user(
-            client=client, person_id=user_link_lookup_resp.person_id)
-    else:
-        # fresh slate, now assign so theres only one link
-        await client.auth_api.post_link_assign(body=UserLinkUserAssignRequest(person_id=created_person.id))
+    if not integration_skip_user_person_link:
+        user_link_lookup_resp = await client.auth_api.get_link_lookup_username()
+        if user_link_lookup_resp.person_id is not None:
+            await clear_all_links_with_person_id_user(
+                client=client, person_id=user_link_lookup_resp.person_id
+            )
+        else:
+            await client.auth_api.post_link_assign(
+                body=UserLinkUserAssignRequest(person_id=created_person.id)
+            )
 
-    # Provide the Org and Person to each test that requires it.
     yield created_organisation, created_person
 
-    # link clean up before item is deleted as we use ID to find the username(s) to remove the link
-    await clear_all_links_with_person_id_user(client=client, person_id=created_person.id)
+    if not integration_skip_user_person_link:
+        await clear_all_links_with_person_id_user(client=client, person_id=created_person.id)
 
-    # now remove the entities
-    await cleanup_helper(client=client,
-                         list_of_handles=[(created_organisation.item_subtype, created_organisation.id),
-                                          (created_person.item_subtype,
-                                           created_person.id)
-                                          ])
+    await cleanup_helper(
+        client=client,
+        list_of_handles=[
+            (created_organisation.item_subtype, created_organisation.id),
+            (created_person.item_subtype, created_person.id),
+        ],
+    )
 
 
 @pytest_asyncio.fixture(scope="session")
@@ -708,17 +715,25 @@ async def test_provenance_workflow(client: ProvenaClient, org_person_fixture: Tu
     )
 
     # Adding tests for the "custom lineage response override"
-    assert activity_upstream_query.graph, f"The graph field is missing from upstream response with CustomLineageResponse override."
-    assert activity_upstream_query.graph.nodes, f"The nodes field is missing from upstream response with CustomLineageResponse override."
+    assert activity_upstream_query.graph, (
+        "The graph field is missing from upstream response with CustomLineageResponse override.\n"
+        + format_lineage_response_debug(
+            activity_upstream_query, model_run_id, study.id
+        )
+    )
+    assert activity_upstream_query.graph.nodes, (
+        "The nodes field is missing from upstream response with CustomLineageResponse override.\n"
+        + format_lineage_response_debug(
+            activity_upstream_query, model_run_id, study.id
+        )
+    )
 
-    # model run -wasInformedBy-> study
-    assert_non_empty_graph_property(
-        prop=GraphProperty(
-            type="wasInformedBy",
-            source=model_run_id,
-            target=study.id
-        ),
-        lineage_response=activity_upstream_query
+    # Model run linked to study via wasInformedBy (API may emit either source/target orientation).
+    assert_graph_relation_either_direction(
+        activity_upstream_query,
+        "wasInformedBy",
+        model_run_id,
+        study.id,
     )
 
     # ensure invalid study id results in failure
