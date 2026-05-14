@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "provenaclient"
-version = "0.29.1"
+version = "0.29.2"
 description = "A client library for interfacing with a Provena instance."
 authors = ["RRAP <rrapisdev@gmail.com>"]
 license = "None"
@@ -51,6 +51,7 @@ patch_without_tag = true
 commit_version_number = true
 patch_tag = ["fix", "perf"]
 ignore_tags = ["chore", "docs", "style", "refactor", "test"]
+
 
 
 [build-system]

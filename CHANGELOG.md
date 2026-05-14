@@ -1,7 +1,26 @@
 # CHANGELOG
 
 
+## v0.29.2 (2026-05-14)
+
+### Bug Fixes
+
+* fix: Handle new networkx way of passing links/edges (#47)
+
+Co-authored-by: Petridis, Ross (NCMI, Hobart) <Ross.Petridis@csiro.au> ([`d6c04f8`](https://github.com/provena/provena-python-client/commit/d6c04f8957a2a7f519e48b3b3eb99831a72f4fc1))
+
+### Unknown
+
+* Merge branch 'main' of github.com:provena/provena-python-client ([`386e806`](https://github.com/provena/provena-python-client/commit/386e806677670ce99d42c2c986760889d8c4c989))
+
+
 ## v0.29.1 (2025-08-26)
+
+### Chores
+
+* chore: clarifying note
+
+Signed-off-by: Peter Baker <peter.baker122@csiro.au> ([`21e5148`](https://github.com/provena/provena-python-client/commit/21e514812db5c295022a59fa347de38fc6881340))
 
 ### Unknown
 
