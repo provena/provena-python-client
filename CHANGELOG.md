@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.29.3 (2026-09-15)
+
+### Bug Fixes
+
+* fix: python and packages upgrade (#48)
+
+Co-authored-by: Jonathan Yu <jonathan.yu@csiro.au>
+Co-authored-by: Petridis, Ross (NCMI, Hobart) <Ross.Petridis@csiro.au>
+Co-authored-by: Peter Baker <peter.baker122@csiro.au> ([`d4a9e4a`](https://github.com/provena/provena-python-client/commit/d4a9e4a894c8bd6d4fd2acd9e28abb70e117dea7))
+
+
 ## v0.29.2 (2026-05-14)
 
 ### Bug Fixes
