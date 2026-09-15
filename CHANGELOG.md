@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.29.4 (2026-09-15)
+
+### Bug Fixes
+
+* fix: action versioning (#50)
+
+Co-authored-by: Cursor <cursoragent@cursor.com> ([`37e13f1`](https://github.com/provena/provena-python-client/commit/37e13f19964b91f4634aa5472fe606856184cadf))
+
+
 ## v0.29.3 (2026-09-15)
 
 ### Bug Fixes
