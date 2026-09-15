@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.29.5 (2026-09-15)
+
+### Bug Fixes
+
+* fix: publish from workflow (#51)
+
+Co-authored-by: Cursor <cursoragent@cursor.com> ([`08d7c4e`](https://github.com/provena/provena-python-client/commit/08d7c4e6a0cc0234bdcb469112885b94fe49b878))
+
+
 ## v0.29.4 (2026-09-15)
 
 ### Bug Fixes
