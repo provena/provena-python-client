@@ -14,6 +14,7 @@ Date      	By	Comments
 
 from typing import Any, List, Optional, Union
 import httpx
+from httpx._types import RequestFiles
 from provenaclient.auth.helpers import HttpxBearerAuth
 from provenaclient.utils.helpers import JsonData
 
@@ -94,7 +95,7 @@ class HttpClient:
         auth: HttpxBearerAuth,
         params: Optional[dict[str, Any]] = None,
         data: Union[Optional[dict[str, Any]], Optional[List[dict[str, Any]]]] = None,
-        files: Optional[dict[str, tuple[str, bytes, str]]] = None,
+        files: Optional[RequestFiles] = None,
         headers: Optional[dict[str, Any]] = None,
     ) -> httpx.Response:
         """Makes an asynchronous HTTP POST request to the specified URL with the provided data, authentication, and headers.
@@ -109,7 +110,7 @@ class HttpClient:
             Authentication object (e.g., bearer token), which is required for the POST request.
         data : Optional[dict[str,Any]], optional
             A dictionary of the data to be sent in the body of the POST request, by default None.
-        files: Optional[dict[str, tuple[str, bytes, str]]], optional
+        files: Optional[RequestFiles], optional
             A files request object containing the file content and the media type.
         headers : Optional[dict[str, Any]], optional
             A dictionary representing additional HTTP headers to send with the POST request, by default None.

@@ -479,9 +479,9 @@ async def test_datastore_pagination(client: ProvenaClient, dataset_fixture: Tupl
     )
 
     dataset_list = await client.datastore.list_datasets(list_dataset_request=list_dataset_request)
-    dataset_list_items: List[ItemDataset] = assert_list_items(
+    dataset_list_items_0: List[ItemDataset] = assert_list_items(
         item=dataset_list, item_subtype=ItemSubType.DATASET)
-    sorted_names = [item.display_name for item in dataset_list_items]
+    sorted_names = [item.display_name for item in dataset_list_items_0]
     assert sorted_names == sorted(
         sorted_names), "Datasets are not sorted by DISPLAY_NAME in ascending order"
 
@@ -492,9 +492,9 @@ async def test_datastore_pagination(client: ProvenaClient, dataset_fixture: Tupl
     )
 
     dataset_list = await client.datastore.list_datasets(list_dataset_request=list_dataset_request_two)
-    dataset_list_items: List[ItemDataset] = assert_list_items(
+    dataset_list_items_1: List[ItemDataset] = assert_list_items(
         item=dataset_list, item_subtype=ItemSubType.DATASET)
-    sorted_dates = [(item.created_timestamp) for item in dataset_list_items]
+    sorted_dates = [(item.created_timestamp) for item in dataset_list_items_1]
     assert sorted_dates == sorted(
         sorted_dates), "Datasets are not sorted by CREATED_TIME in ascending order"
 
@@ -507,10 +507,10 @@ async def test_datastore_pagination(client: ProvenaClient, dataset_fixture: Tupl
     )
 
     dataset_list = await client.datastore.list_datasets(list_dataset_request=list_dataset_request_three)
-    dataset_list_items: List[ItemDataset] = assert_list_items(
+    dataset_list_items_2: List[ItemDataset] = assert_list_items(
         item=dataset_list, item_subtype=ItemSubType.DATASET)
     assert len(
-        dataset_list_items) == 2, f"Dataset list exceed page size. Something is wrong!"
+        dataset_list_items_2) == 2, f"Dataset list exceed page size. Something is wrong!"
 
 
 @pytest.mark.asyncio
@@ -534,10 +534,10 @@ async def test_registry_pagination(client: ProvenaClient, cleanup_items: CLEANUP
     )
 
     sorted_organisation_list = await client.registry.organisation.list_items(list_items_payload=sort_request)
-    sorted_organisation_list_items: List[ItemOrganisation] = assert_list_items(
+    sorted_organisation_list_items_0: List[ItemOrganisation] = assert_list_items(
         item=sorted_organisation_list, item_subtype=ItemSubType.ORGANISATION)
     sorted_names = [
-        item.display_name for item in sorted_organisation_list_items]
+        item.display_name for item in sorted_organisation_list_items_0]
     assert sorted_names == sorted(
         sorted_names), "Organisations are not sorted by DISPLAY_NAME in ascending order"
 
@@ -545,10 +545,10 @@ async def test_registry_pagination(client: ProvenaClient, cleanup_items: CLEANUP
         sort_type=SortType.CREATED_TIME, ascending=True, begins_with=None)
 
     sorted_organisation_list = await client.registry.organisation.list_items(list_items_payload=sort_request)
-    sorted_organisation_list_items: List[ItemOrganisation] = assert_list_items(
+    sorted_organisation_list_items_1: List[ItemOrganisation] = assert_list_items(
         item=sorted_organisation_list, item_subtype=ItemSubType.ORGANISATION)
     sorted_dates = [
-        item.created_timestamp for item in sorted_organisation_list_items]
+        item.created_timestamp for item in sorted_organisation_list_items_1]
     assert sorted_dates == sorted(
         sorted_dates), "Organisations are not sorted by CREATED_TIME in ascending order"
 

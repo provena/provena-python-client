@@ -25,7 +25,7 @@ class SearchEndpoints(str, Enum):
     """An ENUM containing the datastore-api
     endpoints.
     """
-    SEARCH_REGISTRY: str = "/search/entity-registry"
+    SEARCH_REGISTRY = "/search/entity-registry"
 
 # L2 interface.
 class SearchClient(ClientService):
