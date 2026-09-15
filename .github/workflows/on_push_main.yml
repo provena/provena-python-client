@@ -32,6 +32,37 @@ jobs:
         with:
           fetch-depth: 0
       - name: CD
+        id: cd
         uses: ./.github/actions/cd
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # pypa/gh-action-pypi-publish cannot be invoked from a composite action
+      # (v1.12+ generates a local Docker trampoline that then pulls
+      # ghcr.io/<this-repo>:<ref> instead of the official image).
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@v1.14.2
+        if: steps.cd.outputs.released == 'true'
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          attestations: false
+
+      - name: Test install from TestPyPI
+        if: steps.cd.outputs.released == 'true'
+        run: |
+          pip install \
+          --index-url https://test.pypi.org/simple/ \
+          --extra-index-url https://pypi.org/simple \
+          provenaclient
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.14.2
+        if: steps.cd.outputs.released == 'true'
+        with:
+          attestations: false
+
+      - name: Publish package distributions to GitHub Releases
+        uses: python-semantic-release/publish-action@v9.8.9
+        if: steps.cd.outputs.released == 'true'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
