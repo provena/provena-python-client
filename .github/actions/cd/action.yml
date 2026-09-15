@@ -9,6 +9,10 @@ inputs:
   github_token:
     description: "GitHub Token"
     required: true
+outputs:
+  released:
+    description: "Whether python-semantic-release created a release"
+    value: ${{ steps.release.outputs.released }}
 runs:
   using: "composite"
   steps:
@@ -39,33 +43,5 @@ runs:
     - name: Use Python Semantic Release to prepare release
       id: release
       uses: python-semantic-release/python-semantic-release@v9.12.0
-      with:
-        github_token: ${{ inputs.github_token }}
-
-    - name: Publish to TestPyPI
-      uses: pypa/gh-action-pypi-publish@v1.14.2
-      if: steps.release.outputs.released == 'true'
-      with:
-        repository-url: https://test.pypi.org/legacy/
-        attestations: false
-
-    - name: Test install from TestPyPI
-      shell: bash
-      if: steps.release.outputs.released == 'true'
-      run: |
-        pip install \
-        --index-url https://test.pypi.org/simple/ \
-        --extra-index-url https://pypi.org/simple \
-        provenaclient
-
-    - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.14.2
-      if: steps.release.outputs.released == 'true'
-      with:
-        attestations: false
-
-    - name: Publish package distributions to GitHub Releases
-      uses: python-semantic-release/publish-action@v9.8.9
-      if: steps.release.outputs.released == 'true'
       with:
         github_token: ${{ inputs.github_token }}
