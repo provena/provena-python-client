@@ -1,0 +1,204 @@
+provenaclient.modules.submodules.datastore_io_submodule
+=======================================================
+
+.. py:module:: provenaclient.modules.submodules.datastore_io_submodule
+
+.. autoapi-nested-parse::
+
+   Created Date: Tuesday June 18th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Tuesday June 18th 2024 12:56:41 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Datastore file IO sub module, includes file upload and download helpers
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+   22-08-2024 | Parth Kulkarni | Implemented method to do download specific files/directory and helper function to create S3 path.
+   18-06-2024 | Peter Baker | First implementation including download_all_files and upload_all_files methods
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.submodules.datastore_io_submodule.AccessEnum
+   provenaclient.modules.submodules.datastore_io_submodule.IOSubModule
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.modules.submodules.datastore_io_submodule.setup_s3_client
+   provenaclient.modules.submodules.datastore_io_submodule.print_file_info
+
+
+Module Contents
+---------------
+
+.. py:class:: AccessEnum
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.DataStoreAPI.Enum`
+
+
+   str(object='') -> str
+   str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+   Create a new string object from the given object. If encoding or
+   errors is specified, then the object must expose a data buffer
+   that will be decoded using the given encoding and error handler.
+   Otherwise, returns the result of object.__str__() (if defined)
+   or repr(object).
+   encoding defaults to sys.getdefaultencoding().
+   errors defaults to 'strict'.
+
+
+   .. py:attribute:: READ
+      :value: 'read'
+
+
+
+   .. py:attribute:: WRITE
+      :value: 'write'
+
+
+
+.. py:function:: setup_s3_client(creds: ProvenaInterfaces.DataStoreAPI.CredentialResponse) -> cloudpathlib.s3.S3Client
+
+   Uses the datastore creds response to generate an s3 cloud path lib client
+   with auth.
+
+   :param creds: The data store credentials response
+   :type creds: CredentialResponse
+
+   :returns: The s3 client ready to use
+   :rtype: s3.S3Client
+
+
+.. py:function:: print_file_info(file: cloudpathlib.s3.S3Path) -> None
+
+   Pretty prints a file specifying file/directory.
+   File := s3.S3Path from Cloudpathlib
+
+   :param file: The file to print
+   :type file: s3.S3Path
+
+
+.. py:class:: IOSubModule(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, datastore_client: provenaclient.clients.DatastoreClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _datastore_client
+      :type:  provenaclient.clients.DatastoreClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _create_s3_path(dataset_id: str, access_type: AccessEnum) -> cloudpathlib.S3Path
+      :async:
+
+
+      This helper function creates an S3 URI in PATH format by ingesting
+      the dataset id and access type (read, write).
+
+      :param dataset_id: The ID of the dataset to download files for - ensure you have the right access.
+      :type dataset_id: str
+      :param access_type: The access type required (Read or Write)
+      :type access_type: AccessEnum
+
+      :returns: S3Path instance that represent a path in S3 with filesystem path semantics.
+      :rtype: S3Path
+
+
+
+   .. py:method:: download_all_files(destination_directory: str, dataset_id: str) -> None
+      :async:
+
+
+      Downloads all files to the destination path for a given dataset id.
+
+      - Fetches info
+      - Fetches creds
+      - Uses s3 cloud path lib to download all files to specified location
+
+      :param destination_directory: The destination path to save files to - use a directory
+      :type destination_directory: str
+      :param dataset_id: The ID of the dataset to download files for - ensure you have read access
+      :type dataset_id: str
+
+
+
+   .. py:method:: list_all_files(dataset_id: str, print_list: bool = False) -> ProvenaInterfaces.DataStoreAPI.List[cloudpathlib.s3.S3Path]
+      :async:
+
+
+      Lists all files stored in the given dataset by ID.
+
+      - Fetches info
+      - Fetches creds
+      - Uses s3 cloud path lib to list all files to specified location
+
+      :param dataset_id: The ID of the dataset to download files for - ensure you have read access
+      :type dataset_id: str
+
+
+
+   .. py:method:: upload_all_files(source_directory: str, dataset_id: str) -> None
+      :async:
+
+
+      Uploads all files in the source path to the specified dataset id's storage location.
+
+      - Fetches info
+      - Fetches creds
+      - Uses s3 cloud path lib to upload all files to specified location
+
+      :param source_directory: The source path to upload files from - use a directory
+      :type source_directory: str
+      :param dataset_id: The ID of the dataset to upload files for - ensure you have write access
+      :type dataset_id: str
+
+
+
+   .. py:method:: download_specific_file(dataset_id: str, s3_path: str, destination_directory: str) -> None
+      :async:
+
+
+      Downloads a specific file or folder from an S3 bucket to a provided destination path.
+
+      This method handles various cases:
+      - If `s3_path` is a specific file, it downloads that file directly to `destination_directory`.
+      - If `s3_path` is a folder (without a trailing slash), it downloads the entire folder and its contents,
+      preserving the folder structure in `destination_directory`.
+      - If `s3_path` is a folder (with a trailing slash), it downloads all contents (including subfolders) within that folder but not the
+      folder itself to `destination_directory`.
+
+      :param dataset_id: The ID of the dataset that contains the files or folders to download from S3.
+      :type dataset_id: str
+      :param s3_path: The S3 path of the file or folder to download.
+                      - If this is a specific file, it will download just that file.
+                      - If this is a folder without a trailing slash (e.g., 'nested'), it will download the entire folder
+                      and all its contents, preserving the structure.
+                      - If this is a folder with a trailing slash (e.g., 'nested/'), it will download all contents within
+                      that folder but not the folder itself unless subfolders are present.
+      :type s3_path: str
+      :param destination_directory: The destination path to save files to - use a directory.
+      :type destination_directory: str
+
+
+

@@ -1,0 +1,135 @@
+provenaclient.modules.id_service
+================================
+
+.. py:module:: provenaclient.modules.id_service
+
+.. autoapi-nested-parse::
+
+   Created Date: Friday May 31st 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday May 31st 2024 9:50:26 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: The ID Service L3 module.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.id_service.IDService
+
+
+Module Contents
+---------------
+
+.. py:class:: IDService(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, id_service_client: provenaclient.clients.IdServiceClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _id_service_client
+      :type:  provenaclient.clients.IdServiceClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:attribute:: id_service_client
+
+
+   .. py:method:: mint(body: ProvenaInterfaces.HandleAPI.MintRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Mints a new handle with given properties.
+
+      :param body: The payload
+      :type body: MintRequest
+
+      :returns: The resulting handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value(body: ProvenaInterfaces.HandleAPI.AddValueRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds value to a handle.
+
+      :param body: The value to add
+      :type body: AddValueRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value_by_index(body: ProvenaInterfaces.HandleAPI.AddValueIndexRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds a value at specified index
+
+      :param body: The value to add
+      :type body: AddValueIndexRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: list() -> ProvenaInterfaces.HandleAPI.ListResponse
+      :async:
+
+
+      Lists all handles under domain.
+
+      :returns: The response list
+      :rtype: ListResponse
+
+
+
+   .. py:method:: modify_by_index(body: ProvenaInterfaces.HandleAPI.ModifyRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Modifies existing handle value at specified index
+
+      :param body: The request to modify
+      :type body: ModifyRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: remove_by_index(body: ProvenaInterfaces.HandleAPI.RemoveRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Removes value at specified index
+
+      :param body: The removal request
+      :type body: RemoveRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+

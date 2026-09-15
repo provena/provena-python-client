@@ -1,0 +1,436 @@
+provenaclient.clients.client_helpers
+====================================
+
+.. py:module:: provenaclient.clients.client_helpers
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Helper methods for clients namely a standard interface ClientService along with reusable patterns to interact with the HTTPX L1 Layer
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   18-06-2024 | Peter Baker | Just noting I think we could streamline the helper functions a bit
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.client_helpers.ClientService
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.clients.client_helpers.parsed_get_request_with_status
+   provenaclient.clients.client_helpers.parsed_get_request
+   provenaclient.clients.client_helpers.parsed_post_request
+   provenaclient.clients.client_helpers.parsed_post_request_with_status
+   provenaclient.clients.client_helpers.parsed_delete_request_with_status
+   provenaclient.clients.client_helpers.parsed_delete_request
+   provenaclient.clients.client_helpers.parsed_put_request
+   provenaclient.clients.client_helpers.parsed_put_request_with_status
+   provenaclient.clients.client_helpers.validated_get_request
+   provenaclient.clients.client_helpers.validated_post_request
+   provenaclient.clients.client_helpers.parsed_post_request_none_return
+   provenaclient.clients.client_helpers.parsed_delete_request_non_return
+
+
+Module Contents
+---------------
+
+.. py:class:: ClientService
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+      :type:  provenaclient.auth.AuthManager
+
+
+   .. py:attribute:: _config
+      :type:  provenaclient.utils.config.Config
+
+
+.. py:function:: parsed_get_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes get request
+   - checks status/http codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make GET request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_get_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes get request
+   - checks http codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make GET request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_post_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes POST request
+   - checks http codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to post if any
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_post_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType], files: Optional[provenaclient.utils.helpers.HttpxFileUpload] = None) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes POST request
+   - checks http/status codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to post if any
+   :param files: Optional[HttpxFileUpload]: A dictionary representing file(s) to be uploaded with the
+                 request. Each key in the dictionary is the name of the form field for the file according,
+                 to API specifications. For Provena it's "csv_file" and and the value
+                 is a tuple of (filename, filedata, MIME type or media type).
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_delete_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes DELETE request
+   - checks http/status codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to post if any
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_delete_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes DELETE request
+   - checks http/status codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to post if any
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_put_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes put request
+   - checks http codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make put request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to put if any
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: parsed_put_request_with_status(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str, model: provenaclient.utils.helpers.Type[provenaclient.utils.helpers.BaseModelType]) -> provenaclient.utils.helpers.BaseModelType
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes put request
+   - checks http/status codes
+   - parses model etc
+
+   Returns the parsed validated, safe to use 200OK model result
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make put request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param model: Model to parse for response JSON
+   :type model: Type[BaseModelType]
+   :param json_body: Optional[JsonData]: JSON data to put if any
+
+   :raises e: Exception depending on error
+
+   :returns: The specified parsed model
+   :rtype: BaseModelType
+
+
+.. py:function:: validated_get_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str) -> provenaclient.utils.helpers.Response
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes get request
+   - checks http codes
+
+   This method does not do any base model parsing and only checks HTTP status codes.
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make GET request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+
+   :raises e: Exception depending on error
+
+   :returns: None
+
+
+.. py:function:: validated_post_request(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str, headers: Optional[Dict[str, provenaclient.utils.helpers.Any]] = None) -> provenaclient.utils.helpers.Response
+   :async:
+
+
+   A generic POST request method for endpoints where the response
+   does not parse into a Pydantic model. This method handles cases
+   like file downloads or when raw data is expected.
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any.
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param json_body: JSON data to send with the request, if any.
+   :type json_body: Optional[JsonData]
+   :param url: The URL to make the POST request to.
+   :type url: str
+   :param error_message: The error message to embed in other exceptions.
+   :type error_message: str
+   :param headers: The headers to include in hte POST request, if any.
+
+   :raises e: Exception depending on the error.
+
+   :returns: The raw HTTP response object for further processing.
+   :rtype: Response
+
+
+.. py:function:: parsed_post_request_none_return(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], json_body: Optional[provenaclient.utils.helpers.JsonData], url: str, error_message: str) -> None
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes POST request
+   - checks http codes
+
+   This method does not do any base model parsing and only checks HTTP status codes.
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+   :param json_body: Optional[JsonData]: JSON data to post if any
+
+   :raises e: Exception depending on error
+
+   :returns: None
+
+
+.. py:function:: parsed_delete_request_non_return(client: ClientService, params: Optional[Mapping[str, Optional[provenaclient.utils.helpers.ParamTypes]]], url: str, error_message: str) -> None
+   :async:
+
+
+   High level helper function which
+
+   - gets the auth
+   - builds the filtered param list
+   - makes DELETE request
+   - checks http/status codes
+
+   This method does not do any base model parsing and only checks HTTP status codes.
+
+   :param client: The client being used. Relies on client interface.
+   :type client: ClientService
+   :param params: The params if any
+   :type params: Optional[Mapping[str, Optional[ParamTypes]]]
+   :param url: The url to make POST request to
+   :type url: str
+   :param error_message: The error message to embed in other exceptions
+   :type error_message: str
+
+   :raises e: Exception depending on error
+
+   :returns: None
+
+

@@ -1,0 +1,263 @@
+provenaclient.auth.implementations
+==================================
+
+.. py:module:: provenaclient.auth.implementations
+
+.. autoapi-nested-parse::
+
+   Created Date: Tuesday June 18th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Tuesday June 18th 2024 12:44:03 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Implementations of the Auth interface defined in auth/manager.py
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.auth.implementations.DeviceFlow
+   provenaclient.auth.implementations.OfflineFlow
+
+
+Module Contents
+---------------
+
+.. py:class:: DeviceFlow(config: provenaclient.utils.config.Config, client_id: str, log_level: Optional[provenaclient.auth.manager.LogType] = None)
+
+   Bases: :py:obj:`provenaclient.auth.manager.AuthManager`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:attribute:: keycloak_endpoint
+      :type:  str
+
+
+   .. py:attribute:: client_id
+      :type:  str
+
+
+   .. py:attribute:: scopes
+      :type:  list
+
+
+   .. py:attribute:: device_endpoint
+      :type:  str
+
+
+   .. py:attribute:: token_endpoint
+      :type:  str
+
+
+   .. py:attribute:: file_name
+      :value: '.tokens.json'
+
+
+
+   .. py:method:: get_token() -> str
+
+      IMPLEMENTS BASE METHOD
+
+      Uses the current token - validates it,
+      refreshes if necessary, and returns the valid token
+      ready to be used.
+
+      :returns: The access token
+      :rtype: str
+
+      :raises Exception: Raises exception if tokens/public_key are not setup - make sure
+          that the object is instantiated properly before calling this function.
+      :raises Exception: If the token is invalid and cannot be refreshed.
+      :raises Exception: If the token validation still fails after re-conducting the device flow.
+
+
+
+   .. py:method:: force_refresh() -> None
+
+      IMPLEMENTS BASE METHOD
+      A method to reset the current authentication state.
+
+
+
+   .. py:method:: refresh_tokens() -> None
+
+      Attempts to refresh the authentication tokens using a stored refresh token. This method
+      updates the current tokens if the refresh is successful.
+
+      :raises ValueError: If no initial tokens are set, indicating that there is nothing to refresh.
+      :raises ValueError: If the refresh operation fails due to missing access or refresh tokens in the response,
+          suggesting a failure in the refresh process.
+
+
+
+   .. py:method:: save_tokens(tokens: provenaclient.auth.helpers.Tokens) -> None
+
+      Saves authentication tokens to a local file in JSON format.
+
+      :param tokens: An object representing the authentication tokens containing
+                     the access and refresh tokens.
+      :type tokens: Tokens
+
+      :raises Generic Exception: A generic exception is raised that handles errors from IO/File operations.
+
+
+
+   .. py:method:: clear_token_storage() -> None
+
+      Checks if the tokens.json file exists and accordingly removes it and resets
+      token object saved to class variable.
+
+
+
+   .. py:method:: load_tokens() -> Optional[provenaclient.auth.helpers.Tokens]
+
+      Loads authentication tokens from a local JSON file and returns them as a Tokens object.
+
+      :returns: An object representing the authentication tokens containing
+                the access and refresh tokens.
+      :rtype: Tokens
+
+      :raises Generic Exception: A generic exception is raised that handles errors from IO/File operations.
+
+
+
+   .. py:method:: make_token_refresh_request(tokens: Optional[provenaclient.auth.helpers.Tokens] = None) -> Dict[str, Any]
+
+      Performs the token refresh by making an HTTP post request to the token endpoint
+      to obtain new access and refresh tokens.
+
+      :param tokens: An optional Tokens object containing the refresh token. If not provided,
+                     the method will use the class variable stored tokens.
+
+                     By default this parameter is None.
+      :type tokens: Optional[Tokens], optional
+
+      :returns: A dictionary containing the new access and refresh tokens if the refresh is successful.
+      :rtype: Dict[str, Any]
+
+      :raises ValueError: If no refresh token is provided or found in the class token variable.
+      :raises Exception: If the HTTP request fails a message is displayed with the HTTP status code. Can occur
+          if the refresh token has expired.
+
+
+
+   .. py:method:: start_device_flow() -> None
+
+      Initiates the device authorisation flow by requesting a device code from server and prompts
+      user for authentication through the web browser and continues to handle the flow.
+
+      :raises Exception: If the request to the server fails or if the server response is not of status code 200,
+          suggesting that the flow could not initiated.
+
+
+
+   .. py:method:: display_device_auth_flow(user_code: str, verification_url: str) -> None
+
+      Displays the current device auth flow challenge - first by trying to
+      open a browser window - if this fails then prints suggestion to stdout
+      to try using the URL manually.
+
+      :param user_code: The user code
+      :type user_code: str
+      :param verification_url: The url which embeds challenge code
+      :type verification_url: str
+
+
+
+   .. py:method:: handle_auth_flow() -> None
+
+      Handles the device authorisation flow by constantly polling the token endpoint until a token
+      is received, an error is received or a timeout occurs.
+
+
+
+.. py:class:: OfflineFlow(config: provenaclient.utils.config.Config, client_id: str, offline_token: Optional[str] = None, offline_token_file: Optional[str] = None, log_level: Optional[provenaclient.auth.manager.LogType] = None)
+
+   Bases: :py:obj:`provenaclient.auth.manager.AuthManager`
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+   .. py:attribute:: keycloak_endpoint
+      :type:  str
+
+
+   .. py:attribute:: offline_token
+      :type:  str
+
+
+   .. py:attribute:: client_id
+      :type:  str
+
+
+   .. py:attribute:: token_endpoint
+      :type:  str
+
+
+   .. py:attribute:: scopes
+      :type:  list
+
+
+   .. py:attribute:: public_key
+      :type:  str
+
+
+   .. py:method:: get_token() -> str
+
+      IMPLEMENTS BASE METHOD
+
+      Uses the current token - validates it,
+      refreshes if necessary, and returns the valid token
+      ready to be used.
+
+      :returns: The access token
+      :rtype: str
+
+      :raises Exception: Raises exception if tokens/public_key are not setup - make sure
+          that the object is instantiated properly before calling this function.
+      :raises Exception: If the token is invalid and cannot be refreshed.
+      :raises Exception: If the token validation still fails after re-conducting the device flow.
+
+
+
+   .. py:method:: force_refresh() -> None
+
+      IMPLEMENTS BASE METHOD
+
+      A method to reset the current authentication state.
+
+      Since the offline flow has no cached state - this just forces a refresh
+      token request to be made.
+
+
+
+   .. py:method:: get_access_token_from_offline_token() -> None
+
+
+   .. py:method:: load_offline_token(file_name: str) -> str
+
+      Loads the offline token from the provided file.
+
+      :param file_name: The file name to load the offline token from.
+      :type file_name: str
+
+      :returns: The offline token read from the file.
+      :rtype: str
+
+      :raises Exception: If the file does not exist or if the file is empty.
+
+
+

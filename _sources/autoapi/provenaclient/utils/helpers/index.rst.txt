@@ -1,0 +1,283 @@
+provenaclient.utils.helpers
+===========================
+
+.. py:module:: provenaclient.utils.helpers
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 5:00:47 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: General helper functions which are useful across the client library.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   provenaclient.utils.helpers.BaseModelType
+   provenaclient.utils.helpers.ItemModelType
+   provenaclient.utils.helpers.JsonData
+   provenaclient.utils.helpers.HttpxFileUpload
+   provenaclient.utils.helpers.ParamTypes
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   provenaclient.utils.helpers.convert_to_item_subtype
+   provenaclient.utils.helpers.get_and_validate_file_path
+   provenaclient.utils.helpers.validate_existing_path
+   provenaclient.utils.helpers.write_file_helper
+   provenaclient.utils.helpers.read_file_helper
+   provenaclient.utils.helpers.build_params_exclude_none
+   provenaclient.utils.helpers.py_to_dict
+   provenaclient.utils.helpers.handle_model_parsing
+   provenaclient.utils.helpers.parse_json_payload
+   provenaclient.utils.helpers.handle_err_codes
+   provenaclient.utils.helpers.check_status_response
+   provenaclient.utils.helpers.check_codes_and_parse_json
+   provenaclient.utils.helpers.handle_response_non_status
+   provenaclient.utils.helpers.handle_response_with_status
+
+
+Module Contents
+---------------
+
+.. py:data:: BaseModelType
+
+.. py:data:: ItemModelType
+
+.. py:data:: JsonData
+
+.. py:data:: HttpxFileUpload
+
+.. py:data:: ParamTypes
+
+.. py:function:: convert_to_item_subtype(item_subtype_str: Optional[str]) -> ProvenaInterfaces.RegistryModels.ItemSubType
+
+   Converts a string into ItemSubType supported enum type.
+
+   :param item_subtype_str: Optional string containing similar enum text.
+   :type item_subtype_str: Optional[str]
+
+   :returns: Enum type of ItemSubType.
+   :rtype: ItemSubType
+
+   :raises ValueError: Item subtype field was not present.
+   :raises ValueError: Item subtype cannot be converted to ENUM.
+
+
+.. py:function:: get_and_validate_file_path(file_path: Optional[str], write_to_file: bool, default_file_name: str) -> Optional[str]
+
+   Determine and validate the file path for writing a file.
+
+   If file_path is not provided and write_to_file is True then will use a dynamic
+   default file name.
+
+   :param file_path: The path to save the file at.
+   :type file_path: Optional[str]
+   :param write_to_file: A boolean flag  indicating whether writing to the file is enabled.
+   :type write_to_file: bool
+   :param default_file_name: The default file name to use if file_path is not provided.
+   :type default_file_name: str
+
+   :returns: The validated file path, or None if writing to file is not enabled.
+   :rtype: Optional[str]
+
+   :raises ValueError: If a file path is provided but writing to the file is not enabled.
+
+
+.. py:function:: validate_existing_path(file_path: str) -> None
+
+   Validates a provided file path, and checks if
+   the directory exists.
+
+   :param file_path: The file path to validate.
+   :type file_path: str
+
+   :raises ValueError: If the directory part of the path does not exist.
+   :raises IOError: If an I/O error occurs during file operations.
+   :raises Exception: For any other exceptions that may occur.
+
+
+.. py:function:: write_file_helper(file_path: str, content: Union[str, bytes]) -> None
+
+   Writes the provided content (string or bytes) to a file at the specified file path.
+
+   :param file_name: The name of the file to write content into.
+   :type file_name: str
+   :param content:
+                   The content to be written to the file. It can be either:
+                       - A `str`, which will be written in text mode.
+                       - A `bytes` object, which will be written in binary mode.
+   :type content: Union[str, bytes]
+
+   :raises IOError: If an I/O error occurs during file operations.
+   :raises Exception: For non-I/O related exceptions that may occur during file writing.
+
+
+.. py:function:: read_file_helper(file_path: str) -> str
+
+   Reads a valid file and returns its content
+
+   :param file_path: The path of an existing created file.
+   :type file_path: str
+
+   :returns: A string representation of the file contents.
+   :rtype: str
+
+   :raises Exception: If there any error with reading the file
+       this general exception is raised.
+
+
+.. py:function:: build_params_exclude_none(params: Mapping[str, Optional[ParamTypes]]) -> Dict[str, ParamTypes]
+
+   Takes a raw params dict with optional args and returns filtered.
+
+   :param params: The input raw dict
+   :type params: Dict[str, Optional[ParamTypes]]
+
+   :returns: The filtered param list with no None values
+   :rtype: Dict[str, ParamTypes]
+
+
+.. py:function:: py_to_dict(model: pydantic.BaseModel) -> JsonData
+
+   This helper function converts a Pydantic model to a Python dictionary.
+
+   Requires a pydantic dump into serialised JSON to be safe against all object
+   types
+
+   :param model: The instance of the model that needs to be converted to a dict.
+   :type model: BaseModel
+
+   :returns: A python dictionary object which contains the fields and values of the
+             base model that are not none.
+   :rtype: JsonData
+
+
+.. py:function:: handle_model_parsing(json_data: JsonData, model: Type[BaseModelType]) -> BaseModelType
+
+   This generic helper function parses a HTTP Response into a
+   python datatype based on a pydantic defined model.
+
+   :param json_data: The response received after HTTP request.
+   :type json_data: JsonData
+   :param model: The type of the model being casted from HTTP response
+                 into python datatype. For example:
+                 MintResponse, RegistryFetchResponse.
+   :type model: type[T]
+
+   :returns: Returns a python datatype that conforms to the structure
+             of the provided model.
+   :rtype: T
+
+
+.. py:function:: parse_json_payload(response: httpx.Response) -> JsonData
+
+   Parses a HTTPX response object into JSON handling the error if any occurs.
+
+   :param response: The raw HTTP response.
+   :type response: Response
+
+   :raises ValidationException: If JSON decoding fails, handles and raises error.
+
+   :returns: The returned dictionary object representing JSON data.
+   :rtype: JsonData
+
+
+.. py:function:: handle_err_codes(response: httpx.Response, error_message: Optional[str]) -> None
+
+   This helper function checks the status code of the HTTP response and raises
+   a custom exception accordingly.
+
+   Also embeds error info from JSON or text result.
+
+   :param response: The httpx.response object.
+   :type response: Response
+
+   :raises BadRequestException: Raised when the server returns a 400 status code.
+   :raises AuthException: Raised when the server returns a 401 status code.
+   :raises ValidationException: Raised when the server returns a 422 status code.
+   :raises ServerException: Raised when the server returns a status code of 500 or above.
+
+
+.. py:function:: check_status_response(json_data: JsonData) -> None
+
+   Parses JSON data as StatusResponse model, then asserts success is true,
+   throwing exception with embedded details if not.
+
+   :param json_data: The JSON data to parse
+   :type json_data: Dict
+
+   :raises Exception: Exception if status if False
+
+
+.. py:function:: check_codes_and_parse_json(response: httpx.Response, error_message: Optional[str]) -> JsonData
+
+   Given raw response, validates codes and parses as JSON.
+
+   :param response: The raw http client response
+   :type response: Response
+   :param error_message: The error message to embed if any
+   :type error_message: Optional[str]
+
+   :returns: The json data post parse
+   :rtype: JsonData
+
+
+.. py:function:: handle_response_non_status(response: httpx.Response, model: Type[BaseModelType], error_message: Optional[str]) -> BaseModelType
+
+   Given the raw response from http client, and the model, will validate
+
+   - 200 OK code (with common errors handled)
+   - Parsed as JSON
+   - Parsed as desired final model
+
+   Returns the parsed pydantic object.
+
+   :param response: The raw response from http client
+   :type response: Response
+   :param model: The model type (not instance) to parse against
+   :type model: Type[T]
+   :param error_message: The error message to embed into exceptions.
+   :type error_message: Optional[str]
+
+   :returns: The parsed model
+   :rtype: T
+
+
+.. py:function:: handle_response_with_status(response: httpx.Response, model: Type[BaseModelType], error_message: Optional[str]) -> BaseModelType
+
+   Given the raw response from http client, and the model, will validate
+
+   - 200 OK code (with common errors handled)
+   - Parsed as JSON
+   - Parsed as StatusResponse and asserted for success=true, throwing with details if not
+   - Parsed as desired final model
+
+   Returns the parsed pydantic object.
+
+   :param response: The raw response from http client
+   :type response: Response
+   :param model: The model type (not instance) to parse against
+   :type model: Type[T]
+   :param error_message: The error message to embed into exceptions.
+   :type error_message: Optional[str]
+
+   :returns: The parsed model
+   :rtype: T
+
+

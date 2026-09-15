@@ -1,0 +1,885 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Provena Client Library Workflow Guide and Example. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This notebook contains guidance and examples on how to use the Provena Client Library with common Provena operations (create, fetch, model run lodge etc.)\n",
+    "\n",
+    "The client library is an user friendly interface to interact with the various API's of Provena (Registry, Prov, Datastore, etc.) through code and is currently compatiable with the Python programming language.\n",
+    "\n",
+    "To find further information or explore other Provena operations of the client library: https://provena.github.io/provena-python-client/"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Client Configuration and Initialisation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Import initial modules needed.\n",
+    "from provenaclient import ProvenaClient, Config\n",
+    "from provenaclient.auth import DeviceFlow\n",
+    "from provenaclient.auth.implementations import OfflineFlow\n",
+    "from pprint import pprint\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Instantiate the client library by providing the domain your Provena instance is hosted on and the name of your Keycloak realm. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Provena config - replace with your Provena instance endpoints\n",
+    "client_config = Config(\n",
+    "    domain=\"dev.rrap-is.com\",\n",
+    "    realm_name=\"rrap\"\n",
+    ")\n",
+    "\n",
+    "offline_mode = False\n",
+    "\n",
+    "if offline_mode:\n",
+    "    load_dotenv()\n",
+    "    offline_token=os.getenv('PROVENA_API_TOKEN')\n",
+    "    assert offline_token, \"Offline token must be present in .env file e.g. PROVENA_API_TOKEN=1234.\"\n",
+    "    print(f\"Offline mode activated and token found in .env file.\")\n",
+    "\n",
+    "if not offline_mode:\n",
+    "    auth = DeviceFlow(config=client_config,\n",
+    "                    client_id=\"client-tools\")\n",
+    "else:\n",
+    "    auth = OfflineFlow(config=client_config, client_id=\"automated-access\", offline_token=offline_token)\n",
+    "\n",
+    "\n",
+    "# Instantiate the client.\n",
+    "client = ProvenaClient(config=client_config, auth=auth)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{\n",
+      "  \"inputs\": {\n",
+      "    \"input_dataset\": \"10378.1/1904964\",\n",
+      "    \"input_dataset_template\": \"10378.1/1905250\"\n",
+      "  },\n",
+      "  \"outputs\": {\n",
+      "    \"output_dataset\": \"10378.1/1904961\",\n",
+      "    \"output_dataset_template\": \"10378.1/1926245\"\n",
+      "  },\n",
+      "  \"associations\": {\n",
+      "    \"person\": \"10378.1/1893843\",\n",
+      "    \"organisation\": \"10378.1/1893860\"\n",
+      "  },\n",
+      "  \"workflow_configuration\": {\n",
+      "    \"workflow_template\": \"10378.1/1905251\"\n",
+      "  }\n",
+      "}\n"
+     ]
+    }
+   ],
+   "source": [
+    "import example_workflow_config\n",
+    "\n",
+    "config_path = \"configs/example_workflow3.json\"\n",
+    "config = example_workflow_config.load_config(path=config_path)\n",
+    "config.pprint()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Querying Datastore API."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will take a look at querying and interacting with the Datastore API exploring common operations of fetching dataset, minting dataset and fetching all datasets in various formats (paginated, all)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "status=Status(success=True, details=\"Successfully fetched data for handle '10378.1/1908974'\") item=ItemDataset(display_name='TEst', user_metadata=None, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1877551', data_custodian_id=None, point_of_contact=None), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='TEst', description='TEst', access_info=AccessInfo(reposited=False, uri='http://google.com', description='test'), publisher_id='10378.1/1877551', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 6, 5)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 6, 21)), license=AnyHttpUrl('https://gbrrestoration.github.io/rrap-mds-knowledge-hub/information-system/licenses.html#copyright-all-rights-reserved-', ), purpose=None, rights_holder=None, usage_limitations=None, preferred_citation=None, spatial_info=None, temporal_info=None, formats=None, keywords=None, user_metadata=None, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1908974/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1908974/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri='http://google.com', history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1718251565, reason='Initial record creation', username='ross', item=DatasetDomainInfo(display_name='TEst', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1877551', data_custodian_id=None, point_of_contact=None), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='TEst', description='TEst', access_info=AccessInfo(reposited=False, uri='http://google.com', description='test'), publisher_id='10378.1/1877551', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 6, 5)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 6, 21)), license=AnyHttpUrl('https://gbrrestoration.github.io/rrap-mds-knowledge-hub/information-system/licenses.html#copyright-all-rights-reserved-', ), purpose=None, rights_holder=None, usage_limitations=None, preferred_citation=None, spatial_info=None, temporal_info=None, formats=None, keywords=None, user_metadata=None, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1908974/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1908974/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri='http://google.com', user_metadata=None))], id='10378.1/1908974', owner_username='ross', created_timestamp=1718251564, updated_timestamp=1718251565, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='cc078e51-6468-46c7-86bc-21c45741a11f', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)) roles=['metadata-read', 'metadata-write', 'admin', 'dataset-data-read', 'dataset-data-write'] locked=False\n",
+      "\n",
+      "Dataset Query Details: Successfully fetched data for handle '10378.1/1908974'\n",
+      "\n",
+      "Dataset Display Name: TEst\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "dataset = await client.datastore.fetch_dataset(id = \"10378.1/1908974\")\n",
+    "\n",
+    "print(dataset) # Fetched dataset pythonic object.\n",
+    "print()\n",
+    "print(\"Dataset Query Details:\", dataset.status.details) # Accessing fetched dataset query details\n",
+    "print()\n",
+    "print(\"Dataset Display Name:\", dataset.item.display_name) # Accessing fetched dataset name"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Created Dataset handle is: 10378.1/1948403\n",
+      "Created Dataset reqeuest details: Successfully seeded location - see location details.\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ProvenaInterfaces.RegistryModels import *\n",
+    "from datetime import date\n",
+    "\n",
+    "dataset_to_create = CollectionFormat(\n",
+    "        associations=CollectionFormatAssociations(\n",
+    "        organisation_id=\"10378.1/1893860\",\n",
+    "        data_custodian_id=\"10378.1/1893843\",\n",
+    "        point_of_contact= None\n",
+    "        ),\n",
+    "        approvals=CollectionFormatApprovals(\n",
+    "            ethics_registration = DatasetEthicsRegistrationCheck(relevant=False, obtained=False),\n",
+    "            ethics_access=DatasetEthicsAccessCheck(relevant= False, obtained= False),\n",
+    "            indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained= False),\n",
+    "            export_controls=ExportControls(relevant=False, obtained=False)\n",
+    "        ),\n",
+    "        dataset_info=CollectionFormatDatasetInfo(\n",
+    "            name=\"Parth testing\",\n",
+    "            description=\"testing dataset\",\n",
+    "            access_info=AccessInfo(reposited=True, uri=None, description=None),\n",
+    "            publisher_id=\"10378.1/1893860\",\n",
+    "            published_date=PublishedDate(relevant=True,value=date.today()),\n",
+    "            license = \"https://www.google.com\", #type:ignore\n",
+    "            created_date=CreatedDate(relevant=True,value=date.today()),\n",
+    "            purpose= None,\n",
+    "            rights_holder=None,\n",
+    "            usage_limitations=None,\n",
+    "            preferred_citation=None,\n",
+    "            formats = None,\n",
+    "            keywords= None,\n",
+    "            user_metadata= None,\n",
+    "            version = None\n",
+    "        )\n",
+    "    )\n",
+    "\n",
+    "created_dataset = await client.datastore.mint_dataset(dataset_mint_info=dataset_to_create)\n",
+    "\n",
+    "print(\"Created Dataset handle is:\", created_dataset.handle)\n",
+    "print(\"Created Dataset reqeuest details:\", created_dataset.status.details)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "('status', Status(success=True, details='Successfully listed items.'))\n",
+      "('items', [ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943278', data_custodian_id='10378.1/1943279', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943278', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943284/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943284/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723082263, reason='Initial record creation', username='integration_test_admin_bot', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943278', data_custodian_id='10378.1/1943279', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943278', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943284/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943284/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1943284', owner_username='integration_test_admin_bot', created_timestamp=1723082262, updated_timestamp=1723082263, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='30748844-12c9-4d5d-823d-5f58d732abfb', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1925648', data_custodian_id='10378.1/1925649', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1925648', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 7, 11)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 7, 11)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 7, 11), end_date=datetime.date(2024, 7, 11)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1925650/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1925650/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1720676154, reason='Initial record creation', username='parth', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1925648', data_custodian_id='10378.1/1925649', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1925648', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 7, 11)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 7, 11)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 7, 11), end_date=datetime.date(2024, 7, 11)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1925650/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1925650/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1925650', owner_username='parth', created_timestamp=1720676153, updated_timestamp=1720676154, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='ff71caaa-3cbc-48d4-83ba-8aea72f155de', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'qa link': 'qa link', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'qa link': 'qa link', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943306/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943306/'), release_history=[ReleaseHistoryEntry(action=<ReleaseAction.REQUEST: 'REQUEST'>, timestamp=1723095156, approver='10378.1/1876218', requester='10378.1/1876218', notes='please review my dataset'), ReleaseHistoryEntry(action=<ReleaseAction.APPROVE: 'APPROVE'>, timestamp=1723095223, approver='10378.1/1876218', requester=None, notes='Nice dataset. Please see QA approvals located here: https://google.com')], release_status=<ReleasedStatus.RELEASED: 'RELEASED'>, release_approver='10378.1/1876218', release_timestamp=1723095223, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=1, timestamp=1723095299, reason='test', username='ross', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'qa link': 'qa link', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943306/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943306/'), release_history=[ReleaseHistoryEntry(action=<ReleaseAction.REQUEST: 'REQUEST'>, timestamp=1723095156, approver='10378.1/1876218', requester='10378.1/1876218', notes='please review my dataset'), ReleaseHistoryEntry(action=<ReleaseAction.APPROVE: 'APPROVE'>, timestamp=1723095223, approver='10378.1/1876218', requester=None, notes='Nice dataset. Please see QA approvals located here: https://google.com')], release_status=<ReleasedStatus.RELEASED: 'RELEASED'>, release_approver='10378.1/1876218', release_timestamp=1723095223, access_info_uri=None, user_metadata={'another custom': 'annotation', 'qa link': 'qa link', 'my custom': 'annotation'})), HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723082595, reason='Initial record creation', username='integration-test-read-write-bot', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943306/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943306/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1943306', owner_username='integration-test-read-write-bot', created_timestamp=1723082594, updated_timestamp=1723095299, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='ceb9ab58-3182-4cfd-baf0-4a9bd98f273c', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1939488', data_custodian_id='10378.1/1939489', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1939488', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 1)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 1)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 1), end_date=datetime.date(2024, 8, 1)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1939492/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1939492/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1722498482, reason='Initial record creation', username='parth', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1939488', data_custodian_id='10378.1/1939489', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1939488', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 1)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 1)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 1), end_date=datetime.date(2024, 8, 1)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1939492/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1939492/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1939492', owner_username='parth', created_timestamp=1722498481, updated_timestamp=1722498482, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='41011c48-a4d3-4fec-be59-105cce1a941c', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943278', data_custodian_id='10378.1/1943279', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943278', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943282/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943282/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723082238, reason='Initial record creation', username='integration_test_admin_bot', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943278', data_custodian_id='10378.1/1943279', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943278', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943282/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943282/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1943282', owner_username='integration_test_admin_bot', created_timestamp=1723082237, updated_timestamp=1723082238, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='24c96147-e497-435d-aab0-b36873b8939b', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943304/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943304/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723082565, reason='Initial record creation', username='integration-test-read-write-bot', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943304/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943304/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1943304', owner_username='integration-test-read-write-bot', created_timestamp=1723082565, updated_timestamp=1723082565, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='09fcae02-775b-46fb-9f67-3c8e4364c8ec', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1942517', data_custodian_id='10378.1/1942518', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1942517', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 7)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 7)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 7), end_date=datetime.date(2024, 8, 7)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1942519/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1942519/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723003714, reason='Initial record creation', username='ross', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1942517', data_custodian_id='10378.1/1942518', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1942517', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 7)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 7)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 7), end_date=datetime.date(2024, 8, 7)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1942519/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1942519/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1942519', owner_username='ross', created_timestamp=1723003713, updated_timestamp=1723003714, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='c8ea8c96-8507-49a1-8af2-139d1ce2f7cc', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1939374', data_custodian_id='10378.1/1939375', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1939374', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 1)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 1)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 1), end_date=datetime.date(2024, 8, 1)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1939376/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1939376/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1722486525, reason='Initial record creation', username='parth', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1939374', data_custodian_id='10378.1/1939375', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1939374', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 1)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 1)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 1), end_date=datetime.date(2024, 8, 1)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1939376/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1939376/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1939376', owner_username='parth', created_timestamp=1722486524, updated_timestamp=1722486525, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='1f084eac-439d-43c5-9ad0-6ef45924f39a', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test dataset 1', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943300/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943300/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=0, timestamp=1723082449, reason='Initial record creation', username='integration-test-read-write-bot', item=DatasetDomainInfo(display_name='test dataset 1', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1943294', data_custodian_id='10378.1/1943297', point_of_contact='Not Peter Baker.'), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test dataset 1', description='test dataset 1', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1943294', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 8)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 8, 8)), license=AnyHttpUrl('https://example.com', ), purpose=\"But why, you might ask, was the Test Dataset so important? Well, dear reader, it served as a mirror reflecting the very essence of the software, exposing its vulnerabilities and frailties. It was Testy's trustworthy sidekick, always ready to point out flaws, inconsistencies, and missteps in the code. It was the guardian of reliability, ensuring that the software would perform its duties diligently without crashing or misbehaving. And it was the staunch defender of predictability, making sure that the software would respond consistently to various inputs and scenarios.\", rights_holder='ME', usage_limitations='You may not use this dataset while wearing an eyepatch, unless you are an actual pirate sailing the high seas. In that case, a parrot on your shoulder is also required for compliance.', preferred_citation='Testy McTestface, \"The Test Dataset: A Mirror to the Soul of the Software\", Journal of Testy Software, 2021', spatial_info=CollectionFormatSpatialInfo(coverage='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))', resolution='0.1', extent='SRID=4326;POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))'), temporal_info=CollectionFormatTemporalInfo(duration=TemporalDurationInfo(begin_date=datetime.date(2024, 8, 8), end_date=datetime.date(2024, 8, 8)), resolution='P1Y2M10DT2H30M'), formats=['pdf'], keywords=['a', 'b'], user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1943300/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1943300/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1943300', owner_username='integration-test-read-write-bot', created_timestamp=1723082448, updated_timestamp=1723082449, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='f82f375c-a519-4d1c-9214-c7f39bc9fdff', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)), ItemDataset(display_name='test', user_metadata=None, collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1925605', data_custodian_id=None, point_of_contact=None), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test', description='tyest', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1925605', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 9)), published_date=PublishedDate(relevant=False, value=None), license=AnyHttpUrl('https://gbrrestoration.github.io/rrap-mds-knowledge-hub/information-system/licenses.html#copyright-all-rights-reserved-', ), purpose=None, rights_holder=None, usage_limitations=None, preferred_citation=None, spatial_info=None, temporal_info=None, formats=None, keywords=None, user_metadata=None, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1932274/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1932274/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, history=[HistoryEntry[DatasetDomainInfo](id=1, timestamp=1721714647, reason='nmvb ', username='ross', item=DatasetDomainInfo(display_name='test', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1925605', data_custodian_id=None, point_of_contact=None), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test', description='tyest', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1925605', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 9)), published_date=PublishedDate(relevant=False, value=None), license=AnyHttpUrl('https://gbrrestoration.github.io/rrap-mds-knowledge-hub/information-system/licenses.html#copyright-all-rights-reserved-', ), purpose=None, rights_holder=None, usage_limitations=None, preferred_citation=None, spatial_info=None, temporal_info=None, formats=None, keywords=None, user_metadata=None, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1932274/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1932274/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata=None)), HistoryEntry[DatasetDomainInfo](id=0, timestamp=1721629472, reason='Initial record creation', username='ross', item=DatasetDomainInfo(display_name='test', collection_format=CollectionFormat(associations=CollectionFormatAssociations(organisation_id='10378.1/1925605', data_custodian_id=None, point_of_contact=None), approvals=CollectionFormatApprovals(ethics_registration=DatasetEthicsRegistrationCheck(relevant=False, obtained=False), ethics_access=DatasetEthicsAccessCheck(relevant=False, obtained=False), indigenous_knowledge=IndigenousKnowledgeCheck(relevant=False, obtained=False), export_controls=ExportControls(relevant=False, obtained=False)), dataset_info=CollectionFormatDatasetInfo(name='test', description='tyest', access_info=AccessInfo(reposited=True, uri=None, description=None), publisher_id='10378.1/1925605', created_date=CreatedDate(relevant=True, value=datetime.date(2024, 8, 9)), published_date=PublishedDate(relevant=True, value=datetime.date(2024, 9, 20)), license=AnyHttpUrl('https://gbrrestoration.github.io/rrap-mds-knowledge-hub/information-system/licenses.html#copyright-all-rights-reserved-', ), purpose=None, rights_holder=None, usage_limitations=None, preferred_citation=None, spatial_info=None, temporal_info=None, formats=None, keywords=None, user_metadata=None, version=None)), s3=S3Location(bucket_name='restored-dev-dev-rrap-storage-bucket-11102022-11102022', path='datasets/10378-1-1932274/', s3_uri='s3://restored-dev-dev-rrap-storage-bucket-11102022-11102022/datasets/10378-1-1932274/'), release_history=[], release_status=<ReleasedStatus.NOT_RELEASED: 'NOT_RELEASED'>, release_approver=None, release_timestamp=None, access_info_uri=None, user_metadata=None))], id='10378.1/1932274', owner_username='ross', created_timestamp=1721629472, updated_timestamp=1721714647, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.DATASET: 'DATASET'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='c63a85e0-f3f9-4b50-8279-363bab6dc42d', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None))])\n",
+      "('seed_items', [])\n",
+      "('unparsable_items', [])\n",
+      "('total_item_count', 10)\n",
+      "('complete_item_count', 10)\n",
+      "('seed_item_count', 0)\n",
+      "('unparsable_item_count', 0)\n",
+      "('not_authorised_count', 0)\n",
+      "('pagination_key', {'id': '10378.1/1932274', 'display_name': 'test', 'item_subtype': 'DATASET'})\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ProvenaInterfaces.RegistryAPI import *\n",
+    "\n",
+    "# Sort criteria to receive datasets.\n",
+    "sort_criteria = NoFilterSubtypeListRequest(\n",
+    "            sort_by=SortOptions(sort_type=SortType.DISPLAY_NAME, ascending=False, begins_with=None), \n",
+    "            pagination_key=None, \n",
+    "            page_size=10\n",
+    "        )\n",
+    "\n",
+    "\n",
+    "list_datasets = await client.datastore.list_datasets(list_dataset_request=sort_criteria)\n",
+    "\n",
+    "for i in list_datasets:\n",
+    "    print(i)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Total datasets fetched: 251\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Getting all datasets in datastore with specified sort criteria.\n",
+    "all_datasets = await client.datastore.list_all_datasets(sort_criteria=sort_criteria)\n",
+    "print(f\"Total datasets fetched: {len(all_datasets)}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Querying Provenance API."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will now take a look at exploring some of the common operations of the PROV-API with existing and valid entities. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exploring Lineage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Exploring upstream query\n",
+      "LineageResponse(status=Status(success=True, details='Made lineage query (with depth 3) to neo4j backend.'), record_count=5, graph={'directed': True, 'multigraph': False, 'graph': {}, 'nodes': [{'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1904964'}, {'item_category': 'ACTIVITY', 'item_subtype': 'CREATE', 'id': '10378.1/1904975'}, {'item_category': 'AGENT', 'item_subtype': 'PERSON', 'id': '10378.1/1893843'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET_TEMPLATE', 'id': '10378.1/1905250'}, {'item_category': 'ACTIVITY', 'item_subtype': 'CREATE', 'id': '10378.1/1905252'}], 'links': [{'type': 'wasGeneratedBy', 'source': '10378.1/1904964', 'target': '10378.1/1904975'}, {'type': 'wasAttributedTo', 'source': '10378.1/1904964', 'target': '10378.1/1893843'}, {'type': 'wasInfluencedBy', 'source': '10378.1/1904964', 'target': '10378.1/1905250'}, {'type': 'wasAssociatedWith', 'source': '10378.1/1904975', 'target': '10378.1/1893843'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1905250', 'target': '10378.1/1905252'}, {'type': 'wasAttributedTo', 'source': '10378.1/1905250', 'target': '10378.1/1893843'}, {'type': 'wasAssociatedWith', 'source': '10378.1/1905252', 'target': '10378.1/1893843'}]})\n",
+      "\n",
+      "[{'id': '10378.1/1904964',\n",
+      "  'item_category': 'ENTITY',\n",
+      "  'item_subtype': 'DATASET'},\n",
+      " {'id': '10378.1/1904975',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'CREATE'},\n",
+      " {'id': '10378.1/1893843', 'item_category': 'AGENT', 'item_subtype': 'PERSON'},\n",
+      " {'id': '10378.1/1905250',\n",
+      "  'item_category': 'ENTITY',\n",
+      "  'item_subtype': 'DATASET_TEMPLATE'},\n",
+      " {'id': '10378.1/1905252',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'CREATE'}]\n",
+      "\n",
+      "Exploring downstream query\n",
+      "LineageResponse(status=Status(success=True, details='Made downstream query (with depth 3) to neo4j backend.'), record_count=8, graph={'directed': True, 'multigraph': False, 'graph': {}, 'nodes': [{'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1905254'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1904961'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1905265'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1905266'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1905267'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1905280'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1908496'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1900159'}], 'links': [{'type': 'used', 'source': '10378.1/1905254', 'target': '10378.1/1904961'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1905254'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1905265'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1905266'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1905267'}, {'type': 'used', 'source': '10378.1/1905265', 'target': '10378.1/1904961'}, {'type': 'used', 'source': '10378.1/1905266', 'target': '10378.1/1904961'}, {'type': 'used', 'source': '10378.1/1905267', 'target': '10378.1/1904961'}, {'type': 'used', 'source': '10378.1/1905280', 'target': '10378.1/1904961'}, {'type': 'used', 'source': '10378.1/1908496', 'target': '10378.1/1904961'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1900159', 'target': '10378.1/1905280'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1900159', 'target': '10378.1/1908496'}]})\n",
+      "\n",
+      "[{'id': '10378.1/1905254',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1904961',\n",
+      "  'item_category': 'ENTITY',\n",
+      "  'item_subtype': 'DATASET'},\n",
+      " {'id': '10378.1/1905265',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1905266',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1905267',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1905280',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1908496',\n",
+      "  'item_category': 'ACTIVITY',\n",
+      "  'item_subtype': 'MODEL_RUN'},\n",
+      " {'id': '10378.1/1900159',\n",
+      "  'item_category': 'ENTITY',\n",
+      "  'item_subtype': 'DATASET'}]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Upstream\n",
+    "\n",
+    "print(\"Exploring upstream query\")\n",
+    "\n",
+    "upstream_result = await client.prov_api.explore_upstream(starting_id=\"10378.1/1904964\")\n",
+    "pprint(upstream_result)\n",
+    "print()\n",
+    "pprint(upstream_result.graph.get('nodes'))\n",
+    "\n",
+    "print()\n",
+    "\n",
+    "print(\"Exploring downstream query\")\n",
+    "\n",
+    "downstream_result = await client.prov_api.explore_downstream(starting_id=\"10378.1/1904961\")\n",
+    "pprint(downstream_result)\n",
+    "print()\n",
+    "pprint(downstream_result.graph.get('nodes'))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Contributing datasets \n",
+      " status=Status(success=True, details='Made upstream contribution query (with depth 3) to neo4j backend.') record_count=0 graph={'directed': True, 'multigraph': False, 'graph': {}, 'nodes': [], 'links': []}\n",
+      "Effected datasets \n",
+      " status=Status(success=True, details='Made downstream effect query (with depth 3) to neo4j backend.') record_count=29 graph={'directed': True, 'multigraph': False, 'graph': {}, 'nodes': [{'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1904961'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1926259'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1904964'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1926270'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1926271'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1935470'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1939260'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1939303'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1939304'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1939316'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945942'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945950'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945954'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945955'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948361'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948369'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948373'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948389'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948390'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1939263'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1939265'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1945943'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945945'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1945956'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1945958'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1948362'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948364'}, {'item_category': 'ENTITY', 'item_subtype': 'DATASET', 'id': '10378.1/1948393'}, {'item_category': 'ACTIVITY', 'item_subtype': 'MODEL_RUN', 'id': '10378.1/1948397'}], 'links': [{'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1926259'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1926270'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1926271'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1935470'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1939260'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1939303'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1939304'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1939316'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1945942'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1945950'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1945954'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1945955'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1948361'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1948369'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1948373'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1948389'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1904961', 'target': '10378.1/1948390'}, {'type': 'used', 'source': '10378.1/1926259', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1926270', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1926271', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1935470', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1939260', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1939303', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1939304', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1939316', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1945942', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1945950', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1945954', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1945955', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1948361', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1948369', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1948373', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1948389', 'target': '10378.1/1904964'}, {'type': 'used', 'source': '10378.1/1948390', 'target': '10378.1/1904964'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1939263', 'target': '10378.1/1939265'}, {'type': 'used', 'source': '10378.1/1939265', 'target': '10378.1/1904964'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1945943', 'target': '10378.1/1945945'}, {'type': 'used', 'source': '10378.1/1945945', 'target': '10378.1/1904964'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1945956', 'target': '10378.1/1945958'}, {'type': 'used', 'source': '10378.1/1945958', 'target': '10378.1/1904964'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1948362', 'target': '10378.1/1948364'}, {'type': 'used', 'source': '10378.1/1948364', 'target': '10378.1/1904964'}, {'type': 'wasGeneratedBy', 'source': '10378.1/1948393', 'target': '10378.1/1948397'}, {'type': 'used', 'source': '10378.1/1948397', 'target': '10378.1/1904964'}]}\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Contributing and Effected Datasets\n",
+    "\n",
+    "contributing_datasets = await client.prov_api.get_contributing_datasets(starting_id = \"10378.1/1904964\")\n",
+    "print(\"Contributing datasets \" + \"\\n\", contributing_datasets)\n",
+    "\n",
+    "effected_datasets = await client.prov_api.get_effected_datasets(starting_id = \"10378.1/1904964\")\n",
+    "print(\"Effected datasets \" + \"\\n\", effected_datasets)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Lodging Model Runs & Querying with Job-API"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from ProvenaInterfaces.ProvenanceAPI import ModelRunRecord, TemplatedDataset, DatasetType, AssociationInfo\n",
+    "from ProvenaInterfaces.AsyncJobAPI import JobStatus\n",
+    "\n",
+    "# Building the Model Run Payload.\n",
+    "model_run_payload = ModelRunRecord(\n",
+    "    workflow_template_id=config.workflow_configuration.workflow_template,\n",
+    "    model_version = None, \n",
+    "    inputs = [\n",
+    "        TemplatedDataset(\n",
+    "            dataset_template_id=config.inputs.input_dataset_template, \n",
+    "            dataset_id=config.inputs.input_dataset,\n",
+    "            dataset_type=DatasetType.DATA_STORE\n",
+    "        )\n",
+    "    ], \n",
+    "    outputs=[\n",
+    "        TemplatedDataset(\n",
+    "            dataset_template_id=config.outputs.output_dataset_template, \n",
+    "            dataset_id=config.outputs.output_dataset,\n",
+    "            dataset_type=DatasetType.DATA_STORE\n",
+    "        )\n",
+    "    ], \n",
+    "    annotations=None,\n",
+    "    display_name=\"Notebook Model Run Testing\",\n",
+    "    description=\"Standard Provena Model Run Example\",\n",
+    "    study_id=None,\n",
+    "    associations=AssociationInfo(\n",
+    "        modeller_id=config.associations.person,\n",
+    "        requesting_organisation_id=config.associations.organisation\n",
+    "    ),\n",
+    "    start_time=0,\n",
+    "    end_time=1\n",
+    "\n",
+    ")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Registering Model Run\n",
+    "model_run_register_result = await client.prov_api.register_model_run(model_run_payload=model_run_payload)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Status of registration success=True details='Job dispatched, monitor session ID using the job API to see progress.'\n",
+      "Job Session ID b389dfbe-a2b8-40aa-ab3c-e490fb4d5580\n",
+      "Starting wait_for_entry_in_queue polling stage.\n",
+      "Polling Job API. Wait time: 0sec out of 20sec.\n",
+      "Running wait_for_entry_in_queue callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 2sec out of 20sec.\n",
+      "Running wait_for_entry_in_queue callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "Finished wait_for_entry_in_queue polling stage.\n",
+      "Starting wait_for_in_progress polling stage.\n",
+      "Polling Job API. Wait time: 0sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 2sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 4sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 6sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 9sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 11sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 13sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 15sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 17sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 19sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 21sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 23sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 25sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 27sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 29sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 32sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 34sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 36sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 38sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 40sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 42sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 44sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 46sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 48sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 50sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state PENDING.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 52sec out of 120sec.\n",
+      "Running wait for in progress callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in non pending state IN_PROGRESS.\n",
+      "Finished wait_for_in_progress polling stage.\n",
+      "Starting wait_for_completion polling stage.\n",
+      "Polling Job API. Wait time: 0sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 2sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 4sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 6sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 8sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 10sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in state session_id='b389dfbe-a2b8-40aa-ab3c-e490fb4d5580' created_timestamp=1723697613 username='ross' batch_id=None payload={'revalidate': False, 'record': {'outputs': [{'dataset_template_id': '10378.1/1926245', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904961'}], 'associations': {'modeller_id': '10378.1/1893843', 'requesting_organisation_id': '10378.1/1893860'}, 'start_time': 0, 'inputs': [{'dataset_template_id': '10378.1/1905250', 'dataset_type': 'DATA_STORE', 'dataset_id': '10378.1/1904964'}], 'end_time': 1, 'description': 'Standard Provena Model Run Example', 'workflow_template_id': '10378.1/1905251', 'display_name': 'Notebook Model Run Testing'}} job_type=<JobType.PROV_LODGE: 'PROV_LODGE'> job_sub_type=<JobSubType.MODEL_RUN_PROV_LODGE: 'MODEL_RUN_PROV_LODGE'> gsi_status='ok' status=<JobStatus.IN_PROGRESS: 'IN_PROGRESS'> info='Job has been dispatched to worker callback and is in progress.' result=None.\n",
+      "Callback registered incomplete. Waiting for polling interval.\n",
+      "Polling Job API. Wait time: 12sec out of 180sec.\n",
+      "Running wait for completion callback. Session ID: b389dfbe-a2b8-40aa-ab3c-e490fb4d5580.\n",
+      "200OK response for user fetch of b389dfbe-a2b8-40aa-ab3c-e490fb4d5580 in completed state.\n",
+      "Finished wait_for_completion polling stage.\n",
+      "\n",
+      "Current job status: JobStatus.SUCCEEDED\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Check the response of the model run registration\n",
+    "print(\"Status of registration\", model_run_register_result.status)\n",
+    "print(\"Job Session ID\", model_run_register_result.session_id)\n",
+    "\n",
+    "\n",
+    "# Check the job to see if it's complete. We will do this by polling the job_api\n",
+    "job_result = await client.job_api.await_successful_job_completion(session_id=model_run_register_result.session_id)\n",
+    "\n",
+    "while job_result.status != JobStatus.SUCCEEDED: # Keep polling on this cell till this turns to \"SUCCEEDED\"\n",
+    "    \n",
+    "    job_result = await client.job_api.await_successful_job_completion(session_id=model_run_register_result.session_id)\n",
+    "    pprint(job_result.result)\n",
+    "    pprint(job_result.job_type)\n",
+    "\n",
+    "\n",
+    "print()\n",
+    "print(\"Current job status:\", job_result.status) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Generating Reports\n",
+    "\n",
+    "This allows You To Generate Report (Word Document, .docx) For Study Close Out Reports from a Model Run Or Study. \n",
+    "\n",
+    "There are two potential approaches, you can take to generate the report: \n",
+    "\n",
+    " - 1- Default Path: If you don't provide a custom ```file_path``` parameter, it will store the generated word file in your relative directory (This is the directory where you are running the code from). \n",
+    "\n",
+    " - 2- Custom Path: If you provide a custom ```file_path``` parameter, even if the file path/directory does not exist, it will be automatically made and your file will be saved inside that directory. \n",
+    "\n",
+    "   If you provide a file path, and the file path already exists your will be saved inside that existing directory as well. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from ProvenaInterfaces.ProvenanceAPI import GenerateReportRequest\n",
+    "from ProvenaInterfaces.RegistryModels import ItemSubType\n",
+    "\n",
+    "\n",
+    "# Generate's report document in your relative directory.\n",
+    "await client.prov_api.generate_report(report_request = GenerateReportRequest(\n",
+    "        id = \"10378.1/1968661\", \n",
+    "        item_subtype=ItemSubType.STUDY,\n",
+    "        depth=1\n",
+    "    ))\n",
+    "\n",
+    "# Generate's report document in a specified directory\n",
+    "await client.prov_api.generate_report(report_request = GenerateReportRequest(\n",
+    "        id = \"10378.1/1968661\", \n",
+    "        item_subtype=ItemSubType.STUDY,\n",
+    "        depth=1\n",
+    "    ), file_path=\"./idontexistpath/butinhere/\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Querying Registry API."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will take a look at creating various entities with different subtypes (org, model) and then fetching those newly created entities through the client library. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Created Organisation status=Status(success=True, details='Successfully uploaded the complete item. Return item includes handle id.') created_item=ItemOrganisation(display_name='Test org', user_metadata={'my custom': 'annotation', 'another custom': 'annotation'}, name='Test org', ror=AnyHttpUrl('http://example.org/test-org', ), history=[HistoryEntry[OrganisationDomainInfo](id=0, timestamp=1723697688, reason='Initial record creation', username='ross', item=OrganisationDomainInfo(display_name='Test org', name='Test org', ror=AnyHttpUrl('http://example.org/test-org', ), user_metadata={'my custom': 'annotation', 'another custom': 'annotation'}))], id='10378.1/1948406', owner_username='ross', created_timestamp=1723697688, updated_timestamp=1723697688, item_category=<ItemCategory.AGENT: 'AGENT'>, item_subtype=<ItemSubType.ORGANISATION: 'ORGANISATION'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=None, versioning_info=None) register_create_activity_session_id=None\n",
+      "Created Model status=Status(success=True, details='Successfully uploaded the complete item. Return item includes handle id.') created_item=ItemModel(display_name='Example model', user_metadata={'my custom': 'annotation', 'another custom': 'annotation'}, name='Example model', description='This is a fake model', documentation_url=AnyHttpUrl('https://example_model.org', ), source_url=AnyHttpUrl('https://example_model.org', ), history=[HistoryEntry[ModelDomainInfo](id=0, timestamp=1723697696, reason='Initial record creation', username='ross', item=ModelDomainInfo(display_name='Example model', name='Example model', description='This is a fake model', documentation_url=AnyHttpUrl('https://example_model.org', ), source_url=AnyHttpUrl('https://example_model.org', ), user_metadata={'my custom': 'annotation', 'another custom': 'annotation'}))], id='10378.1/1948407', owner_username='ross', created_timestamp=1723697696, updated_timestamp=1723697696, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.MODEL: 'MODEL'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='11688f29-2292-4444-9da4-734e806f3fc6', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)) register_create_activity_session_id='11688f29-2292-4444-9da4-734e806f3fc6'\n",
+      "Fetched Organisation status=Status(success=True, details='Successfully retrieved complete item and parsed into current data model.') item=ItemOrganisation(display_name='Test org', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, name='Test org', ror=AnyHttpUrl('http://example.org/test-org', ), history=[HistoryEntry[OrganisationDomainInfo](id=0, timestamp=1723697688, reason='Initial record creation', username='ross', item=OrganisationDomainInfo(display_name='Test org', name='Test org', ror=AnyHttpUrl('http://example.org/test-org', ), user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1948406', owner_username='ross', created_timestamp=1723697688, updated_timestamp=1723697688, item_category=<ItemCategory.AGENT: 'AGENT'>, item_subtype=<ItemSubType.ORGANISATION: 'ORGANISATION'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=None, versioning_info=None) roles=['metadata-read', 'metadata-write', 'admin'] locked=False item_is_seed=False\n",
+      "Fetched model status=Status(success=True, details='Successfully retrieved complete item and parsed into current data model.') item=ItemModel(display_name='Example model', user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}, name='Example model', description='This is a fake model', documentation_url=AnyHttpUrl('https://example_model.org', ), source_url=AnyHttpUrl('https://example_model.org', ), history=[HistoryEntry[ModelDomainInfo](id=0, timestamp=1723697696, reason='Initial record creation', username='ross', item=ModelDomainInfo(display_name='Example model', name='Example model', description='This is a fake model', documentation_url=AnyHttpUrl('https://example_model.org', ), source_url=AnyHttpUrl('https://example_model.org', ), user_metadata={'another custom': 'annotation', 'my custom': 'annotation'}))], id='10378.1/1948407', owner_username='ross', created_timestamp=1723697696, updated_timestamp=1723697696, item_category=<ItemCategory.ENTITY: 'ENTITY'>, item_subtype=<ItemSubType.MODEL: 'MODEL'>, record_type=<RecordType.COMPLETE_ITEM: 'COMPLETE_ITEM'>, workflow_links=WorkflowLinks(create_activity_workflow_id='11688f29-2292-4444-9da4-734e806f3fc6', version_activity_workflow_id=None), versioning_info=VersioningInfo(previous_version=None, version=1, reason=None, next_version=None)) roles=['metadata-read', 'metadata-write', 'admin'] locked=False item_is_seed=False\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Organisation \n",
+    "org_domain_info = OrganisationDomainInfo(\n",
+    "    display_name=\"Test org\",\n",
+    "    name=\"Test org\",\n",
+    "    ror=\"http://example.org/test-org\", #type:ignore\n",
+    "    user_metadata={\n",
+    "        \"my custom\": \"annotation\",\n",
+    "        \"another custom\": \"annotation\"\n",
+    "    }\n",
+    ")\n",
+    "created_organisation = await client.registry.organisation.create_item(create_item_request=org_domain_info)\n",
+    "print(\"Created Organisation\", created_organisation)\n",
+    "\n",
+    "# Model \n",
+    "model_domain_info = ModelDomainInfo(\n",
+    "    display_name=\"Example model\",\n",
+    "    name=\"Example model\",\n",
+    "    description=\"This is a fake model\",\n",
+    "    documentation_url=\"https://example_model.org\", #type:ignore\n",
+    "    source_url=\"https://example_model.org\", #type:ignore\n",
+    "    user_metadata={\n",
+    "        \"my custom\": \"annotation\",\n",
+    "        \"another custom\": \"annotation\"\n",
+    "    }\n",
+    ")\n",
+    "created_model = await client.registry.model.create_item(create_item_request=model_domain_info)\n",
+    "print(\"Created Model\", created_model)\n",
+    "\n",
+    "\n",
+    "# Fetching items...\n",
+    "fetched_org = await client.registry.organisation.fetch(id = created_organisation.created_item.id)\n",
+    "print(\"Fetched Organisation\", fetched_org)\n",
+    "\n",
+    "fetched_model = await client.registry.model.fetch(id = created_model.created_item.id)\n",
+    "print(\"Fetched model\", fetched_model)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We will take a look at listing all items present in registry based on their subtypes (Organisation, Model) for this example. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 20 organisations\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ProvenaInterfaces.RegistryAPI import GeneralListRequest\n",
+    "\n",
+    "general_list_request = GeneralListRequest(\n",
+    "    filter_by=None,\n",
+    "    sort_by=None,\n",
+    "    pagination_key=None\n",
+    ")\n",
+    "\n",
+    "list_org = await client.registry.organisation.list_items(list_items_payload=general_list_request)\n",
+    "print(f\"Found {list_org.total_item_count} organisations\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 19 models\n"
+     ]
+    }
+   ],
+   "source": [
+    "list_models = await client.registry.model.list_items(list_items_payload=general_list_request)\n",
+    "\n",
+    "print(f\"Found {list_models.total_item_count} models\")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### General Registry Actions \n",
+    "\n",
+    "Fetching without subtype, Listing All Registry Items and Count of all items in registry (client library special)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Fetched item named: 'CoralReefSim Input Dataset' and id: '10378.1/1876000'\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Fetching without subtype. \n",
+    "fetch_result = await client.registry.general_fetch_item(id = \"10378.1/1876000\")\n",
+    "print(f\"Fetched item named: '{fetch_result.item['display_name']}' and id: '{fetch_result.item['id']}'\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Total items fetched: 20\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Listing all registry items. \n",
+    "all_general_registry_items = await client.registry.list_general_registry_items(general_list_request=general_list_request)\n",
+    "print(f\"Total items fetched: {all_general_registry_items.total_item_count}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{'MODEL': 43, 'ORGANISATION': 65, 'MODEL_RUN': 149, 'CREATE': 367, 'DATASET': 251, 'MODEL_RUN_WORKFLOW_TEMPLATE': 11, 'STUDY': 15, 'DATASET_TEMPLATE': 25, 'VERSION': 23, 'PERSON': 47}\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Count of all items based on subtypes. \n",
+    "count_of_all_items = await client.registry.list_registry_items_with_count()\n",
+    "print(count_of_all_items)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": ".venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -1,0 +1,6 @@
+provenaclient.clients.template_client
+=====================================
+
+.. py:module:: provenaclient.clients.template_client
+
+

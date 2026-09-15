@@ -1,0 +1,376 @@
+provenaclient.modules.job_service
+=================================
+
+.. py:module:: provenaclient.modules.job_service
+
+.. autoapi-nested-parse::
+
+   Created Date: Monday June 17th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Monday June 17th 2024 4:45:39 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Job API L3 Module. Includes Job Admin sub module.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.modules.job_service.JobAdminSubService
+   provenaclient.modules.job_service.JobService
+
+
+Module Contents
+---------------
+
+.. py:class:: JobAdminSubService(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, job_api_client: provenaclient.clients.JobAPIClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _job_api_client
+      :type:  provenaclient.clients.JobAPIClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: launch_job(request: ProvenaInterfaces.AsyncJobAPI.AdminLaunchJobRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminLaunchJobResponse
+      :async:
+
+
+      Launches a new job.
+
+      :param request: Specified job parameters
+      :type request: AdminLaunchJobRequest
+
+      :returns: The response
+      :rtype: AdminLaunchJobResponse
+
+
+
+   .. py:method:: get_job(session_id: str) -> ProvenaInterfaces.AsyncJobAPI.AdminGetJobResponse
+      :async:
+
+
+      Fetches a job (any job since admin)
+
+      :param session_id: The session ID of job to fetch
+      :type session_id: str
+
+      :returns: The response
+      :rtype: AdminGetJobResponse
+
+
+
+   .. py:method:: list_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.AdminListJobsRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminListJobsResponse
+      :async:
+
+
+      Lists all jobs.
+
+      :param list_jobs_request: The request including pagination information.
+      :type list_jobs_request: AdminListJobsRequest
+
+      :returns: The list of jobs response.
+      :rtype: AdminListJobsResponse
+
+
+
+   .. py:method:: list_all_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.AdminListJobsRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> List[ProvenaInterfaces.AsyncJobAPI.JobStatusTable]
+      :async:
+
+
+      Lists all jobs for the given user.
+
+      Will automatically paginate until list is exhausted.
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: AdminListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: for_all_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.AdminListJobsRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> AsyncGenerator[ProvenaInterfaces.AsyncJobAPI.JobStatusTable, None]
+      :async:
+
+
+      Lists all jobs for the given user.
+
+      Returns lazy generator for use in for loops.
+
+      Will automatically paginate until list is exhausted.
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: AdminListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: list_job_batch(list_request: ProvenaInterfaces.AsyncJobAPI.AdminListByBatchRequest) -> ProvenaInterfaces.AsyncJobAPI.AdminListByBatchResponse
+      :async:
+
+
+      List jobs by batch ID, returning a list of jobs in the batch.
+
+      :param list_request: The request including batch ID
+      :type list_request: AdminListByBatchRequest
+
+      :returns: The list of jobs in the batch
+      :rtype: AdminListByBatchResponse
+
+
+
+   .. py:method:: list_all_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.AdminListByBatchRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> List[ProvenaInterfaces.AsyncJobAPI.JobStatusTable]
+      :async:
+
+
+      Lists all jobs for the given user. Will automatically paginate all
+      entries to exhaust list
+
+      NOTE this could return more than limit - but figure it may as well
+      return data fetched for efficiency reasons
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: AdminListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: for_all_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.AdminListByBatchRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> AsyncGenerator[ProvenaInterfaces.AsyncJobAPI.JobStatusTable, None]
+      :async:
+
+
+      Lists all jobs for the given user. Will automatically paginate all
+      entries to exhaust list
+
+      NOTE this could return more than limit - but figure it may as well
+      return data fetched for efficiency reasons
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: AdminListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+.. py:class:: JobService(auth: provenaclient.modules.module_helpers.AuthManager, config: provenaclient.modules.module_helpers.Config, job_api_client: provenaclient.clients.JobAPIClient)
+
+   Bases: :py:obj:`provenaclient.modules.module_helpers.ModuleService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L3 clients.
+
+
+   .. py:attribute:: _job_api_client
+      :type:  provenaclient.clients.JobAPIClient
+
+
+   .. py:attribute:: admin
+      :type:  JobAdminSubService
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_job(session_id: str) -> ProvenaInterfaces.AsyncJobAPI.GetJobResponse
+      :async:
+
+
+      Fetches a job by session id
+
+      :param session_id: The session ID
+      :type session_id: str
+
+      :returns: The job fetched
+      :rtype: GetJobResponse
+
+
+
+   .. py:method:: list_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.ListJobsRequest) -> ProvenaInterfaces.AsyncJobAPI.ListJobsResponse
+      :async:
+
+
+      Lists all jobs for the given user
+
+      Can return pagination if page size exceeded
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: list_all_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.ListJobsRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> List[ProvenaInterfaces.AsyncJobAPI.JobStatusTable]
+      :async:
+
+
+      Lists all jobs for the given user.
+
+      Will automatically paginate until list is exhausted.
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: for_all_jobs(list_jobs_request: ProvenaInterfaces.AsyncJobAPI.ListJobsRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> AsyncGenerator[ProvenaInterfaces.AsyncJobAPI.JobStatusTable, None]
+      :async:
+
+
+      Lists all jobs for the given user.
+
+      Returns lazy generator for use in for loops.
+
+      Will automatically paginate until list is exhausted.
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: list_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest) -> ProvenaInterfaces.AsyncJobAPI.ListByBatchResponse
+      :async:
+
+
+      Gets all jobs within a batch.
+
+      Can return pagination if page size exceeded
+
+      :param list_request: The request including batch ID
+      :type list_request: ListByBatchRequest
+
+      :returns: The response including list of jobs
+      :rtype: ListByBatchResponse
+
+
+
+   .. py:method:: list_all_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> List[ProvenaInterfaces.AsyncJobAPI.JobStatusTable]
+      :async:
+
+
+      Lists all jobs for the given user. Will automatically paginate all
+      entries to exhaust list
+
+      NOTE this could return more than limit - but figure it may as well
+      return data fetched for efficiency reasons
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: for_all_jobs_in_batch(list_request: ProvenaInterfaces.AsyncJobAPI.ListByBatchRequest, limit: ProvenaInterfaces.AsyncJobAPI.Optional[int] = None) -> AsyncGenerator[ProvenaInterfaces.AsyncJobAPI.JobStatusTable, None]
+      :async:
+
+
+      Lists all jobs for the given user. Will automatically paginate all
+      entries to exhaust list
+
+      NOTE this could return more than limit - but figure it may as well
+      return data fetched for efficiency reasons
+
+      :param list_jobs_request: The request including details
+      :type list_jobs_request: ListJobsRequest
+      :param limit: Total record limit to enforce, if any
+      :type limit: Optional[int]
+
+      :returns: The list of jobs
+      :rtype: ListJobsResponse
+
+
+
+   .. py:method:: await_job_completion(session_id: str, settings: provenaclient.models.AsyncAwaitSettings = DEFAULT_AWAIT_SETTINGS) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+      :async:
+
+
+      Awaits completion of a given job then provides the job info.
+
+      Completion is defined as a job status which is not pending or in progress.
+
+      :param session_id: The ID of the job to monitor and await completion.
+      :type session_id: str
+
+      :returns: The entry at the latest point.
+      :rtype: JobStatusTable
+
+
+
+   .. py:method:: await_successful_job_completion(session_id: str, settings: provenaclient.models.AsyncAwaitSettings = DEFAULT_AWAIT_SETTINGS) -> ProvenaInterfaces.AsyncJobAPI.JobStatusTable
+      :async:
+
+
+      Awaits successful completion of a given job then provides the job info.
+
+      Completion is defined as a job status which is not pending or in progress.
+
+      :param session_id: The ID of the job to monitor and await completion.
+      :type session_id: str
+
+      :returns: The entry at the latest point.
+      :rtype: JobStatusTable
+
+
+

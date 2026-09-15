@@ -1,0 +1,614 @@
+provenaclient.clients.registry_client
+=====================================
+
+.. py:module:: provenaclient.clients.registry_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday June 6th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Incomplete Registry API L2 Client.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   28-06-2024 | Parth Kulkarni | Completion of L2 Interface of Registry with General, Admin and Other endpoints.
+   18-06-2024 | Peter Baker | Initial structure setup to help dispatch into the various sub types in the L3.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.registry_client.GenericRegistryEndpoints
+   provenaclient.clients.registry_client.RegistryAdminEndpoints
+   provenaclient.clients.registry_client.RegistryAdminClient
+   provenaclient.clients.registry_client.RegistryGeneralClient
+   provenaclient.clients.registry_client.RegistryClient
+
+
+Module Contents
+---------------
+
+.. py:class:: GenericRegistryEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.RegistryAPI.Enum`
+
+
+   str(object='') -> str
+   str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+   Create a new string object from the given object. If encoding or
+   errors is specified, then the object must expose a data buffer
+   that will be decoded using the given encoding and error handler.
+   Otherwise, returns the result of object.__str__() (if defined)
+   or repr(object).
+   encoding defaults to sys.getdefaultencoding().
+   errors defaults to 'strict'.
+
+
+   .. py:attribute:: GET_HEALTH_CHECK
+      :value: '/'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS
+      :value: '/check-access/check-admin-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS
+      :value: '/check-access/check-general-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_READ_ACCESS
+      :value: '/check-access/check-read-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_WRITE_ACCESS
+      :value: '/check-access/check-write-access'
+
+
+
+   .. py:attribute:: GET_REGISTRY_GENERAL_ABOUT_VERSION
+      :value: '/registry/general/about/version'
+
+
+
+   .. py:attribute:: GET_REGISTRY_GENERAL_FETCH
+      :value: '/registry/general/fetch'
+
+
+
+   .. py:attribute:: POST_REGISTRY_GENERAL_LIST
+      :value: '/registry/general/list'
+
+
+
+.. py:class:: RegistryAdminEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.RegistryAPI.Enum`
+
+
+   str(object='') -> str
+   str(bytes_or_buffer[, encoding[, errors]]) -> str
+
+   Create a new string object from the given object. If encoding or
+   errors is specified, then the object must expose a data buffer
+   that will be decoded using the given encoding and error handler.
+   Otherwise, returns the result of object.__str__() (if defined)
+   or repr(object).
+   encoding defaults to sys.getdefaultencoding().
+   errors defaults to 'strict'.
+
+
+   .. py:attribute:: GET_ADMIN_CONFIG
+      :value: '/admin/config'
+
+
+
+   .. py:attribute:: GET_ADMIN_EXPORT
+      :value: '/admin/export'
+
+
+
+   .. py:attribute:: GET_ADMIN_SENTRY_DEBUG
+      :value: '/admin/sentry-debug'
+
+
+
+   .. py:attribute:: POST_ADMIN_IMPORT
+      :value: '/admin/import'
+
+
+
+   .. py:attribute:: POST_ADMIN_RESTORE_FROM_TABLE
+      :value: '/admin/restore_from_table'
+
+
+
+.. py:class:: RegistryAdminClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: RegistryAdminEndpoints) -> str
+
+
+   .. py:method:: _build_subtype_endpoint(action: provenaclient.utils.registry_endpoints.RegistryAction, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> str
+
+
+   .. py:method:: export_items() -> ProvenaInterfaces.RegistryAPI.RegistryExportResponse
+      :async:
+
+
+      Exports all items from the registry.
+
+      :returns: The response containing the exported items.
+      :rtype: RegistryExportResponse
+
+
+
+   .. py:method:: import_items(registry_import_request: ProvenaInterfaces.RegistryAPI.RegistryImportRequest) -> ProvenaInterfaces.RegistryAPI.RegistryImportResponse
+      :async:
+
+
+      Imports items into the registry.
+
+      :param registry_import_request: The import request containing the items to import.
+      :type registry_import_request: RegistryImportRequest
+
+      :returns: The response containing the result of the import operation.
+      :rtype: RegistryImportResponse
+
+
+
+   .. py:method:: restore_items_from_dynamo_table(restore_request: ProvenaInterfaces.RegistryAPI.RegistryRestoreRequest) -> ProvenaInterfaces.RegistryAPI.RegistryImportResponse
+      :async:
+
+
+      Restores items from a DynamoDB table into the registry.
+
+      :param restore_request: The restore request containing the details for restoration.
+      :type restore_request: RegistryRestoreRequest
+
+      :returns: The response containing the result of the restore operation.
+      :rtype: RegistryImportResponse
+
+
+
+   .. py:method:: generate_config_file(required_only: bool) -> str
+      :async:
+
+
+      Generates a nicely formatted .env file of the current required/non-supplied properties.
+
+      Used to quickly bootstrap a local environment or to understand currently deployed API.
+
+      :param required_only: Whether to include only required properties. By default True.
+      :type required_only: bool
+
+      :returns: The generated .env file content.
+      :rtype: str
+
+
+
+   .. py:method:: delete_item(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Deletes an item from the registry.
+
+      :param id: The ID of the item to delete.
+      :type id: str
+      :param item_subtype: The subtype of the item to delete.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response indicating the result of the deletion.
+      :rtype: StatusResponse
+
+
+
+.. py:class:: RegistryGeneralClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_subtype_endpoint(action: provenaclient.utils.registry_endpoints.RegistryAction, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> str
+
+
+   .. py:method:: _build_general_endpoint(endpoint: GenericRegistryEndpoints) -> str
+
+
+   .. py:method:: list_general_registry_items(general_list_request: ProvenaInterfaces.RegistryAPI.GeneralListRequest) -> ProvenaInterfaces.RegistryAPI.PaginatedListResponse
+      :async:
+
+
+      Lists general registry items based on filter criteria.
+
+      :param general_list_request: The request containing filter and sort criteria.
+      :type general_list_request: GeneralListRequest
+
+      :returns: The response containing the paginated list of registry items.
+      :rtype: PaginatedListResponse
+
+
+
+   .. py:method:: general_fetch_item(id: str) -> ProvenaInterfaces.RegistryAPI.UntypedFetchResponse
+      :async:
+
+
+      Fetches a general item from the registry.
+
+      :param id: The ID of the item to fetch.
+      :type id: str
+
+      :returns: The fetch response containing the item details.
+      :rtype: UntypedFetchResponse
+
+
+
+   .. py:method:: get_current_provena_version() -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Gets the current Provena version.
+
+      :returns: The response containing the current Provena version.
+      :rtype: VersionResponse
+
+
+
+.. py:class:: RegistryClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: admin
+      :type:  RegistryAdminClient
+
+
+   .. py:attribute:: general
+      :type:  RegistryGeneralClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_subtype_endpoint(action: provenaclient.utils.registry_endpoints.RegistryAction, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> str
+
+
+   .. py:method:: _build_general_endpoint(endpoint: GenericRegistryEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.general.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: fetch_item(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, fetch_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType], seed_allowed: ProvenaInterfaces.RegistryAPI.Optional[bool] = None) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Ascertains the correct endpoint based on the subtype provided, then runs the fetch operation, parsing the data as the specified model.
+
+      :param id: The id of the item to fetch.
+      :type id: str
+      :param item_subtype: The subtype of the item to fetch.
+      :type item_subtype: ItemSubType
+      :param fetch_response_model: The response pydantic model to parse as e.g. OrganisationFetchResponse
+      :type fetch_response_model: Type[BaseModelType]
+      :param seed_allowed: Should the endpoint throw an error if the item is a seed item?  Defaults to None.
+      :type seed_allowed: Optional[bool], optional
+
+      :returns: The fetch response parsed as the specified model.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: update_item(id: str, reason: ProvenaInterfaces.RegistryAPI.Optional[str], item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, domain_info: ProvenaInterfaces.RegistryAPI.DomainInfoBase, update_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Ascertains the correct endpoint then runs the update operation on an existing item by providing new domain info.
+
+      :param id: The id of item to update.
+      :type id: str
+      :param reason: The reason for updating, if any
+      :type reason: Optional[str]
+      :param item_subtype: The subtype to update
+      :type item_subtype: ItemSubType
+      :param domain_info: The domain info to replace existing item with
+      :type domain_info: DomainInfoBase
+      :param update_response_model: The response model to parse e.g. StatusResponse
+      :type update_response_model: Type[BaseModelType]
+
+      :returns: The response model parsed
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: list_items(list_items_payload: ProvenaInterfaces.RegistryAPI.GeneralListRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, update_model_response: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Lists items within the registry based on filter criteria.
+
+      :param list_items_payload: The request containing filter and sort criteria.
+      :type list_items_payload: GeneralListRequest
+      :param item_subtype: The subtype of the items to list.
+      :type item_subtype: ItemSubType
+      :param update_model_response: The response model to parse.
+      :type update_model_response: Type[BaseModelType]
+
+      :returns: The response containing the list of items.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: seed_item(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, seed_model_response: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Seeds an item in the registry.
+
+      :param item_subtype: The subtype of the item to seed.
+      :type item_subtype: ItemSubType
+      :param seed_model_response: The response model to parse.
+      :type seed_model_response: Type[BaseModelType]
+
+      :returns: The response containing the details of the seeded item.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: revert_item(revert_request: ProvenaInterfaces.RegistryAPI.ItemRevertRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.ItemRevertResponse
+      :async:
+
+
+      Reverts an item in the registry.
+
+      :param revert_request: The revert request.
+      :type revert_request: ItemRevertRequest
+      :param item_subtype: The subtype of the item to revert.
+      :type item_subtype: ItemSubType
+
+      :returns: The revert response.
+      :rtype: ItemRevertResponse
+
+
+
+   .. py:method:: create_item(create_item_request: ProvenaInterfaces.RegistryAPI.DomainInfoBase, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType, create_response_model: ProvenaInterfaces.RegistryAPI.Type[provenaclient.clients.client_helpers.BaseModelType]) -> provenaclient.clients.client_helpers.BaseModelType
+      :async:
+
+
+      Creates an item in the registry.
+
+      :param create_item_request: The domain information required to create the item.
+      :type create_item_request: DomainInfoBase
+      :param item_subtype: The subtype of the item to create.
+      :type item_subtype: ItemSubType
+      :param create_response_model: The response model to parse.
+      :type create_response_model: Type[BaseModelType]
+
+      :returns: The response containing the details of the created item.
+      :rtype: BaseModelType
+
+
+
+   .. py:method:: get_schema(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.JsonSchemaResponse
+      :async:
+
+
+      Gets the schema for the item subtype.
+
+      :param item_subtype: The subtype of the item to get the schema for.
+      :type item_subtype: ItemSubType
+
+      :returns: The JSON schema response.
+      :rtype: JsonSchemaResponse
+
+
+
+   .. py:method:: validate_item(validate_request: ProvenaInterfaces.RegistryAPI.DomainInfoBase, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Validates an item in the registry.
+
+      :param validate_request: The domain information of the item to be validated.
+      :type validate_request: DomainInfoBase
+      :param item_subtype: The subtype of the item to validate.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response indicating the result of the validation.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: evaluate_auth_access(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.DescribeAccessResponse
+      :async:
+
+
+      Evaluates the auth access for an item.
+
+      :param id: The ID of the item to evaluate auth access for.
+      :type id: str
+      :param item_subtype: The subtype of the item to evaluate auth access for.
+      :type item_subtype: ItemSubType
+
+      :returns: The describe access response.
+      :rtype: DescribeAccessResponse
+
+
+
+   .. py:method:: get_auth_configuration(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.AccessSettings
+      :async:
+
+
+      Gets the auth configuration for an item.
+
+      :param id: The ID of the item to get auth configuration for.
+      :type id: str
+      :param item_subtype: The subtype of the item to get auth configuration for.
+      :type item_subtype: ItemSubType
+
+      :returns: The access settings.
+      :rtype: AccessSettings
+
+
+
+   .. py:method:: modify_auth_configuration(id: str, auth_change_request: ProvenaInterfaces.RegistryAPI.AccessSettings, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Modifies the auth configuration for an item.
+
+      :param id: The ID of the item to modify auth configuration for.
+      :type id: str
+      :param auth_change_request: The auth change request.
+      :type auth_change_request: AccessSettings
+      :param item_subtype: The subtype of the item to modify auth configuration for.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_auth_roles(item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.AuthRolesResponse
+      :async:
+
+
+      Gets the auth roles for the item subtype.
+
+      :param item_subtype: The subtype of the item to get auth roles for.
+      :type item_subtype: ItemSubType
+
+      :returns: The auth roles response.
+      :rtype: AuthRolesResponse
+
+
+
+   .. py:method:: lock_resource(lock_resource_request: ProvenaInterfaces.RegistryAPI.LockChangeRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Locks a resource in the registry.
+
+      :param lock_resource_request: The lock resource request.
+      :type lock_resource_request: LockChangeRequest
+      :param item_subtype: The subtype of the resource to lock.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: unlock_resource(unlock_resource_request: ProvenaInterfaces.RegistryAPI.LockChangeRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.StatusResponse
+      :async:
+
+
+      Unlocks a resource in the registry.
+
+      :param unlock_resource_request: The unlock resource request.
+      :type unlock_resource_request: LockChangeRequest
+      :param item_subtype: The subtype of the resource to unlock.
+      :type item_subtype: ItemSubType
+
+      :returns: The status response.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: get_lock_history(handle_id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.LockHistoryResponse
+      :async:
+
+
+      Gets the lock history for an item.
+
+      :param handle_id: The handle ID of the item to get lock history for.
+      :type handle_id: str
+      :param item_subtype: The subtype of the item to get lock history for.
+      :type item_subtype: ItemSubType
+
+      :returns: The lock history response.
+      :rtype: LockHistoryResponse
+
+
+
+   .. py:method:: get_lock_status(id: str, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.LockStatusResponse
+      :async:
+
+
+      Gets the lock status for an item.
+
+      :param id: The item ID.
+      :type id: str
+      :param item_subtype: The subtype of the item to get lock status for.
+      :type item_subtype: ItemSubType
+
+      :returns: The lock status response.
+      :rtype: LockStatusResponse
+
+
+
+   .. py:method:: version(version_request: ProvenaInterfaces.RegistryAPI.VersionRequest, item_subtype: ProvenaInterfaces.RegistryAPI.ItemSubType) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Versions an item in the registry.
+
+      :param version_request: The version request containing the version details.
+      :type version_request: VersionRequest
+      :param item_subtype: The subtype of the item to version.
+      :type item_subtype: ItemSubType
+
+      :returns: The version response.
+      :rtype: VersionResponse
+
+
+

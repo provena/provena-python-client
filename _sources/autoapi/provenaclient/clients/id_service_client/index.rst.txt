@@ -1,0 +1,212 @@
+provenaclient.clients.id_service_client
+=======================================
+
+.. py:module:: provenaclient.clients.id_service_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Friday May 31st 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Friday May 31st 2024 9:50:26 am +1000
+   Modified By: Peter Baker
+   -----
+   Description: ID/Handle service L2 Client
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+   18-06-2024 | Peter Baker | Noting that the models published for the endpoints are not being detected in Swagger docs due to a type Alias being used
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.id_service_client.IdServiceEndpoints
+   provenaclient.clients.id_service_client.IdServiceClient
+
+
+Module Contents
+---------------
+
+.. py:class:: IdServiceEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.HandleAPI.Enum`
+
+
+   An ENUM containing the handle api endpoints.
+
+
+   .. py:attribute:: GET_ADMIN_CONFIG
+      :value: '/admin/config'
+
+
+
+   .. py:attribute:: GET_ADMIN_SENTRY_DEBUG
+      :value: '/admin/sentry-debug'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS
+      :value: '/check-access/check-general-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS
+      :value: '/check-access/check-admin-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_READ_ACCESS
+      :value: '/check-access/check-read-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_WRITE_ACCESS
+      :value: '/check-access/check-write-access'
+
+
+
+   .. py:attribute:: POST_HANDLE_MINT
+      :value: '/handle/mint'
+
+
+
+   .. py:attribute:: POST_HANDLE_ADD_VALUE
+      :value: '/handle/add_value'
+
+
+
+   .. py:attribute:: POST_HANDLE_ADD_VALUE_BY_INDEX
+      :value: '/handle/add_value_by_index'
+
+
+
+   .. py:attribute:: GET_HANDLE_GET
+      :value: '/handle/get'
+
+
+
+   .. py:attribute:: GET_HANDLE_LIST
+      :value: '/handle/list'
+
+
+
+   .. py:attribute:: PUT_HANDLE_MODIFY_BY_INDEX
+      :value: '/handle/modify_by_index'
+
+
+
+   .. py:attribute:: POST_HANDLE_REMOVE_BY_INDEX
+      :value: '/handle/remove_by_index'
+
+
+
+   .. py:attribute:: GET_HEALTH_CHECK
+      :value: '/'
+
+
+
+.. py:class:: IdServiceClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: IdServiceEndpoints) -> str
+
+
+   .. py:method:: mint(body: ProvenaInterfaces.HandleAPI.MintRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Mints a new handle with given properties.
+
+      :param body: The payload
+      :type body: MintRequest
+
+      :returns: The resulting handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value(body: ProvenaInterfaces.HandleAPI.AddValueRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds value to a handle.
+
+      :param body: The value to add
+      :type body: AddValueRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: add_value_by_index(body: ProvenaInterfaces.HandleAPI.AddValueIndexRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Adds a value at specified index
+
+      :param body: The value to add
+      :type body: AddValueIndexRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: list() -> ProvenaInterfaces.HandleAPI.ListResponse
+      :async:
+
+
+      Lists all handles under domain.
+
+      :returns: The response list
+      :rtype: ListResponse
+
+
+
+   .. py:method:: modify_by_index(body: ProvenaInterfaces.HandleAPI.ModifyRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Modifies existing handle value at specified index
+
+      :param body: The request to modify
+      :type body: ModifyRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+
+   .. py:method:: remove_by_index(body: ProvenaInterfaces.HandleAPI.RemoveRequest) -> ProvenaInterfaces.HandleAPI.Handle
+      :async:
+
+
+      Removes value at specified index
+
+      :param body: The removal request
+      :type body: RemoveRequest
+
+      :returns: The handle object
+      :rtype: Handle
+
+
+

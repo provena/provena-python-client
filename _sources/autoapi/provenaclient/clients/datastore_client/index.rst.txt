@@ -1,0 +1,416 @@
+provenaclient.clients.datastore_client
+======================================
+
+.. py:module:: provenaclient.clients.datastore_client
+
+.. autoapi-nested-parse::
+
+   Created Date: Thursday June 6th 2024 +1000
+   Author: Peter Baker
+   -----
+   Last Modified: Thursday June 6th 2024 1:39:55 pm +1000
+   Modified By: Peter Baker
+   -----
+   Description: Datastore L2 Client.
+   -----
+   HISTORY:
+   Date            By      Comments
+   ----------      ---     ---------------------------------------------------------
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   provenaclient.clients.datastore_client.DatastoreEndpoints
+   provenaclient.clients.datastore_client.DatasetReviewSubClient
+   provenaclient.clients.datastore_client.DatastoreClient
+
+
+Module Contents
+---------------
+
+.. py:class:: DatastoreEndpoints
+
+   Bases: :py:obj:`str`, :py:obj:`ProvenaInterfaces.DataStoreAPI.Enum`
+
+
+   An ENUM containing the datastore-api endpoints.
+
+
+   .. py:attribute:: GET_REGISTRY_ITEMS_FETCH_DATASET
+      :value: '/registry/items/fetch-dataset'
+
+
+
+   .. py:attribute:: POST_REGISTER_MINT_DATASET
+      :value: '/register/mint-dataset'
+
+
+
+   .. py:attribute:: GET_HEALTH_CHECK
+      :value: '/'
+
+
+
+   .. py:attribute:: POST_METADATA_VALIDATE_METADATA
+      :value: '/metadata/validate-metadata'
+
+
+
+   .. py:attribute:: GET_METADATA_DATASET_SCHEMA
+      :value: '/metadata/dataset-schema'
+
+
+
+   .. py:attribute:: POST_REGISTER_UPDATE_METADATA
+      :value: '/register/update-metadata'
+
+
+
+   .. py:attribute:: PUT_REGISTER_REVERT_METADATA
+      :value: '/register/revert-metadata'
+
+
+
+   .. py:attribute:: POST_REGISTER_VERSION
+      :value: '/register/version'
+
+
+
+   .. py:attribute:: POST_REGISTRY_ITEMS_LIST
+      :value: '/registry/items/list'
+
+
+
+   .. py:attribute:: POST_REGISTRY_ITEMS_GENERATE_PRESIGNED_URL
+      :value: '/registry/items/generate-presigned-url'
+
+
+
+   .. py:attribute:: POST_REGISTRY_CREDENTIALS_GENERATE_READ_ACCESS_CREDENTIALS
+      :value: '/registry/credentials/generate-read-access-credentials'
+
+
+
+   .. py:attribute:: POST_REGISTRY_CREDENTIALS_GENERATE_WRITE_ACCESS_CREDENTIALS
+      :value: '/registry/credentials/generate-write-access-credentials'
+
+
+
+   .. py:attribute:: DELETE_RELEASE_SYS_REVIEWERS_DELETE
+      :value: '/release/sys-reviewers/delete'
+
+
+
+   .. py:attribute:: POST_RELEASE_SYS_REVIEWERS_ADD
+      :value: '/release/sys-reviewers/add'
+
+
+
+   .. py:attribute:: GET_RELEASE_SYS_REVIEWERS_LIST
+      :value: '/release/sys-reviewers/list'
+
+
+
+   .. py:attribute:: POST_RELEASE_APPROVAL_REQUEST
+      :value: '/release/approval-request'
+
+
+
+   .. py:attribute:: PUT_RELEASE_ACTION_APPROVAL_REQUEST
+      :value: '/release/action-approval-request'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_GENERAL_ACCESS
+      :value: '/check-access/check-general-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_ADMIN_ACCESS
+      :value: '/check-access/check-admin-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_READ_ACCESS
+      :value: '/check-access/check-read-access'
+
+
+
+   .. py:attribute:: GET_CHECK_ACCESS_CHECK_WRITE_ACCESS
+      :value: '/check-access/check-write-access'
+
+
+
+   .. py:attribute:: GET_ADMIN_CONFIG
+      :value: '/admin/config'
+
+
+
+   .. py:attribute:: GET_ADMIN_SENTRY_DEBUG
+      :value: '/admin/sentry-debug'
+
+
+
+.. py:class:: DatasetReviewSubClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: DatastoreEndpoints) -> str
+
+
+   .. py:method:: delete_dataset_reviewer(reviewer_id: str) -> None
+      :async:
+
+
+      Delete a reviewer existing within the datastore.
+
+      :param reviewer_id: Id of an existing reviewer within the system.
+      :type reviewer_id: str
+
+
+
+   .. py:method:: add_dataset_reviewer(reviewer_id: str) -> None
+      :async:
+
+
+      Add a reviewer to the datastore.
+
+      :param reviewer_id: Valid Id of a reviewer.
+      :type reviewer_id: str
+
+
+
+   .. py:method:: approval_request(approval_request_payload: ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequest) -> ProvenaInterfaces.DataStoreAPI.ReleaseApprovalRequestResponse
+      :async:
+
+
+      Submit a request for approval of dataset through the datastore.
+
+      :param approval_request_payload: An object that requires the dataset id, approver id and notes
+      :type approval_request_payload: ReleaseApprovalRequest
+
+      :returns: Contains details of the approval request.
+      :rtype: ReleaseApprovalRequestResponse
+
+
+
+   .. py:method:: action_approval_request(action_approval_request_payload: ProvenaInterfaces.DataStoreAPI.ActionApprovalRequest) -> ProvenaInterfaces.DataStoreAPI.ActionApprovalRequestResponse
+      :async:
+
+
+      Action an approval request from a dataset approval request via the datastore.
+
+      :param action_approval_request: The dataset id, your decision of approval and any extra information
+                                      you want to add (notes).
+      :type action_approval_request: ActionApprovalRequest
+
+      :returns: The details of the approval action and the relevant dataset details.
+      :rtype: ActionApprovalRequestResponse
+
+
+
+.. py:class:: DatastoreClient(auth: provenaclient.clients.client_helpers.AuthManager, config: provenaclient.clients.client_helpers.Config)
+
+   Bases: :py:obj:`provenaclient.clients.client_helpers.ClientService`
+
+
+   This class interface just captures that the client has an instantiated auth
+   manager which allows for helper functions abstracted for L2 clients.
+
+
+   .. py:attribute:: review
+      :type:  DatasetReviewSubClient
+
+
+   .. py:attribute:: _auth
+
+
+   .. py:attribute:: _config
+
+
+   .. py:method:: _build_endpoint(endpoint: DatastoreEndpoints) -> str
+
+
+   .. py:method:: get_health_check() -> provenaclient.models.HealthCheckResponse
+      :async:
+
+
+      Health check the API
+
+      :returns: Response
+      :rtype: HealthCheckResponse
+
+
+
+   .. py:method:: validate_metadata(metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> provenaclient.utils.helpers.StatusResponse
+      :async:
+
+
+      Validates provided dataset info with the datastore API.
+
+      :param metadata_payload: A structured format containing all necessary information to register a new dataset, including associations,
+                               approvals, and dataset-specific information.
+      :type metadata_payload: CollectionFormat
+
+      :returns: Response indicating whether your dataset metadata setup is valid and correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: update_metadata(handle_id: str, reason: str, metadata_payload: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.UpdateMetadataResponse
+      :async:
+
+
+      Updates existing dataset metadata through datastore API.
+
+      :returns: The updated metadata response from datastore.
+      :rtype: UpdateMetadataResponse
+
+
+
+   .. py:method:: revert_metadata(metadata_payload: provenaclient.models.RevertMetadata) -> provenaclient.utils.helpers.StatusResponse
+      :async:
+
+
+      Reverts the metadata for a dataset to a previous identified historical version.
+
+      :param metadata_payload: The revert request, passed through to the registry API and requires
+                               dataset id, history id and reason for reverting.
+      :type metadata_payload: RevertMetadata
+
+      :returns: Response indicating whether your dataset metadata setup is valid and correct.
+      :rtype: StatusResponse
+
+
+
+   .. py:method:: version_dataset(version_dataset_payload: ProvenaInterfaces.RegistryAPI.VersionRequest) -> ProvenaInterfaces.RegistryAPI.VersionResponse
+      :async:
+
+
+      Creates a new versioning of an existing dataset within Provena
+         through the Datastore.
+
+      :param version_dataset_payload: The request which includes the item ID and reason for versioning.
+      :type version_dataset_payload: VersionRequest
+
+      :returns: Response of the versioning of the dataset, containing new version ID and
+                job session ID.
+      :rtype: VersionResponse
+
+
+
+   .. py:method:: list_datasets(list_request: ProvenaInterfaces.RegistryAPI.NoFilterSubtypeListRequest) -> ProvenaInterfaces.RegistryAPI.DatasetListResponse
+      :async:
+
+
+      Gets datasets within the datastore in a paginated fashion.
+
+      :param list_request: Contains parameters for the specified sorting criteria,
+                           optional pagination key and amount of records
+                           to fetch.
+      :type list_request: NoFilterSubtypeListRequest
+
+      :returns: Response of fetching datasets from datastore API.
+      :rtype: ListRegistryResponse
+
+
+
+   .. py:method:: generate_presigned_url(presigned_url: ProvenaInterfaces.DataStoreAPI.PresignedURLRequest) -> ProvenaInterfaces.DataStoreAPI.PresignedURLResponse
+      :async:
+
+
+      Generates a presigned url for an existing dataset within the datastore.
+
+      :param presigned_url: Contains the dataset id + file path + length of expiry of URL.
+      :type presigned_url: PresignedURLRequest
+
+      :returns: A response containing the presigned url.
+      :rtype: PresignedURLResponse
+
+
+
+   .. py:method:: generate_read_access_credentials(read_access_credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Creates a read-access for a certain subdirectory of the S3 bucket.
+
+      :param read_access_credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type read_access_credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating read level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: generate_write_access_credentials(write_access_credentials: ProvenaInterfaces.DataStoreAPI.CredentialsRequest) -> ProvenaInterfaces.DataStoreAPI.CredentialResponse
+      :async:
+
+
+      Creates a write-access for a certain subdirectory of the S3 bucket.
+
+      :param write_access_credentials: Contains the dataset id + console session URL required flag (boolean)
+      :type write_access_credentials: CredentialsRequest
+
+      :returns: The AWS credentials creating write level access into the subset of the bucket requested in the S3 location object.
+      :rtype: CredentialResponse
+
+
+
+   .. py:method:: fetch_dataset(id: str) -> ProvenaInterfaces.DataStoreAPI.RegistryFetchResponse
+      :async:
+
+
+      Fetches a dataset from the datastore based on the provided
+      ID.
+
+      :param id: The unique identifier of the dataset to be retrieved.
+                 For example: "10378.1/1451860"
+      :type id: str
+
+      :returns: A interactive python datatype of type RegistryFetchResponse
+                containing the dataset details.
+      :rtype: RegistryFetchResponse
+
+      :raises CustomTimeoutException: Raised if the request times out.
+      :raises Exception: General exception for handling unexpected errors.
+      :raises ValueError: Raised if there is an issue in parsing the response into the expected model.
+
+
+
+   .. py:method:: mint_dataset(dataset_info: ProvenaInterfaces.RegistryModels.CollectionFormat) -> ProvenaInterfaces.DataStoreAPI.MintResponse
+      :async:
+
+
+      Creates a new dataset in the datastore with the provided dataset information.
+
+      :param dataset_info: A structured format containing all necessary information to register a new dataset, including associations,
+                           approvals, and dataset-specific information.
+      :type dataset_info: CollectionFormat
+
+      :returns: A interactive python datatype of type MintResponse
+                containing the newly created dataset details.
+      :rtype: MintResponse
+
+      :raises BadRequestException: Raised if the server returns a 400 status code, indicating a bad request.
+      :raises CustomTimeoutException: Raised if the request times out.
+      :raises Exception: General exception for handling unexpected errors.
+      :raises ValueError: Raised if there is an issue in parsing the response into the expected model.
+
+
+
